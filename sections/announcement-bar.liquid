@@ -1,0 +1,89 @@
+<announcement-bar>
+
+</announcement-bar>
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "select",
+      "id": "type",
+      "label": "Type",
+      "default": "arrows",
+      "options": [
+        {
+          "value": "arrows",
+          "label": "Arrows"
+        },
+        {
+          "value": "auto_Scrolling",
+          "label": "Auto Scrollng"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotated",
+      "label": "Auto Rotated",
+      "visible_if": "{{ section.settings.type == 'arrows' }}"
+    },
+    {
+      "type": "range",
+      "id": "timing",
+      "label": "Change message every",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "sec",
+      "visible_if": "{{ section.settings.auto_rotated == true }}"
+    },
+    {
+      "type": "range",
+      "id": "scrolling_speed",
+      "label": "Scrolling Speed",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 10,
+      "unit": "sec",
+      "visible_if": "{{ section.settings.type == 'auto_Scrolling' }}"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default" : "#A65E2E"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default" : "#F7EED0"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bar",
+      "name": "Bar",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
