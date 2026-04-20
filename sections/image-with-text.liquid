@@ -1,0 +1,137 @@
+{% style %}
+.section-{{ section.id }}-padding {
+  padding-top: {{ section.settings.mobile_padding_top }}px;
+  padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+}
+
+@media screen and (min-width: 1200px) {
+  .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+}
+{% endstyle %}
+
+<div class="custom-excellence-section section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
+    <div class="page-width">
+        <div class="custom-excellence-top">
+            <div class="custom-text-block center">
+                <h2 class="custom-heading-h2">{{ section.settings.title }}</h2>
+                <div class="custom-text-desc">
+                    {{ section.settings.desc }}
+                </div>
+            </div>
+        </div>
+        <div class="custom-excellence-grid">
+            {% for block in section.blocks %}
+                <div class="custom-excellence-cell">
+                    <div class="custom-text-block">
+                        <span class="custom-excellence-icon">
+                            {{ block.settings.icon }}
+                        </span>
+                        <h3 class="custom-heading-h3">{{ block.settings.subtitle }}</h3>
+                        <div class="custom-text-desc">
+                            {{ block.settings.description }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image With Text",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Set Color"
+    },
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Set Image"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Set Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Set Description"
+        },
+        {
+          "type": "url",
+          "id": "btn-url",
+          "label": "Set Button Url"
+        },
+        {
+          "type": "text",
+          "id": "btn-text",
+          "label": "Set Button Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image With Text"
+    }
+  ]
+}
+{% endschema %}
