@@ -1,10 +1,28 @@
-<announcement-bar>
+<style>
+  .announcement-bar {
+    display: block;
+  }
+  .announcement-wrap {
+    padding: 10px;
+    text-align: center;
+  }
+</style>
+{% render 'variables', section: section %}
 
+<announcement-bar class="announcement-bar bg-custom text-large" id="announcementBar">
+  <div class="page-width rte">
+    {% for block in section.blocks %}
+      <div class="announcement-wrap">
+        <p>{{ block.settings.text }}</p>
+      </div>
+    {% endfor %}
+  </div>
 </announcement-bar>
 
 {% schema %}
 {
   "name": "Announcement Bar",
+  "class": "section",
   "settings": [
     {
       "type": "select",
@@ -18,7 +36,7 @@
         },
         {
           "value": "auto_Scrolling",
-          "label": "Auto Scrollng"
+          "label": "Auto Scrolling"
         }
       ]
     },
@@ -58,13 +76,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default" : "#A65E2E"
+      "default": "#A65E2E"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text Color",
-      "default" : "#F7EED0"
+      "default": "#F7EED0"
     }
   ],
   "blocks": [
