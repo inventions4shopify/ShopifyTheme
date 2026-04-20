@@ -12,31 +12,9 @@
 }
 {% endstyle %}
 
-<div class="custom-excellence-section section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
+<div class="section-{{ section.id }}-padding">
     <div class="page-width">
-        <div class="custom-excellence-top">
-            <div class="custom-text-block center">
-                <h2 class="custom-heading-h2">{{ section.settings.title }}</h2>
-                <div class="custom-text-desc">
-                    {{ section.settings.desc }}
-                </div>
-            </div>
-        </div>
-        <div class="custom-excellence-grid">
-            {% for block in section.blocks %}
-                <div class="custom-excellence-cell">
-                    <div class="custom-text-block">
-                        <span class="custom-excellence-icon">
-                            {{ block.settings.icon }}
-                        </span>
-                        <h3 class="custom-heading-h3">{{ block.settings.subtitle }}</h3>
-                        <div class="custom-text-desc">
-                            {{ block.settings.description }}
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+        
     </div>
 </div>
 
@@ -45,11 +23,6 @@
   "name": "Image With Text",
   "tag": "section",
   "settings": [
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Set Color"
-    },
     {
         "type": "image_picker",
         "id": "image",
@@ -103,7 +76,7 @@
   "blocks": [
     {
       "type": "text",
-      "name": "Slide",
+      "name": "Add Block",
       "settings": [
         {
           "type": "text",
