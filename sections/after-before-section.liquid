@@ -24,24 +24,30 @@
               <div class="cms-text-block">
                 {%for block in section.blocks %}
                   {% if block.type == "heading" %}
-                    <{{ block.settings.heading_size }} class="{{ block.settings.heading_size }}">
-                      {{ block.settings.heading }}
-                    </{{ block.settings.heading_size }}>
+                    {% if block.settings.heading != blank %}
+                        <{{ block.settings.heading_size }} class="{{ block.settings.heading_size }}">
+                          {{ block.settings.heading }}
+                        </{{ block.settings.heading_size }}>
+                    {% endif %}
                   {% endif %}
                   {% if block.type == "text" %}
-                    <div class="cms-text-desc">
-                      {{ block.settings.text }}
-                    </div>
+                    {% if block.settings.text != blank %}
+                        <div class="cms-text-desc">
+                            {{ block.settings.text }}
+                        </div>
+                    {% endif %}
                   {% endif %}
                   {% if block.type == "button" %}
                     <div class="cms-buttons-row">
-                      <div class="cms-buttons-cell">
-                        <a href="{{ block.settings.button_link }}" aria-label="{{ block.settings.button_label }}">
-                          <span>
-                            {{ block.settings.button_label }}
-                          </span>
-                        </a>
-                      </div>
+                        {% if block.settings.button_label != blank %}
+                            <div class="cms-buttons-cell">
+                                <a href="{{ block.settings.button_link }}" aria-label="{{ block.settings.button_label }}" class="button {% if  %}  {% endif %}">
+                                <span>
+                                    {{ block.settings.button_label }}
+                                </span>
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
                   {% endif %}
                 {% endfor %}
