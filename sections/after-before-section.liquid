@@ -41,7 +41,7 @@
                     <div class="cms-buttons-row">
                         {% if block.settings.button_label != blank %}
                             <div class="cms-buttons-cell">
-                                <a href="{{ block.settings.button_link }}" aria-label="{{ block.settings.button_label }}" class="button {% if  %}  {% endif %}">
+                                <a href="{{ block.settings.button_link }}" aria-label="{{ block.settings.button_label }}" class="button">
                                 <span>
                                     {{ block.settings.button_label }}
                                 </span>
@@ -122,6 +122,19 @@
   ],
   "blocks": [
     {
+      "type": "caption",
+      "name": "Caption",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "caption",
+          "default": "Caption",
+          "label": "Caption"
+        }
+      ]
+    },
+    {
       "type": "heading",
       "name": "Heading",
       "limit": 1,
@@ -170,7 +183,7 @@
         {
           "type": "richtext",
           "id": "text",
-          "default": "Description",
+          "default": "<p>Description</p>",
           "label": "Description"
         }
       ]
@@ -178,7 +191,7 @@
     {
       "type": "button",
       "name": "Button",
-      "limit": 1,
+      "limit": 2,
       "settings": [
         {
           "type": "text",
