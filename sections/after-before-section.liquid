@@ -16,45 +16,59 @@
 
 <div class="section-{{ section.id }}-padding">
     <div class="page-width">
-        <div class="after-before-row">
-          <div class="after-before-left">
-            
+        <div class="cms-row">
+          <div class="cms-after-before-thumg">
+            <div class="before-after-wrapper">
+                <div class="before-after-container-inner">
+                    {% if section.settings.before_image != blank %}
+                        <img class="before-img" src="{{ section.settings.before_image | img_url: "master" }}" alt="{{ section.settings.before_image.alt }}" width="auto" height="auto" loading="lazy" />
+                    {% endif %}
+                    {% if section.settings.after_image != blank %}
+                        <img class="after-img" src="{{ section.settings.after_image | img_url: "master" }}" alt="{{ section.settings.after_image.alt }}" width="auto" height="auto" loading="lazy" />
+                    {% endif %}
+                    {% if section.settings.before_image != blank %}
+                        <div class="divider-line"></div>
+                        <div class="divider-handle"></div>
+                        <input type="range" min="0" max="100" value="50" class="slider-range">
+                    {% endif %}
+                </div>
+            </div>
           </div>
-          <div class="after-before-right">
-              <div class="cms-text-block">
-                {%for block in section.blocks %}
-                  {% if block.type == "caption" %}
-                    <span class="cms-caption">{{ block.settings.caption }}</span>
-                    {%endif%}
-                  {% if block.type == "heading" %}
-                    {% if block.settings.heading != blank %}
-                        <{{ block.settings.heading_size }} class="{{ block.settings.heading_size }}">
-                          {{ block.settings.heading }}
-                        </{{ block.settings.heading_size }}>
-                    {% endif %}
+          <div class="cms-content">
+            <div class="cms-text-block">
+              {%for block in section.blocks %}
+                {% if block.type == "caption" %}
+                  <span class="cms-caption">{{ block.settings.caption }}</span>
+                  {%endif%}
+                {% if block.type == "heading" %}
+                  {% if block.settings.heading != blank %}
+                      <{{ block.settings.heading_size }} class="{{ block.settings.heading_size }}">
+                        {{ block.settings.heading }}
+                      </{{ block.settings.heading_size }}>
                   {% endif %}
-                  {% if block.type == "text" %}
-                    {% if block.settings.text != blank %}
-                        <div class="cms-text-desc">
-                            {{ block.settings.text }}
-                        </div>
-                    {% endif %}
+                {% endif %}
+                {% if block.type == "text" %}
+                  {% if block.settings.text != blank %}
+                      <div class="cms-text-desc">
+                          {{ block.settings.text }}
+                      </div>
                   {% endif %}
-                  {% if block.type == "button" %}
-                    <div class="cms-buttons-row">
-                        {% if block.settings.button_label != blank %}
-                            <div class="cms-buttons-cell">
-                                <a href="{{ block.settings.button_link }}" aria-label="{{ block.settings.button_label }}" class="button">
-                                <span>
-                                    {{ block.settings.button_label }}
-                                </span>
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
-                  {% endif %}
-                {% endfor %}
-              </div>
+                {% endif %}
+                {% if block.type == "button" %}
+                  <div class="cms-buttons-row">
+                      {% if block.settings.button_label != blank %}
+                          <div class="cms-buttons-cell">
+                              <a href="{{ block.settings.button_link }}" aria-label="{{ block.settings.button_label }}" class="button">
+                              <span>
+                                  {{ block.settings.button_label }}
+                              </span>
+                              </a>
+                          </div>
+                      {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
           </div>
         </div>
     </div>
