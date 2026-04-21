@@ -16,7 +16,7 @@
 
 <div class="section-{{ section.id }}-padding">
     <div class="page-width">
-        <div class="cms-row">
+        <div class="cms-row desktop--align--{{ section.settings.desktop_content_position }}">
           <div class="cms-after-before-thumg">
             <div class="before-after-wrapper">
                 <div class="before-after-container-inner">
@@ -82,6 +82,26 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "center",
+      "label": "Center"
+    },
     {
       "type": "image_picker",
       "id": "after_image",

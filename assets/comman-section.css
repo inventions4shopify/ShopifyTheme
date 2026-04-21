@@ -30,3 +30,8 @@
     gap: 5px;
     border: 1px solid #000;
 }
+
+.cms-row {
+    display: flex;
+    flex-wrap: wrap;
+}
