@@ -134,7 +134,7 @@
       {
         "type": "select",
         "id": "subheading_text_transform",
-        "label": "t:general.text_transform",
+        "label": "t:settings_schema.typograpy.settings.heading.text_transform.label",
         "default": "none",
         "options": [
           {
@@ -157,18 +157,18 @@
       },
       {
         "type": "header",
-        "content": "t:general.bodytext"
+        "content": "t:settings_schema.typograpy.settings.Body.title.label"
       },
       {
         "type": "font_picker",
         "id": "type_body_font",
         "default": "work_sans_n4",
-        "label": "t:general.font"
+        "label": "t:settings_schema.typograpy.settings.heading.fonts.label"
       },
       {
         "type": "select",
         "id": "mobilebody_text",
-        "label": "t:general.mobilebody_text",
+        "label": "t:settings_schema.typograpy.settings.Body.mobilebody_text.label",
         "default": "small",
         "options": [
           {
@@ -196,7 +196,7 @@
       {
         "type": "select",
         "id": "body_text",
-        "label": "t:general.body_text",
+        "label": "t:settings_schema.typograpy.settings.Body.body_text.label",
         "default": "small",
         "options": [
           {

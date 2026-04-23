@@ -39,6 +39,29 @@
           "text_transform": {
             "label": "Text Transform"
           }
+        },
+        "Body": {
+          "title": {
+            "label": "Body"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "size": {
+            "label": "Size"
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          },
+          "text_transform": {
+            "label": "Text Transform"
+          },
+          "mobilebody_text": {
+            "label": "Mobile Text"
+          },
+          "body_text": {
+            "label": "Desktop Text"
+          },
         }
       }
     }
@@ -57,9 +80,6 @@
     "column": "Column",
     "content": "Content",
     "custom_section": "Custom section",
-    "bodytext": "Body",
-    "mobilebody_text": "Mobile Text",
-    "body_text": "Desktop Text",
     "footer": "Footer",
     "group": "Group",
     "header": "Header",
