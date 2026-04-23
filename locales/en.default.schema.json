@@ -25,6 +25,7 @@
     "password": "Password",
     "font": "Font",
     "size": "Size",
+    "text_transform": "Transform",
     "product": "Product",
     "row": "Row",
     "search": "Search",
