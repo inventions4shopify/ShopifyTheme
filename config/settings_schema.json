@@ -31,6 +31,25 @@
         "label": "t:general.font"
       },
       {
+        "type": "select",
+        "id": "heading_size",
+        "label": "t:general.size",
+        "options": [
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          }
+        ]
+      },
+      {
         "type": "header",
         "content": "t:general.subheading"
       },
@@ -39,6 +58,26 @@
         "id": "type_heading_font",
         "default": "work_sans_n4",
         "label": "t:general.font"
+      },
+      {
+        "type": "select",
+        "id": "sub_heading_size",
+        "label": "t:general.size",
+        "options": [
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          }
+        ],
+        "default": "medium"
       },
       {
         "type": "header",
