@@ -22,11 +22,31 @@
     "settings": [
       {
         "type": "header",
-        "content": "t:general.fonts"
+        "content": "t:general.heading"
       },
       {
         "type": "font_picker",
         "id": "type_primary_font",
+        "default": "work_sans_n4",
+        "label": "t:general.primary"
+      },
+      {
+        "type": "header",
+        "content": "t:general.subheading"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "default": "work_sans_n4",
+        "label": "t:general.primary"
+      },
+      {
+        "type": "header",
+        "content": "t:general.bodytext"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
         "default": "work_sans_n4",
         "label": "t:general.primary"
       }
