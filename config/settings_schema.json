@@ -93,6 +93,16 @@
         "label": "t:general.font"
       },
       {
+        "type": "range",
+        "id": "subheading_scale",
+        "min": 100,
+        "max": 150,
+        "step": 5,
+        "unit": "%",
+        "label": "t:general.subheading_scale",
+        "default": 100
+      },
+      {
         "type": "select",
         "id": "sub_heading_size",
         "label": "t:general.size",
@@ -154,6 +164,86 @@
         "id": "type_body_font",
         "default": "work_sans_n4",
         "label": "t:general.font"
+      },
+      {
+        "type": "select",
+        "id": "mobilebody_text",
+        "label": "t:general.mobilebody_text",
+        "default": "small",
+        "options": [
+          {
+            "label": "Extra Small",
+            "value": "extra-small"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Base",
+            "value": "base"
+          },
+          {
+            "label": "large",
+            "value": "Large"
+          },
+          {
+            "label": "Extra Large",
+            "value": "extra-large"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "body_text",
+        "label": "t:general.body_text",
+        "default": "small",
+        "options": [
+          {
+            "label": "Extra Small",
+            "value": "extra-small"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Base",
+            "value": "base"
+          },
+          {
+            "label": "large",
+            "value": "Large"
+          },
+          {
+            "label": "Extra Large",
+            "value": "extra-large"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "desktopbody_text",
+        "label": "t:general.body_text",
+        "default": "none",
+        "options": [
+          {
+            "label": "None",
+            "value": "none"
+          },
+          {
+            "label": "Uppercase",
+            "value": "uppercase"
+          },
+          {
+            "label": "Lowercase",
+            "value": "lowercase"
+          },
+          {
+            "label": "Capitalize",
+            "value": "capitalize"
+          }
+        ]
       },
       {
         "type": "range",
