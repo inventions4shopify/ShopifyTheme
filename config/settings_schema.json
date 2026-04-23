@@ -18,11 +18,11 @@
     ]
   },
   {
-    "name": "t:settings_shcema.typograpy.name",
+    "name": "t:settings_schema.typograpy.name",
     "settings": [
       {
         "type": "header",
-        "content": "t:settings_shcema.typograpy.settings.heading.title.label"
+        "content": "t:settings_shcema.typograpy.settings.heading.title"
       },
       {
         "type": "font_picker",
