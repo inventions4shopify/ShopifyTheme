@@ -28,7 +28,7 @@
         "type": "font_picker",
         "id": "type_primary_font",
         "default": "work_sans_n4",
-        "label": "t:general.primary"
+        "label": "t:general.font"
       },
       {
         "type": "header",
@@ -38,7 +38,7 @@
         "type": "font_picker",
         "id": "type_heading_font",
         "default": "work_sans_n4",
-        "label": "t:general.primary"
+        "label": "t:general.font"
       },
       {
         "type": "header",
@@ -48,7 +48,7 @@
         "type": "font_picker",
         "id": "type_body_font",
         "default": "work_sans_n4",
-        "label": "t:general.primary"
+        "label": "t:general.font"
       }
     ]
   },
