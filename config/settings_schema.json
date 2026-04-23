@@ -64,35 +64,96 @@
     ]
   },
   {
-    "name": "t:general.colors",
+    "name": "t:favicon.name",
     "settings": [
       {
-        "type": "color",
-        "id": "text_color",
-        "default": "#000000",
-        "label": "Text color"
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "t:favicon.settings.favicon.label",
+        "info": "t:favicon.settings.favicon.info"
+      }
+    ] 
+  },
+  {
+    "name": "t:social_media.name",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "t:social_media.settings.social_facebook_link.label",
+        "placeholder": "t:social_media.settings.social_facebook_link.info"
       },
       {
-        "type": "color",
-        "id": "background_color",
-        "default": "#FFFFFF",
-        "label": "t:labels.background"
+        "type": "text",
+        "id": "social_x_link",
+        "label": "t:social_media.settings.social_x_link.label",
+        "placeholder": "t:social_media.settings.social_x_link.info"
       },
       {
-        "type": "color",
-        "id": "foreground_color",
-        "default": "#333333",
-        "label": "t:labels.foreground"
+        "type": "text",
+        "id": "social_threads_link",
+        "label": "t:social_media.settings.social_threads_link.label",
+        "placeholder": "t:social_media.settings.social_threads_link.info"
       },
       {
-        "type": "range",
-        "id": "input_corner_radius",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "unit": "px",
-        "label": "t:labels.input_corner_radius",
-        "default": 4
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "t:social_media.settings.social_pinterest_link.label",
+        "placeholder": "t:social_media.settings.social_pinterest_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "t:social_media.settings.social_instagram_link.label",
+        "placeholder": "t:social_media.settings.social_instagram_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "t:social_media.settings.social_vimeo_link.label",
+        "placeholder": "t:social_media.settings.social_vimeo_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp_link",
+        "label": "t:social_media.settings.social_whatsapp_link.label",
+        "placeholder": "t:social_media.settings.social_whatsapp_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "t:social_media.settings.social_tumblr_link.label",
+        "placeholder": "t:social_media.settings.social_tumblr_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "t:social_media.settings.social_youtube_link.label",
+        "placeholder": "t:social_media.settings.social_youtube_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedln_link",
+        "label": "t:social_media.settings.social_linkedln_link.label",
+        "placeholder": "t:social_media.settings.social_linkedln_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "t:social_media.settings.social_snapchat_link.label",
+        "placeholder": "t:social_media.settings.social_snapchat_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_wechat_link",
+        "label": "t:social_media.settings.social_wechat_link.label",
+        "placeholder": "t:social_media.settings.social_wechat_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_spotify_link",
+        "label": "t:social_media.settings.social_spotify_link.label",
+        "placeholder": "t:social_media.settings.social_spotify_link.info"
       }
     ]
   }
