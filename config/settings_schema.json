@@ -224,7 +224,7 @@
       {
         "type": "select",
         "id": "body_transform",
-        "label": "t:general.body_transform",
+        "label": "t:settings_schema.typograpy.settings.Body.text_transform.label",
         "default": "none",
         "options": [
           {
