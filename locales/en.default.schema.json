@@ -26,6 +26,7 @@
     "font": "Font",
     "size": "Size",
     "text_transform": "Transform",
+    "letter_spacing": "Letter Spacing",
     "product": "Product",
     "row": "Row",
     "search": "Search",
