@@ -1,4 +1,48 @@
 {
+  "settings_schema": {
+    "typograpy": {
+      "name": "typograpy",
+      "settings": {
+        "heading": {
+          "title": {
+            "label": "Heading"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "size": {
+            "label": "Size"
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          },
+          "text_transform": {
+            "label": "Text Transform"
+          },
+          "scale": {
+            "label": "Scale"
+          }
+        },
+        "subheading": {
+          "title": {
+            "label": "Sub Heading"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "size": {
+            "label": "Size"
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          },
+          "text_transform": {
+            "label": "Text Transform"
+          }
+        }
+      }
+    }
+  },
   "general": {
     "404": "Not found",
     "article": "Article",
@@ -13,9 +57,6 @@
     "column": "Column",
     "content": "Content",
     "custom_section": "Custom section",
-    "heading": "Heading",
-    "subheading": "Sub Heading",
-    "subheading_scale": "Scale",
     "bodytext": "Body",
     "mobilebody_text": "Mobile Text",
     "body_text": "Desktop Text",
@@ -26,10 +67,6 @@
     "main": "Main",
     "page": "Page",
     "password": "Password",
-    "font": "Font",
-    "size": "Size",
-    "text_transform": "Transform",
-    "letter_spacing": "Letter Spacing",
     "product": "Product",
     "row": "Row",
     "search": "Search",
