@@ -34,19 +34,19 @@
         "type": "select",
         "id": "heading_size",
         "label": "t:settings_schema.typograpy.settings.heading.size.label",
-        "default": "t:settings_schema.typograpy.settings.heading.medium.label",
+        "default": "medium",
         "options": [
           {
-            "label": "t:settings_schema.typograpy.settings.heading.small.label",
-            "value": "t:settings_schema.typograpy.settings.heading.small.label"
+            "label": "t:settings_schema.typograpy.settings.heading.size.options.option_1",
+            "value": "small"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.heading.medium.label",
-            "value": "t:settings_schema.typograpy.settings.heading.medium.label"
+            "label": "t:settings_schema.typograpy.settings.heading.size.options.option_2",
+            "value": "medium"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.heading.large.label",
-            "value": "t:settings_schema.typograpy.settings.heading.large.label"
+            "label": "t:settings_schema.typograpy.settings.heading.size.options.option_3",
+            "value": "large"
           }
         ]
       },

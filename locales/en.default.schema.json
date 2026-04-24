@@ -11,7 +11,12 @@
             "label": "Font"
           },
           "size": {
-            "label": "Size"
+            "label": "Size",
+            "options": {
+              "option_1": "Small",
+              "option_2": "Medium",
+              "option_3": "Large"
+            }
           },
           "letter_spacing": {
             "label": "Letter Spacing"
