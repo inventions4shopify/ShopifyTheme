@@ -92,18 +92,6 @@
           "size": {
             "label": "Size"
           },
-          "letter_spacing": {
-            "label": "Letter Spacing"
-          },
-          "text_transform": {
-            "label": "Text Transform"
-          },
-          "mobile_body_text": {
-            "label": "Mobile Text"
-          },
-          "body_text": {
-            "label": "Desktop Text"
-          },
           "extra-small": {
             "label": "Extra Small"
           },
@@ -118,6 +106,30 @@
           },
           "extra-large": {
             "label": "Extra Large"
+          },
+          "body_text": {
+            "label": "Desktop Text"
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          },
+          "text_transform": {
+            "label": "Text Transform"
+          },
+          "mobile_body_text": {
+            "label": "Mobile Text"
+          },
+          "none": {
+            "label": "None"
+          },
+          "uppercase": {
+            "label": "Uppercase"
+          },
+          "lowercase": {
+            "label": "Lowercase"
+          },
+          "capitalize": {
+            "label": "Capitalize"
           }
         }
       }

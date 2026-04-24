@@ -197,7 +197,7 @@
       {
         "type": "select",
         "id": "body_text",
-        "label": "t:settings_schema.typograpy.settings.body.body_text.label",
+        "label": "t:settings_schema.typograpy.settings.body.size.label",
         "default": "t:settings_schema.typograpy.settings.body.small.label",
         "options": [
           {
@@ -226,23 +226,23 @@
         "type": "select",
         "id": "body_transform",
         "label": "t:settings_schema.typograpy.settings.body.text_transform.label",
-        "default": "t:settings_schema.typograpy.settings.body.text_transform.none.label",
+        "default": "t:settings_schema.typograpy.settings.body.none.label",
         "options": [
           {
-            "label": "t:settings_schema.typograpy.settings.body.text_transform.none.label",
-            "value": "t:settings_schema.typograpy.settings.body.text_transform.none.label"
+            "label": "t:settings_schema.typograpy.settings.body.none.label",
+            "value": "t:settings_schema.typograpy.settings.body.none.label"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.text_transform.uppercase.label",
-            "value": "t:settings_schema.typograpy.settings.body.text_transform.uppercase.label"
+            "label": "t:settings_schema.typograpy.settings.body.uppercase.label",
+            "value": "t:settings_schema.typograpy.settings.body.uppercase.label"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.text_transform.lowercase.label",
-            "value": "t:settings_schema.typograpy.settings.body.text_transform.lowercase.label"
+            "label": "t:settings_schema.typograpy.settings.body.lowercase.label",
+            "value": "t:settings_schema.typograpy.settings.body.lowercase.label"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.text_transform.capitalize.label",
-            "value": "t:settings_schema.typograpy.settings.body.text_transform.capitalize.label"
+            "label": "t:settings_schema.typograpy.settings.body.capitalize.label",
+            "value": "t:settings_schema.typograpy.settings.body.capitalize.label"
           }
         ]
       },
