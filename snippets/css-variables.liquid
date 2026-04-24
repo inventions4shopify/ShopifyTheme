@@ -26,48 +26,48 @@
     --grid-spacing: var(--grid-spacing-mobile);
 
     /* General colors */
-    --color-background: {{ settings.background_color }};
-    --color-heading: {{ settings.heading_color }};
-    --color-subheading: {{ settings.subheading_color }};
-    --color-body-text: {{ settings.body_text_color }};
-    --color-success: {{ settings.success_color }};
-    --color-warning: {{ settings.warning_color }};
-    --color-error: {{ settings.error_color }};
-    --color-border: {{ settings.border_color }};
+    --color-background: {{ settings.background_color.rgb }};
+    --color-heading: {{ settings.heading_color.rgb }};
+    --color-subheading: {{ settings.subheading_color.rgb }};
+    --color-body-text: {{ settings.body_text_color.rgb }};
+    --color-success: {{ settings.success_color.rgb }};
+    --color-warning: {{ settings.warning_color.rgb }};
+    --color-error: {{ settings.error_color.rgb }};
+    --color-border: {{ settings.border_color.rgb }};
     --color-border-opacity: {{ settings.border_opacity | default: 1 }};
 
     /* Header colors */
-    --color-header-background: {{ settings.header_background_color }};
-    --color-header-text: {{ settings.header_text_color }};
-    --color-header-hover-text: {{ settings.header_hover_text_color }};
+    --color-header-background: {{ settings.header_background_color.rgb }};
+    --color-header-text: {{ settings.header_text_color.rgb }};
+    --color-header-hover-text: {{ settings.header_hover_text_color.rgb }};
 
     /* Footer colors */
-    --color-footer-background: {{ settings.footer_background_color }};
-    --color-footer-text: {{ settings.footer_text_color }};
-    --color-footer-hover-text: {{ settings.footer_hover_text_color }};
+    --color-footer-background: {{ settings.footer_background_color.rgb }};
+    --color-footer-text: {{ settings.footer_text_color.rgb }};
+    --color-footer-hover-text: {{ settings.footer_hover_text_color.rgb }};
 
     /* Primary button colors */
-    --color-button-primary-text: {{ settings.primary_button_text_color }};
-    --color-button-primary-background: {{ settings.primary_button_background_color }};
-    --color-button-primary-outline: {{ settings.primary_button_outline_color }};
+    --color-button-primary-text: {{ settings.primary_button_text_color.rgb }};
+    --color-button-primary-background: {{ settings.primary_button_background_color.rgb }};
+    --color-button-primary-outline: {{ settings.primary_button_outline_color.rgb }};
 
     /* Secondary button colors */
     --color-button-secondary-text: {{ settings.secondary_button_text_color }};
-    --color-button-secondary-background: {{ settings.secondary_button_background_color }};
-    --color-button-secondary-outline: {{ settings.secondary_button_outline_color }};
+    --color-button-secondary-background: {{ settings.secondary_button_background_color.rgb }};
+    --color-button-secondary-outline: {{ settings.secondary_button_outline_color.rgb }};
 
     /* Product card colors */
-    --color-product-card-background: {{ settings.product_card_background_color }};
-    --color-product-card-text: {{ settings.product_card_text_color }};
-    --color-product-star-rating: {{ settings.product_star_rating_color }};
+    --color-product-card-background: {{ settings.product_card_background_color.rgb }};
+    --color-product-card-text: {{ settings.product_card_text_color.rgb }};
+    --color-product-star-rating: {{ settings.product_star_rating_color.rgb }};
 
     /* Product badge colors */
-    --color-sale-badge-background: {{ settings.sale_badge_background_color }};
-    --color-sale-badge-text: {{ settings.sale_badge_text_color }};
-    --color-sold-badge-background: {{ settings.sold_badge_background_color }};
-    --color-sold-badge-text: {{ settings.sold_badge_text_color }};
-    --color-custom-badge-background: {{ settings.custom_badge_background_color }};
-    --color-custom-badge-text: {{ settings.custom_badge_text_color }};
+    --color-sale-badge-background: {{ settings.sale_badge_background_color.rgb }};
+    --color-sale-badge-text: {{ settings.sale_badge_text_color.rgb }};
+    --color-sold-badge-background: {{ settings.sold_badge_background_color.rgb }};
+    --color-sold-badge-text: {{ settings.sold_badge_text_color.rgb }};
+    --color-custom-badge-background: {{ settings.custom_badge_background_color.rgb }};
+    --color-custom-badge-text: {{ settings.custom_badge_text_color.rgb }};
   }
 
   /* Tablet breakpoint - min-width 769px */
