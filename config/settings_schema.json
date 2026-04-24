@@ -18,6 +18,17 @@
     ]
   },
   {
+    "name": "t:favicon.name",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "t:favicon.settings.favicon.label",
+        "info": "t:favicon.settings.favicon.info"
+      }
+    ] 
+  },
+  {
     "name": "t:general.typography",
     "settings": [
       {
@@ -64,15 +75,159 @@
     ]
   },
   {
-    "name": "t:favicon.name",
-    "settings": [
-      {
-        "type": "image_picker",
-        "id": "favicon",
-        "label": "t:favicon.settings.favicon.label",
-        "info": "t:favicon.settings.favicon.info"
+  "name": "t:settings_schema.product_card.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "t:settings_schema.product_card.settings.show_vendor.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "t:settings_schema.product_card.settings.show_secondary_image.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_buy",
+      "label": "t:settings_schema.product_card.settings.show_quick_buy.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "t:settings_schema.product_card.settings.show_rating.label",
+      "info": "t:settings_schema.product_card.settings.show_rating.info",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "rating_display",
+      "label": "t:settings_schema.product_card.settings.rating_display.label",
+      "options": [
+        {
+          "value": "average",
+          "label": "t:settings_schema.product_card.settings.rating_display.options.option_1"
+        },
+        {
+          "value": "count",
+          "label": "t:settings_schema.product_card.settings.rating_display.options.option_2"
+        }
+      ],
+      "default": "average"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sold_out_badge",
+      "label": "t:settings_schema.product_card.settings.show_sold_out.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discount_badge",
+      "label": "t:settings_schema.product_card.settings.show_discount_badge.label",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "discount_type",
+      "label": "t:settings_schema.product_card.settings.discount_type.label",
+      "options": [
+        {
+          "value": "sale",
+          "label": "t:settings_schema.product_card.settings.discount_type.options.option_1"
+        },
+        {
+          "value": "percentage",
+          "label": "t:settings_schema.product_card.settings.discount_type.options.option_2"
+        },
+        {
+          "value": "save_amount",
+          "label": "t:settings_schema.product_card.settings.discount_type.options.option_3"
+        }
+      ],
+      "default": "percentage"
+    },
+    {
+      "type": "select",
+      "id": "color_display_mode",
+      "label": "t:settings_schema.product_card.settings.color_display_mode.label",
+      "info": "t:settings_schema.product_card.settings.color_display_mode.info",
+      "options": [
+        {
+          "value": "hide",
+          "label": "t:settings_schema.product_card.settings.color_display_mode.options.option_1"
+        },
+        {
+          "value": "count",
+          "label": "t:settings_schema.product_card.settings.color_display_mode.options.option_2"
+        },
+        {
+          "value": "swatch",
+          "label": "t:settings_schema.product_card.settings.color_display_mode.options.option_3"
+        },
+        {
+          "value": "variant_image",
+          "label": "t:settings_schema.product_card.settings.color_display_mode.options.option_4"
+        }
+      ],
+      "default": "swatch"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:settings_schema.product_card.settings.image_ratio.label",
+      "options": [
+        { 
+          "value": "natural", 
+          "label": "t:settings_schema.product_card.settings.image_ratio.options.option_1"
+         },
+        { 
+          "value": "short", 
+          "label": "t:settings_schema.product_card.settings.image_ratio.options.option_2" 
+        },
+        { 
+          "value": "square", 
+          "label": "t:settings_schema.product_card.settings.image_ratio.options.option_3" 
+        },
+        { 
+          "value": "tall", 
+          "label": "t:settings_schema.product_card.settings.image_ratio.options.option_4" 
+        },
+        { 
+          "value": "short_fill", 
+          "label": "t:settings_schema.product_card.settings.image_ratio.options.option_5" 
+        },
+        { 
+          "value": "tall_fill", 
+          "label": "t:settings_schema.product_card.settings.image_ratio.options.option_6" 
+        }
+      ],
+      "default": "natural"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "t:settings_schema.product_card.settings.content_alignment.label",
+      "options": [
+        { 
+          "value": "left", 
+          "label": "t:settings_schema.product_card.settings.content_alignment.options.option_1" 
+        },
+        { 
+          "value": "center", 
+          "label": "t:settings_schema.product_card.settings.content_alignment.options.option_2" 
+        },
+        { 
+          "value": "right", 
+          "label": "t:settings_schema.product_card.settings.content_alignment.options.option_3" 
+        }
+      ],
+      "default": "left"
       }
-    ] 
+    ]
   },
   {
     "name": "t:social_media.name",
