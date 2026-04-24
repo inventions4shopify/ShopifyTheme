@@ -66,20 +66,20 @@
         "default": "none",
         "options": [
           {
-            "label": "None",
+            "label": "t:settings_schema.typograpy.settings.heading.text_transform.options.none",
             "value": "none"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.heading.uppercase.label",
-            "value": "t:settings_schema.typograpy.settings.heading.uppercase.label"
+            "label": "t:settings_schema.typograpy.settings.heading.text_transform.options.uppercase",
+            "value": "uppercase"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.heading.lowercase.label",
-            "value": "t:settings_schema.typograpy.settings.heading.lowercase.label"
+            "label": "t:settings_schema.typograpy.settings.heading.text_transform.options.lowercase",
+            "value": "lowercase"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.heading.capitalize.label",
-            "value": "t:settings_schema.typograpy.settings.heading.capitalize.label"
+            "label": "t:settings_schema.typograpy.settings.heading.text_transform.options.capitalize",
+            "value": "capitalize"
           }
         ]
       },
@@ -109,19 +109,19 @@
         "label": "t:settings_schema.typograpy.settings.subheading.size.label",
         "options": [
           {
-            "label": "t:settings_schema.typograpy.settings.subheading.small.label",
-            "value": "t:settings_schema.typograpy.settings.subheading.small.label"
+            "label": "t:settings_schema.typograpy.settings.subheading.size.options.option_1",
+            "value": "small"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.subheading.medium.label",
-            "value": "t:settings_schema.typograpy.settings.subheading.medium.label"
+            "label": "t:settings_schema.typograpy.settings.subheading.size.options.option_2",
+            "value": "medium"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.subheading.large.label",
-            "value": "t:settings_schema.typograpy.settings.subheading.large.label"
+            "label": "t:settings_schema.typograpy.settings.subheading.size.options.option_3",
+            "value": "large"
           }
         ],
-        "default": "t:settings_schema.typograpy.settings.subheading.medium.label"
+        "default": "medium"
       },
       {
         "type": "range",
@@ -136,23 +136,23 @@
         "type": "select",
         "id": "subheading_text_transform",
         "label": "t:settings_schema.typograpy.settings.subheading.text_transform.label",
-        "default": "t:settings_schema.typograpy.settings.subheading.none.label",
+        "default": "none",
         "options": [
           {
-            "label": "t:settings_schema.typograpy.settings.subheading.none.label",
-            "value": "t:settings_schema.typograpy.settings.subheading.none.label"
+            "label": "t:settings_schema.typograpy.settings.subheading.text_transform.options.none",
+            "value": "none"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.subheading.uppercase.label",
-            "value": "t:settings_schema.typograpy.settings.subheading.uppercase.label"
+            "label": "t:settings_schema.typograpy.settings.subheading.text_transform.options.uppercase",
+            "value": "uppercase"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.subheading.lowercase.label",
-            "value": "t:settings_schema.typograpy.settings.subheading.lowercase.label"
+            "label": "t:settings_schema.typograpy.settings.subheading.text_transform.options.lowercase",
+            "value": "lowercase"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.subheading.capitalize.label",
-            "value": "t:settings_schema.typograpy.settings.subheading.capitalize.label"
+            "label": "t:settings_schema.typograpy.settings.subheading.text_transform.options.capitalize",
+            "value": "capitalize"
           }
         ]
       },
@@ -198,27 +198,27 @@
         "type": "select",
         "id": "body_text",
         "label": "t:settings_schema.typograpy.settings.body.size.label",
-        "default": "t:settings_schema.typograpy.settings.body.small.label",
+        "default": "small",
         "options": [
           {
-            "label": "t:settings_schema.typograpy.settings.body.extra-small.label",
-            "value": "t:settings_schema.typograpy.settings.body.extra-small.label"
+            "label": "t:settings_schema.typograpy.settings.body.size.options.option_1",
+            "value": "extra-small"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.small.label",
-            "value": "t:settings_schema.typograpy.settings.body.small.label"
+            "label": "t:settings_schema.typograpy.settings.body.size.options.option_2",
+            "value": "small"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.base.label",
-            "value": "t:settings_schema.typograpy.settings.body.base.label"
+            "label": "t:settings_schema.typograpy.settings.body.size.options.option_3",
+            "value": "base"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.large.label",
-            "value": "t:settings_schema.typograpy.settings.body.large.label"
+            "label": "t:settings_schema.typograpy.settings.body.size.options.option_4",
+            "value": "large"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.extra-large.label",
-            "value": "t:settings_schema.typograpy.settings.body.extra-large.label"
+            "label": "t:settings_schema.typograpy.settings.body.size.options.option_5",
+            "value": "extra-large"
           }
         ]
       },
@@ -226,23 +226,23 @@
         "type": "select",
         "id": "body_transform",
         "label": "t:settings_schema.typograpy.settings.body.text_transform.label",
-        "default": "t:settings_schema.typograpy.settings.body.none.label",
+        "default": "none",
         "options": [
           {
-            "label": "t:settings_schema.typograpy.settings.body.none.label",
-            "value": "t:settings_schema.typograpy.settings.body.none.label"
+            "label": "t:settings_schema.typograpy.settings.body.text_transform.options.none",
+            "value": "none"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.uppercase.label",
-            "value": "t:settings_schema.typograpy.settings.body.uppercase.label"
+            "label": "t:settings_schema.typograpy.settings.body.text_transform.options.uppercase",
+            "value": "uppercase"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.lowercase.label",
-            "value": "t:settings_schema.typograpy.settings.body.lowercase.label"
+            "label": "t:settings_schema.typograpy.settings.body.text_transform.options.lowercase",
+            "value": "lowercase"
           },
           {
-            "label": "t:settings_schema.typograpy.settings.body.capitalize.label",
-            "value": "t:settings_schema.typograpy.settings.body.capitalize.label"
+            "label": "t:settings_schema.typograpy.settings.body.text_transform.options.capitalize",
+            "value": "capitalize"
           }
         ]
       },

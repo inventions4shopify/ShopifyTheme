@@ -22,28 +22,16 @@
             "label": "Letter Spacing"
           },
           "text_transform": {
-            "label": "Text Transform"
+            "label": "Text Transform",
+            "options": {
+              "none": "None",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase",
+              "capitalize": "Capitalize"
+            }
           },
           "scale": {
             "label": "Scale"
-          },
-          "small": {
-            "label": "Small"
-          },
-          "medium": {
-            "label": "Medium"
-          },
-          "large": {
-            "label": "Large"
-          },
-          "uppercase": {
-            "label": "Uppercase"
-          },
-          "lowercase": {
-            "label": "Lowercase"
-          },
-          "capitalize": {
-            "label": "Capitalize"
           }
         },
         "subheading": {
@@ -57,34 +45,24 @@
             "label": "Scale"
           },
           "size": {
-            "label": "Size"
-          },
-          "small": {
-            "label": "Small"
-          },
-          "medium": {
-            "label": "Medium"
-          },
-          "large": {
-            "label": "Large"
+            "label": "Size",
+            "options": {
+              "option_1": "Small",
+              "option_2": "Medium",
+              "option_3": "Large"
+            }
           },
           "letter_spacing": {
             "label": "Letter Spacing"
           },
           "text_transform": {
-            "label": "Text Transform"
-          },
-          "none": {
-            "label": "None"
-          },
-          "uppercase": {
-            "label": "Uppercase"
-          },
-          "lowercase": {
-            "label": "Lowercase"
-          },
-          "capitalize": {
-            "label": "Capitalize"
+            "label": "Text Transform",
+            "options": {
+              "none": "None",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase",
+              "capitalize": "Capitalize"
+            }
           }
         },
         "body": {
@@ -95,22 +73,14 @@
             "label": "Font"
           },
           "size": {
-            "label": "Size"
-          },
-          "extra-small": {
-            "label": "Extra Small"
-          },
-          "small": {
-            "label": "Small"
-          },
-          "base": {
-            "label": "Base"
-          },
-          "large": {
-            "label": "Large"
-          },
-          "extra-large": {
-            "label": "Extra Large"
+            "label": "Size",
+            "options": {
+              "option_1": "Extra Small",
+              "option_2": "Small",
+              "option_3": "Base",
+              "option_4": "Large",
+              "option_5": "Extra Large"
+            }
           },
           "body_text": {
             "label": "Desktop Text"
@@ -119,22 +89,16 @@
             "label": "Letter Spacing"
           },
           "text_transform": {
-            "label": "Text Transform"
+            "label": "Text Transform",
+            "options": {
+              "none": "None",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase",
+              "capitalize": "Capitalize"
+            }
           },
           "mobile_body_text": {
             "label": "Mobile Text"
-          },
-          "none": {
-            "label": "None"
-          },
-          "uppercase": {
-            "label": "Uppercase"
-          },
-          "lowercase": {
-            "label": "Lowercase"
-          },
-          "capitalize": {
-            "label": "Capitalize"
           }
         }
       }
