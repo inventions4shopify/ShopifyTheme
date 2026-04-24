@@ -273,7 +273,7 @@
       }
     },
     "product_card": {
-    "name": "Product Card",
+      "name": "Product Card",
       "settings": {
         "show_vendor": {
           "label": "Show vendor"
@@ -289,7 +289,7 @@
           "info": "To display a rating, add a product rating app."
         },
         "rating_display": {
-          "label" : "Show product rating as..",
+          "label": "Show product rating as..",
           "options": {
             "option_1": "Average rating (e.g. \"4.5\")",
             "option_2": "Review count (e.g. \"3 reviews\")"
@@ -302,7 +302,7 @@
           "label": "Show discount badge"
         },
         "color_display_mode": {
-          "label" : "Color display mode",
+          "label": "Color display mode",
           "info": "Variant images are hidden on mobile and small screens.",
           "options": {
             "option_1": "Hide",
@@ -312,7 +312,7 @@
           }
         },
         "discount_type": {
-          "label" : "Show discount",
+          "label": "Show discount",
           "options": {
             "option_1": "Percentage",
             "option_2": "Sale",
@@ -320,7 +320,7 @@
           }
         },
         "image_ratio": {
-          "label" : "Product image size",
+          "label": "Product image size",
           "options": {
             "option_1": "Natural",
             "option_2": "Short (4:3)",
@@ -332,7 +332,7 @@
           }
         },
         "content_alignment": {
-          "label" : "Product info alignment",
+          "label": "Product info alignment",
           "options": {
             "option_1": "Left",
             "option_2": "Center",

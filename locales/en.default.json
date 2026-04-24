@@ -142,16 +142,5 @@
           "info": "https://open.spotify.com/shopify"
         }
       }
-    },
-    {
-    "name": "t:favicon.name",
-    "settings": [
-      {
-        "type": "image_picker",
-        "id": "favicon",
-        "label": "t:favicon.settings.favicon.label",
-        "info": "t:favicon.settings.favicon.info"
-      }
-    ] 
   }
 }
