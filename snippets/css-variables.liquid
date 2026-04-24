@@ -15,6 +15,8 @@
     --color-foreground: {{ settings.foreground_color }};
     --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
     --text-color: {{  settings.text_color}};
+		--body-text: {{ settings.mobile_body_text }}rem;
+		--body-letter-spacing: {{ settings.body_text_letter_spacing }}rem;
 
     /* spacing variable */
     --spacing-2: 0.2rem;
@@ -43,6 +45,7 @@
     --spacing-224: 22.4rem;
     --spacing-240: 24rem;
 
+		/* heading styles */
 		--text-h0: {%- if settings.heading_size == "large" -%} 5.4rem {%- elsif settings.heading_size == "medium" -%} 4.4rem {%- else -%} 4.4rem {%- endif -%};
 		--text-h1: {%- if settings.heading_size == "large" -%} 4.2rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.8rem {%- endif -%};
 		--text-h2: {%- if settings.heading_size == "large" -%} 3.4rem {%- elsif settings.heading_size == "medium" -%} 3rem {%- else -%} 3.2rem {%- endif -%};
@@ -50,10 +53,17 @@
 		--text-h4: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2rem {%- else -%} 1.8rem {%- endif -%};
 		--text-h5: {%- if settings.heading_size == "large" -%} 1.8rem {%- elsif settings.heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
 		--text-h6: {%- if settings.heading_size == "large" -%} 1.6rem {%- elsif settings.heading_size == "medium" -%} 1.4rem {%- else -%} 1.2rem {%- endif -%};
+		--text-letter-spacing: {{ settings.heading_letter_spacing }}rem;
+		--heading-transform: {{ settings.heading_transform }};
+		
+		--sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 1.8rem {%- elsif settings.sub_heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
+		--sub-heading-letter-spacing: {{ settings.subheading_letter_spacing }}rem;
+		--sub-heading-transform: {{ settings.subheading_text_transform }};
   }
 	
 @media(min-width: 768px) {
 	:root {
+		--body-text: {{ settings.body_text }}rem;
 		--text-h0: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 5.4rem {%- else -%} 3.4rem {%- endif -%};
     --text-h1: {%- if settings.heading_size == "large" -%} 6.2rem {%- elsif settings.heading_size == "medium" -%} 4.6rem {%- else -%} 3rem {%- endif -%};
     --text-h2: {%- if settings.heading_size == "large" -%} 5.4rem {%- elsif settings.heading_size == "medium" -%} 3.8rem {%- else -%} 2.8rem {%- endif -%};
@@ -61,6 +71,8 @@
     --text-h4: {%- if settings.heading_size == "large" -%} 3.4rem {%- elsif settings.heading_size == "medium" -%} 2.2rem {%- else -%} 2rem {%- endif -%};
     --text-h5: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2rem {%- else -%} 1.8rem {%- endif -%};
 		--text-h6: {%- if settings.heading_size == "large" -%} 2rem {%- elsif settings.heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
+
+		--sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 2.2rem {%- elsif settings.sub_heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
 	}
 }
 	
