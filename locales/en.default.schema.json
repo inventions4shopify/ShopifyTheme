@@ -21,6 +21,24 @@
           },
           "scale": {
             "label": "Scale"
+          },
+          "small": {
+            "label": "Small"
+          },
+          "medium": {
+            "label": "Medium"
+          },
+          "large": {
+            "label": "Large"
+          },
+          "uppercase": {
+            "label": "Uppercase"
+          },
+          "lowercase": {
+            "label": "Lowercase"
+          },
+          "capitalize": {
+            "label": "Capitalize"
           }
         },
         "subheading": {
@@ -30,17 +48,41 @@
           "fonts": {
             "label": "Font"
           },
+          "scale": {
+            "label": "Scale"
+          },
           "size": {
             "label": "Size"
+          },
+          "small": {
+            "label": "Small"
+          },
+          "medium": {
+            "label": "Medium"
+          },
+          "large": {
+            "label": "Large"
           },
           "letter_spacing": {
             "label": "Letter Spacing"
           },
           "text_transform": {
             "label": "Text Transform"
+          },
+          "none": {
+            "label": "None"
+          },
+          "uppercase": {
+            "label": "Uppercase"
+          },
+          "lowercase": {
+            "label": "Lowercase"
+          },
+          "capitalize": {
+            "label": "Capitalize"
           }
         },
-        "Body": {
+        "body": {
           "title": {
             "label": "Body"
           },
@@ -56,12 +98,27 @@
           "text_transform": {
             "label": "Text Transform"
           },
-          "mobilebody_text": {
+          "mobile_body_text": {
             "label": "Mobile Text"
           },
           "body_text": {
             "label": "Desktop Text"
           },
+          "extra-small": {
+            "label": "Extra Small"
+          },
+          "small": {
+            "label": "Small"
+          },
+          "base": {
+            "label": "Base"
+          },
+          "large": {
+            "label": "Large"
+          },
+          "extra-large": {
+            "label": "Extra Large"
+          }
         }
       }
     }
