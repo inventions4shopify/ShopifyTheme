@@ -9,11 +9,80 @@
     --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
     --font-primary--style: {{ settings.type_primary_font.style }};
     --font-primary--weight: {{ settings.type_primary_font.weight }};
-    --page-width: {{ settings.max_page_width }};
-    --page-margin: {{ settings.min_page_margin }}px;
-    --color-background: {{ settings.background_color }};
-    --color-foreground: {{ settings.foreground_color }};
-    --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
-    --text-color: {{  settings.text_color}};
+
+    /* Page width */
+    --page-width: {{ settings.page_width_max }}px;
+
+    /* Section spacing - Desktop, Tablet, Mobile */
+    --section-spacing-desktop: {{ settings.section_spacing_desktop }}px;
+    --section-spacing-tablet: {{ settings.section_spacing_desktop | plus: settings.section_spacing_mobile | divided_by: 2 }}px;
+    --section-spacing-mobile: {{ settings.section_spacing_mobile }}px;
+    --section-spacing: var(--section-spacing-mobile);
+
+    /* Grid spacing - Desktop, Tablet, Mobile */
+    --grid-spacing-desktop: {{ settings.grid_spacing_desktop }}px;
+    --grid-spacing-tablet: {{ settings.grid_spacing_desktop | plus: settings.grid_spacing_mobile | divided_by: 2 }}px;
+    --grid-spacing-mobile: {{ settings.grid_spacing_mobile }}px;
+    --grid-spacing: var(--grid-spacing-mobile);
+
+    /* General colors */
+    --color-background: {{ settings.background_color.rgb }};
+    --color-heading: {{ settings.heading_color.rgb }};
+    --color-subheading: {{ settings.subheading_color.rgb }};
+    --color-body-text: {{ settings.body_text_color.rgb }};
+    --color-success: {{ settings.success_color.rgb }};
+    --color-warning: {{ settings.warning_color.rgb }};
+    --color-error: {{ settings.error_color.rgb }};
+    --color-border: {{ settings.border_color.rgb }};
+    --color-border-opacity: {{ settings.border_opacity | default: 1 }};
+
+    /* Header colors */
+    --color-header-background: {{ settings.header_background_color.rgb }};
+    --color-header-text: {{ settings.header_text_color.rgb }};
+    --color-header-hover-text: {{ settings.header_hover_text_color.rgb }};
+
+    /* Footer colors */
+    --color-footer-background: {{ settings.footer_background_color.rgb }};
+    --color-footer-text: {{ settings.footer_text_color.rgb }};
+    --color-footer-hover-text: {{ settings.footer_hover_text_color.rgb }};
+
+    /* Primary button colors */
+    --color-button-primary-text: {{ settings.primary_button_text_color.rgb }};
+    --color-button-primary-background: {{ settings.primary_button_background_color.rgb }};
+    --color-button-primary-outline: {{ settings.primary_button_outline_color.rgb }};
+
+    /* Secondary button colors */
+    --color-button-secondary-text: {{ settings.secondary_button_text_color }};
+    --color-button-secondary-background: {{ settings.secondary_button_background_color.rgb }};
+    --color-button-secondary-outline: {{ settings.secondary_button_outline_color.rgb }};
+
+    /* Product card colors */
+    --color-product-card-background: {{ settings.product_card_background_color.rgb }};
+    --color-product-card-text: {{ settings.product_card_text_color.rgb }};
+    --color-product-star-rating: {{ settings.product_star_rating_color.rgb }};
+
+    /* Product badge colors */
+    --color-sale-badge-background: {{ settings.sale_badge_background_color.rgb }};
+    --color-sale-badge-text: {{ settings.sale_badge_text_color.rgb }};
+    --color-sold-badge-background: {{ settings.sold_badge_background_color.rgb }};
+    --color-sold-badge-text: {{ settings.sold_badge_text_color.rgb }};
+    --color-custom-badge-background: {{ settings.custom_badge_background_color.rgb }};
+    --color-custom-badge-text: {{ settings.custom_badge_text_color.rgb }};
+  }
+
+  /* Tablet breakpoint - min-width 769px */
+  @media screen and (min-width: 769px) {
+    :root {
+      --section-spacing: var(--section-spacing-tablet);
+      --grid-spacing: var(--grid-spacing-tablet);
+    }
+  }
+
+  /* Desktop breakpoint - min-width 1025px */
+  @media screen and (min-width: 1025px) {
+    :root {
+      --section-spacing: var(--section-spacing-desktop);
+      --grid-spacing: var(--grid-spacing-desktop);
+    }
   }
 {% endstyle %}

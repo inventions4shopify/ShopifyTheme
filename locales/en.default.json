@@ -1,4 +1,34 @@
 {
+  "settings_schema": {
+    "layout": {
+      "settings": {
+        "page_width": {
+          "content": "Page width",
+          "page_width_max": {
+            "label": "Maximum page width"
+          }
+        },
+        "section_spacing": {
+          "content": "Section spacing",
+          "desktop": {
+            "label": "Desktop"
+          },
+          "mobile": {
+            "label": "Mobile"
+          }
+        },
+        "grid_spacing": {
+          "content": "Grid spacing",
+          "desktop": {
+            "label": "Desktop"
+          },
+          "mobile": {
+            "label": "Mobile"
+          }
+        }
+      }
+    }
+  },
   "404": {
     "title": "404",
     "not_found": "Page not found.",
@@ -50,67 +80,78 @@
     "results_for_html": "{{ count }} results found for {{ terms }}"
   },
   "social_media": {
-    "name": "Social Account",
-    "settings": {
-      "header": {
-        "content": "Social accounts"
-      },
-      "social_facebook_link": {
-        "label": "Facebook",
-        "info": "https://facebook.com/shopify"
-      },
-      "social_x_link": {
-        "label": "X/Twitter",
-        "info": "https://x.com//shopify"
-      },
-      "social_threads_link": {
-        "label": "Threads",
-        "info": "https://threads.com//shopify"
-      },
-      "social_pinterest_link": {
-        "label": "Pinterest",
-        "info": "https://pinterest.com//shopify"
-      },
-      "social_instagram_link": {
-        "label": "Instagram",
-        "info": "https://instagram.com//shopify"
-      },
-      "social_vimeo_link": {
-        "label": "Vimeo",
-        "info": "https://vimeo.com//shopify"
-      },
-      "social_whatsapp_link": {
-        "label": "Whatsapp",
-        "info": "https://web.whatsapp.com/shopify"
-      },
-      "social_tumblr_link": {
-        "label": "Tumblr",
-        "info": "https://tumblr.com//shopify"
-      },
-      "social_youtube_link": {
-        "label": "Youtube",
-        "info": "https://youtube.com//shopify"
-      },
-      "social_tiktok_link": {
-        "label": "TikTok",
-        "info": "https://tiktok.com//shopify"
-      },
-      "social_linkedln_link": {
-        "label": "Linkedln",
-        "info": "https://linkedin.com//shopify"
-      },
-      "social_snapchat_link": {
-        "label": "Snapchat",
-        "info": "https://snapchat.com//shopify"
-      },
-      "social_wechat_link": {
-        "label": "Wechat",
-        "info": "https://wechat.com/shopify"
-      },
-      "social_spotify_link": {
-        "label": "Spotify",
-        "info": "https://open.spotify.com/shopify"
+      "name": "Social Account",
+      "settings": {
+        "header": {
+          "content": "Social accounts"
+        },
+        "social_facebook_link": {
+          "label": "Facebook",
+          "info": "https://facebook.com/shopify"
+        },
+        "social_x_link": {
+          "label": "X/Twitter",
+          "info": "https://x.com//shopify"
+        },
+        "social_threads_link": {
+          "label": "Threads",
+          "info": "https://threads.com//shopify"
+        },
+        "social_pinterest_link": {
+          "label": "Pinterest",
+          "info": "https://pinterest.com//shopify"
+        },
+        "social_instagram_link": {
+          "label": "Instagram",
+          "info": "https://instagram.com//shopify"
+        },
+        "social_vimeo_link": {
+          "label": "Vimeo",
+          "info": "https://vimeo.com//shopify"
+        },
+        "social_whatsapp_link": {
+          "label": "Whatsapp",
+          "info": "https://web.whatsapp.com/shopify"
+        },
+        "social_tumblr_link": {
+          "label": "Tumblr",
+          "info": "https://tumblr.com//shopify"
+        },
+        "social_youtube_link": {
+          "label": "Youtube",
+          "info": "https://youtube.com//shopify"
+        },
+        "social_tiktok_link": {
+          "label": "TikTok",
+          "info": "https://tiktok.com//shopify"
+        },
+        "social_linkedln_link": {
+          "label": "Linkedln",
+          "info": "https://linkedin.com//shopify"
+        },
+        "social_snapchat_link": {
+          "label": "Snapchat",
+          "info": "https://snapchat.com//shopify"
+        },
+        "social_wechat_link": {
+          "label": "Wechat",
+          "info": "https://wechat.com/shopify"
+        },
+        "social_spotify_link": {
+          "label": "Spotify",
+          "info": "https://open.spotify.com/shopify"
+        }
       }
-    }
+    },
+    {
+    "name": "t:favicon.name",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "t:favicon.settings.favicon.label",
+        "info": "t:favicon.settings.favicon.info"
+      }
+    ] 
   }
-} 
+}
