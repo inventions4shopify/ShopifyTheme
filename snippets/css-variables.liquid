@@ -13,16 +13,32 @@
     /* Page width */
     --page-width: {{ settings.page_width_max }}px;
 
-    /* Section spacing - Desktop, Tablet, Mobile */
-    --section-spacing-desktop: {{ settings.section_spacing_desktop }}px;
-    --section-spacing-tablet: {{ settings.section_spacing_desktop | plus: settings.section_spacing_mobile | divided_by: 2 }}px;
-    --section-spacing-mobile: {{ settings.section_spacing_mobile }}px;
-    --section-spacing: var(--section-spacing-mobile);
+    /* Section spacing - Desktop */
+    --section-spacing-top-desktop: {{ settings.section_spacing_top_desktop }}px;
+    --section-spacing-bottom-desktop: {{ settings.section_spacing_bottom_desktop }}px;
 
-    /* Grid spacing - Desktop, Tablet, Mobile */
+    /* Section spacing - Tablet (calculated as average of desktop and mobile) */
+    --section-spacing-top-tablet: {{ settings.section_spacing_top_desktop | plus: settings.section_spacing_top_mobile | divided_by: 2 }}px;
+    --section-spacing-bottom-tablet: {{ settings.section_spacing_bottom_desktop | plus: settings.section_spacing_bottom_mobile | divided_by: 2 }}px;
+
+    /* Section spacing - Mobile */
+    --section-spacing-top-mobile: {{ settings.section_spacing_top_mobile }}px;
+    --section-spacing-bottom-mobile: {{ settings.section_spacing_bottom_mobile }}px;
+
+    /* Section spacing - Current (defaults to mobile) */
+    --section-spacing-top: var(--section-spacing-top-mobile);
+    --section-spacing-bottom: var(--section-spacing-bottom-mobile);
+
+    /* Grid spacing - Desktop */
     --grid-spacing-desktop: {{ settings.grid_spacing_desktop }}px;
+
+    /* Grid spacing - Tablet (calculated as average of desktop and mobile) */
     --grid-spacing-tablet: {{ settings.grid_spacing_desktop | plus: settings.grid_spacing_mobile | divided_by: 2 }}px;
+
+    /* Grid spacing - Mobile */
     --grid-spacing-mobile: {{ settings.grid_spacing_mobile }}px;
+
+    /* Grid spacing - Current (defaults to mobile) */
     --grid-spacing: var(--grid-spacing-mobile);
 
     /* General colors */
@@ -73,7 +89,8 @@
   /* Tablet breakpoint - min-width 769px */
   @media screen and (min-width: 769px) {
     :root {
-      --section-spacing: var(--section-spacing-tablet);
+      --section-spacing-top: var(--section-spacing-top-tablet);
+      --section-spacing-bottom: var(--section-spacing-bottom-tablet);
       --grid-spacing: var(--grid-spacing-tablet);
     }
   }
@@ -81,7 +98,8 @@
   /* Desktop breakpoint - min-width 1025px */
   @media screen and (min-width: 1025px) {
     :root {
-      --section-spacing: var(--section-spacing-desktop);
+      --section-spacing-top: var(--section-spacing-top-desktop);
+      --section-spacing-bottom: var(--section-spacing-bottom-desktop);
       --grid-spacing: var(--grid-spacing-desktop);
     }
   }

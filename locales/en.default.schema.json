@@ -34,6 +34,29 @@
     "favicon": "Favicon"
   },
   "settings_schema": {
+    "logo": {
+      "name": "Logo",
+      "settings": {
+        "logo": {
+          "label": "Logo"
+        },
+        "logo_width_desktop": {
+          "label": "Logo width - Desktop"
+        },
+        "logo_width_mobile": {
+          "label": "Logo width - Mobile"
+        }
+      }
+    },
+    "favicon": {
+      "name": "Favicon",
+      "settings": {
+        "favicon": {
+          "label": "Favicon",
+          "info": "Favicon Dimensions (32 × 32)"
+        }
+      }
+    },
     "layout": {
       "name": "Layout",
       "settings": {
@@ -66,20 +89,6 @@
           "mobile": {
             "label": "Mobile"
           }
-        }
-      }
-    },
-    "logo": {
-      "name": "Logo",
-      "settings": {
-        "logo": {
-          "label": "Logo"
-        },
-        "logo_width_desktop": {
-          "label": "Logo width - Desktop"
-        },
-        "logo_width_mobile": {
-          "label": "Logo width - Mobile"
         }
       }
     },
@@ -199,6 +208,75 @@
         }
       }
     },
+    "product_card": {
+      "name": "Product Card",
+      "settings": {
+        "show_vendor": {
+          "label": "Show vendor"
+        },
+        "show_secondary_image": {
+          "label": "Show secondary image on hover"
+        },
+        "show_quick_buy": {
+          "label": "Show quick buy"
+        },
+        "show_rating": {
+          "label": "Show product rating",
+          "info": "To display a rating, add a product rating app."
+        },
+        "rating_display": {
+          "label": "Show product rating as..",
+          "options": {
+            "option_1": "Average rating (e.g. \"4.5\")",
+            "option_2": "Review count (e.g. \"3 reviews\")"
+          }
+        },
+        "show_sold_out": {
+          "label": "Show sold out badge"
+        },
+        "show_discount_badge": {
+          "label": "Show discount badge"
+        },
+        "color_display_mode": {
+          "label": "Color display mode",
+          "info": "Variant images are hidden on mobile and small screens.",
+          "options": {
+            "option_1": "Hide",
+            "option_2": "Count",
+            "option_3": "Swatch",
+            "option_4": "Variant Image"
+          }
+        },
+        "discount_type": {
+          "label": "Show discount",
+          "options": {
+            "option_1": "Percentage",
+            "option_2": "Sale",
+            "option_3": "Save Amount"
+          }
+        },
+        "image_ratio": {
+          "label": "Product image size",
+          "options": {
+            "option_1": "Natural",
+            "option_2": "Short (4:3)",
+            "option_3": "Square (1:1)",
+            "option_4": "Tall (2:3)",
+            "option_5": "Short (4:3) - fill card",
+            "option_6": "Tall (2:3) - fill card",
+            "option_7": "Tall (2:3) - fill card"
+          }
+        },
+        "content_alignment": {
+          "label": "Product info alignment",
+          "options": {
+            "option_1": "Left",
+            "option_2": "Center",
+            "option_3": "Right"
+          }
+        }
+      }
+    },
     "social_media": {
       "name": "Social Account",
       "settings": {
@@ -260,15 +338,6 @@
         "social_spotify_link": {
           "label": "Spotify",
           "info": "https://open.spotify.com/shopify"
-        }
-      }
-    },
-    "favicon": {
-      "name": "Favicon",
-      "settings": {
-        "favicon": {
-          "label": "Favicon",
-          "info": "Favicon Dimensions (32 × 32)"
         }
       }
     }
