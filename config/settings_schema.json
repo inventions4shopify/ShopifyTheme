@@ -198,7 +198,7 @@
         "type": "select",
         "id": "body_text",
         "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.label",
-        "default": "small",
+        "default": "base",
         "options": [
           {
             "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.options.option_1",
