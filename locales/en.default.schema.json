@@ -72,8 +72,8 @@
           "fonts": {
             "label": "Font"
           },
-          "size": {
-            "label": "Size",
+          "mobile_font_size": {
+            "label": "Mobile Font Size",
             "options": {
               "option_1": "Extra Small",
               "option_2": "Small",
@@ -82,8 +82,15 @@
               "option_5": "Extra Large"
             }
           },
-          "body_text": {
-            "label": "Desktop Text"
+          "desktop_body_text": {
+            "label": "Desktop Font Size",
+            "options": {
+              "option_1": "Extra Small",
+              "option_2": "Small",
+              "option_3": "Base",
+              "option_4": "Large",
+              "option_5": "Extra Large"
+            }
           },
           "letter_spacing": {
             "label": "Letter Spacing"
@@ -96,9 +103,6 @@
               "lowercase": "Lowercase",
               "capitalize": "Capitalize"
             }
-          },
-          "mobile_body_text": {
-            "label": "Mobile Text"
           }
         }
       }
