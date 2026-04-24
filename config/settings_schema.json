@@ -136,17 +136,171 @@
     ]
   },
   {
-    "name": "t:general.typography",
+    "name": "t:settings_schema.typograpy.name",
     "settings": [
       {
         "type": "header",
-        "content": "t:general.fonts"
+        "content": "t:settings_schema.typograpy.settings.heading.title.label"
       },
       {
         "type": "font_picker",
         "id": "type_primary_font",
         "default": "work_sans_n4",
-        "label": "t:general.primary"
+        "label": "t:settings_schema.typograpy.settings.heading.fonts.label"
+      },
+      {
+        "type": "select",
+        "id": "heading_size",
+        "label": "t:settings_schema.typograpy.settings.heading.size.label",
+        "default": "medium",
+        "options": [
+          {
+            "label": "t:settings_schema.typograpy.settings.heading.size.options.option_1",
+            "value": "small"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.heading.size.options.option_2",
+            "value": "medium"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.heading.size.options.option_3",
+            "value": "large"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "heading_letter_spacing",
+        "label": "t:settings_schema.typograpy.settings.heading.letter_spacing.label",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 0
+      },
+      {
+        "type": "select",
+        "id": "heading_text_transform",
+        "label": "t:settings_schema.typograpy.settings.heading.text_transform.label",
+        "default": "none",
+        "options": [
+          {
+            "label": "t:settings_schema.typograpy.settings.heading.text_transform.options.none",
+            "value": "none"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.heading.text_transform.options.uppercase",
+            "value": "uppercase"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.heading.text_transform.options.lowercase",
+            "value": "lowercase"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.heading.text_transform.options.capitalize",
+            "value": "capitalize"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.typograpy.settings.subheading.title.label"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_subheading_font",
+        "default": "work_sans_n4",
+        "label": "t:settings_schema.typograpy.settings.subheading.fonts.label"
+      },
+      {
+        "type": "select",
+        "id": "sub_heading_size",
+        "label": "t:settings_schema.typograpy.settings.subheading.size.label",
+        "options": [
+          {
+            "label": "t:settings_schema.typograpy.settings.subheading.size.options.option_1",
+            "value": "small"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.subheading.size.options.option_2",
+            "value": "medium"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.subheading.size.options.option_3",
+            "value": "large"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "range",
+        "id": "subheading_letter_spacing",
+        "label": "t:settings_schema.typograpy.settings.subheading.letter_spacing.label",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 0
+      },
+      {
+        "type": "select",
+        "id": "subheading_text_transform",
+        "label": "t:settings_schema.typograpy.settings.subheading.text_transform.label",
+        "default": "none",
+        "options": [
+          {
+            "label": "t:settings_schema.typograpy.settings.subheading.text_transform.options.none",
+            "value": "none"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.subheading.text_transform.options.uppercase",
+            "value": "uppercase"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.subheading.text_transform.options.lowercase",
+            "value": "lowercase"
+          },
+          {
+            "label": "t:settings_schema.typograpy.settings.subheading.text_transform.options.capitalize",
+            "value": "capitalize"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.typograpy.settings.body.title.label"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "default": "work_sans_n4",
+        "label": "t:settings_schema.typograpy.settings.body.fonts.label"
+      },
+      {
+        "type": "range",
+        "id": "mobile_body_text",
+        "label": "t:settings_schema.typograpy.settings.body.mobile_font_size.label",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "body_text",
+        "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.label",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "default": 16
+      },
+      
+      {
+        "type": "range",
+        "id": "body_text_letter_spacing",
+        "label": "t:settings_schema.typograpy.settings.body.letter_spacing.label",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 0
       }
     ]
   },

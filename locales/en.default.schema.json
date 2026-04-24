@@ -12,7 +12,6 @@
     "column": "Column",
     "content": "Content",
     "custom_section": "Custom section",
-    "fonts": "Fonts",
     "footer": "Footer",
     "group": "Group",
     "header": "Header",
@@ -20,7 +19,6 @@
     "main": "Main",
     "page": "Page",
     "password": "Password",
-    "primary": "Primary",
     "product": "Product",
     "row": "Row",
     "search": "Search",
@@ -88,6 +86,90 @@
           },
           "mobile": {
             "label": "Mobile"
+          }
+        }
+      }
+    },
+    "typograpy": {
+      "name": "typograpy",
+      "settings": {
+        "heading": {
+          "title": {
+            "label": "Heading"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "size": {
+            "label": "Size",
+            "options": {
+              "option_1": "Small",
+              "option_2": "Medium",
+              "option_3": "Large"
+            }
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          },
+          "text_transform": {
+            "label": "Text Transform",
+            "options": {
+              "none": "None",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase",
+              "capitalize": "Capitalize"
+            }
+          },
+          "scale": {
+            "label": "Scale"
+          }
+        },
+        "subheading": {
+          "title": {
+            "label": "Sub Heading"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "scale": {
+            "label": "Scale"
+          },
+          "size": {
+            "label": "Size",
+            "options": {
+              "option_1": "Small",
+              "option_2": "Medium",
+              "option_3": "Large"
+            }
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          },
+          "text_transform": {
+            "label": "Text Transform",
+            "options": {
+              "none": "None",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase",
+              "capitalize": "Capitalize"
+            }
+          }
+        },
+        "body": {
+          "title": {
+            "label": "Body"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "mobile_font_size": {
+            "label": "Mobile Font Size"
+          },
+          "desktop_body_text": {
+            "label": "Desktop Font Size"
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
           }
         }
       }
