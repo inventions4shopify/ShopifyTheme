@@ -94,16 +94,6 @@
         "label": "t:settings_schema.typograpy.settings.subheading.fonts.label"
       },
       {
-        "type": "range",
-        "id": "subheading_scale",
-        "min": 100,
-        "max": 150,
-        "step": 5,
-        "unit": "%",
-        "label": "t:settings_schema.typograpy.settings.subheading.scale.label",
-        "default": 100
-      },
-      {
         "type": "select",
         "id": "sub_heading_size",
         "label": "t:settings_schema.typograpy.settings.subheading.size.label",
@@ -167,85 +157,24 @@
         "label": "t:settings_schema.typograpy.settings.body.fonts.label"
       },
       {
-        "type": "select",
+        "type": "range",
         "id": "mobile_body_text",
         "label": "t:settings_schema.typograpy.settings.body.mobile_font_size.label",
-        "default": "small",
-        "options": [
-          {
-            "label": "t:settings_schema.typograpy.settings.body.mobile_font_size.options.option_1",
-            "value": "extra-small"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.mobile_font_size.options.option_2",
-            "value": "small"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.mobile_font_size.options.option_3",
-            "value": "base"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.mobile_font_size.options.option_4",
-            "value": "large"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.mobile_font_size.options.option_5",
-            "value": "extra-large"
-          }
-        ]
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 14
       },
       {
-        "type": "select",
+        "type": "range",
         "id": "body_text",
         "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.label",
-        "default": "base",
-        "options": [
-          {
-            "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.options.option_1",
-            "value": "extra-small"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.options.option_2",
-            "value": "small"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.options.option_3",
-            "value": "base"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.options.option_4",
-            "value": "large"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.desktop_body_text.options.option_5",
-            "value": "extra-large"
-          }
-        ]
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "default": 16
       },
-      {
-        "type": "select",
-        "id": "body_transform",
-        "label": "t:settings_schema.typograpy.settings.body.text_transform.label",
-        "default": "none",
-        "options": [
-          {
-            "label": "t:settings_schema.typograpy.settings.body.text_transform.options.none",
-            "value": "none"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.text_transform.options.uppercase",
-            "value": "uppercase"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.text_transform.options.lowercase",
-            "value": "lowercase"
-          },
-          {
-            "label": "t:settings_schema.typograpy.settings.body.text_transform.options.capitalize",
-            "value": "capitalize"
-          }
-        ]
-      },
+      
       {
         "type": "range",
         "id": "body_text_letter_spacing",

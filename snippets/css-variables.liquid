@@ -16,6 +16,15 @@
     --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
     --text-color: {{  settings.text_color}};
 
+    --text-h0: {%- if settings.heading_size == "large" -%} 7rem {%- elsif settings.heading_size == "medium" -%} 5.6rem {%- else -%} 4.8rem {%- endif -%};
+    --text-h1: {%- if settings.heading_size == "large" -%} 6rem {%- elsif settings.heading_size == "medium" -%} 5rem {%- else -%} 4.4rem {%- endif -%};
+    --text-h2: {%- if settings.heading_size == "large" -%} 5rem {%- elsif settings.heading_size == "medium" -%} 4.6rem {%- else -%} 4rem {%- endif -%};
+    --text-h3: {%- if settings.heading_size == "large" -%} 4rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.6rem {%- endif -%};
+    --text-h4: {%- if settings.heading_size == "large" -%} 3rem {%- elsif settings.heading_size == "medium" -%} 3.6rem {%- else -%} 3rem {%- endif -%};
+    --text-h5: {%- if settings.heading_size == "large" -%} 2.6rem {%- elsif settings.heading_size == "medium" -%} 3rem {%- else -%} 2.4rem {%- endif -%};
+    --text-h6: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2.4rem {%- else -%} 2rem {%- endif -%};
+
+
     /* spacing variable */
     --spacing-2: 0.2rem;
     --spacing-4: 0.4rem;
