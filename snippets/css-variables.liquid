@@ -1,14 +1,22 @@
 {% style %}
   {% # Loads all font variantions with display: swap %}
-  {{ settings.type_primary_font | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+  {{ settings.type_heading_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ settings.type_heading_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ settings.type_heading_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ settings.type_subheading_font | font_face: font_display: 'swap' }}
+  {{ settings.type_body_font | font_face: font_display: 'swap' }}
 
   :root {
-    --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
-    --font-primary--style: {{ settings.type_primary_font.style }};
-    --font-primary--weight: {{ settings.type_primary_font.weight }};
+    --font-heading-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-heading-style: {{ settings.type_heading_font.style }};
+    --font-heading-weight: {{ settings.type_heading_font.weight }};
+    --font-subheading-family: {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
+    --font-subheading-style: {{ settings.type_subheading_font.style }};
+    --font-subheading-weight: {{ settings.type_subheading_font.weight }};
+    --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-body-style: {{ settings.type_body_font.style }};
+    --font-body-weight: {{ settings.type_body_font.weight }};
 
     /* Page width */
     --page-width: {{ settings.page_width_max }}px;
@@ -85,7 +93,12 @@
     --color-custom-badge-background: {{ settings.custom_badge_background_color.rgb }};
     --color-custom-badge-text: {{ settings.custom_badge_text_color.rgb }};
 
-    --body-text: {{ settings.mobile_body_text }}rem;
+    --text-base: {{ settings.mobile_body_text }}rem;
+    --text-xss: calc(var(--text-base) * 0.75);
+    --text-xs: calc(var(--text-base) * 0.875);
+    --text-sm: calc(var(--text-base) * 0.9375);
+    --text-lg: calc(var(--text-base) * 1.125);
+    --text-xlg: calc(var(--text-base) * 1.25);
 		--body-letter-spacing: {{ settings.body_text_letter_spacing }}rem;
 
     /* spacing variable */
@@ -124,7 +137,7 @@
 		--text-h5: {%- if settings.heading_size == "large" -%} 1.8rem {%- elsif settings.heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
 		--text-h6: {%- if settings.heading_size == "large" -%} 1.6rem {%- elsif settings.heading_size == "medium" -%} 1.4rem {%- else -%} 1.2rem {%- endif -%};
 		--text-letter-spacing: {{ settings.heading_letter_spacing }}rem;
-		--heading-transform: {{ settings.heading_transform }};
+		--heading-transform: {{ settings.heading_text_transform }};
 		
 		--sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 1.8rem {%- elsif settings.sub_heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
 		--sub-heading-letter-spacing: {{ settings.subheading_letter_spacing }}rem;
@@ -151,7 +164,7 @@
 	
   @media(min-width: 768px) {
     :root {
-      --body-text: {{ settings.body_text }}rem;
+      --text-base: {{ settings.body_text }}rem; 
       --text-h0: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 5.4rem {%- else -%} 3.4rem {%- endif -%};
       --text-h1: {%- if settings.heading_size == "large" -%} 6.2rem {%- elsif settings.heading_size == "medium" -%} 4.6rem {%- else -%} 3rem {%- endif -%};
       --text-h2: {%- if settings.heading_size == "large" -%} 5.4rem {%- elsif settings.heading_size == "medium" -%} 3.8rem {%- else -%} 2.8rem {%- endif -%};
