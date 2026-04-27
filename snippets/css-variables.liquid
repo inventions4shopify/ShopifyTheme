@@ -17,6 +17,9 @@
     --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
     --font-body-style: {{ settings.type_body_font.style }};
     --font-body-weight: {{ settings.type_body_font.weight }};
+    --section-height-small: 40svh;
+    --section-height-medium: 55svh;
+    --section-height-large: 70svh;
 
     /* Page width */
     --page-width: {{ settings.page_width_max }}px;
@@ -76,7 +79,7 @@
     --color-button-primary-outline: {{ settings.primary_button_outline_color.rgb }};
 
     /* Secondary button colors */
-    --color-button-secondary-text: {{ settings.secondary_button_text_color }};
+    --color-button-secondary-text: {{ settings.secondary_button_text_color.rgb }};
     --color-button-secondary-background: {{ settings.secondary_button_background_color.rgb }};
     --color-button-secondary-outline: {{ settings.secondary_button_outline_color.rgb }};
 
@@ -143,26 +146,8 @@
 		--sub-heading-letter-spacing: {{ settings.subheading_letter_spacing }}rem;
 		--sub-heading-transform: {{ settings.subheading_text_transform }};
   }
-
-  /* Tablet breakpoint - min-width 769px */
-  @media screen and (min-width: 769px) {
-    :root {
-      --section-spacing-top: var(--section-spacing-top-tablet);
-      --section-spacing-bottom: var(--section-spacing-bottom-tablet);
-      --grid-spacing: var(--grid-spacing-tablet);
-    }
-  }
-
-  /* Desktop breakpoint - min-width 1025px */
-  @media screen and (min-width: 1025px) {
-    :root {
-      --section-spacing-top: var(--section-spacing-top-desktop);
-      --section-spacing-bottom: var(--section-spacing-bottom-desktop);
-      --grid-spacing: var(--grid-spacing-desktop);
-    }
-  }
-	
-  @media(min-width: 768px) {
+  
+  @media (min-width: 768px) {
     :root {
       --text-base: {{ settings.body_text | times: 0.1 }}rem;
       --text-h0: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 5.4rem {%- else -%} 3.4rem {%- endif -%};
@@ -173,16 +158,31 @@
       --text-h5: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2rem {%- else -%} 1.8rem {%- endif -%};
       --text-h6: {%- if settings.heading_size == "large" -%} 2rem {%- elsif settings.heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
       --sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 2.2rem {%- elsif settings.sub_heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
+      --section-spacing-top: var(--section-spacing-top-tablet);
+      --section-spacing-bottom: var(--section-spacing-bottom-tablet);
+      --grid-spacing: var(--grid-spacing-tablet);
     }
   }
 	
-  @media(min-width: 992px) {
+  @media (min-width: 992px) {
     :root {
       --text-h0: {%- if settings.heading_size == "large" -%} 7.4rem {%- elsif settings.heading_size == "medium" -%} 6.4rem {%- else -%} 4.4rem {%- endif -%};
       --text-h1: {%- if settings.heading_size == "large" -%} 7.2rem {%- elsif settings.heading_size == "medium" -%} 5.6rem {%- else -%} 4rem {%- endif -%};
       --text-h2: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 4.8rem {%- else -%} 3.6rem {%- endif -%};
       --text-h3: {%- if settings.heading_size == "large" -%} 5.6rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.2rem {%- endif -%};
       --text-h4: {%- if settings.heading_size == "large" -%} 4.4rem {%- elsif settings.heading_size == "medium" -%} 3.2rem {%- else -%} 2.8rem {%- endif -%};
+      --section-height-small: 50svh;
+      --section-height-medium: 65svh;
+      --section-height-large: 80svh;
     }
   }
+
+  @media (min-width: 1024px) {
+    :root {
+      --section-spacing-top: var(--section-spacing-top-desktop);
+      --section-spacing-bottom: var(--section-spacing-bottom-desktop);
+      --grid-spacing: var(--grid-spacing-desktop);
+    }
+  }
+	
 {% endstyle %}
