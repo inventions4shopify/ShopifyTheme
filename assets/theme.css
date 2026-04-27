@@ -12,6 +12,12 @@
   }
 }
 
+@media screen and (min-width: 768px) {
+  :root {
+    --container-padding-inline: 3.2rem;
+  }
+}
+
 html {
   font-size: 62.5%;
   -webkit-text-size-adjust: 100%;
