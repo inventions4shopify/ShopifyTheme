@@ -167,27 +167,30 @@ ol {
 button,
 input[type="button"],
 input[type="submit"] {
+  --button-text: rgb(var(--color-button-primary-text));
+  --button-background: rgb(var(--color-button-primary-background));
+  --button-outline: rgb(var(--color-button-primary-outline));
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
   min-height: 4.4rem;
   padding: 1rem 1.8rem;
-  border: 0.1rem solid rgb(var(--color-button-primary-outline));
+  border: 0.1rem solid var(--button-outline);
   border-radius: 0.4rem;
   font: inherit;
   line-height: 1;
   cursor: pointer;
-  color: rgb(var(--color-button-primary-text));
-  background: rgb(var(--color-button-primary-background));
+  color: var(--button-text);
+  background: var(--button-background);
   text-decoration: none;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .button--secondary {
-  color: var(--color-button-secondary-text);
-  background: rgb(var(--color-button-secondary-background));
-  border-color: rgb(var(--color-button-secondary-outline));
+  --button-text: rgb(var(--color-button-secondary-text));
+  --button-background: rgb(var(--color-button-secondary-background));
+  --button-outline: rgb(var(--color-button-secondary-outline));
 }
 
 input,
