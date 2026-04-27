@@ -93,7 +93,7 @@
     --color-custom-badge-background: {{ settings.custom_badge_background_color.rgb }};
     --color-custom-badge-text: {{ settings.custom_badge_text_color.rgb }};
 
-    --text-base: {{ settings.mobile_body_text }}rem;
+    --text-base: {{ settings.mobile_body_text | times: 0.1 }}rem;
     --text-xss: calc(var(--text-base) * 0.75);
     --text-xs: calc(var(--text-base) * 0.875);
     --text-sm: calc(var(--text-base) * 0.9375);
@@ -164,7 +164,7 @@
 	
   @media(min-width: 768px) {
     :root {
-      --text-base: {{ settings.body_text }}rem; 
+      --text-base: {{ settings.body_text | times: 0.1 }}rem;
       --text-h0: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 5.4rem {%- else -%} 3.4rem {%- endif -%};
       --text-h1: {%- if settings.heading_size == "large" -%} 6.2rem {%- elsif settings.heading_size == "medium" -%} 4.6rem {%- else -%} 3rem {%- endif -%};
       --text-h2: {%- if settings.heading_size == "large" -%} 5.4rem {%- elsif settings.heading_size == "medium" -%} 3.8rem {%- else -%} 2.8rem {%- endif -%};
