@@ -1,0 +1,99 @@
+{% comment %}
+  Renders a reusable theme button.
+
+  - Renders an anchor when `href` is provided.
+  - Renders a button element when `href` is blank.
+  - Applies button color CSS variables only when values are provided.
+
+  @param {string} text - Button label text
+  @param {string} [href] - URL for link mode
+  @param {string} [class] - Extra classes
+  @param {string} [type] - Button type in button mode (button/submit/reset)
+  @param {string} [target] - Link target (_blank, etc.)
+  @param {string} [rel] - Link rel attribute
+  @param {string} [id] - Element id
+  @param {string} [name] - Button name attribute
+  @param {boolean} [disabled] - Disabled state for button mode
+  @param {boolean} [secondary] - Adds `secondary` class when true
+  @param {string} [aria_label] - Accessible label
+  @param {string} [background_color] - Custom background color value
+  @param {string} [text_color] - Custom text color value
+  @param {string} [outline_color] - Custom border color value
+{% endcomment %}
+
+{%- liquid
+  assign button_text = text
+  assign button_class = class | default: ''
+  if secondary
+    assign button_class = button_class | append: ' secondary'
+  endif
+  assign button_type = type | default: 'button'
+
+  capture style_vars
+    if background_color != blank
+      echo '--button-background: '
+      echo background_color
+      echo ';'
+    endif
+
+    if text_color != blank
+      echo '--button-text: '
+      echo text_color
+      echo ';'
+    endif
+
+    if outline_color != blank
+      echo '--button-outline: '
+      echo outline_color
+      echo ';'
+    endif
+  endcapture
+
+  assign style_vars = style_vars | strip
+-%}
+
+{%- if button_text != blank and href != blank -%}
+  <a
+    href="{{ href }}"
+    class="button {{ button_class | strip }}"
+    {% if id != blank %}
+      id="{{ id }}"
+    {% endif %}
+    {% if aria_label != blank %}
+      aria-label="{{ aria_label }}"
+    {% endif %}
+    {% if target != blank %}
+      target="{{ target }}"
+    {% endif %}
+    {% if rel != blank %}
+      rel="{{ rel }}"
+    {% endif %}
+    {% if style_vars != blank %}
+      style="{{ style_vars }}"
+    {% endif %}
+  >
+    {{- button_text -}}
+  </a>
+{%- elsif button_text != blank -%}
+  <button
+    type="{{ button_type }}"
+    class="button {{ button_class | strip }}"
+    {% if id != blank %}
+      id="{{ id }}"
+    {% endif %}
+    {% if name != blank %}
+      name="{{ name }}"
+    {% endif %}
+    {% if aria_label != blank %}
+      aria-label="{{ aria_label }}"
+    {% endif %}
+    {% if disabled %}
+      disabled
+    {% endif %}
+    {% if style_vars != blank %}
+      style="{{ style_vars }}"
+    {% endif %}
+  >
+    {{- button_text -}}
+  </button>
+{%- endif -%}

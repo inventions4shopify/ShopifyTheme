@@ -1,37 +1,11 @@
-.cms-text-block >:first-child {
-    margin-top: 0;
-    padding-top: 0;
-}
-
-.cms-text-block >:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
+.cms-text-block >:first-child,
 .cms-text-desc >*:first-child {
     margin-top: 0;
     padding-top: 0;
 }
 
-.cms-text-desc >*:last-child {
+.cms-text-desc >*:last-child,
+.cms-text-block >:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
-}
-
-.cms-buttons-row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    border: 1px solid #000;
-}
-
-.cms-row {
-    display: flex;
-    flex-wrap: wrap;
 }

@@ -1,9 +1,15 @@
 /* Base theme styles */
 
 :root {
-  --container-padding-inline: 1.5rem;
+  --container-padding-inline: 1.6rem;
   --content-max-width: 120rem;
   --section-gap: var(--section-spacing-top, 3.2rem);
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    --container-padding-inline: 3.2rem;
+  }
 }
 
 html {
@@ -99,36 +105,98 @@ ol {
   padding-inline: var(--container-padding-inline);
 }
 
-.section {
+.full-width {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.section-spacing {
   padding-top: var(--section-spacing-top);
   padding-bottom: var(--section-spacing-bottom);
+}
+
+/* Overlay content positioning for image and slideshow media */
+.media-with-content {
+  position: relative;
+}
+
+.media-overlay-content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: var(--container-padding-inline);
+}
+
+/* Top Row */
+.media-overlay-content--top-left {
+  place-items: start start;
+}
+
+.media-overlay-content--top-center {
+  place-items: start center;
+}
+
+.media-overlay-content--top-right {
+  place-items: start end;
+}
+
+/* Middle Row */
+.media-overlay-content--middle-left {
+  place-items: center start;
+}
+
+.media-overlay-content--middle-center {
+  place-items: center center;
+}
+
+.media-overlay-content--middle-right {
+  place-items: center end;
+}
+
+/* Bottom Row */
+.media-overlay-content--bottom-left {
+  place-items: end start;
+}
+
+.media-overlay-content--bottom-center {
+  place-items: end center;
+}
+
+.media-overlay-content--bottom-right {
+  place-items: end end;
 }
 
 .button,
 button,
 input[type="button"],
 input[type="submit"] {
+  --button-text: rgb(var(--color-button-primary-text));
+  --button-background: rgb(var(--color-button-primary-background));
+  --button-outline: rgb(var(--color-button-primary-outline));
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
   min-height: 4.4rem;
   padding: 1rem 1.8rem;
-  border: 0.1rem solid rgb(var(--color-button-primary-outline));
+  border: 0.1rem solid var(--button-outline);
   border-radius: 0.4rem;
   font: inherit;
   line-height: 1;
   cursor: pointer;
-  color: rgb(var(--color-button-primary-text));
-  background: rgb(var(--color-button-primary-background));
+  color: var(--button-text);
+  background: var(--button-background);
   text-decoration: none;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .button--secondary {
-  color: var(--color-button-secondary-text);
-  background: rgb(var(--color-button-secondary-background));
-  border-color: rgb(var(--color-button-secondary-outline));
+  --button-text: rgb(var(--color-button-secondary-text));
+  --button-background: rgb(var(--color-button-secondary-background));
+  --button-outline: rgb(var(--color-button-secondary-outline));
 }
 
 input,
@@ -178,3 +246,4 @@ svg {
   white-space: nowrap !important;
   border: 0 !important;
 }
+ 

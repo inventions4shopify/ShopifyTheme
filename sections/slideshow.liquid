@@ -1,0 +1,438 @@
+{{ 'slideshow.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+
+  .cms-slideshow {
+    background-color: {{ section.settings.background_color }};
+    height: var(--section-height-{{ section.settings.slide_height }});
+  }
+
+{% endstyle %}
+
+<div class="cms-slideshow section-spacing">
+  {%- for block in section.blocks -%}
+    <div class="media-with-content {% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
+      <div class="media-overlay-content">
+          <span class="subheading">{{ block.settings.subheading }}</span>
+          <h2 class="h2">{{ block.settings.heading }}</h2>
+          {{ block.settings.description }}
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page Width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "select",
+      "id": "slide_height",
+      "label": "Media height",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "fullscreen",
+          "label": "Fullscreen"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content Position",
+      "options": [
+        {
+          "value": "on-media",
+          "label": "On Media"
+        },
+        {
+          "value": "below-media",
+          "label": "Below Media"
+        }
+      ],
+      "default": "on-media"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "select",
+      "id": "icons_style",
+      "label": "Icons",
+      "options": [
+        {
+          "value": "arrow",
+          "label": "Arrows"
+        },
+        {
+          "value": "chevron",
+          "label": "Chevrons"
+        },
+        {
+          "value": "arrows_large",
+          "label": "Large Arrows"
+        },
+        {
+          "value": "chevron_large",
+          "label": "Large Chevrons"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "chevron"
+    },
+    {
+      "type": "select",
+      "id": "icons_shape",
+      "label": "Icon Background Shape",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "circle",
+          "label": "Circle"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "none",
+      "visible_if": "{{ section.settings.icons_style != 'none' }}"
+    },
+    {
+      "type": "select",
+      "id": "slideshow_controls_style",
+      "label": "Pagination",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "dots",
+          "label": "Dots"
+        },
+        {
+          "value": "counter",
+          "label": "Counter"
+        },
+        {
+          "value": "progress",
+          "label": "Progress"
+        }
+      ],
+      "default": "dots"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto Rotate Slides",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Speed",
+      "min": 3,
+      "max": 7,
+      "step": 1,
+      "unit": "s",
+      "default": 4,
+      "visible_if": "{{ section.settings.autoplay == true }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "video",
+          "id": "video_1",
+          "label": "Video",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "checkbox",
+          "id": "toggle_overlay",
+          "label": "Media Overlay"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay Color",
+          "alpha": true,
+          "default": "#00000026",
+          "visible_if": "{{ block.settings.toggle_overlay }}"
+        },
+        {
+          "type": "header",
+          "content": "t:general.layout"
+        },
+        {
+          "type": "select",
+          "id": "content_direction",
+          "label": "Direction",
+          "options": [
+            {
+              "value": "column",
+              "label": "vertical"
+            },
+            {
+              "value": "row",
+              "label": "horizontal"
+            }
+          ],
+          "default": "column"
+        },
+        {
+          "type": "checkbox",
+          "id": "vertical_on_mobile",
+          "label": "Vertical On Mobile",
+          "default": true,
+          "visible_if": "{{ block.settings.content_direction == 'row' }}"
+        },
+        {
+          "type": "select",
+          "id": "horizontal_alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            },
+            {
+              "value": "space-between",
+              "label": "Space Between"
+            }
+          ],
+          "default": "flex-start",
+          "visible_if": "{{ block.settings.content_direction == 'row' }}"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Position",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Bottom"
+            }
+          ],
+          "default": "center",
+          "visible_if": "{{ block.settings.content_direction == 'row' }}"
+        },
+        {
+          "type": "checkbox",
+          "id": "align_baseline",
+          "label": "Align Baseline",
+          "default": false,
+          "visible_if": "{{ block.settings.vertical_alignment == 'flex-end' }}"
+        },
+        {
+          "type": "select",
+          "id": "horizontal_alignment_flex_direction_column",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ],
+          "default": "flex-start",
+          "visible_if": "{{ block.settings.content_direction != 'row' }}"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment_flex_direction_column",
+          "label": "Position",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Bottom"
+            },
+            {
+              "value": "space-between",
+              "label": "Space Between"
+            }
+          ],
+          "default": "center",
+          "visible_if": "{{ block.settings.content_direction == 'column' }}"
+        },
+        {
+          "type": "range",
+          "id": "gap",
+          "label": "Gap",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 12
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Sub heading"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link Label"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text Color"
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button Background Color"
+        },
+        {
+          "type": "color",
+          "id": "button_outline_color",
+          "label": "Button Outline Color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
