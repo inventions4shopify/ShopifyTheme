@@ -147,7 +147,7 @@
     --section-height-small: 15rem;
     --section-height-medium: 25rem;
     --section-height-large: 35rem;
-    --section-height-fullscreen: calc(100svh - var(--section-spacing-top) - var(--section-spacing-bottom));
+    --section-height-fullscreen: 100dvh;
   }
 	
   @media(min-width: 768px) {
@@ -167,9 +167,9 @@
       --grid-spacing: var(--grid-spacing-tablet);
 
         /* height variable */
-      --section-height-small: 40svh;
-      --section-height-medium: 55svh;
-      --section-height-large: 70svh;
+      --section-height-small: 40dvh;
+      --section-height-medium: 55dvh;
+      --section-height-large: 70dvh;
     }
   }
 	
@@ -182,9 +182,9 @@
       --text-h4: {%- if settings.heading_size == "large" -%} 4.4rem {%- elsif settings.heading_size == "medium" -%} 3.2rem {%- else -%} 2.8rem {%- endif -%};
 
         /* height variable */
-      --section-height-small: 50svh;
-      --section-height-medium: 65svh;
-      --section-height-large: 80svh;
+      --section-height-small: 50dvh;
+      --section-height-medium: 65dvh;
+      --section-height-large: 80dvh;
     }
   }
 
