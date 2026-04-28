@@ -145,9 +145,15 @@
 		--sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 1.8rem {%- elsif settings.sub_heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
 		--sub-heading-letter-spacing: {{ settings.subheading_letter_spacing }}rem;
 		--sub-heading-transform: {{ settings.subheading_text_transform }};
+
+    /* height variable */
+    --section-height-small: 15rem;
+    --section-height-medium: 25rem;
+    --section-height-large: 35rem;
+    --section-height-fullscreen: 100dvh;
   }
-  
-  @media (min-width: 768px) {
+	
+  @media(min-width: 768px) {
     :root {
       --text-base: {{ settings.body_text | times: 0.1 }}rem;
       --text-h0: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 5.4rem {%- else -%} 3.4rem {%- endif -%};
@@ -158,9 +164,15 @@
       --text-h5: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2rem {%- else -%} 1.8rem {%- endif -%};
       --text-h6: {%- if settings.heading_size == "large" -%} 2rem {%- elsif settings.heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
       --sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 2.2rem {%- elsif settings.sub_heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
+
       --section-spacing-top: var(--section-spacing-top-tablet);
       --section-spacing-bottom: var(--section-spacing-bottom-tablet);
       --grid-spacing: var(--grid-spacing-tablet);
+
+        /* height variable */
+      --section-height-small: 40dvh;
+      --section-height-medium: 55dvh;
+      --section-height-large: 70dvh;
     }
   }
 	
@@ -171,12 +183,14 @@
       --text-h2: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 4.8rem {%- else -%} 3.6rem {%- endif -%};
       --text-h3: {%- if settings.heading_size == "large" -%} 5.6rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.2rem {%- endif -%};
       --text-h4: {%- if settings.heading_size == "large" -%} 4.4rem {%- elsif settings.heading_size == "medium" -%} 3.2rem {%- else -%} 2.8rem {%- endif -%};
-      --section-height-small: 50svh;
-      --section-height-medium: 65svh;
-      --section-height-large: 80svh;
+
+        /* height variable */
+      --section-height-small: 50dvh;
+      --section-height-medium: 65dvh;
+      --section-height-large: 80dvh;
     }
   }
-
+  
   @media (min-width: 1024px) {
     :root {
       --section-spacing-top: var(--section-spacing-top-desktop);
