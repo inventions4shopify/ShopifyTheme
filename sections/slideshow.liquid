@@ -9,16 +9,66 @@
 
 {% endstyle %}
 
-<div class="cms-slideshow section-spacing">
-  {%- for block in section.blocks -%}
-    <div class="media-with-content {% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
-      <div class="media-overlay-content">
-          <span class="subheading">{{ block.settings.subheading }}</span>
-          <h2 class="h2">{{ block.settings.heading }}</h2>
-          {{ block.settings.description }}
+<div class="cms-slideshow">
+  <div class="cms-slideshow-slide">
+    {%- for block in section.blocks -%}
+      <div class="{% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
+        <div class="media-with-content">
+
+          <div class="media-with-content-media">
+            {% if block.settings.media_type == 'image' %}
+              {% if block.settings.image_1 %}
+                <img
+                  src="{{ block.settings.image_1 | img_url: 'master' }}"
+                  alt="{{ block.settings.heading | escape }}"
+                  width="auto"
+                  height="auto">
+              {% endif %}
+            {% elsif block.settings.media_type == 'video' %}
+              {% if block.settings.video_1 %}
+                {{
+                  block.settings.video_1
+                  | video_tag:
+                    autoplay: true,
+                    loop: true,
+                    muted: true,
+                    controls: false
+                }}
+              {% endif %}
+            {% endif %}
+          </div>
+
+          <div
+            class="media-overlay-content media-overlay-content--{{ block.settings.content_vertical_alignment }}-{{ block.settings.content_horizontal_alignment }}"
+            style="color: {{ block.settings.text_color }}; gap: {{ block.settings.gap | divided_by: 10 }}rem;"
+          >
+            {% if block.settings.subheading %}
+              <span>{{ block.settings.subheading }}</span>
+            {% endif %}
+
+            {% if block.settings.heading %}
+              <h2>{{ block.settings.heading }}</h2>
+            {% endif %}
+
+            {% if block.settings.description %}
+              {{ block.settings.description }}
+            {% endif %}
+
+            {% if block.settings.link_label != blank %}
+              {% render 'button',
+                text: block.settings.link_label,
+                href: block.settings.link,
+                background_color: block.settings.button_background_color,
+                text_color: block.settings.button_text_color,
+                outline_color: block.settings.button_outline_color
+              %}
+            {% endif %}
+          </div>
+            <div class="media-overlay" style="background:{{ block.settings.overlay_color | default: 'rgba(0, 0, 0, 0.5)' }};"></div>
+        </div>
       </div>
-    </div>
-  {%- endfor -%}
+    {%- endfor -%}
+  </div>
 </div>
 
 {% schema %}
@@ -242,34 +292,11 @@
         },
         {
           "type": "select",
-          "id": "content_direction",
-          "label": "Direction",
+          "id": "content_horizontal_alignment",
+          "label": "Horizontal Position",
           "options": [
             {
-              "value": "column",
-              "label": "vertical"
-            },
-            {
-              "value": "row",
-              "label": "horizontal"
-            }
-          ],
-          "default": "column"
-        },
-        {
-          "type": "checkbox",
-          "id": "vertical_on_mobile",
-          "label": "Vertical On Mobile",
-          "default": true,
-          "visible_if": "{{ block.settings.content_direction == 'row' }}"
-        },
-        {
-          "type": "select",
-          "id": "horizontal_alignment",
-          "label": "Alignment",
-          "options": [
-            {
-              "value": "flex-start",
+              "value": "top",
               "label": "Left"
             },
             {
@@ -277,24 +304,19 @@
               "label": "Center"
             },
             {
-              "value": "flex-end",
+              "value": "bottom",
               "label": "Right"
-            },
-            {
-              "value": "space-between",
-              "label": "Space Between"
             }
           ],
-          "default": "flex-start",
-          "visible_if": "{{ block.settings.content_direction == 'row' }}"
+          "default": "center"
         },
         {
           "type": "select",
-          "id": "vertical_alignment",
-          "label": "Position",
+          "id": "content_vertical_alignment",
+          "label": "Vertical Position",
           "options": [
             {
-              "value": "flex-start",
+              "value": "left",
               "label": "Top"
             },
             {
@@ -302,65 +324,11 @@
               "label": "Center"
             },
             {
-              "value": "flex-end",
+              "value": "right",
               "label": "Bottom"
             }
           ],
-          "default": "center",
-          "visible_if": "{{ block.settings.content_direction == 'row' }}"
-        },
-        {
-          "type": "checkbox",
-          "id": "align_baseline",
-          "label": "Align Baseline",
-          "default": false,
-          "visible_if": "{{ block.settings.vertical_alignment == 'flex-end' }}"
-        },
-        {
-          "type": "select",
-          "id": "horizontal_alignment_flex_direction_column",
-          "label": "Alignment",
-          "options": [
-            {
-              "value": "flex-start",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "flex-end",
-              "label": "Right"
-            }
-          ],
-          "default": "flex-start",
-          "visible_if": "{{ block.settings.content_direction != 'row' }}"
-        },
-        {
-          "type": "select",
-          "id": "vertical_alignment_flex_direction_column",
-          "label": "Position",
-          "options": [
-            {
-              "value": "flex-start",
-              "label": "Top"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "flex-end",
-              "label": "Bottom"
-            },
-            {
-              "value": "space-between",
-              "label": "Space Between"
-            }
-          ],
-          "default": "center",
-          "visible_if": "{{ block.settings.content_direction == 'column' }}"
+          "default": "center"
         },
         {
           "type": "range",

@@ -1,11 +1,11 @@
-.cms-text-block >:first-child,
-.cms-text-desc >*:first-child {
+.text-block >:first-child,
+.text-desc >*:first-child {
     margin-top: 0;
     padding-top: 0;
 }
 
-.cms-text-desc >*:last-child,
-.cms-text-block >:last-child {
+.text-desc >*:last-child,
+.text-block >:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
 }
