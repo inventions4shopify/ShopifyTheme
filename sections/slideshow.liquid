@@ -12,12 +12,11 @@
     <div class="cms-slideshow-slide{% if forloop.first %} active{% endif %}">
       <div class="{% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
         <div class="media-with-content">
-
           <div class="media-with-content-media">
             {% if block.settings.media_type == 'image' %}
               {% if block.settings.image_1 %}
                 <picture>
-                  {% if block.settings.image_2 %}
+                  {% if block.settings.image_2 != blank %}
                     <source
                       media="(max-width: 767px)"
                       srcset="{{ block.settings.image_2 | img_url: 'master' }}">
@@ -79,19 +78,37 @@
   {%- endfor -%}
 </div>
 <div class="cms-slideshow-controls">
-  {% if section.blocks.size > 1 %}
+  {% if section.settings.slideshow_controls_style == 'dots' %}
     <ul class="cms-slideshow-pagination">
       {% for block in section.blocks %}
-        <li class="cms-slideshow-dot {% if forloop.first %}active{% endif %}">
+        <li class="cms-slideshow-dot">
           <button
             type="button"
             aria-label="Go to slide {{ forloop.index }}"
+            class="{% if forloop.first %}active{% endif %}"
             data-slide="{{ forloop.index0 }}">
           </button>
         </li>
       {% endfor %}
     </ul>
   {% endif %}
+
+  {% if section.settings.slideshow_controls_style == 'counter' %}
+    <div class="cms-slideshow-counter">
+      <span class="cms-current-slide">01</span>
+      /
+      <span class="cms-total-slides">
+        {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}
+      </span>
+    </div>
+  {% endif %}
+
+  {% if section.settings.slideshow_controls_style == 'progress' %}
+    <div class="cms-slideshow-progress">
+      <div class="cms-slideshow-progress-bar"></div>
+    </div>
+  {% endif %}
+
   <div class="cms-slideshow-arrow-group icons-style-{{ section.settings.icons_shape }}">
     <button class="cms-slide-button cms-slideshow-prev">
         {% render 'icon', icon: 'chevron-left', width: '2.2rem', height: '2.2rem' %}
@@ -103,7 +120,68 @@
 </div>
 
 <script>
-  
+  document.addEventListener("DOMContentLoaded", () => {
+
+  const nextBtn = document.querySelector(".cms-slideshow-next"),
+        prevBtn = document.querySelector(".cms-slideshow-prev"),
+        dots = document.querySelectorAll(".cms-slideshow-dot button"),
+        slides = document.querySelectorAll(".cms-slideshow-slide"),
+        currentCounter = document.querySelector(".cms-current-slide"),
+        progressBar = document.querySelector(".cms-slideshow-progress-bar");
+
+  let currentSlide = 0,
+      totalSlides = slides.length;
+
+  function updateSlides() {
+
+    // remove active classes
+    slides.forEach((slide) => {
+      slide.classList.remove("active");
+    });
+
+    dots.forEach((dot) => {
+      dot.classList.remove("active");
+    });
+
+    // add active
+    slides[currentSlide].classList.add("active");
+
+    if (dots[currentSlide]) {
+      dots[currentSlide].classList.add("active");
+    }
+
+    // counter
+    if (currentCounter) {
+      currentCounter.textContent = String(currentSlide + 1).padStart(2, "0");
+    }
+
+    // progress
+    if (progressBar) {
+      const progress = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+  }
+
+  nextBtn.addEventListener("click", () => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateSlides();
+  });
+
+  prevBtn.addEventListener("click", () => {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateSlides();
+  });
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      currentSlide = index;
+      updateSlides();
+    });
+  });
+
+  updateSlides();
+
+});
 </script>
 
 {% schema %}

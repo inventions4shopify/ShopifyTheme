@@ -52,12 +52,12 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-left: auto;
 }
 
 .cms-slide-button {
     width: 3.4rem;
     height: 3.4rem;
-    min-height: 3.4rem;
     padding: 1rem;
 }
 
@@ -97,12 +97,39 @@
     background-color: rgba(255, 255, 255, 0.5);
     border: none;
     padding: 0;
+    transition: all 0.25s ease;
+}
+
+.cms-slideshow-dot .active {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.cms-slideshow-counter {
+    display: flex;
+    justify-content: center;
+    flex: 1 1 auto;
+    width: 1%;
+}
+
+.cms-slideshow-progress {
+  width: 75%;
+  height: 4px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.cms-slideshow-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #fff;
+  transition: width 0.4s ease;
 }
 
 @media (min-width: 768px) {
     .cms-slide-button {
         width: 4.4rem;
         height: 4.4rem;
-        min-height: 4.4rem;
     }
 }
