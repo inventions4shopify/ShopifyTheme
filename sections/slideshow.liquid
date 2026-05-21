@@ -2,24 +2,33 @@
 
 {% style %}
   .cms-slideshow-slide .media-overlay-content {
+    height: 50rem;
     min-height: var(--section-height-{{ section.settings.slide_height }});
   }
 {% endstyle %}
 
-<div class="cms-slideshow">
-  <div class="cms-slideshow-slide">
-    {%- for block in section.blocks -%}
+<div class="cms-slideshow-main">
+  {%- for block in section.blocks -%}
+    <div class="cms-slideshow-slide{% if forloop.first %} active{% endif %}">
       <div class="{% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
         <div class="media-with-content">
 
           <div class="media-with-content-media">
             {% if block.settings.media_type == 'image' %}
               {% if block.settings.image_1 %}
-                <img
-                  src="{{ block.settings.image_1 | img_url: 'master' }}"
-                  alt="{{ block.settings.heading | escape }}"
-                  width="auto"
-                  height="auto">
+                <picture>
+                  {% if block.settings.image_2 %}
+                    <source
+                      media="(max-width: 767px)"
+                      srcset="{{ block.settings.image_2 | img_url: 'master' }}">
+                  {% endif %}
+
+                  <img
+                    src="{{ block.settings.image_1 | img_url: 'master' }}"
+                    alt="{{ block.settings.heading | escape }}"
+                    width="auto"
+                    height="auto" />
+                </picture>
               {% endif %}
             {% elsif block.settings.media_type == 'video' %}
               {% if block.settings.video_1 %}
@@ -37,7 +46,7 @@
 
           <div class="{% if section.settings.slide_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
             <div
-              class="media-overlay-content media-overlay-content--{{ block.settings.content_vertical_alignment }}-{{ block.settings.content_horizontal_alignment }} media-content-width-{{ block.settings.content_width }} text-align-{{ block.settings.content-alignment }}"
+              class="media-overlay-content media-overlay-content--{{ block.settings.content_vertical_alignment }}-{{ block.settings.content_horizontal_alignment }} media-content-width-{{ block.settings.content_width }}"
               style="color: {{ block.settings.text_color }}; gap: {{ block.settings.gap | divided_by: 10 }}rem;"
             >
               {% if block.settings.subheading %}
@@ -66,14 +75,41 @@
           </div>
         </div>
       </div>
-    {%- endfor -%}
+    </div>
+  {%- endfor -%}
+</div>
+<div class="cms-slideshow-controls">
+  {% if section.blocks.size > 1 %}
+    <ul class="cms-slideshow-pagination">
+      {% for block in section.blocks %}
+        <li class="cms-slideshow-dot {% if forloop.first %}active{% endif %}">
+          <button
+            type="button"
+            aria-label="Go to slide {{ forloop.index }}"
+            data-slide="{{ forloop.index0 }}">
+          </button>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <div class="cms-slideshow-arrow-group icons-style-{{ section.settings.icons_shape }}">
+    <button class="cms-slide-button cms-slideshow-prev">
+        {% render 'icon', icon: 'chevron-left', width: '2.2rem', height: '2.2rem' %}
+      </button>
+      <button class="cms-slide-button cms-slideshow-next">
+        {% render 'icon', icon: 'chevron-right', width: '2.2rem', height: '2.2rem' %}
+    </button>
   </div>
 </div>
+
+<script>
+  
+</script>
 
 {% schema %}
 {
   "name": "Slideshow",
-  "class": "section",
+  "class": "section cms-slideshow",
   "tag": "section",
   "disabled_on": {
     "groups": ["header", "footer"]
@@ -259,6 +295,12 @@
           "type": "image_picker",
           "id": "image_1",
           "label": "Image",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image Mobile",
           "visible_if": "{{ block.settings.media_type == 'image' }}"
         },
         {
