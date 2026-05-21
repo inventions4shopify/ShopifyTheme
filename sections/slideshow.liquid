@@ -1,15 +1,9 @@
 {{ 'slideshow.css' | asset_url | stylesheet_tag }}
 
 {% style %}
-
-  .cms-slideshow {
-    background-color: {{ section.settings.background_color }};
-  }
-
   .cms-slideshow-slide .media-overlay-content {
     min-height: var(--section-height-{{ section.settings.slide_height }});
   }
-
 {% endstyle %}
 
 <div class="cms-slideshow">
@@ -41,33 +35,35 @@
             {% endif %}
           </div>
 
-          <div
-            class="media-overlay-content media-overlay-content--{{ block.settings.content_vertical_alignment }}-{{ block.settings.content_horizontal_alignment }}"
-            style="color: {{ block.settings.text_color }}; gap: {{ block.settings.gap | divided_by: 10 }}rem;"
-          >
-            {% if block.settings.subheading %}
-              <span>{{ block.settings.subheading }}</span>
-            {% endif %}
+          <div class="{% if section.settings.slide_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
+            <div
+              class="media-overlay-content media-overlay-content--{{ block.settings.content_vertical_alignment }}-{{ block.settings.content_horizontal_alignment }} media-content-width-{{ block.settings.content_width }} text-align-{{ block.settings.content-alignment }}"
+              style="color: {{ block.settings.text_color }}; gap: {{ block.settings.gap | divided_by: 10 }}rem;"
+            >
+              {% if block.settings.subheading %}
+                <span>{{ block.settings.subheading }}</span>
+              {% endif %}
 
-            {% if block.settings.heading %}
-              <h2>{{ block.settings.heading }}</h2>
-            {% endif %}
+              {% if block.settings.heading %}
+                <h2>{{ block.settings.heading }}</h2>
+              {% endif %}
 
-            {% if block.settings.description %}
-              {{ block.settings.description }}
-            {% endif %}
+              {% if block.settings.description %}
+                {{ block.settings.description }}
+              {% endif %}
 
-            {% if block.settings.link_label != blank %}
-              {% render 'button',
-                text: block.settings.link_label,
-                href: block.settings.link,
-                background_color: block.settings.button_background_color,
-                text_color: block.settings.button_text_color,
-                outline_color: block.settings.button_outline_color
-              %}
-            {% endif %}
+              {% if block.settings.link_label != blank %}
+                {% render 'button',
+                  text: block.settings.link_label,
+                  href: block.settings.link,
+                  background_color: block.settings.button_background_color,
+                  text_color: block.settings.button_text_color,
+                  outline_color: block.settings.button_outline_color
+                %}
+              {% endif %}
+            </div>
+              <div class="media-overlay" style="background:{{ block.settings.overlay_color | default: 'rgba(0, 0, 0, 0.5)' }};"></div>
           </div>
-            <div class="media-overlay" style="background:{{ block.settings.overlay_color | default: 'rgba(0, 0, 0, 0.5)' }};"></div>
         </div>
       </div>
     {%- endfor -%}
@@ -87,6 +83,22 @@
       "type": "select",
       "id": "section_width",
       "label": "Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page Width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "select",
+      "id": "slide_width",
+      "label": "Slide Width",
       "options": [
         {
           "value": "page-width",
@@ -126,27 +138,6 @@
         }
       ],
       "default": "medium"
-    },
-    {
-      "type": "select",
-      "id": "content_position",
-      "label": "Content Position",
-      "options": [
-        {
-          "value": "on-media",
-          "label": "On Media"
-        },
-        {
-          "value": "below-media",
-          "label": "Below Media"
-        }
-      ],
-      "default": "on-media"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color"
     },
     {
       "type": "header",
@@ -292,6 +283,26 @@
         {
           "type": "header",
           "content": "t:general.layout"
+        },
+        {
+          "type": "select",
+          "id": "content_width",
+          "label": "Content Width",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "default": "medium"
         },
         {
           "type": "select",
