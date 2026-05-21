@@ -4,7 +4,10 @@
 
   .cms-slideshow {
     background-color: {{ section.settings.background_color }};
-    height: var(--section-height-{{ section.settings.slide_height }});
+  }
+
+  .cms-slideshow-slide .media-overlay-content {
+    min-height: var(--section-height-{{ section.settings.slide_height }});
   }
 
 {% endstyle %}

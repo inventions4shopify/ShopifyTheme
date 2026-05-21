@@ -144,6 +144,7 @@
 		--sub-heading-transform: {{ settings.subheading_text_transform }};
 
     /* height variable */
+    --section-height-auto: auto;
     --section-height-small: 15rem;
     --section-height-medium: 25rem;
     --section-height-large: 35rem;
@@ -166,7 +167,6 @@
       --section-spacing-bottom: var(--section-spacing-bottom-tablet);
       --grid-spacing: var(--grid-spacing-tablet);
 
-        /* height variable */
       --section-height-small: 40dvh;
       --section-height-medium: 55dvh;
       --section-height-large: 70dvh;
@@ -181,7 +181,6 @@
       --text-h3: {%- if settings.heading_size == "large" -%} 5.6rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.2rem {%- endif -%};
       --text-h4: {%- if settings.heading_size == "large" -%} 4.4rem {%- elsif settings.heading_size == "medium" -%} 3.2rem {%- else -%} 2.8rem {%- endif -%};
 
-        /* height variable */
       --section-height-small: 50dvh;
       --section-height-medium: 65dvh;
       --section-height-large: 80dvh;

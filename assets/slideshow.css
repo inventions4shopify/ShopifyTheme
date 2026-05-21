@@ -1,0 +1,19 @@
+.cms-slideshow {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.cms-slideshow-slide {
+    width: 100%;
+}
+
+.cms-slideshow-slide .media-with-content-media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}

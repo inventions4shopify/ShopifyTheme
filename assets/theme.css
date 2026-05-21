@@ -133,8 +133,9 @@ ol {
 }
 
 .media-overlay-content {
-  position: absolute;
-  inset: 0;
+  /* position: absolute;
+  inset: 0; */
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
