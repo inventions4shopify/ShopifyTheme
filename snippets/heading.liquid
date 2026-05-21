@@ -1,0 +1,21 @@
+{%- if heading != blank -%}
+  {%- capture heading_style -%}
+{%- if heading_gradient != blank -%}
+    background: {{ heading_gradient }};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+{%- elsif heading_color != blank and heading_color != 'rgba(0,0,0,0)' -%}
+    color: rgb({{ heading_color.rgb }});
+{%- endif -%}
+{%- endcapture -%}
+
+  <{{ tag }}
+    class="section-header__heading {{ size }}"
+    {%- unless heading_style == blank %}
+      style="{{ heading_style | strip }}"
+    {%- endunless %}
+  >
+    {{- heading | escape -}}
+  </{{ tag }}>
+{%- endif -%}

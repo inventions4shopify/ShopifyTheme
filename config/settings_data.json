@@ -8,5 +8,31 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "button_border_radius": 8,
+    "button_text_transform": "uppercase",
+    "input_border_radius": 8,
+    "type_heading_font": "caprasimo_n4",
+    "heading_letter_spacing": 0.1,
+    "type_subheading_font": "caveat_n5",
+    "sub_heading_size": "large",
+    "type_body_font": "arimo_n4",
+    "body_text": 18,
+    "background_color": "#fff5ee",
+    "heading_color": "#4a3230",
+    "subheading_color": "#4a3230",
+    "body_text_color": "#4a3230",
+    "border_opacity": 1,
+    "header_background_color": "#fee7d5",
+    "header_text_color": "#4a3230",
+    "header_hover_text_color": "#4a3230",
+    "primary_button_background_color": "#ff5c00",
+    "primary_button_outline_color": "#4a3230",
+    "secondary_button_background_color": "#ffffff",
+    "secondary_button_text_color": "#4a3230",
+    "secondary_button_outline_color": "#4a3230",
+    "product_card_background_color": "#fee7d5",
+    "product_card_text_color": "#4a3230",
+    "content_for_index": []
+  }
 }

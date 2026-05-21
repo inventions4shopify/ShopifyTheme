@@ -1,0 +1,127 @@
+{% comment %}
+----------------------------------------------------------------------------------------------------------------------
+SNIPPET: section-header.liquid
+----------------------------------------------------------------------------------------------------------------------
+
+Renders a reusable section header — the canonical subheading + heading + optional body text + optional link pattern
+used throughout this theme, matching the Impact theme approach.
+
+Uses your theme's own CSS variable system (--color-heading, --color-subheading, --sub-heading-text, etc.)
+and the .subheading / .h1–.h6 utility classes from theme.css.
+
+----------------------------------------------------------------------------------------------------------------------
+Supported variables
+----------------------------------------------------------------------------------------------------------------------
+
+* subheading        {String}  — Optional eyebrow / label above the heading
+* subheading_color  {Color}   — Optional per-call color override for the subheading
+* heading           {String}  — The primary heading text
+* heading_tag       {String}  — HTML tag to use: h1–h6 (default: h2)
+* heading_size      {String}  — Visual size class: h1–h6 (default: h2)
+* heading_color     {Color}   — Optional per-call heading color (applied inline)
+* heading_gradient  {String}  — Optional CSS gradient for heading text (takes priority over heading_color)
+* content           {HTML}    — Optional prose / richtext below the heading
+* text_alignment    {String}  — "left" | "center" | "right" (default: "center")
+* link_text         {String}  — Optional "see all" link label
+* link_url          {URL}     — URL for the link
+
+----------------------------------------------------------------------------------------------------------------------
+Usage examples
+----------------------------------------------------------------------------------------------------------------------
+
+  Basic:
+  {%- render 'section-header',
+    subheading:    section.settings.subheading,
+    heading:       section.settings.heading,
+    text_alignment: 'center'
+  -%}
+
+  With content + link:
+  {%- render 'section-header',
+    subheading:    section.settings.subheading,
+    heading:       section.settings.heading,
+    content:       section.settings.description,
+    link_text:     section.settings.link_label,
+    link_url:      section.settings.link,
+    text_alignment: section.settings.header_alignment
+  -%}
+
+----------------------------------------------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- liquid
+  assign tag       = heading_tag | default: 'h2'
+  assign size      = heading_size | default: 'h2'
+  assign alignment = text_alignment | default: 'center'
+
+  # Map alignment values to CSS text-align & flexbox classes
+  case alignment
+    when 'left'
+      assign align_flex  = 'items-start'
+      assign align_text  = 'text-left'
+    when 'right'
+      assign align_flex  = 'items-end'
+      assign align_text  = 'text-right'
+    else
+      assign align_flex  = 'items-center'
+      assign align_text  = 'text-center'
+  endcase
+-%}
+
+{%- if subheading != blank or heading != blank or content != blank or link_text != blank -%}
+  <div class="section-header flex flex-col {{ align_flex }} {{ align_text }}">
+
+    {%- comment -%} ── Subheading ── {%- endcomment -%}
+    {%- if subheading != blank -%}
+      <p
+        class="section-header__subheading subheading"
+        {%- unless subheading_color == blank or subheading_color == 'rgba(0,0,0,0)' %}
+          style="color: rgb({{ subheading_color.rgb }});"
+        {%- endunless %}
+      >
+        {{- subheading | escape -}}
+      </p>
+    {%- endif -%}
+
+    {%- comment -%} ── Heading ── {%- endcomment -%}
+    {%- if heading != blank -%}
+      {%- capture heading_style -%}
+        {%- if heading_gradient != blank -%}
+          background: {{ heading_gradient }};
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        {%- elsif heading_color != blank and heading_color != 'rgba(0,0,0,0)' -%}
+          color: rgb({{ heading_color.rgb }});
+        {%- endif -%}
+      {%- endcapture -%}
+
+      <{{ tag }}
+        class="section-header__heading {{ size }}"
+        {%- unless heading_style == blank %}
+          style="{{ heading_style | strip }}"
+        {%- endunless %}
+      >
+        {{- heading | escape -}}
+      </{{ tag }}>
+    {%- endif -%}
+
+    {%- comment -%} ── Optional richtext / prose content ── {%- endcomment -%}
+    {%- if content != blank -%}
+      <div class="section-header__content prose ps-rte">
+        {{- content -}}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Optional "see all" / view-more link ── {%- endcomment -%}
+    {%- if link_text != blank -%}
+      <a
+        href="{{ link_url }}"
+        class="section-header__link button button--secondary"
+      >
+        {{- link_text | escape -}}
+      </a>
+    {%- endif -%}
+
+  </div>
+{%- endif -%}

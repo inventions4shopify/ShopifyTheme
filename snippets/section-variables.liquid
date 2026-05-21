@@ -1,0 +1,61 @@
+{% comment %}
+  Snippet: section-variables.liquid
+  Usage: {%- render 'section-variables', section: section, class: 'rich-text__section' -%}
+
+  Renders an opening <div> with:
+    - section-spacing         (always)
+    - custom class            (if passed)
+    - scoped CSS variables    (background, colors, spacing overrides)
+
+  Close the div yourself in the section file.
+{% endcomment %}
+
+{%- liquid
+  assign s = section.settings
+-%}
+
+{%- capture css_vars -%}
+  {%- comment -%} ── Background ─────────────────────────────────────── {%- endcomment -%}
+  {%- if s.background_gradient != blank and s.background_gradient != 'none' -%}
+    --section-background: {{ s.background_gradient }};
+  {%- elsif s.background_color != blank and s.background_color != 'rgba(0,0,0,0)' -%}
+    --section-background: rgb({{ s.background_color.rgb }});
+  {%- endif -%}
+
+  {%- comment -%} ── Colors ─────────────────────────────────────────── {%- endcomment -%}
+  {%- if s.text_color != blank and s.text_color != 'rgba(0,0,0,0)' -%}
+    --color-body-text: {{ s.text_color.rgb }};
+  {%- endif -%}
+  {%- if s.heading_color != blank and s.heading_color != 'rgba(0,0,0,0)' -%}
+    --color-heading: {{ s.heading_color.rgb }};
+  {%- endif -%}
+  {%- if s.subheading_color != blank and s.subheading_color != 'rgba(0,0,0,0)' -%}
+    --color-subheading: {{ s.subheading_color.rgb }};
+  {%- endif -%}
+
+  {%- comment -%} ── Button overrides ───────────────────────────────── {%- endcomment -%}
+  {%- if s.button_background_color != blank and s.button_background_color != 'rgba(0,0,0,0)' -%}
+    --color-button-primary-background: {{ s.button_background_color.rgb }};
+  {%- endif -%}
+  {%- if s.button_text_color != blank and s.button_text_color != 'rgba(0,0,0,0)' -%}
+    --color-button-primary-text: {{ s.button_text_color.rgb }};
+  {%- endif -%}
+  {%- if s.button_outline_color != blank and s.button_outline_color != 'rgba(0,0,0,0)' -%}
+    --color-button-primary-outline: {{ s.button_outline_color.rgb }};
+  {%- endif -%}
+
+  {%- comment -%} ── Custom spacing — overrides theme pre-calc'd vars ── {%- endcomment -%}
+  {%- if s.custom_spacing -%}
+    --section-spacing-top-mobile: {{ s.section_spacing_top_mobile | default: 40 }}px;
+    --section-spacing-bottom-mobile: {{ s.section_spacing_bottom_mobile | default: 40 }}px;
+    --section-spacing-top-tablet: {{ s.section_spacing_top_mobile | default: 40 | plus: s.section_spacing_top_desktop | default: 64 | divided_by: 2 }}px;
+    --section-spacing-bottom-tablet: {{ s.section_spacing_bottom_mobile | default: 40 | plus: s.section_spacing_bottom_desktop | default: 64 | divided_by: 2 }}px;
+    --section-spacing-top-desktop: {{ s.section_spacing_top_desktop | default: 64 }}px;
+    --section-spacing-bottom-desktop: {{ s.section_spacing_bottom_desktop | default: 64 }}px;
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- assign css_vars_trimmed = css_vars | strip -%}
+
+class="section-spacing section{% if class != blank %} {{ class }}{% endif %}"
+{% if css_vars_trimmed != blank %}style="{{ css_vars_trimmed }}"{% endif %}

@@ -30,19 +30,19 @@
   assign button_type = type | default: 'button'
 
   capture style_vars
-    if background_color != blank
+    if background_color != blank and background_color != 'rgba(0,0,0,0)'
       echo '--button-background: '
       echo background_color
       echo ';'
     endif
 
-    if text_color != blank
+    if text_color != blank and text_color != 'rgba(0,0,0,0)'
       echo '--button-text: '
       echo text_color
       echo ';'
     endif
 
-    if outline_color != blank
+    if outline_color != blank and outline_color != 'rgba(0,0,0,0)'
       echo '--button-outline: '
       echo outline_color
       echo ';'
