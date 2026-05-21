@@ -87,11 +87,53 @@
           "mobile": {
             "label": "Mobile"
           }
+        },
+        "button": {
+          "content": "Button styling",
+          "button_border_radius": {
+            "label": "Button border radius"
+          },
+          "button_text_transform": {
+            "label": "Button text transform",
+            "options": {
+              "option_1": "None",
+              "option_2": "Uppercase",
+              "option_3": "Lowercase",
+              "option_4": "Capitalize"
+            }
+          }
+        },
+        "input": {
+          "content": "Input styling",
+          "input_border_radius": {
+            "label": "Input border radius"
+          },
+          "input_border_style": {
+            "label": "Input border style",
+            "options": {
+              "option_1": "Solid",
+              "option_2": "Dashed",
+              "option_3": "None"
+            }
+          }
+        },
+        "media": {
+          "content": "Media",
+          "media_border_radius": {
+            "label": "Media border radius"
+          },
+          "media_object_fit": {
+            "label": "Media fit",
+            "options": {
+              "option_1": "Cover",
+              "option_2": "Contain"
+            }
+          }
         }
       }
     },
     "typograpy": {
-      "name": "typograpy",
+      "name": "Typography",
       "settings": {
         "heading": {
           "title": {

@@ -12,9 +12,74 @@
     "main": {
       "type": "hello-world",
       "settings": {}
+    },
+    "rich_text_Q7BM9K": {
+      "type": "rich-text",
+      "blocks": {
+        "subheading_r3ifxH": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Our story",
+            "subheading_alignment": "inherit",
+            "subheading_color": "rgba(0,0,0,0)"
+          }
+        },
+        "heading_Qeh8pj": {
+          "type": "heading",
+          "settings": {
+            "heading": "Talk about your brand",
+            "heading_tag": "h2",
+            "heading_size": "h2",
+            "heading_alignment": "inherit",
+            "heading_color": "rgba(0,0,0,0)",
+            "heading_gradient": ""
+          }
+        },
+        "text_cjN3UU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+            "text_alignment": "inherit",
+            "text_width": "",
+            "text_color": "rgba(0,0,0,0)"
+          }
+        },
+        "button_8YPtBA": {
+          "type": "button",
+          "settings": {
+            "link_label": "Shop now",
+            "link": "",
+            "button_alignment": "inherit",
+            "button_background_color": "rgba(0,0,0,0)",
+            "button_text_color": "",
+            "button_outline_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_r3ifxH",
+        "heading_Qeh8pj",
+        "text_cjN3UU",
+        "button_8YPtBA"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "container_width": "small",
+        "custom_container_width": 800,
+        "content_alignment": "center",
+        "gap": "16",
+        "background_color": "rgba(0,0,0,0)",
+        "background_gradient": "",
+        "custom_spacing": false,
+        "section_spacing_top_desktop": 64,
+        "section_spacing_bottom_desktop": 64,
+        "section_spacing_top_mobile": 40,
+        "section_spacing_bottom_mobile": 40
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "rich_text_Q7BM9K"
   ]
 }
