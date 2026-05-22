@@ -59,6 +59,7 @@
     width: 3.4rem;
     height: 3.4rem;
     padding: 1rem;
+    flex-shrink: 0;
 }
 
 .icons-style-none .cms-slide-button {
@@ -111,20 +112,33 @@
     width: 1%;
 }
 
-.cms-slideshow-progress {
-  width: 75%;
-  height: 4px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.3);
-  overflow: hidden;
+.cms-autoplay-progress {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
   position: relative;
+
+  /* progress color */
+  --progress: 0deg;
+
+  background: conic-gradient(red var(--progress), #ddd 0deg);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.cms-slideshow-progress-bar {
-  width: 0%;
-  height: 100%;
-  background: #fff;
-  transition: width 0.4s ease;
+/* inner circle */
+.cms-autoplay-progress::before {
+  content: "";
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  background: #000;
+  border-radius: 50%;
+}
+
+.cms-autoplay-progress-bar {
+  display: none;
 }
 
 @media (min-width: 768px) {

@@ -79,109 +79,184 @@
 </div>
 <div class="cms-slideshow-controls">
   {% if section.settings.slideshow_controls_style == 'dots' %}
-    <ul class="cms-slideshow-pagination">
-      {% for block in section.blocks %}
-        <li class="cms-slideshow-dot">
-          <button
-            type="button"
-            aria-label="Go to slide {{ forloop.index }}"
-            class="{% if forloop.first %}active{% endif %}"
-            data-slide="{{ forloop.index0 }}">
-          </button>
-        </li>
-      {% endfor %}
-    </ul>
+    {%if section.blocks.size > 1 %}
+      <ul class="cms-slideshow-pagination">
+        {% for block in section.blocks %}
+          <li class="cms-slideshow-dot">
+            <button
+              type="button"
+              aria-label="Go to slide {{ forloop.index }}"
+              class="{% if forloop.first %}active{% endif %}"
+              data-slide="{{ forloop.index0 }}">
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
   {% endif %}
 
   {% if section.settings.slideshow_controls_style == 'counter' %}
-    <div class="cms-slideshow-counter">
-      <span class="cms-current-slide">01</span>
-      /
-      <span class="cms-total-slides">
-        {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}
-      </span>
-    </div>
+    {%if section.blocks.size > 1 %}
+      <div class="cms-slideshow-counter">
+        <span class="cms-current-slide">01</span>
+        /
+        <span class="cms-total-slides">
+          {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}
+        </span>
+      </div>
+    {% endif %}
   {% endif %}
 
-  {% if section.settings.slideshow_controls_style == 'progress' %}
-    <div class="cms-slideshow-progress">
-      <div class="cms-slideshow-progress-bar"></div>
-    </div>
-  {% endif %}
-
+  {%if section.blocks.size > 1 %}
   <div class="cms-slideshow-arrow-group icons-style-{{ section.settings.icons_shape }}">
-    <button class="cms-slide-button cms-slideshow-prev">
+    {% if section.settings.autoplay == false %}
+      <button class="cms-slide-button cms-slideshow-prev">
         {% render 'icon', icon: 'chevron-left', width: '2.2rem', height: '2.2rem' %}
       </button>
+    {% endif %}
+
+    {% if section.settings.slideshow_controls_style == 'progress' %}
+      {% if section.blocks.size > 1 %}
+        {% if section.settings.autoplay %}
+          <div class="cms-autoplay-progress">
+            <div class="cms-autoplay-progress-bar"></div>
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+    {% if section.settings.autoplay == false %}
       <button class="cms-slide-button cms-slideshow-next">
         {% render 'icon', icon: 'chevron-right', width: '2.2rem', height: '2.2rem' %}
-    </button>
+      </button>
+    {% endif %}
   </div>
+  {% endif %}
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
 
-  const nextBtn = document.querySelector(".cms-slideshow-next"),
-        prevBtn = document.querySelector(".cms-slideshow-prev"),
-        dots = document.querySelectorAll(".cms-slideshow-dot button"),
-        slides = document.querySelectorAll(".cms-slideshow-slide"),
-        currentCounter = document.querySelector(".cms-current-slide"),
-        progressBar = document.querySelector(".cms-slideshow-progress-bar");
+    const nextBtn = document.querySelector(".cms-slideshow-next"),
+          prevBtn = document.querySelector(".cms-slideshow-prev"),
+          dots = document.querySelectorAll(".cms-slideshow-dot button"),
+          slides = document.querySelectorAll(".cms-slideshow-slide"),
+          progressBar = document.querySelector(".cms-autoplay-progress-bar");
 
-  let currentSlide = 0,
-      totalSlides = slides.length;
+          let currentSlide = 0,
+              totalSlides = slides.length;
 
-  function updateSlides() {
+          // autoplay duration (5 sec)
+          const autoplayTime = {{ section.settings.autoplay_speed }} * 1000;
 
-    // remove active classes
-    slides.forEach((slide) => {
-      slide.classList.remove("active");
-    });
+          let autoplayInterval;
 
-    dots.forEach((dot) => {
-      dot.classList.remove("active");
-    });
+          function updateSlides() {
 
-    // add active
-    slides[currentSlide].classList.add("active");
+            slides.forEach((slide) => {
+              slide.classList.remove("active");
+            });
 
-    if (dots[currentSlide]) {
-      dots[currentSlide].classList.add("active");
-    }
+            dots.forEach((dot) => {
+              dot.classList.remove("active");
+            });
 
-    // counter
-    if (currentCounter) {
-      currentCounter.textContent = String(currentSlide + 1).padStart(2, "0");
-    }
+            slides[currentSlide].classList.add("active");
 
-    // progress
-    if (progressBar) {
-      const progress = ((currentSlide + 1) / totalSlides) * 100;
-      progressBar.style.width = `${progress}%`;
-    }
-  }
+            if (dots[currentSlide]) {
+              dots[currentSlide].classList.add("active");
+            }
 
-  nextBtn.addEventListener("click", () => {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateSlides();
+            // disable buttons
+            if (prevBtn) {
+              prevBtn.disabled = currentSlide === 0;
+              prevBtn.classList.toggle("disabled", currentSlide === 0);
+            }
+
+            if (nextBtn) {
+              nextBtn.disabled = currentSlide === totalSlides - 1;
+              nextBtn.classList.toggle("disabled", currentSlide === totalSlides - 1);
+            }
+
+            startProgress();
+          }
+
+          function startProgress() {
+
+            const progress = document.querySelector(".cms-autoplay-progress");
+
+            if (!progress) return;
+
+            let start = null;
+
+            function animate(timestamp) {
+
+              if (!start) start = timestamp;
+
+              const elapsed = timestamp - start;
+
+              const percent = Math.min(elapsed / autoplayTime, 1);
+
+              progress.style.setProperty(
+                "--progress",
+                `${percent * 360}deg`
+              );
+
+              if (percent < 1) {
+                requestAnimationFrame(animate);
+              }
+            }
+
+            progress.style.setProperty("--progress", `0deg`);
+
+            requestAnimationFrame(animate);
+          }
+
+          function startAutoplay() {
+
+            autoplayInterval = setInterval(() => {
+
+              if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+              } else {
+                currentSlide = 0;
+              }
+
+              updateSlides();
+
+            }, autoplayTime);
+          }
+
+          // buttons
+          if (nextBtn) {
+            nextBtn.addEventListener("click", () => {
+              if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlides();
+              }
+            });
+          }
+
+          if (prevBtn) {
+            prevBtn.addEventListener("click", () => {
+              if (currentSlide > 0) {
+                currentSlide--;
+                updateSlides();
+              }
+            });
+          }
+
+          // dots
+          dots.forEach((dot, index) => {
+            dot.addEventListener("click", () => {
+              currentSlide = index;
+              updateSlides();
+            });
+          });
+
+          updateSlides();
+          startAutoplay();
+
   });
-
-  prevBtn.addEventListener("click", () => {
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-    updateSlides();
-  });
-
-  dots.forEach((dot, index) => {
-    dot.addEventListener("click", () => {
-      currentSlide = index;
-      updateSlides();
-    });
-  });
-
-  updateSlides();
-
-});
 </script>
 
 {% schema %}
