@@ -234,18 +234,6 @@ ol {
   max-width: 70rem;
 }
 
-.text-align-start {
-  text-align: start;
-}
-
-.text-align-center {
-  text-align: center;
-}
-
-.text-align-end {
-  text-align: end;
-}
-
 .button,
 button,
 input[type="button"],

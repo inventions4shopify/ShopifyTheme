@@ -1,83 +1,145 @@
-{% style %}
-{{ 'comman-section.css' | asset_url | stylesheet_tag }}
+{{ 'after-before-section.css' | asset_url | stylesheet_tag }}
+{{ 'common-section.css' | asset_url | stylesheet_tag }}
 
-.section-{{ section.id }}-padding {
-  padding-top: {{ section.settings.mobile_padding_top }}px;
-  padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
-}
-
-@media screen and (min-width: 1200px) {
-  .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-  }
-}
-{% endstyle %}
-
-<div class="section-{{ section.id }}-padding">
-    <div class="page-width">
-        <div class="cms-row desktop--align--{{ section.settings.desktop_content_position }}">
-          <div class="cms-after-before-thumg">
-            <div class="before-after-wrapper">
-                <div class="before-after-container-inner">
-                    {% if section.settings.before_image != blank %}
-                        <img class="before-img" src="{{ section.settings.before_image | img_url: "master" }}" alt="{{ section.settings.before_image.alt }}" width="auto" height="auto" loading="lazy" />
-                    {% endif %}
-                    {% if section.settings.after_image != blank %}
-                        <img class="after-img" src="{{ section.settings.after_image | img_url: "master" }}" alt="{{ section.settings.after_image.alt }}" width="auto" height="auto" loading="lazy" />
-                    {% endif %}
-                    {% if section.settings.before_image != blank %}
-                        <div class="divider-line"></div>
-                        <div class="divider-handle"></div>
-                        <input type="range" min="0" max="100" value="50" class="slider-range">
-                    {% endif %}
-                </div>
+<div class="page-width">
+  <div class="cms-row {{ section.settings.image_position }} media-overlay-content--{{ section.settings.desktop_content_position }} mobile--align--{{ section.settings.mobile_content_position }}">
+    <div class="cms-after-before-thumb">
+      <div class="before-after-wrapper">
+        <div class="before-after-container-inner" id="before-after-{{ section.id }}">
+          {% if section.settings.after_image != blank %}
+            <div class="after-img">
+              <img
+                src="{{ section.settings.after_image | img_url: 'master' }}"
+                alt="{{ section.settings.after_image.alt }}"
+                loading="lazy"
+                width="auto"
+                height="auto"
+              />
             </div>
-          </div>
-          <div class="cms-content">
-            <div class="cms-text-block">
-              {%for block in section.blocks %}
-                {% if block.type == "caption" %}
-                  <span class="cms-caption">{{ block.settings.caption }}</span>
-                  {%endif%}
-                {% if block.type == "heading" %}
-                  {% if block.settings.heading != blank %}
-                      <{{ block.settings.heading_size }} class="{{ block.settings.heading_size }}">
-                        {{ block.settings.heading }}
-                      </{{ block.settings.heading_size }}>
-                  {% endif %}
-                {% endif %}
-                {% if block.type == "text" %}
-                  {% if block.settings.text != blank %}
-                      <div class="cms-text-desc">
-                          {{ block.settings.text }}
-                      </div>
-                  {% endif %}
-                {% endif %}
-                {% if block.type == "button" %}
-                  <div class="cms-buttons-row">
-                      {% if block.settings.button_label != blank %}
-                          <div class="cms-buttons-cell">
-                              <a href="{{ block.settings.button_link }}" aria-label="{{ block.settings.button_label }}" class="button">
-                              <span>
-                                  {{ block.settings.button_label }}
-                              </span>
-                              </a>
-                          </div>
-                      {% endif %}
-                  </div>
-                {% endif %}
-              {% endfor %}
+          {% endif %}
+
+          {% if section.settings.before_image != blank %}
+            <div class="before-image-wrapper">
+              <img
+                src="{{ section.settings.before_image | img_url: 'master' }}"
+                alt="{{ section.settings.before_image.alt }}"
+                loading="lazy"
+                width="auto"
+                height="auto"
+              />
             </div>
+          {% endif %}
+
+          <!-- Divider -->
+          <div class="divider-line"></div>
+
+          <!-- Handle -->
+          <div class="divider-handle">
+
+            {% if section.settings.svg_text_icon != blank %}
+              {{ section.settings.svg_text_icon }}
+            {% elsif section.settings.svg_icon_img != blank %}
+              <img
+                src="{{ section.settings.svg_icon_img | img_url: 'master' }}"
+                alt="Handle Icon"
+                loading="lazy"
+                width="24"
+                height="24"
+              >
+            {% else %}
+              <span>↔</span>
+            {% endif %}
+
           </div>
+
+          <!-- Range -->
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            class="slider-range"
+          >
         </div>
+      </div>
     </div>
+    <div class="cms-content">
+      <div class="text-block">
+
+        {% for block in section.blocks %}
+
+          {% case block.type %}
+
+            {% when 'caption' %}
+              <span class="subheading">
+                {{ block.settings.caption }}
+              </span>
+
+            {% when 'heading' %}
+              {% if block.settings.heading != blank %}
+                <{{ block.settings.heading_size }} class="title {{ block.settings.heading_size }}">
+                  {{ block.settings.heading }}
+                </{{ block.settings.heading_size }}>
+              {% endif %}
+
+            {% when 'text' %}
+              <div class="text-desc">
+                {{ block.settings.text }}
+              </div>
+
+            {% when 'button' %}
+              {% if block.settings.button_label != blank %}
+                <div class="cms-buttons-row">
+                  <a
+                    href="{{ block.settings.button_link }}"
+                    class="button {% if block.settings.button_style_secondary %}button--secondary{% endif %}"
+                  >
+                    {{ block.settings.button_label }}
+                  </a>
+                </div>
+              {% endif %}
+
+          {% endcase %}
+
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const container = document.querySelector("#before-after-{{ section.id }}");
+
+    if (!container) return;
+
+    const slider = container.querySelector(".slider-range");
+    const beforeWrapper = container.querySelector(".before-image-wrapper");
+    const dividerLine = container.querySelector(".divider-line");
+    const handle = container.querySelector(".divider-handle");
+
+    function updateSlider(value) {
+      beforeWrapper.style.width = value + "%";
+      dividerLine.style.left = value + "%";
+      handle.style.left = value + "%";
+    }
+
+    updateSlider(slider.value);
+
+    slider.addEventListener("input", function () {
+      updateSlider(this.value);
+    });
+
+  });
+</script>
 
 {% schema %}
 {
   "name": "After Before comparison",
-  "class": "section",
+  "class": "section after-before-section",
+  "tag": "section",
   "disabled_on": {
     "groups": ["header", "footer"]
   },
@@ -100,7 +162,7 @@
         }
       ],
       "default": "start",
-      "label": "Desktop Content"
+      "label": "Desktop Content Position"
     },
     {
       "type": "select",
@@ -120,7 +182,23 @@
         }
       ],
       "default": "center",
-      "label": "Mobile Content"
+      "label": "Mobile Content Position"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "options": [
+        {
+          "value": "row",
+          "label": "Image First"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Image Second"
+        }
+      ],
+      "default": "row",
+      "label": "Image Position"
     },
     {
       "type": "image_picker",
@@ -135,56 +213,12 @@
     {
       "type": "textarea",
       "id": "svg_text_icon",
-      "label": "Svg Icon"
+      "label": "Custom SVG"
     },
     {
       "type": "image_picker",
       "id": "svg_icon_img",
-      "label": "Svg Image"
-    },
-    {
-      "type": "header",
-      "content": "Padding"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding Top",
-      "default": 80
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding Bottom",
-      "default": 80
-    },
-    {
-      "type": "range",
-      "id": "mobile_padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Mobile Top",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "mobile_padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Mobile Bottom",
-      "default": 40
+      "label": "Handle Icon"
     }
   ],
   "blocks": [
@@ -227,18 +261,10 @@
             {
               "value": "h0",
               "label": "Large"
-            },
-            {
-              "value": "hxl",
-              "label": "Extra Large"
-            },
-            {
-              "value": "hxxl",
-              "label": "Extra Extra Large"
             }
           ],
           "default": "h1",
-          "label": "Medium"
+          "label": "Heading Size"
         }
       ]
     },
@@ -263,41 +289,26 @@
         {
           "type": "text",
           "id": "button_label",
-          "default": "Label",
-          "label": "Learn More",
-          "info": "Leave blank to hide"
+          "default": "Shop Now",
+          "label": "Button Label"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Link"
+          "label": "Button Link"
         },
         {
           "type": "checkbox",
           "id": "button_style_secondary",
           "default": false,
-          "label": "Outline Style"
+          "label": "Secondary Style"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "After Before comparison",
-      "blocks": [
-        {
-          "type": "caption"
-        },
-        {
-          "type": "heading"
-        },
-        {
-          "type": "text"
-        },
-        {
-          "type": "button"
-        }
-      ]
+      "name": "After Before comparison"
     }
   ]
 }

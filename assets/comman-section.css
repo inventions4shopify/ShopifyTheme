@@ -1,11 +1,27 @@
-.text-block >:first-child,
-.text-desc >*:first-child {
-    margin-top: 0;
-    padding-top: 0;
+.row {
+    flex-direction: row;
 }
 
-.text-desc >*:last-child,
-.text-block >:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
+.row-reverse {
+    flex-direction: row-reverse;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.column-reverse {
+    flex-direction: column-reverse;
+}
+
+.text-align-start {
+  text-align: start;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-end {
+  text-align: end;
 }
