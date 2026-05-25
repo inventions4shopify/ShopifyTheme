@@ -24,6 +24,7 @@
 
     {% # Load theme stylesheet %}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'comman-section.css' | asset_url | stylesheet_tag: preload: true }}
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}

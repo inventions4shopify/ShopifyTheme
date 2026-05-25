@@ -1,8 +1,8 @@
 {{ 'after-before-section.css' | asset_url | stylesheet_tag }}
 
 <div class="page-width">
-  <div class="cms-row {{ section.settings.image_position }} items-{{ section.settings.desktop_content_position }}">
-    <div class="cms-after-before-thumb">
+  <div class="cms-row flex-{{ section.settings.image_position }} items-{{ section.settings.desktop_content_position }}">
+    <div class="cms-cell--{{ section.settings.width }}">
       <div class="before-after-wrapper">
         <div class="before-after-container-inner" id="before-after-{{ section.id }}">
           {% if section.settings.after_image != blank %}
@@ -29,6 +29,20 @@
             </div>
           {% endif %}
 
+          <div class="cms-image-labels items-{{ section.settings.bedge_position }}">
+            {% if section.settings.after_text != blank %}
+              <div class="badge">
+                {{ section.settings.after_text }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.before_text != blank %}
+              <div class="badge">
+                {{ section.settings.before_text }}
+              </div>
+            {% endif %}
+          </div>
+
           <!-- Divider -->
           <div class="divider-line"></div>
 
@@ -46,7 +60,11 @@
                 height="24"
               >
             {% else %}
-              <span>↔</span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon" viewBox="0 0 16 16">
+                  <path d="M8 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8"/>
+                </svg>
+              </span>
             {% endif %}
 
           </div>
@@ -62,7 +80,7 @@
         </div>
       </div>
     </div>
-    <div class="cms-content">
+    <div class="cms-cell">
       <div class="text-block">
 
         {% for block in section.blocks %}
@@ -70,13 +88,13 @@
           {% case block.type %}
 
             {% when 'caption' %}
-              <span class="subheading">
+              <span class="sub-heading">
                 {{ block.settings.caption }}
               </span>
 
             {% when 'heading' %}
               {% if block.settings.heading != blank %}
-                <{{ block.settings.heading_size }} class="title {{ block.settings.heading_size }}">
+                <{{ block.settings.heading_size }} class="{{ block.settings.heading_size }}">
                   {{ block.settings.heading }}
                 </{{ block.settings.heading_size }}>
               {% endif %}
@@ -180,6 +198,26 @@
       "label": "Image Position"
     },
     {
+      "type": "select",
+      "id": "width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Width"
+    },
+    {
       "type": "image_picker",
       "id": "after_image",
       "label": "After Image"
@@ -188,6 +226,38 @@
       "type": "image_picker",
       "id": "before_image",
       "label": "Before Image"
+    },
+    {
+      "type": "text",
+      "id": "after_text",
+      "label": "After Text",
+      "default": "After"
+    },
+    {
+      "type": "text",
+      "id": "before_text",
+      "label": "Before Text",
+      "default": "Before"
+    },
+    {
+      "type": "select",
+      "id": "bedge_position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Top"
+        },
+        {
+          "value": "end",
+          "label": "Bottom"
+        },
+        {
+          "value": "alternate",
+          "label": "Alternate"
+        }
+      ],
+      "default": "alternate",
+      "label": "Bedge Position"
     },
     {
       "type": "textarea",
@@ -230,19 +300,19 @@
           "id": "heading_size",
           "options": [
             {
-              "value": "h2",
+              "value": "h3",
               "label": "Small"
             },
             {
-              "value": "h1",
+              "value": "h2",
               "label": "Medium"
             },
             {
-              "value": "h0",
+              "value": "h1",
               "label": "Large"
             }
           ],
-          "default": "h1",
+          "default": "h2",
           "label": "Heading Size"
         }
       ]

@@ -1,24 +1,17 @@
-.cms-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -15px;
-}
-
-.cms-after-before-thumb,
-.cms-content {
-  width: 100%;
-  padding: 0 15px;
+.after-before-section {
+  padding-top: var(--section-spacing-top);
+  padding-bottom: var(--section-spacing-bottom);
 }
 
 .before-after-wrapper {
   position: relative;
+  overflow: hidden;
+  border-radius: 2rem;
   width: 100%;
 }
 
 .before-after-container-inner {
   position: relative;
-  overflow: hidden;
-  border-radius: 20px;
 }
 
 .before-image-wrapper {
@@ -30,13 +23,15 @@
   overflow: hidden;
 }
 
-.before-image-wrapper img {
-    max-width: none;
-    height: 100%;
+.after-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.before-img {
-  height: 100%;
+.before-image-wrapper img {
+  max-height: 100%;
+  max-width: none;
   object-fit: cover;
 }
 
@@ -45,32 +40,35 @@
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 2px;
+  width: 0.2rem;
   background: #fff;
   transform: translateX(-50%);
   z-index: 2;
 }
 
 .divider-handle {
+  width: 3.8rem;
+  height: 3.8rem;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 58px;
-  height: 58px;
   background: #fff;
   border-radius: 100%;
   z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 5px 20px rgba(0,0,0,.15);
+  box-shadow: 0 0.5rem 2rem rgba(0,0,0,.15);
   pointer-events: none;
 }
 
 .divider-handle span {
-  font-size: 24px;
-  color: #000;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .slider-range {
@@ -79,35 +77,51 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  cursor: ew-resize;
+  cursor: col-resize;
   z-index: 5;
-}
-
-.cms-content .subheading {
-  display: inline-block;
-  margin-bottom: 15px;
-  font-size: 14px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.cms-content .title {
-  margin: 0 0 20px;
-}
-
-.cms-content .text-desc {
-  margin-bottom: 25px;
 }
 
 .cms-buttons-row {
   display: flex;
-  gap: 15px;
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 
-@media screen and (min-width: 768px) {
-    .cms-after-before-thumb,
-    .cms-content {
-        width: 50%;
-    }
+.cms-image-labels {
+  position: absolute;
+  z-index: 4;
+  top: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  align-items: baseline;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.4rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 3rem;
+  background: #000;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+
+.items-alternate .badge:last-child {
+  margin-top: auto;
+}
+
+@media (min-width: 992px) {
+  .divider-handle {
+    width: 5.8rem;
+    height: 5.8rem;
+  }
 }

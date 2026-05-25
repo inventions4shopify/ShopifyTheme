@@ -1,7 +1,7 @@
 {{ 'slideshow.css' | asset_url | stylesheet_tag }}
 
 {% style %}
-  .cms-slideshow-slide .media-overlay-content {
+  .cms-slideshow-main {
     height: 50rem;
     min-height: var(--section-height-{{ section.settings.slide_height }});
   }
@@ -110,9 +110,19 @@
   {%if section.blocks.size > 1 %}
   <div class="cms-slideshow-arrow-group icons-style-{{ section.settings.icons_shape }}">
     {% if section.settings.autoplay == false %}
-      <button class="cms-slide-button cms-slideshow-prev">
-        {% render 'icon', icon: 'chevron-left', width: '2.2rem', height: '2.2rem' %}
-      </button>
+      {% if section.settings.icons_style != 'none' %}
+        <button class="cms-slide-button cms-slideshow-prev">
+          {% if section.settings.icons_style == 'chevron' %}
+            {% render 'icon', icon: 'chevron-left', width: '2.2rem', height: '2.2rem' %}
+            {% elsif section.settings.icons_style == 'chevron_large' %}
+              {% render 'icon', icon: 'chevron-left', width: '2.8rem', height: '2.8rem' %}
+            {% elsif section.settings.icons_style == 'arrow' %}
+              {% render 'icon', icon: 'arrow-left', width: '2.2rem', height: '2.2rem' %}
+            {% elsif section.settings.icons_style == 'arrows_large' %}
+              {% render 'icon', icon: 'arrow-left', width: '2.8rem', height: '2.8rem' %}
+          {% endif %}
+        </button>
+      {% endif %}
     {% endif %}
 
     {% if section.settings.slideshow_controls_style == 'progress' %}
@@ -125,138 +135,257 @@
       {% endif %}
     {% endif %}
     {% if section.settings.autoplay == false %}
-      <button class="cms-slide-button cms-slideshow-next">
-        {% render 'icon', icon: 'chevron-right', width: '2.2rem', height: '2.2rem' %}
-      </button>
+      {% if section.settings.icons_style != 'none' %}
+        <button class="cms-slide-button cms-slideshow-next">
+          {% if section.settings.icons_style == 'chevron' %}
+            {% render 'icon', icon: 'chevron-right', width: '2.2rem', height: '2.2rem' %}
+          {% elsif section.settings.icons_style == 'chevron_large' %}
+            {% render 'icon', icon: 'chevron-right', width: '2.8rem', height: '2.8rem' %}
+          {% elsif section.settings.icons_style == 'arrow' %}
+            {% render 'icon', icon: 'arrow-right', width: '2.2rem', height: '2.2rem' %}
+          {% elsif section.settings.icons_style == 'arrows_large' %}
+            {% render 'icon', icon: 'arrow-right', width: '2.8rem', height: '2.8rem' %}
+          {% endif %}
+        </button>
+      {% endif %}
     {% endif %}
   </div>
   {% endif %}
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    const nextBtn = document.querySelector(".cms-slideshow-next"),
-          prevBtn = document.querySelector(".cms-slideshow-prev"),
-          dots = document.querySelectorAll(".cms-slideshow-dot button"),
-          slides = document.querySelectorAll(".cms-slideshow-slide"),
-          progressBar = document.querySelector(".cms-autoplay-progress-bar");
+  const slider = document.querySelector(".cms-slideshow-main"),
+        nextBtn = document.querySelector(".cms-slideshow-next"),
+        prevBtn = document.querySelector(".cms-slideshow-prev"),
+        dots = document.querySelectorAll(".cms-slideshow-dot button"),
+        slides = document.querySelectorAll(".cms-slideshow-slide"),
+        progressEl = document.querySelector(".cms-autoplay-progress"),
+        currentCounter = document.querySelector(".cms-current-slide"),
+        totalCounter = document.querySelector(".cms-total-slides");
 
-          let currentSlide = 0,
-              totalSlides = slides.length;
+  let currentSlide = 0,
+      totalSlides = slides.length;
 
-          // autoplay duration (5 sec)
-          const autoplayTime = {{ section.settings.autoplay_speed }} * 1000;
+  const autoplayEnabled = {{ section.settings.autoplay | json }};
+  const autoplayTime = {{ section.settings.autoplay_speed }} * 1000;
 
-          let autoplayInterval;
+  let autoplayTimeout;
 
-          function updateSlides() {
+  // =========================
+  // INIT TOTAL COUNTER
+  // =========================
+  if (totalCounter) {
+    totalCounter.textContent = String(totalSlides).padStart(2, "0");
+  }
 
-            slides.forEach((slide) => {
-              slide.classList.remove("active");
-            });
+  // =========================
+  // PROGRESS (CIRCULAR)
+  // =========================
+  function setProgress(deg) {
+    if (!progressEl) return;
+    progressEl.style.setProperty("--progress", deg + "deg");
+  }
 
-            dots.forEach((dot) => {
-              dot.classList.remove("active");
-            });
+  function startProgressBar() {
+    if (!progressEl) return;
 
-            slides[currentSlide].classList.add("active");
+    let start = performance.now();
 
-            if (dots[currentSlide]) {
-              dots[currentSlide].classList.add("active");
-            }
+    function animate(now) {
+      let elapsed = now - start;
+      let percent = Math.min(elapsed / autoplayTime, 1);
+      let deg = percent * 360;
 
-            // disable buttons
-            if (prevBtn) {
-              prevBtn.disabled = currentSlide === 0;
-              prevBtn.classList.toggle("disabled", currentSlide === 0);
-            }
+      setProgress(deg);
 
-            if (nextBtn) {
-              nextBtn.disabled = currentSlide === totalSlides - 1;
-              nextBtn.classList.toggle("disabled", currentSlide === totalSlides - 1);
-            }
+      if (percent < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
 
-            startProgress();
-          }
+    requestAnimationFrame(animate);
+  }
 
-          function startProgress() {
+  function resetProgress() {
+    setProgress(0);
+  }
 
-            const progress = document.querySelector(".cms-autoplay-progress");
+  // =========================
+  // COUNTER
+  // =========================
+  function updateCounter() {
+    if (currentCounter) {
+      currentCounter.textContent = String(currentSlide + 1).padStart(2, "0");
+    }
+  }
 
-            if (!progress) return;
+  // =========================
+  // SLIDES
+  // =========================
+  function updateSlides(direction = "next") {
 
-            let start = null;
+    slides.forEach((slide, index) => {
 
-            function animate(timestamp) {
+      slide.classList.remove(
+        "active",
+        "slide-out-left",
+        "slide-out-right",
+        "slide-in-right",
+        "slide-in-left"
+      );
 
-              if (!start) start = timestamp;
+      if (index === currentSlide) {
 
-              const elapsed = timestamp - start;
+        slide.classList.add("active");
 
-              const percent = Math.min(elapsed / autoplayTime, 1);
+        if (direction === "next") {
+          slide.classList.add("slide-in-right");
+        } else {
+          slide.classList.add("slide-in-left");
+        }
 
-              progress.style.setProperty(
-                "--progress",
-                `${percent * 360}deg`
-              );
+      } else {
 
-              if (percent < 1) {
-                requestAnimationFrame(animate);
-              }
-            }
+        if (direction === "next") {
+          slide.classList.add("slide-out-left");
+        } else {
+          slide.classList.add("slide-out-right");
+        }
+      }
+    });
 
-            progress.style.setProperty("--progress", `0deg`);
+    dots.forEach(dot => dot.classList.remove("active"));
 
-            requestAnimationFrame(animate);
-          }
+    if (dots[currentSlide]) {
+      dots[currentSlide].classList.add("active");
+    }
 
-          function startAutoplay() {
+    if (prevBtn) {
+      prevBtn.disabled = currentSlide === 0;
+      prevBtn.classList.toggle("disabled", currentSlide === 0);
+    }
 
-            autoplayInterval = setInterval(() => {
+    if (nextBtn) {
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+      nextBtn.classList.toggle("disabled", currentSlide === totalSlides - 1);
+    }
+  }
 
-              if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-              } else {
-                currentSlide = 0;
-              }
+  // =========================
+  // AUTOPLAY
+  // =========================
+  function startAutoplay() {
 
-              updateSlides();
+    clearTimeout(autoplayTimeout);
 
-            }, autoplayTime);
-          }
+    resetProgress();
+    startProgressBar();
 
-          // buttons
-          if (nextBtn) {
-            nextBtn.addEventListener("click", () => {
-              if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-                updateSlides();
-              }
-            });
-          }
+    autoplayTimeout = setTimeout(() => {
 
-          if (prevBtn) {
-            prevBtn.addEventListener("click", () => {
-              if (currentSlide > 0) {
-                currentSlide--;
-                updateSlides();
-              }
-            });
-          }
+      nextSlide();
 
-          // dots
-          dots.forEach((dot, index) => {
-            dot.addEventListener("click", () => {
-              currentSlide = index;
-              updateSlides();
-            });
-          });
+      if (autoplayEnabled && currentSlide < totalSlides - 1) {
+        startAutoplay();
+      }
 
-          updateSlides();
-          startAutoplay();
+    }, autoplayTime);
+  }
 
+  // =========================
+  // NEXT SLIDE (STOP AT LAST)
+  // =========================
+  function nextSlide() {
+
+    if (currentSlide >= totalSlides - 1) return;
+
+    resetProgress();
+
+    currentSlide++;
+
+    updateSlides("next");
+    updateCounter();
+
+    if (autoplayEnabled) startAutoplay();
+  }
+
+  // =========================
+  // PREV SLIDE (STOP AT FIRST)
+  // =========================
+  function prevSlide() {
+
+    if (currentSlide <= 0) return;
+
+    resetProgress();
+
+    currentSlide--;
+
+    updateSlides("prev");
+    updateCounter();
+
+    if (autoplayEnabled) startAutoplay();
+  }
+
+  // =========================
+  // BUTTONS
+  // =========================
+  if (nextBtn) nextBtn.addEventListener("click", nextSlide);
+  if (prevBtn) prevBtn.addEventListener("click", prevSlide);
+
+  // =========================
+  // DOTS
+  // =========================
+  dots.forEach((dot, index) => {
+
+    dot.addEventListener("click", () => {
+
+      const direction = index > currentSlide ? "next" : "prev";
+
+      currentSlide = index;
+
+      updateSlides(direction);
+      updateCounter();
+
+      if (autoplayEnabled) startAutoplay();
+    });
   });
+
+  // =========================
+  // TOUCH / DRAG
+  // =========================
+  let startX = 0, endX = 0;
+
+  if (slider) {
+    slider.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    slider.addEventListener("touchmove", (e) => {
+      endX = e.touches[0].clientX;
+    });
+
+    slider.addEventListener("touchend", () => {
+
+      let diff = startX - endX;
+
+      if (diff > 50) nextSlide();
+      if (diff < -50) prevSlide();
+    });
+  }
+
+  // =========================
+  // INIT
+  // =========================
+  updateSlides();
+  updateCounter();
+
+  if (autoplayEnabled) {
+    startAutoplay();
+  }
+
+});
 </script>
 
 {% schema %}
@@ -298,7 +427,7 @@
           "label": "Full Width"
         }
       ],
-      "default": "full-width"
+      "default": "page-width"
     },
     {
       "type": "select",
