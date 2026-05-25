@@ -1,7 +1,7 @@
 {{ 'after-before-section.css' | asset_url | stylesheet_tag }}
 
 <div class="page-width">
-  <div class="cms-row {{ section.settings.image_position }} media-overlay-content--{{ section.settings.desktop_content_position }} mobile--align--{{ section.settings.mobile_content_position }}">
+  <div class="cms-row {{ section.settings.image_position }} items-{{ section.settings.desktop_content_position }}">
     <div class="cms-after-before-thumb">
       <div class="before-after-wrapper">
         <div class="before-after-container-inner" id="before-after-{{ section.id }}">
@@ -162,26 +162,6 @@
       ],
       "default": "start",
       "label": "Desktop Content Position"
-    },
-    {
-      "type": "select",
-      "id": "mobile_content_position",
-      "options": [
-        {
-          "value": "start",
-          "label": "Start"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "end",
-          "label": "End"
-        }
-      ],
-      "default": "center",
-      "label": "Mobile Content Position"
     },
     {
       "type": "select",

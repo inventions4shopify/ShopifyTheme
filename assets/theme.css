@@ -334,14 +334,51 @@ svg {
     flex-direction: column-reverse;
 }
 
-.text-align-start {
-  text-align: start;
+.text-left {
+  text-align: left;
 }
 
-.text-align-center {
+.text-center {
   text-align: center;
 }
 
-.text-align-end {
-  text-align: end;
+.text-right {
+  text-align: right;
+}
+ 
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.items-stretch {
+  align-items: stretch;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
 }
