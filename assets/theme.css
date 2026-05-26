@@ -628,7 +628,7 @@ canvas {
 
 .font-normal {
   font-style: normal;
-
+}
 /* Aspect ratios */
 .aspect-square {
   aspect-ratio: 1 / 1;

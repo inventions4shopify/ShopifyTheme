@@ -1,7 +1,7 @@
 {% comment %}
-----------------------------------------------------------------------------------------------------------------------
-SECTION: rich-text.liquid
-----------------------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------
+  SECTION: rich-text.liquid
+  ----------------------------------------------------------------------------------------------------------------------
 {% endcomment %}
 
 {%- liquid
@@ -41,11 +41,9 @@ SECTION: rich-text.liquid
 
 <div {%- render 'section-variables', section: section, class: 'rich-text__section' -%}>
   <div class="{{ container_class }}">
-
     <div class="rich-text__body flex flex-col {{ align_class }} {{ gap_class }}">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
-
           {%- when 'subheading' -%}
             {%- assign sub_align = block.settings.subheading_alignment | default: 'inherit' -%}
             {%- assign sub_color = block.settings.subheading_color -%}
@@ -63,11 +61,11 @@ SECTION: rich-text.liquid
             {%- endif -%}
 
           {%- when 'heading' -%}
-            {%- assign tag        = block.settings.heading_tag       | default: 'h2' -%}
-            {%- assign size       = block.settings.heading_size      | default: 'h2' -%}
+            {%- assign tag = block.settings.heading_tag | default: 'h2' -%}
+            {%- assign size = block.settings.heading_size | default: 'h2' -%}
             {%- assign head_align = block.settings.heading_alignment | default: 'inherit' -%}
             {%- assign head_color = block.settings.heading_color -%}
-            {%- assign head_grad  = block.settings.heading_gradient -%}
+            {%- assign head_grad = block.settings.heading_gradient -%}
 
             {%- capture heading_style -%}
               {%- if head_grad != blank -%}
@@ -93,8 +91,8 @@ SECTION: rich-text.liquid
             {%- endif -%}
 
           {%- when 'text' -%}
-            {%- assign text_align  = block.settings.text_alignment | default: 'inherit' -%}
-            {%- assign text_width  = block.settings.text_width | default: '' -%}
+            {%- assign text_align = block.settings.text_alignment | default: 'inherit' -%}
+            {%- assign text_width = block.settings.text_width | default: '' -%}
             {%- assign block_color = block.settings.text_color -%}
             <div
               class="rich-text__text ps-rte{% if text_align != 'inherit' %} text-{{ text_align }}{% endif %}"
@@ -118,12 +116,12 @@ SECTION: rich-text.liquid
                 {{ block.shopify_attributes }}
               >
                 {%- render 'button',
-                  text:             block.settings.link_label,
-                  href:             block.settings.link,
-                  style:            block.settings.button_style,
+                  text: block.settings.link_label,
+                  href: block.settings.link,
+                  style: block.settings.button_style,
                   background_color: block.settings.button_background_color,
-                  text_color:       block.settings.button_text_color,
-                  outline_color:    block.settings.button_outline_color
+                  text_color: block.settings.button_text_color,
+                  outline_color: block.settings.button_outline_color
                 -%}
               </div>
             {%- endif -%}
@@ -135,11 +133,9 @@ SECTION: rich-text.liquid
               aria-hidden="true"
               {{ block.shopify_attributes }}
             ></div>
-
         {%- endcase -%}
       {%- endfor -%}
     </div>
-
   </div>
 </div>
 
@@ -159,10 +155,10 @@ SECTION: rich-text.liquid
       "label": "Container width",
       "options": [
         { "value": "page-width", "label": "Page width" },
-        { "value": "narrow",     "label": "Narrow" },
-        { "value": "small",      "label": "Small" },
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "small", "label": "Small" },
         { "value": "full-width", "label": "Full width" },
-        { "value": "custom",     "label": "Custom" }
+        { "value": "custom", "label": "Custom" }
       ],
       "default": "small"
     },
@@ -182,9 +178,9 @@ SECTION: rich-text.liquid
       "id": "content_alignment",
       "label": "Content alignment",
       "options": [
-        { "value": "left",   "label": "Left" },
+        { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right",  "label": "Right" }
+        { "value": "right", "label": "Right" }
       ],
       "default": "center"
     },
@@ -194,12 +190,12 @@ SECTION: rich-text.liquid
       "label": "Block gap",
       "options": [
         { "value": "default", "label": "Default" },
-        { "value": "8",       "label": "Extra small" },
-        { "value": "12",      "label": "Small" },
-        { "value": "16",      "label": "Medium" },
-        { "value": "24",      "label": "Large" },
-        { "value": "32",      "label": "Extra large" },
-        { "value": "48",      "label": "2× large" }
+        { "value": "8", "label": "Extra small" },
+        { "value": "12", "label": "Small" },
+        { "value": "16", "label": "Medium" },
+        { "value": "24", "label": "Large" },
+        { "value": "32", "label": "Extra large" },
+        { "value": "48", "label": "2× large" }
       ],
       "default": "24"
     },
@@ -317,9 +313,9 @@ SECTION: rich-text.liquid
           "label": "Alignment",
           "options": [
             { "value": "inherit", "label": "Inherit from section" },
-            { "value": "left",    "label": "Left" },
-            { "value": "center",  "label": "Center" },
-            { "value": "right",   "label": "Right" }
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
           ],
           "default": "inherit"
         },
@@ -351,9 +347,9 @@ SECTION: rich-text.liquid
           "label": "Alignment",
           "options": [
             { "value": "inherit", "label": "Inherit from section" },
-            { "value": "left",    "label": "Left" },
-            { "value": "center",  "label": "Center" },
-            { "value": "right",   "label": "Right" }
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
           ],
           "default": "inherit"
         },
@@ -380,9 +376,9 @@ SECTION: rich-text.liquid
           "label": "Alignment",
           "options": [
             { "value": "inherit", "label": "Inherit from section" },
-            { "value": "left",    "label": "Left" },
-            { "value": "center",  "label": "Center" },
-            { "value": "right",   "label": "Right" }
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
           ],
           "default": "inherit"
         },
@@ -391,7 +387,7 @@ SECTION: rich-text.liquid
           "id": "text_width",
           "label": "Text max-width",
           "options": [
-            { "value": "",      "label": "Full" },
+            { "value": "", "label": "Full" },
             { "value": "80rem", "label": "Narrow" },
             { "value": "60rem", "label": "Extra narrow" },
             { "value": "48rem", "label": "Small" }
@@ -426,9 +422,9 @@ SECTION: rich-text.liquid
           "label": "Alignment",
           "options": [
             { "value": "inherit", "label": "Inherit from section" },
-            { "value": "left",    "label": "Left" },
-            { "value": "center",  "label": "Center" },
-            { "value": "right",   "label": "Right" }
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
           ],
           "default": "inherit"
         },
@@ -469,12 +465,7 @@ SECTION: rich-text.liquid
   "presets": [
     {
       "name": "Rich text",
-      "blocks": [
-        { "type": "subheading" },
-        { "type": "heading" },
-        { "type": "text" },
-        { "type": "button" }
-      ]
+      "blocks": [{ "type": "subheading" }, { "type": "heading" }, { "type": "text" }, { "type": "button" }]
     }
   ]
 }
