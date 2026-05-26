@@ -1,0 +1,411 @@
+{{ 'faq.css' | asset_url | stylesheet_tag }}
+
+<style>
+
+    .cms-faq-item {
+      border: 0.1rem solid {%if section.settings.faq_button_border_color != blank %}{{ section.settings.faq_button_border_color }}{% else %}#ccc{% endif %};
+      border-radius: {%if section.settings.faq_button_br != blank %}{{ section.settings.faq_button_br }}{% else %}0{% endif %}px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cms-faq-question {
+        --button-background: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
+        --button-text: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
+        border: 0;
+        border-radius: 0;
+    }
+
+    .cms-faq-question {{ section.settings.faq_heading_size }} {
+        color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
+    }
+
+    .cms-faq-content .cms-cell--{{ section.settings.width }} >* {
+      postion: relative;
+      overflow: hidden;
+      border-radius: var(--spacing-20);
+    }
+
+    .cms-faq-answer-inner {
+      {%if section.settings.faq_button_color != blank %}
+        padding: 1rem 1.8rem;
+      {% else %}
+        padding: 0 1.8rem 1rem 1.8rem;
+      {% endif %}
+  }
+</style>
+
+<div class="cms-faq-main">
+  <div class="{{ section.settings.section_width }}">
+    <div class="cms-faq-content">
+        <div class="faq-content-head text-{{ section.settings.text_alignment }}">
+        
+        {% if section.settings.subheading != blank %}
+            <span class="faq-content-subheading">
+            {{ section.settings.subheading }}
+            </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+            <h2 class="faq-content-heading">
+            {{ section.settings.heading }}
+            </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+            {{ section.settings.description }}
+        {% endif %}
+
+        {% if section.settings.link_label != blank %}
+            {% render 'button',
+            text: section.settings.link_label,
+            href: section.settings.link,
+            background_color: section.settings.button_background_color,
+            text_color: section.settings.button_text_color,
+            outline_color: section.settings.button_outline_color
+            %}
+        {% endif %}
+
+        </div>
+
+        <div class="cms-row flex-{{ section.settings.image-position }}">
+            {% if section.settings.image != blank %}
+                <div class="cms-cell--{{ section.settings.width }} image_media--{{ section.settings.media_height }}">
+                    <picture>
+                        {% if section.settings.mb-image != blank %}
+                            <source
+                            media="(max-width: 767px)"
+                            srcset="{{ section.settings.mb-image | image_url }}"
+                            >
+                        {% endif %}
+                        {% if section.settings.image != blank %}
+                            <img
+                            src="{{ section.settings.image | image_url }}"
+                            alt="{{ section.settings.image.alt | escape }}"
+                            loading="lazy"
+                            width="auto"
+                            height="auto"
+                            >
+                        {% endif %}
+                    </picture>
+                </div>
+            {% endif %}
+            <div class="cms-cell justify-{{ section.settings.faq_alignment }}">
+                <div class="cms-faq-wrapper">
+                    {% for block in section.blocks %}
+                        <div class="cms-faq-item" {{ block.shopify_attributes }}>
+                            <button class="cms-faq-question" type="button">
+                                <{{ section.settings.faq_heading_size }} class="faq-title {{ section.settings.faq_heading_size }}">{{ block.settings.heading }}</{{ section.settings.faq_heading_size }}>
+                                <span class="cms-faq-icon">
+                                  {% render 'icon', icon: 'chevron-bottom', width: '2rem', height: '2rem' %}
+                                </span>
+                            </button>
+                            <div class="cms-faq-answer">
+                                <div class="cms-faq-answer-inner">
+                                {{ block.settings.description }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initFaq() {
+
+    const faqItems = document.querySelectorAll('.cms-faq-item');
+
+    faqItems.forEach((item) => {
+
+      const question = item.querySelector('.cms-faq-question');
+
+      question.addEventListener('click', () => {
+
+        const isActive = item.classList.contains('active');
+
+        faqItems.forEach((faq) => {
+          faq.classList.remove('active');
+        });
+
+        if (!isActive) {
+          item.classList.add('active');
+        }
+
+      });
+
+    });
+
+  }
+
+  document.addEventListener('DOMContentLoaded', initFaq);
+
+  document.addEventListener('shopify:section:load', initFaq);
+</script>
+
+{% schema %}
+{
+  "name": "Faq",
+  "class": "section cms-faq",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page Width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Width"
+    },
+    {
+        "type": "header",
+        "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "image-position",
+      "options": [
+        {
+          "value": "row",
+          "label": "Image First"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Image Second"
+        }
+      ],
+      "default": "row",
+      "label": "Image Position"
+    },
+    {
+      "type": "image_picker",
+      "id": "mb-image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "select",
+      "id": "media_height",
+      "label": "Media height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+        "type": "header",
+        "content": "Content"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "End"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link Label"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button Background Color"
+    },
+    {
+      "type": "color",
+      "id": "button_outline_color",
+      "label": "Button Outline Color"
+    },
+    {
+        "type": "header",
+        "content": "Faq style"
+    },
+    {
+      "type": "select",
+      "id": "faq_alignment",
+      "label": "Faq Alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "faq_heading_size",
+      "label": "Faq Heading Size",
+      "options": [
+        {
+          "value": "h4",
+          "label": "Large"
+        },
+        {
+          "value": "h5",
+          "label": "Medium"
+        },
+        {
+          "value": "h6",
+          "label": "Small"
+        }
+      ],
+      "default": "h6"
+    },
+    {
+        "type": "color",
+        "id": "faq_button_color",
+        "label": "Faq Button Background Color"
+    },
+    {
+        "type": "color",
+        "id": "faq_heading_color",
+        "label": "Faq Heading Color"
+    },
+    {
+        "type": "color",
+        "id": "faq_button_border_color",
+        "label": "Faq Button Border Color"
+    },
+    {
+        "type": "range",
+        "id": "faq_button_br",
+        "label": "Faq Button Border Radius",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "unit": "px",
+        "default": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Faq",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Faq",
+      "blocks": [
+        {
+          "type": "faq"
+        },
+      ]
+    }
+  ]
+}
+{% endschema %}

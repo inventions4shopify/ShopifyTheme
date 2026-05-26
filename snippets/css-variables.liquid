@@ -200,14 +200,6 @@
         --swatch-size-lg: 3.6rem;
       }
 
-      @custom-media --xxs (min-width: 320px);
-      @custom-media --xs (min-width: 576px);
-      @custom-media --sm (min-width: 768px);
-      @custom-media --md (min-width: 992px);
-      @custom-media --lg (min-width: 1200px);
-      @custom-media --xl (min-width: 1400px);
-      @custom-media --xxl (min-width: 1600px);
-
       @media (min-width: 768px) {
         :root {
           --text-base: {{ settings.body_text | times: 0.1 }}rem;
