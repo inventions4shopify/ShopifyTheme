@@ -20,7 +20,7 @@
   .announcement-bar-text p,
   .announcement-bar-text a{
     margin: 0;
-    color: {{ section.settings.text_color }};
+    color: var(--text-color);
     text-decoration: none;
     font-size: var(--text-sm);
   }
@@ -41,9 +41,9 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: {{ section.settings.background_color}};
+    background: var(--color-background);
     border: 0;
-    color: {{ section.settings.text_color }};
+    color: var(--text-color);
     cursor: pointer;
     z-index: 2;
     font-size: 20px;
@@ -158,7 +158,6 @@
               </div>
             {% endfor %}
           </div>
-
           <div class="announcement-marquee-content">
             {% for block in section.blocks %}
               <div class="announcement-wrap">
