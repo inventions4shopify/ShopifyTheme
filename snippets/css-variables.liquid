@@ -1,197 +1,248 @@
 {% style %}
-  {% # Loads all font variantions with display: swap %}
-  {{ settings.type_heading_font | font_face: font_display: 'swap' }}
-  {{ settings.type_heading_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-  {{ settings.type_heading_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_heading_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_subheading_font | font_face: font_display: 'swap' }}
-  {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {% # Loads all font variantions with display: swap %}
+      {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+      {{ settings.type_heading_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+      {{ settings.type_heading_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+      {{ settings.type_heading_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+      {{ settings.type_subheading_font | font_face: font_display: 'swap' }}
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
 
-  :root {
-    --font-heading-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
-    --font-heading-style: {{ settings.type_heading_font.style }};
-    --font-heading-weight: {{ settings.type_heading_font.weight }};
-    --font-subheading-family: {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
-    --font-subheading-style: {{ settings.type_subheading_font.style }};
-    --font-subheading-weight: {{ settings.type_subheading_font.weight }};
-    --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-    --font-body-style: {{ settings.type_body_font.style }};
-    --font-body-weight: {{ settings.type_body_font.weight }};
+      :root {
+        --bp-xxs: 320px;
+        --bp-xs: 576px;
+        --bp-sm: 768px;
+        --bp-md: 992px;
+        --bp-lg: 1200px;
+        --bp-xl: 1400px;
+        --bp-2xl: 1600px;
 
-    /* Page width */
-    --page-width: {{ settings.page_width_max }}px;
+        --font-heading-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+        --font-heading-style: {{ settings.type_heading_font.style }};
+        --font-heading-weight: {{ settings.type_heading_font.weight }};
+        --font-subheading-family: {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
+        --font-subheading-style: {{ settings.type_subheading_font.style }};
+        --font-subheading-weight: {{ settings.type_subheading_font.weight }};
+        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+        --font-body-style: {{ settings.type_body_font.style }};
+        --font-body-weight: {{ settings.type_body_font.weight }};
 
-    /* Section spacing - Desktop */
-    --section-spacing-top-desktop: {{ settings.section_spacing_top_desktop }}px;
-    --section-spacing-bottom-desktop: {{ settings.section_spacing_bottom_desktop }}px;
+        /* Page width */
+        --page-width: {{ settings.page_width_max }}px;
+        --page-width-narrow: 120rem;
+        --page-width-small: 80rem;
+        --page-width-xs-small: 55rem;
 
-    /* Section spacing - Tablet (calculated as average of desktop and mobile) */
-    --section-spacing-top-tablet: {{ settings.section_spacing_top_desktop | plus: settings.section_spacing_top_mobile | divided_by: 2 }}px;
-    --section-spacing-bottom-tablet: {{ settings.section_spacing_bottom_desktop | plus: settings.section_spacing_bottom_mobile | divided_by: 2 }}px;
+        /* Section spacing - Desktop */
+        --section-spacing-top-desktop: {{ settings.section_spacing_top_desktop }}px;
+        --section-spacing-bottom-desktop: {{ settings.section_spacing_bottom_desktop }}px;
 
-    /* Section spacing - Mobile */
-    --section-spacing-top-mobile: {{ settings.section_spacing_top_mobile }}px;
-    --section-spacing-bottom-mobile: {{ settings.section_spacing_bottom_mobile }}px;
+        /* Section spacing - Tablet (calculated as average of desktop and mobile) */
+        --section-spacing-top-tablet: {{ settings.section_spacing_top_desktop | plus: settings.section_spacing_top_mobile | divided_by: 2 }}px;
+        --section-spacing-bottom-tablet: {{ settings.section_spacing_bottom_desktop | plus: settings.section_spacing_bottom_mobile | divided_by: 2 }}px;
 
-    /* Section spacing - Current (defaults to mobile) */
-    --section-spacing-top: var(--section-spacing-top-mobile);
-    --section-spacing-bottom: var(--section-spacing-bottom-mobile);
+        /* Section spacing - Mobile */
+        --section-spacing-top-mobile: {{ settings.section_spacing_top_mobile }}px;
+        --section-spacing-bottom-mobile: {{ settings.section_spacing_bottom_mobile }}px;
 
-    /* Grid spacing - Desktop */
-    --grid-spacing-desktop: {{ settings.grid_spacing_desktop }}px;
+        /* Section spacing - Current (defaults to mobile) */
+        --section-spacing-top: var(--section-spacing-top-mobile);
+        --section-spacing-bottom: var(--section-spacing-bottom-mobile);
 
-    /* Grid spacing - Tablet (calculated as average of desktop and mobile) */
-    --grid-spacing-tablet: {{ settings.grid_spacing_desktop | plus: settings.grid_spacing_mobile | divided_by: 2 }}px;
+        /* Grid spacing - Desktop */
+        --grid-spacing-desktop: {{ settings.grid_spacing_desktop }}px;
 
-    /* Grid spacing - Mobile */
-    --grid-spacing-mobile: {{ settings.grid_spacing_mobile }}px;
+        /* Grid spacing - Tablet (calculated as average of desktop and mobile) */
+        --grid-spacing-tablet: {{ settings.grid_spacing_desktop | plus: settings.grid_spacing_mobile | divided_by: 2 }}px;
 
-    /* Grid spacing - Current (defaults to mobile) */
-    --grid-spacing: var(--grid-spacing-mobile);
+        /* Grid spacing - Mobile */
+        --grid-spacing-mobile: {{ settings.grid_spacing_mobile }}px;
 
-    /* General colors */
-    --color-background: {{ settings.background_color.rgb }};
-    --color-heading: {{ settings.heading_color.rgb }};
-    --color-subheading: {{ settings.subheading_color.rgb }};
-    --color-body-text: {{ settings.body_text_color.rgb }};
-    --color-success: {{ settings.success_color.rgb }};
-    --color-warning: {{ settings.warning_color.rgb }};
-    --color-error: {{ settings.error_color.rgb }};
-    --color-border: {{ settings.border_color.rgb }};
-    --color-border-opacity: {{ settings.border_opacity | default: 1 }};
+        /* Grid spacing - Current (defaults to mobile) */
+        --grid-spacing: var(--grid-spacing-mobile);
 
-    /* Header colors */
-    --color-header-background: {{ settings.header_background_color.rgb }};
-    --color-header-text: {{ settings.header_text_color.rgb }};
-    --color-header-hover-text: {{ settings.header_hover_text_color.rgb }};
+        /* General colors */
+        --color-background: {{ settings.background_color.rgb }};
+        --color-heading: {{ settings.heading_color.rgb }};
+        --color-subheading: {{ settings.subheading_color.rgb }};
+        --color-body-text: {{ settings.body_text_color.rgb }};
+        --color-success: {{ settings.success_color.rgb }};
+        --color-warning: {{ settings.warning_color.rgb }};
+        --color-error: {{ settings.error_color.rgb }};
+        --color-border: {{ settings.border_color.rgb }};
+        --color-border-opacity: {{ settings.border_opacity | default: 1 }};
 
-    /* Footer colors */
-    --color-footer-background: {{ settings.footer_background_color.rgb }};
-    --color-footer-text: {{ settings.footer_text_color.rgb }};
-    --color-footer-hover-text: {{ settings.footer_hover_text_color.rgb }};
+        /* Header colors */
+        --color-header-background: {{ settings.header_background_color.rgb }};
+        --color-header-text: {{ settings.header_text_color.rgb }};
+        --color-header-hover-text: {{ settings.header_hover_text_color.rgb }};
 
-    /* Primary button colors */
-    --color-button-primary-text: {{ settings.primary_button_text_color.rgb }};
-    --color-button-primary-background: {{ settings.primary_button_background_color.rgb }};
-    --color-button-primary-outline: {{ settings.primary_button_outline_color.rgb }};
+        /* Footer colors */
+        --color-footer-background: {{ settings.footer_background_color.rgb }};
+        --color-footer-text: {{ settings.footer_text_color.rgb }};
+        --color-footer-hover-text: {{ settings.footer_hover_text_color.rgb }};
 
-    /* Secondary button colors */
-    --color-button-secondary-text: {{ settings.secondary_button_text_color }};
-    --color-button-secondary-background: {{ settings.secondary_button_background_color.rgb }};
-    --color-button-secondary-outline: {{ settings.secondary_button_outline_color.rgb }};
+        /* Primary button colors */
+        --color-button-primary-text: {{ settings.primary_button_text_color.rgb }};
+        --color-button-primary-background: {{ settings.primary_button_background_color.rgb }};
+        --color-button-primary-outline: {{ settings.primary_button_outline_color.rgb }};
 
-    /* Product card colors */
-    --color-product-card-background: {{ settings.product_card_background_color.rgb }};
-    --color-product-card-text: {{ settings.product_card_text_color.rgb }};
-    --color-product-star-rating: {{ settings.product_star_rating_color.rgb }};
+        /* Secondary button colors */
+        --color-button-secondary-text: {{ settings.secondary_button_text_color.rgb }};
+        --color-button-secondary-background: {{ settings.secondary_button_background_color.rgb }};
+        --color-button-secondary-outline: {{ settings.secondary_button_outline_color.rgb }};
 
-    /* Product badge colors */
-    --color-sale-badge-background: {{ settings.sale_badge_background_color.rgb }};
-    --color-sale-badge-text: {{ settings.sale_badge_text_color.rgb }};
-    --color-sold-badge-background: {{ settings.sold_badge_background_color.rgb }};
-    --color-sold-badge-text: {{ settings.sold_badge_text_color.rgb }};
-    --color-custom-badge-background: {{ settings.custom_badge_background_color.rgb }};
-    --color-custom-badge-text: {{ settings.custom_badge_text_color.rgb }};
+        /* Product card colors */
+        --color-product-card-background: {{ settings.product_card_background_color.rgb }};
+        --color-product-card-text: {{ settings.product_card_text_color.rgb }};
+        --color-product-star-rating: {{ settings.product_star_rating_color.rgb }};
 
-    --text-base: {{ settings.mobile_body_text | times: 0.1 }}rem;
-    --text-xss: calc(var(--text-base) * 0.75);
-    --text-xs: calc(var(--text-base) * 0.875);
-    --text-sm: calc(var(--text-base) * 0.9375);
-    --text-lg: calc(var(--text-base) * 1.125);
-    --text-xlg: calc(var(--text-base) * 1.25);
-		--body-letter-spacing: {{ settings.body_text_letter_spacing }}rem;
+        /* Product badge colors */
+        --color-sale-badge-background: {{ settings.sale_badge_background_color.rgb }};
+        --color-sale-badge-text: {{ settings.sale_badge_text_color.rgb }};
+        --color-sold-badge-background: {{ settings.sold_badge_background_color.rgb }};
+        --color-sold-badge-text: {{ settings.sold_badge_text_color.rgb }};
+        --color-custom-badge-background: {{ settings.custom_badge_background_color.rgb }};
+        --color-custom-badge-text: {{ settings.custom_badge_text_color.rgb }};
 
-    /* spacing variable */
-    --spacing-2: 0.2rem;
-    --spacing-4: 0.4rem;
-    --spacing-6: 0.6rem;
-    --spacing-8: 0.8rem;
-    --spacing-12: 1.2rem;
-    --spacing-16: 1.6rem;
-    --spacing-20: 2rem;
-    --spacing-24: 2.4rem;
-    --spacing-28: 2.8rem;
-    --spacing-32: 3.2rem;
-    --spacing-40: 4rem;
-    --spacing-48: 4.8rem;
-    --spacing-56: 5.6rem;
-    --spacing-64: 6.4rem;
-    --spacing-72: 7.2rem;
-    --spacing-80: 8rem;
-    --spacing-96: 9.6rem;
-    --spacing-100: 10rem;
-    --spacing-112: 11.2rem;
-    --spacing-128: 12.8rem;
-    --spacing-144: 14.4rem;
-    --spacing-160: 16rem;
-    --spacing-192: 19.2rem;
-    --spacing-224: 22.4rem;
-    --spacing-240: 24rem;
+        /* spacing variable */
+        --spacing-2: 0.2rem;
+        --spacing-4: 0.4rem;
+        --spacing-6: 0.6rem;
+        --spacing-8: 0.8rem;
+        --spacing-12: 1.2rem;
+        --spacing-16: 1.6rem;
+        --spacing-20: 2rem;
+        --spacing-24: 2.4rem;
+        --spacing-28: 2.8rem;
+        --spacing-32: 3.2rem;
+        --spacing-40: 4rem;
+        --spacing-48: 4.8rem;
+        --spacing-56: 5.6rem;
+        --spacing-64: 6.4rem;
+        --spacing-72: 7.2rem;
+        --spacing-80: 8rem;
+        --spacing-96: 9.6rem;
+        --spacing-100: 10rem;
+        --spacing-112: 11.2rem;
+        --spacing-128: 12.8rem;
+        --spacing-144: 14.4rem;
+        --spacing-160: 16rem;
+        --spacing-192: 19.2rem;
+        --spacing-224: 22.4rem;
+        --spacing-240: 24rem;
 
-		/* heading styles */
-		--text-h0: {%- if settings.heading_size == "large" -%} 5.4rem {%- elsif settings.heading_size == "medium" -%} 4.4rem {%- else -%} 4.4rem {%- endif -%};
-		--text-h1: {%- if settings.heading_size == "large" -%} 4.2rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.8rem {%- endif -%};
-		--text-h2: {%- if settings.heading_size == "large" -%} 3.4rem {%- elsif settings.heading_size == "medium" -%} 3rem {%- else -%} 3.2rem {%- endif -%};
-		--text-h3: {%- if settings.heading_size == "large" -%} 2.6rem {%- elsif settings.heading_size == "medium" -%} 2.2rem {%- else -%} 2rem {%- endif -%};
-		--text-h4: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2rem {%- else -%} 1.8rem {%- endif -%};
-		--text-h5: {%- if settings.heading_size == "large" -%} 1.8rem {%- elsif settings.heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
-		--text-h6: {%- if settings.heading_size == "large" -%} 1.6rem {%- elsif settings.heading_size == "medium" -%} 1.4rem {%- else -%} 1.2rem {%- endif -%};
-		--text-letter-spacing: {{ settings.heading_letter_spacing }}rem;
-		--heading-transform: {{ settings.heading_text_transform }};
-		
-		--sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 1.8rem {%- elsif settings.sub_heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
-		--sub-heading-letter-spacing: {{ settings.subheading_letter_spacing }}rem;
-		--sub-heading-transform: {{ settings.subheading_text_transform }};
+    		/* heading styles */
+    		--text-h0: {%- if settings.heading_size == "large" -%} 5.4rem {%- elsif settings.heading_size == "medium" -%} 4.4rem {%- else -%} 4.4rem {%- endif -%};
+    		--text-h1: {%- if settings.heading_size == "large" -%} 4.2rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.8rem {%- endif -%};
+    		--text-h2: {%- if settings.heading_size == "large" -%} 3.4rem {%- elsif settings.heading_size == "medium" -%} 3rem {%- else -%} 3.2rem {%- endif -%};
+    		--text-h3: {%- if settings.heading_size == "large" -%} 2.6rem {%- elsif settings.heading_size == "medium" -%} 2.2rem {%- else -%} 2rem {%- endif -%};
+    		--text-h4: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2rem {%- else -%} 1.8rem {%- endif -%};
+    		--text-h5: {%- if settings.heading_size == "large" -%} 1.8rem {%- elsif settings.heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
+    		--text-h6: {%- if settings.heading_size == "large" -%} 1.6rem {%- elsif settings.heading_size == "medium" -%} 1.4rem {%- else -%} 1.2rem {%- endif -%};
+    		--text-letter-spacing: {{ settings.heading_letter_spacing }}rem;
+    		--heading-transform: {{ settings.heading_text_transform }};
 
-    /* height variable */
-    --section-height-auto: auto;
-    --section-height-small: 35rem;
-    --section-height-medium: 45rem;
-    --section-height-large: 65rem;
-    --section-height-fullscreen: 100dvh;
-  }
-	
-  @media(min-width: 768px) {
-    :root {
-      --text-base: {{ settings.body_text | times: 0.1 }}rem;
-      --text-h0: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 5.4rem {%- else -%} 3.4rem {%- endif -%};
-      --text-h1: {%- if settings.heading_size == "large" -%} 6.2rem {%- elsif settings.heading_size == "medium" -%} 4.6rem {%- else -%} 3rem {%- endif -%};
-      --text-h2: {%- if settings.heading_size == "large" -%} 5.4rem {%- elsif settings.heading_size == "medium" -%} 3.8rem {%- else -%} 2.8rem {%- endif -%};
-      --text-h3: {%- if settings.heading_size == "large" -%} 4.6rem {%- elsif settings.heading_size == "medium" -%} 3rem {%- else -%} 2.4rem {%- endif -%};
-      --text-h4: {%- if settings.heading_size == "large" -%} 3.4rem {%- elsif settings.heading_size == "medium" -%} 2.2rem {%- else -%} 2rem {%- endif -%};
-      --text-h5: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2rem {%- else -%} 1.8rem {%- endif -%};
-      --text-h6: {%- if settings.heading_size == "large" -%} 2rem {%- elsif settings.heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
-      --sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 2.2rem {%- elsif settings.sub_heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
+        --text-base: {{ settings.mobile_body_text | times: 0.1 }}rem;
+        --text-xss: calc(var(--text-base) * 0.75);
+        --text-xs: calc(var(--text-base) * 0.875);
+        --text-sm: calc(var(--text-base) * 0.9375);
+        --text-lg: calc(var(--text-base) * 1.125);
+        --text-xlg: calc(var(--text-base) * 1.25);
+    		--body-letter-spacing: {{ settings.body_text_letter_spacing }}rem;
 
-      --section-spacing-top: var(--section-spacing-top-tablet);
-      --section-spacing-bottom: var(--section-spacing-bottom-tablet);
-      --grid-spacing: var(--grid-spacing-tablet);
+    		--sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 1.8rem {%- elsif settings.sub_heading_size == "medium" -%} 1.6rem {%- else -%} 1.4rem {%- endif -%};
+    		--sub-heading-letter-spacing: {{ settings.subheading_letter_spacing }}rem;
+    		--sub-heading-transform: {{ settings.subheading_text_transform }};
 
-      --section-height-small: 40dvh;
-      --section-height-medium: 55dvh;
-      --section-height-large: 70dvh;
-    }
-  }
-	
-  @media(min-width: 992px) {
-    :root {
-      --text-h0: {%- if settings.heading_size == "large" -%} 7.4rem {%- elsif settings.heading_size == "medium" -%} 6.4rem {%- else -%} 4.4rem {%- endif -%};
-      --text-h1: {%- if settings.heading_size == "large" -%} 7.2rem {%- elsif settings.heading_size == "medium" -%} 5.6rem {%- else -%} 4rem {%- endif -%};
-      --text-h2: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 4.8rem {%- else -%} 3.6rem {%- endif -%};
-      --text-h3: {%- if settings.heading_size == "large" -%} 5.6rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.2rem {%- endif -%};
-      --text-h4: {%- if settings.heading_size == "large" -%} 4.4rem {%- elsif settings.heading_size == "medium" -%} 3.2rem {%- else -%} 2.8rem {%- endif -%};
+        --radius-xs: 0.2rem;
+        --radius-sm: 0.4rem;
+        --radius-md: 0.8rem;
+        --radius-lg: 1.2rem;
+        --radius-xl: 1.6rem;
+        --radius-full: 999px;
 
-      --section-height-small: 50dvh;
-      --section-height-medium: 65dvh;
-      --section-height-large: 80dvh;
-    }
-  }
+        --transition-fast: 0.2s ease-in-out;
+        --transition-medium: 0.3s ease-in-out;
+        --transition-slow: 0.5s ease-in-out;
 
-  @media screen and (min-width: 1024px) {
-    :root {
-      --section-spacing-top: var(--section-spacing-top-desktop);
-      --section-spacing-bottom: var(--section-spacing-bottom-desktop);
-      --grid-spacing: var(--grid-spacing-desktop);
-    }
-  }
+        --button-radius: {{ settings.button_border_radius | times: 0.1 }}rem;
+        --button-text-transform: {{ settings.button_text_transform }};
+        --button-font-size: var(--text-base);
+        --button-font-weight: 500;
+        --button-transition: var(--transition-fast);
+
+        --input-radius: {{ settings.input_border_radius | times: 0.1 }}rem;
+        --input-border-style: {{ settings.input_border_style }};
+        --input-border-width: 1px;
+        --input-border-color: rgba(var(--color-border), var(--color-border-opacity));
+        --input-background: rgb(var(--color-background));
+        --input-text-color: rgb(var(--color-body-text));
+        --media-radius: {{ settings.media_border_radius }}px;
+        --media-fit: {{ settings.media_object_fit }};
+
+
+
+        /* height variable */
+        --section-height-small: 15rem;
+        --section-height-medium: 25rem;
+        --section-height-large: 35rem;
+        --section-height-fullscreen: 100dvh;
+
+        /* Icon sizing */
+        --icon-xs: 1.4rem;
+        --icon-sm: 1.6rem;
+        --icon-md: 2rem;
+        --icon-lg: 2.4rem;
+        --icon-xl: 3.2rem;
+
+        --swatch-size-sm: 2rem;
+        --swatch-size-md: 2.8rem;
+        --swatch-size-lg: 3.6rem;
+      }
+
+      @media (min-width: 768px) {
+        :root {
+          --text-base: {{ settings.body_text | times: 0.1 }}rem;
+          --text-h0: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 5.4rem {%- else -%} 3.4rem {%- endif -%};
+          --text-h1: {%- if settings.heading_size == "large" -%} 6.2rem {%- elsif settings.heading_size == "medium" -%} 4.6rem {%- else -%} 3rem {%- endif -%};
+          --text-h2: {%- if settings.heading_size == "large" -%} 5.4rem {%- elsif settings.heading_size == "medium" -%} 3.8rem {%- else -%} 2.8rem {%- endif -%};
+          --text-h3: {%- if settings.heading_size == "large" -%} 4.6rem {%- elsif settings.heading_size == "medium" -%} 3rem {%- else -%} 2.4rem {%- endif -%};
+          --text-h4: {%- if settings.heading_size == "large" -%} 3.4rem {%- elsif settings.heading_size == "medium" -%} 2.2rem {%- else -%} 2rem {%- endif -%};
+          --text-h5: {%- if settings.heading_size == "large" -%} 2.4rem {%- elsif settings.heading_size == "medium" -%} 2rem {%- else -%} 1.8rem {%- endif -%};
+          --text-h6: {%- if settings.heading_size == "large" -%} 2rem {%- elsif settings.heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
+          --sub-heading-text: {%- if settings.sub_heading_size == "large" -%} 2.2rem {%- elsif settings.sub_heading_size == "medium" -%} 1.8rem {%- else -%} 1.6rem {%- endif -%};
+
+          --section-spacing-top: var(--section-spacing-top-tablet);
+          --section-spacing-bottom: var(--section-spacing-bottom-tablet);
+          --grid-spacing: var(--grid-spacing-tablet);
+
+            /* height variable */
+          --section-height-small: 40dvh;
+          --section-height-medium: 55dvh;
+          --section-height-large: 70dvh;
+        }
+      }
+
+      @media (min-width: 992px) {
+        :root {
+          --text-h0: {%- if settings.heading_size == "large" -%} 7.4rem {%- elsif settings.heading_size == "medium" -%} 6.4rem {%- else -%} 4.4rem {%- endif -%};
+          --text-h1: {%- if settings.heading_size == "large" -%} 7.2rem {%- elsif settings.heading_size == "medium" -%} 5.6rem {%- else -%} 4rem {%- endif -%};
+          --text-h2: {%- if settings.heading_size == "large" -%} 6.4rem {%- elsif settings.heading_size == "medium" -%} 4.8rem {%- else -%} 3.6rem {%- endif -%};
+          --text-h3: {%- if settings.heading_size == "large" -%} 5.6rem {%- elsif settings.heading_size == "medium" -%} 4rem {%- else -%} 3.2rem {%- endif -%};
+          --text-h4: {%- if settings.heading_size == "large" -%} 4.4rem {%- elsif settings.heading_size == "medium" -%} 3.2rem {%- else -%} 2.8rem {%- endif -%};
+
+            /* height variable */
+          --section-height-small: 50dvh;
+          --section-height-medium: 65dvh;
+          --section-height-large: 80dvh;
+        }
+      }
+
+      @media (min-width: 1200px) {
+        :root {
+          --section-spacing-top: var(--section-spacing-top-desktop);
+          --section-spacing-bottom: var(--section-spacing-bottom-desktop);
+          --grid-spacing: var(--grid-spacing-desktop);
+        }
+      }
 {% endstyle %}
