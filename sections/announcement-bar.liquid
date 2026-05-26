@@ -1,26 +1,361 @@
 <style>
   .announcement-bar {
     display: block;
+    background-color: {{ section.settings.background_color }};
+    padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px 0;
+    overflow: hidden;
+    position: relative;
   }
+
+  .announcement-slider {
+    position: relative;
+    overflow: hidden;
+  }
+
   .announcement-wrap {
-    padding: 10px;
     text-align: center;
-    text-transfrom: uppercase;
-    
+    text-transform: uppercase;
+  }
+
+  .announcement-bar-text p,
+  .announcement-bar-text a{
+    margin: 0;
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    font-size: var(--text-sm);
+  }
+
+  /* Arrow Slider */
+  .announcement-slides {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 100%;
+  }
+
+  .announcement-slide {
+    min-width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .announcement-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: {{ section.settings.background_color}};
+    border: 0;
+    color: {{ section.settings.text_color }};
+    cursor: pointer;
+    z-index: 2;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .announcement-arrow.prev {
+    display: none;
+  }
+
+  .announcement-arrow.next {
+    display: none;
+  }
+
+  /* Auto Scrolling */
+  .announcement-marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .announcement-marquee {
+    display: flex;
+    width: fit-content;
+    animation: marqueeScroll {{ section.settings.scrolling_speed }}s linear infinite;
+  }
+
+  .announcement-marquee-content {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .announcement-wrap {
+    flex: 0 0 auto;
+    padding: 0 40px;
+    white-space: nowrap;
+    width: auto;
+  }
+
+  .page-width:has(.announcement-marquee-wrapper) {
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+  }
+  .announcement-slider {
+    touch-action: pan-y;
+  }
+
+  .announcement-slides {
+    cursor: grab;
+  }
+  @keyframes marqueeScroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-100% / 2));
+    }
+  }
+
+  @media screen and (min-width: 768px){
+    .announcement-bar {
+      padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+    }
+    .announcement-arrow.prev {
+      left: 0;
+      padding: 0;
+      display: block;
+    }
+
+    .announcement-arrow.next {
+      right: 0;
+      padding: 0;
+      display: block;
+    }
   }
 </style>
+
 {% render 'variables', section: section %}
 
 <announcement-bar class="announcement-bar bg-custom text-large" id="announcementBar">
   <div class="page-width rte">
-    {% for block in section.blocks %}
-      <div class="announcement-wrap">
-        <p>{{ block.settings.text }}</p>
-        testinggggg
+    {% if section.settings.type == 'arrows' %}
+      <div class="announcement-slider">
+        <button class="announcement-arrow prev">&#10094;</button>
+
+        <div class="announcement-slides">
+          {% for block in section.blocks %}
+            <div class="announcement-slide">
+              <div class="announcement-wrap">
+                <div class="announcement-bar-text">
+                  {{ block.settings.text }}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <button class="announcement-arrow next">&#10095;</button>
       </div>
-    {% endfor %}
+
+    {% else %}
+      <div class="announcement-marquee-wrapper">
+        <div class="announcement-marquee">
+          <div class="announcement-marquee-content">
+            {% for block in section.blocks %}
+              <div class="announcement-wrap">
+                <div class="announcement-bar-text">
+                  {{ block.settings.text }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="announcement-marquee-content">
+            {% for block in section.blocks %}
+              <div class="announcement-wrap">
+                <div class="announcement-bar-text">
+                  {{ block.settings.text }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
   </div>
 </announcement-bar>
+
+{% if section.settings.type == 'arrows' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+      const slider = document.querySelector('#announcementBar .announcement-slides');
+      let slides = document.querySelectorAll('#announcementBar .announcement-slide');
+      const nextBtn = document.querySelector('#announcementBar .announcement-arrow.next');
+      const prevBtn = document.querySelector('#announcementBar .announcement-arrow.prev');
+
+      if (!slider || slides.length === 0) return;
+
+      /* Infinite Clone */
+      const firstClone = slides[0].cloneNode(true);
+      const lastClone = slides[slides.length - 1].cloneNode(true);
+
+      slider.appendChild(firstClone);
+      slider.insertBefore(lastClone, slides[0]);
+
+      slides = document.querySelectorAll('#announcementBar .announcement-slide');
+
+      let currentSlide = 1;
+      const totalSlides = slides.length;
+
+      let isAnimating = false;
+
+      slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+      /* Update Slider */
+      function updateSlider(withTransition = true) {
+
+        if (withTransition) {
+          isAnimating = true;
+        }
+
+        slider.style.transition = withTransition
+          ? 'transform 0.5s ease'
+          : 'none';
+
+        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+      }
+
+      /* Arrow Navigation */
+      nextBtn.addEventListener('click', function () {
+
+        if (isAnimating) return;
+
+        currentSlide++;
+        updateSlider();
+
+      });
+
+      prevBtn.addEventListener('click', function () {
+
+        if (isAnimating) return;
+
+        currentSlide--;
+        updateSlider();
+
+      });
+
+      /* Infinite Loop Fix */
+      slider.addEventListener('transitionend', function () {
+
+        if (slides[currentSlide] === firstClone) {
+
+          currentSlide = 1;
+          updateSlider(false);
+
+        }
+
+        if (slides[currentSlide] === lastClone) {
+
+          currentSlide = totalSlides - 2;
+          updateSlider(false);
+
+        }
+
+        isAnimating = false;
+
+      });
+
+      /* =========================
+         TOUCH & DRAG SUPPORT
+      ========================== */
+
+      let startX = 0;
+      let currentTranslate = 0;
+      let isDragging = false;
+
+      function getPositionX(event) {
+
+        if (event.type.includes('mouse')) {
+          return event.pageX;
+        }
+
+        if (event.touches && event.touches.length > 0) {
+          return event.touches[0].clientX;
+        }
+
+        if (event.changedTouches && event.changedTouches.length > 0) {
+          return event.changedTouches[0].clientX;
+        }
+
+        return 0;
+      }
+
+      function dragStart(event) {
+
+        if (isAnimating) return;
+
+        isDragging = true;
+
+        startX = getPositionX(event);
+
+        slider.classList.add('dragging');
+
+        currentTranslate = -currentSlide * slider.offsetWidth;
+      }
+
+      function dragMove(event) {
+
+        if (!isDragging) return;
+
+        const currentPosition = getPositionX(event);
+        const diff = currentPosition - startX;
+
+        slider.style.transition = 'none';
+
+        slider.style.transform =
+          `translateX(${currentTranslate + diff}px)`;
+      }
+
+      function dragEnd(event) {
+
+        if (!isDragging) return;
+
+        isDragging = false;
+
+        slider.classList.remove('dragging');
+
+        const endPosition = getPositionX(event);
+        const diff = endPosition - startX;
+
+        if (Math.abs(diff) > 50) {
+
+          if (diff < 0) {
+            currentSlide++;
+          } else {
+            currentSlide--;
+          }
+
+        }
+
+        updateSlider();
+      }
+
+      /* Touch Events */
+      slider.addEventListener('touchstart', dragStart, { passive: true });
+      slider.addEventListener('touchmove', dragMove, { passive: true });
+      slider.addEventListener('touchend', dragEnd);
+
+      /* Mouse Events */
+      slider.addEventListener('mousedown', dragStart);
+      slider.addEventListener('mousemove', dragMove);
+      slider.addEventListener('mouseup', dragEnd);
+      slider.addEventListener('mouseleave', dragEnd);
+
+      /* Auto Rotate */
+      {% if section.settings.auto_rotated %}
+        setInterval(function () {
+
+          if (isAnimating || isDragging) return;
+
+          currentSlide++;
+          updateSlider();
+
+        }, {{ section.settings.timing }}000);
+      {% endif %}
+
+    });
+  </script>
+{% endif %}
 
 {% schema %}
 {
@@ -31,7 +366,7 @@
       "type": "select",
       "id": "type",
       "label": "Type",
-      "default": "arrows",
+      "default": "auto_Scrolling",
       "options": [
         {
           "value": "arrows",
@@ -58,7 +393,7 @@
       "step": 1,
       "default": 5,
       "unit": "sec",
-      "visible_if": "{{ section.settings.auto_rotated == true }}"
+      "visible_if": "{{ section.settings.auto_rotated == true  and section.settings.type == 'arrows'}}"
     },
     {
       "type": "range",
@@ -86,6 +421,50 @@
       "id": "text_color",
       "label": "Text Color",
       "default": "#F7EED0"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Top Mobile",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Bottom Mobile",
+      "default": 5
     }
   ],
   "blocks": [
@@ -94,14 +473,9 @@
       "name": "Bar",
       "settings": [
         {
-          "type": "text",
+          "type": "richtext",
           "id": "text",
           "label": "Text"
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "Link"
         }
       ]
     }

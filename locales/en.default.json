@@ -1,4 +1,34 @@
 {
+  "settings_schema": {
+    "layout": {
+      "settings": {
+        "page_width": {
+          "content": "Page width",
+          "page_width_max": {
+            "label": "Maximum page width"
+          }
+        },
+        "section_spacing": {
+          "content": "Section spacing",
+          "desktop": {
+            "label": "Desktop"
+          },
+          "mobile": {
+            "label": "Mobile"
+          }
+        },
+        "grid_spacing": {
+          "content": "Grid spacing",
+          "desktop": {
+            "label": "Desktop"
+          },
+          "mobile": {
+            "label": "Mobile"
+          }
+        }
+      }
+    }
+  },
   "404": {
     "title": "404",
     "not_found": "Page not found.",
@@ -48,5 +78,53 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "social_media": {
+    "name": "Social Account",
+    "header": {
+      "content": "Social accounts"
+    },
+    "social_facebook_link": {
+      "label": "Facebook"
+    },
+    "social_x_link": {
+      "label": "X/Twitter"
+    },
+    "social_threads_link": {
+      "label": "Threads"
+    },
+    "social_pinterest_link": {
+      "label": "Pinterest"
+    },
+    "social_instagram_link": {
+      "label": "Instagram"
+    },
+    "social_vimeo_link": {
+      "label": "Vimeo"
+    },
+    "social_whatsapp_link": {
+      "label": "Whatsapp"
+    },
+    "social_tumblr_link": {
+      "label": "Tumblr"
+    },
+    "social_youtube_link": {
+      "label": "Youtube"
+    },
+    "social_tiktok_link": {
+      "label": "TikTok"
+    },
+    "social_linkedln_link": {
+      "label": "Linkedln"
+    },
+    "social_snapchat_link": {
+      "label": "Snapchat"
+    },
+    "social_wechat_link": {
+      "label": "Wechat"
+    },
+    "social_spotify_link": {
+      "label": "Spotify"
+    }
   }
 }

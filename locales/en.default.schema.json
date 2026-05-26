@@ -9,11 +9,9 @@
     "collections": "Collections",
     "collection_card": "Collection card",
     "collections_grid": "Collections grid",
-    "colors": "Colors",
     "column": "Column",
     "content": "Content",
     "custom_section": "Custom section",
-    "fonts": "Fonts",
     "footer": "Footer",
     "group": "Group",
     "header": "Header",
@@ -21,7 +19,6 @@
     "main": "Main",
     "page": "Page",
     "password": "Password",
-    "primary": "Primary",
     "product": "Product",
     "row": "Row",
     "search": "Search",
@@ -31,7 +28,401 @@
     "sidebar": "Sidebar",
     "text": "Text",
     "theme": "Theme",
-    "typography": "Typography"
+    "typography": "Typography",
+    "favicon": "Favicon"
+  },
+  "settings_schema": {
+    "logo": {
+      "name": "Logo",
+      "settings": {
+        "logo": {
+          "label": "Logo"
+        },
+        "logo_width_desktop": {
+          "label": "Logo width - Desktop"
+        },
+        "logo_width_mobile": {
+          "label": "Logo width - Mobile"
+        }
+      }
+    },
+    "favicon": {
+      "name": "Favicon",
+      "settings": {
+        "favicon": {
+          "label": "Favicon",
+          "info": "Favicon Dimensions (32 × 32)"
+        }
+      }
+    },
+    "layout": {
+      "name": "Layout",
+      "settings": {
+        "page_width": {
+          "content": "Page width",
+          "page_width_max": {
+            "label": "Page width"
+          }
+        },
+        "section_spacing": {
+          "content": "Section spacing",
+          "top_desktop": {
+            "label": "Top (desktop)"
+          },
+          "bottom_desktop": {
+            "label": "Bottom (desktop)"
+          },
+          "top_mobile": {
+            "label": "Top (mobile)"
+          },
+          "bottom_mobile": {
+            "label": "Bottom (mobile)"
+          }
+        },
+        "grid_spacing": {
+          "content": "Grid spacing",
+          "desktop": {
+            "label": "Desktop"
+          },
+          "mobile": {
+            "label": "Mobile"
+          }
+        }
+      }
+    },
+    "typograpy": {
+      "name": "typograpy",
+      "settings": {
+        "heading": {
+          "title": {
+            "label": "Heading"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "size": {
+            "label": "Size",
+            "options": {
+              "option_1": "Small",
+              "option_2": "Medium",
+              "option_3": "Large"
+            }
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          },
+          "text_transform": {
+            "label": "Text Transform",
+            "options": {
+              "none": "None",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase",
+              "capitalize": "Capitalize"
+            }
+          },
+          "scale": {
+            "label": "Scale"
+          }
+        },
+        "subheading": {
+          "title": {
+            "label": "Sub Heading"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "scale": {
+            "label": "Scale"
+          },
+          "size": {
+            "label": "Size",
+            "options": {
+              "option_1": "Small",
+              "option_2": "Medium",
+              "option_3": "Large"
+            }
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          },
+          "text_transform": {
+            "label": "Text Transform",
+            "options": {
+              "none": "None",
+              "uppercase": "Uppercase",
+              "lowercase": "Lowercase",
+              "capitalize": "Capitalize"
+            }
+          }
+        },
+        "body": {
+          "title": {
+            "label": "Body"
+          },
+          "fonts": {
+            "label": "Font"
+          },
+          "mobile_font_size": {
+            "label": "Mobile Font Size"
+          },
+          "desktop_body_text": {
+            "label": "Desktop Font Size"
+          },
+          "letter_spacing": {
+            "label": "Letter Spacing"
+          }
+        }
+      }
+    },
+    "colors": {
+      "name": "Colors",
+      "settings": {
+        "general": {
+          "content": "General",
+          "background_color": {
+            "label": "Background color"
+          },
+          "heading_color": {
+            "label": "Heading color"
+          },
+          "subheading_color": {
+            "label": "Subheading color"
+          },
+          "body_text_color": {
+            "label": "Body text color"
+          },
+          "success_color": {
+            "label": "Success color"
+          },
+          "warning_color": {
+            "label": "Warning color"
+          },
+          "error_color": {
+            "label": "Error color"
+          },
+          "border_color": {
+            "label": "Border color"
+          },
+          "border_opacity": {
+            "label": "Border opacity"
+          }
+        },
+        "header": {
+          "content": "Header",
+          "header_background_color": {
+            "label": "Background color"
+          },
+          "header_text_color": {
+            "label": "Text color"
+          },
+          "header_hover_text_color": {
+            "label": "Hover text color"
+          }
+        },
+        "footer": {
+          "content": "Footer",
+          "footer_background_color": {
+            "label": "Background color"
+          },
+          "footer_text_color": {
+            "label": "Text color"
+          },
+          "footer_hover_text_color": {
+            "label": "Hover text color"
+          }
+        },
+        "primary_button": {
+          "content": "Primary Button",
+          "primary_button_text_color": {
+            "label": "Text color"
+          },
+          "primary_button_background_color": {
+            "label": "Background color"
+          },
+          "primary_button_outline_color": {
+            "label": "Outline color"
+          }
+        },
+        "secondary_button": {
+          "content": "Secondary Button",
+          "secondary_button_text_color": {
+            "label": "Text color"
+          },
+          "secondary_button_background_color": {
+            "label": "Background color"
+          },
+          "secondary_button_outline_color": {
+            "label": "Outline color"
+          }
+        },
+        "product_card": {
+          "content": "Product Card",
+          "product_card_background_color": {
+            "label": "Background color"
+          },
+          "product_card_text_color": {
+            "label": "Text color"
+          },
+          "product_star_rating_color": {
+            "label": "Star rating color"
+          }
+        },
+        "product_badges": {
+          "content": "Product Badges",
+          "sale_badge_background_color": {
+            "label": "Sale badge background color"
+          },
+          "sale_badge_text_color": {
+            "label": "Sale badge text color"
+          },
+          "sold_badge_background_color": {
+            "label": "sold out badge background color"
+          },
+          "sold_badge_text_color": {
+            "label": "sold out badge text color"
+          },
+          "custom_badge_background_color": {
+            "label": "Custom badge background color"
+          },
+          "custom_badge_text_color": {
+            "label": "Custom badge text color"
+          }
+        }
+      }
+    },
+    "product_card": {
+      "name": "Product Card",
+      "settings": {
+        "show_vendor": {
+          "label": "Show vendor"
+        },
+        "show_secondary_image": {
+          "label": "Show secondary image on hover"
+        },
+        "show_quick_buy": {
+          "label": "Show quick buy"
+        },
+        "show_rating": {
+          "label": "Show product rating",
+          "info": "To display a rating, add a product rating app."
+        },
+        "rating_display": {
+          "label": "Show product rating as..",
+          "options": {
+            "option_1": "Average rating (e.g. \"4.5\")",
+            "option_2": "Review count (e.g. \"3 reviews\")"
+          }
+        },
+        "show_sold_out": {
+          "label": "Show sold out badge"
+        },
+        "show_discount_badge": {
+          "label": "Show discount badge"
+        },
+        "color_display_mode": {
+          "label": "Color display mode",
+          "info": "Variant images are hidden on mobile and small screens.",
+          "options": {
+            "option_1": "Hide",
+            "option_2": "Count",
+            "option_3": "Swatch",
+            "option_4": "Variant Image"
+          }
+        },
+        "discount_type": {
+          "label": "Show discount",
+          "options": {
+            "option_1": "Percentage",
+            "option_2": "Sale",
+            "option_3": "Save Amount"
+          }
+        },
+        "image_ratio": {
+          "label": "Product image size",
+          "options": {
+            "option_1": "Natural",
+            "option_2": "Short (4:3)",
+            "option_3": "Square (1:1)",
+            "option_4": "Tall (2:3)",
+            "option_5": "Short (4:3) - fill card",
+            "option_6": "Tall (2:3) - fill card",
+            "option_7": "Tall (2:3) - fill card"
+          }
+        },
+        "content_alignment": {
+          "label": "Product info alignment",
+          "options": {
+            "option_1": "Left",
+            "option_2": "Center",
+            "option_3": "Right"
+          }
+        }
+      }
+    },
+    "social_media": {
+      "name": "Social Account",
+      "settings": {
+        "header": {
+          "content": "Social accounts"
+        },
+        "social_facebook_link": {
+          "label": "Facebook",
+          "info": "https://facebook.com/shopify"
+        },
+        "social_x_link": {
+          "label": "X/Twitter",
+          "info": "https://x.com//shopify"
+        },
+        "social_threads_link": {
+          "label": "Threads",
+          "info": "https://threads.com//shopify"
+        },
+        "social_pinterest_link": {
+          "label": "Pinterest",
+          "info": "https://pinterest.com//shopify"
+        },
+        "social_instagram_link": {
+          "label": "Instagram",
+          "info": "https://instagram.com//shopify"
+        },
+        "social_vimeo_link": {
+          "label": "Vimeo",
+          "info": "https://vimeo.com//shopify"
+        },
+        "social_whatsapp_link": {
+          "label": "Whatsapp",
+          "info": "https://web.whatsapp.com/shopify"
+        },
+        "social_tumblr_link": {
+          "label": "Tumblr",
+          "info": "https://tumblr.com//shopify"
+        },
+        "social_youtube_link": {
+          "label": "Youtube",
+          "info": "https://youtube.com//shopify"
+        },
+        "social_tiktok_link": {
+          "label": "TikTok",
+          "info": "https://tiktok.com//shopify"
+        },
+        "social_linkedln_link": {
+          "label": "Linkedln",
+          "info": "https://linkedin.com//shopify"
+        },
+        "social_snapchat_link": {
+          "label": "Snapchat",
+          "info": "https://snapchat.com//shopify"
+        },
+        "social_wechat_link": {
+          "label": "Wechat",
+          "info": "https://wechat.com/shopify"
+        },
+        "social_spotify_link": {
+          "label": "Spotify",
+          "info": "https://open.spotify.com/shopify"
+        }
+      }
+    }
   },
   "labels": {
     "alignment": "Alignment",
@@ -71,6 +462,6 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
-    },
+    }
   }
 }

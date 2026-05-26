@@ -1,0 +1,364 @@
+{{ 'after-before-section.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width">
+  <div class="cms-row flex-{{ section.settings.image_position }} items-{{ section.settings.desktop_content_position }}">
+    <div class="cms-cell--{{ section.settings.width }}">
+      <div class="before-after-wrapper">
+        <div class="before-after-container-inner" id="before-after-{{ section.id }}">
+          {% if section.settings.after_image != blank %}
+            <div class="after-img">
+              <img
+                src="{{ section.settings.after_image | img_url: 'master' }}"
+                alt="{{ section.settings.after_image.alt }}"
+                loading="lazy"
+                width="auto"
+                height="auto"
+              />
+            </div>
+          {% endif %}
+
+          {% if section.settings.before_image != blank %}
+            <div class="before-image-wrapper">
+              <img
+                src="{{ section.settings.before_image | img_url: 'master' }}"
+                alt="{{ section.settings.before_image.alt }}"
+                loading="lazy"
+                width="auto"
+                height="auto"
+              />
+            </div>
+          {% endif %}
+
+          <div class="cms-image-labels items-{{ section.settings.bedge_position }}">
+            {% if section.settings.after_text != blank %}
+              <div class="badge">
+                {{ section.settings.after_text }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.before_text != blank %}
+              <div class="badge">
+                {{ section.settings.before_text }}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Divider -->
+          <div class="divider-line"></div>
+
+          <!-- Handle -->
+          <div class="divider-handle">
+
+            {% if section.settings.svg_text_icon != blank %}
+              {{ section.settings.svg_text_icon }}
+            {% elsif section.settings.svg_icon_img != blank %}
+              <img
+                src="{{ section.settings.svg_icon_img | img_url: 'master' }}"
+                alt="Handle Icon"
+                loading="lazy"
+                width="24"
+                height="24"
+              >
+            {% else %}
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon" viewBox="0 0 16 16">
+                  <path d="M8 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8"/>
+                </svg>
+              </span>
+            {% endif %}
+
+          </div>
+
+          <!-- Range -->
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            class="slider-range"
+          >
+        </div>
+      </div>
+    </div>
+    <div class="cms-cell">
+      <div class="text-block">
+
+        {% for block in section.blocks %}
+
+          {% case block.type %}
+
+            {% when 'caption' %}
+              <span class="sub-heading">
+                {{ block.settings.caption }}
+              </span>
+
+            {% when 'heading' %}
+              {% if block.settings.heading != blank %}
+                <{{ block.settings.heading_size }} class="{{ block.settings.heading_size }}">
+                  {{ block.settings.heading }}
+                </{{ block.settings.heading_size }}>
+              {% endif %}
+
+            {% when 'text' %}
+              <div class="text-desc">
+                {{ block.settings.text }}
+              </div>
+
+            {% when 'button' %}
+              {% if block.settings.button_label != blank %}
+                <div class="cms-buttons-row">
+                  <a
+                    href="{{ block.settings.button_link }}"
+                    class="button {% if block.settings.button_style_secondary %}button--secondary{% endif %}"
+                  >
+                    {{ block.settings.button_label }}
+                  </a>
+                </div>
+              {% endif %}
+
+          {% endcase %}
+
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const container = document.querySelector("#before-after-{{ section.id }}");
+
+    if (!container) return;
+
+    const slider = container.querySelector(".slider-range");
+    const beforeWrapper = container.querySelector(".before-image-wrapper");
+    const dividerLine = container.querySelector(".divider-line");
+    const handle = container.querySelector(".divider-handle");
+
+    function updateSlider(value) {
+      beforeWrapper.style.width = value + "%";
+      dividerLine.style.left = value + "%";
+      handle.style.left = value + "%";
+    }
+
+    updateSlider(slider.value);
+
+    slider.addEventListener("input", function () {
+      updateSlider(this.value);
+    });
+
+  });
+</script>
+
+{% schema %}
+{
+  "name": "After Before comparison",
+  "class": "section after-before-section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "start",
+      "label": "Desktop Content Position"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "options": [
+        {
+          "value": "row",
+          "label": "Image First"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Image Second"
+        }
+      ],
+      "default": "row",
+      "label": "Image Position"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Width"
+    },
+    {
+      "type": "image_picker",
+      "id": "after_image",
+      "label": "After Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_image",
+      "label": "Before Image"
+    },
+    {
+      "type": "text",
+      "id": "after_text",
+      "label": "After Text",
+      "default": "After"
+    },
+    {
+      "type": "text",
+      "id": "before_text",
+      "label": "Before Text",
+      "default": "Before"
+    },
+    {
+      "type": "select",
+      "id": "bedge_position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Top"
+        },
+        {
+          "value": "end",
+          "label": "Bottom"
+        },
+        {
+          "value": "alternate",
+          "label": "Alternate"
+        }
+      ],
+      "default": "alternate",
+      "label": "Bedge Position"
+    },
+    {
+      "type": "textarea",
+      "id": "svg_text_icon",
+      "label": "Custom SVG"
+    },
+    {
+      "type": "image_picker",
+      "id": "svg_icon_img",
+      "label": "Handle Icon"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "caption",
+      "name": "Caption",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "caption",
+          "default": "Caption",
+          "label": "Caption"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Heading",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h3",
+              "label": "Small"
+            },
+            {
+              "value": "h2",
+              "label": "Medium"
+            },
+            {
+              "value": "h1",
+              "label": "Large"
+            }
+          ],
+          "default": "h2",
+          "label": "Heading Size"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Description</p>",
+          "label": "Description"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Shop Now",
+          "label": "Button Label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "default": false,
+          "label": "Secondary Style"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "After Before comparison"
+    }
+  ]
+}
+{% endschema %}
