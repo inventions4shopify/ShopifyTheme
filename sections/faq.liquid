@@ -1,17 +1,38 @@
 {{ 'faq.css' | asset_url | stylesheet_tag }}
 
-
 <style>
-    .cms-faq .cms-faq-question {
-        background-color: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
-        color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
-        border-color: {%if section.settings.faq_button_border_color != blank %}{{ section.settings.faq_button_border_color }}{% else %}#ccc{% endif %};
-        border-radius: {%if section.settings.faq_button_br != blank %}{{ section.settings.faq_button_br }}{% else %}0{% endif %}px;
+
+    .cms-faq-item {
+      border: 0.1rem solid {%if section.settings.faq_button_border_color != blank %}{{ section.settings.faq_button_border_color }}{% else %}#ccc{% endif %};
+      border-radius: {%if section.settings.faq_button_br != blank %}{{ section.settings.faq_button_br }}{% else %}0{% endif %}px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .cms-faq .cms-faq-question {{ section.settings.faq_heading_size }} {
+    .cms-faq-question {
+        --button-background: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
+        --button-text: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
+        border: 0;
+        border-radius: 0;
+    }
+
+    .cms-faq-question {{ section.settings.faq_heading_size }} {
         color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
     }
+
+    .cms-faq-content .cms-cell--{{ section.settings.width }} >* {
+      postion: relative;
+      overflow: hidden;
+      border-radius: var(--spacing-20);
+    }
+
+    .cms-faq-answer-inner {
+      {%if section.settings.faq_button_color != blank %}
+        padding: 1rem 1.8rem;
+      {% else %}
+        padding: 0 1.8rem 1rem 1.8rem;
+      {% endif %}
+  }
 </style>
 
 <div class="cms-faq-main">
@@ -47,7 +68,7 @@
 
         </div>
 
-        <div class="cms-row">
+        <div class="cms-row flex-{{ section.settings.image-position }}">
             {% if section.settings.image != blank %}
                 <div class="cms-cell--{{ section.settings.width }} image_media--{{ section.settings.media_height }}">
                     <picture>
@@ -62,20 +83,22 @@
                             src="{{ section.settings.image | image_url }}"
                             alt="{{ section.settings.image.alt | escape }}"
                             loading="lazy"
-                            width="{{ section.settings.image.width }}"
-                            height="{{ section.settings.image.height }}"
+                            width="auto"
+                            height="auto"
                             >
                         {% endif %}
                     </picture>
                 </div>
             {% endif %}
-            <div class="cms-cell">
+            <div class="cms-cell justify-{{ section.settings.faq_alignment }}">
                 <div class="cms-faq-wrapper">
                     {% for block in section.blocks %}
                         <div class="cms-faq-item" {{ block.shopify_attributes }}>
                             <button class="cms-faq-question" type="button">
                                 <{{ section.settings.faq_heading_size }} class="faq-title {{ section.settings.faq_heading_size }}">{{ block.settings.heading }}</{{ section.settings.faq_heading_size }}>
-                                <span class="cms-faq-icon">+</span>
+                                <span class="cms-faq-icon">
+                                  {% render 'icon', icon: 'chevron-bottom', width: '2rem', height: '2rem' %}
+                                </span>
                             </button>
                             <div class="cms-faq-answer">
                                 <div class="cms-faq-answer-inner">
@@ -171,6 +194,22 @@
     {
         "type": "header",
         "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "image-position",
+      "options": [
+        {
+          "value": "row",
+          "label": "Image First"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Image Second"
+        }
+      ],
+      "default": "row",
+      "label": "Image Position"
     },
     {
       "type": "image_picker",
@@ -272,7 +311,27 @@
     },
     {
         "type": "header",
-        "content": "Faq Heading style"
+        "content": "Faq style"
+    },
+    {
+      "type": "select",
+      "id": "faq_alignment",
+      "label": "Faq Alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "center"
     },
     {
       "type": "select",
@@ -314,10 +373,10 @@
         "id": "faq_button_br",
         "label": "Faq Button Border Radius",
         "min": 0,
-        "max": 10,
+        "max": 15,
         "step": 1,
         "unit": "px",
-        "default": 0
+        "default": 10
     }
   ],
   "blocks": [

@@ -154,238 +154,238 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
 
-  const slider = document.querySelector(".cms-slideshow-main"),
-        nextBtn = document.querySelector(".cms-slideshow-next"),
-        prevBtn = document.querySelector(".cms-slideshow-prev"),
-        dots = document.querySelectorAll(".cms-slideshow-dot button"),
-        slides = document.querySelectorAll(".cms-slideshow-slide"),
-        progressEl = document.querySelector(".cms-autoplay-progress"),
-        currentCounter = document.querySelector(".cms-current-slide"),
-        totalCounter = document.querySelector(".cms-total-slides");
+    const slider = document.querySelector(".cms-slideshow-main"),
+          nextBtn = document.querySelector(".cms-slideshow-next"),
+          prevBtn = document.querySelector(".cms-slideshow-prev"),
+          dots = document.querySelectorAll(".cms-slideshow-dot button"),
+          slides = document.querySelectorAll(".cms-slideshow-slide"),
+          progressEl = document.querySelector(".cms-autoplay-progress"),
+          currentCounter = document.querySelector(".cms-current-slide"),
+          totalCounter = document.querySelector(".cms-total-slides");
 
-  let currentSlide = 0,
-      totalSlides = slides.length;
+    let currentSlide = 0,
+        totalSlides = slides.length;
 
-  const autoplayEnabled = {{ section.settings.autoplay | json }};
-  const autoplayTime = {{ section.settings.autoplay_speed }} * 1000;
+    const autoplayEnabled = {{ section.settings.autoplay | json }};
+    const autoplayTime = {{ section.settings.autoplay_speed }} * 1000;
 
-  let autoplayTimeout;
+    let autoplayTimeout;
 
-  // =========================
-  // INIT TOTAL COUNTER
-  // =========================
-  if (totalCounter) {
-    totalCounter.textContent = String(totalSlides).padStart(2, "0");
-  }
-
-  // =========================
-  // PROGRESS (CIRCULAR)
-  // =========================
-  function setProgress(deg) {
-    if (!progressEl) return;
-    progressEl.style.setProperty("--progress", deg + "deg");
-  }
-
-  function startProgressBar() {
-    if (!progressEl) return;
-
-    let start = performance.now();
-
-    function animate(now) {
-      let elapsed = now - start;
-      let percent = Math.min(elapsed / autoplayTime, 1);
-      let deg = percent * 360;
-
-      setProgress(deg);
-
-      if (percent < 1) {
-        requestAnimationFrame(animate);
-      }
+    // =========================
+    // INIT TOTAL COUNTER
+    // =========================
+    if (totalCounter) {
+      totalCounter.textContent = String(totalSlides).padStart(2, "0");
     }
 
-    requestAnimationFrame(animate);
-  }
-
-  function resetProgress() {
-    setProgress(0);
-  }
-
-  // =========================
-  // COUNTER
-  // =========================
-  function updateCounter() {
-    if (currentCounter) {
-      currentCounter.textContent = String(currentSlide + 1).padStart(2, "0");
+    // =========================
+    // PROGRESS (CIRCULAR)
+    // =========================
+    function setProgress(deg) {
+      if (!progressEl) return;
+      progressEl.style.setProperty("--progress", deg + "deg");
     }
-  }
 
-  // =========================
-  // SLIDES
-  // =========================
-  function updateSlides(direction = "next") {
+    function startProgressBar() {
+      if (!progressEl) return;
 
-    slides.forEach((slide, index) => {
+      let start = performance.now();
 
-      slide.classList.remove(
-        "active",
-        "slide-out-left",
-        "slide-out-right",
-        "slide-in-right",
-        "slide-in-left"
-      );
+      function animate(now) {
+        let elapsed = now - start;
+        let percent = Math.min(elapsed / autoplayTime, 1);
+        let deg = percent * 360;
 
-      if (index === currentSlide) {
+        setProgress(deg);
 
-        slide.classList.add("active");
-
-        if (direction === "next") {
-          slide.classList.add("slide-in-right");
-        } else {
-          slide.classList.add("slide-in-left");
-        }
-
-      } else {
-
-        if (direction === "next") {
-          slide.classList.add("slide-out-left");
-        } else {
-          slide.classList.add("slide-out-right");
+        if (percent < 1) {
+          requestAnimationFrame(animate);
         }
       }
-    });
 
-    dots.forEach(dot => dot.classList.remove("active"));
-
-    if (dots[currentSlide]) {
-      dots[currentSlide].classList.add("active");
+      requestAnimationFrame(animate);
     }
 
-    if (prevBtn) {
-      prevBtn.disabled = currentSlide === 0;
-      prevBtn.classList.toggle("disabled", currentSlide === 0);
+    function resetProgress() {
+      setProgress(0);
     }
 
-    if (nextBtn) {
-      nextBtn.disabled = currentSlide === totalSlides - 1;
-      nextBtn.classList.toggle("disabled", currentSlide === totalSlides - 1);
+    // =========================
+    // COUNTER
+    // =========================
+    function updateCounter() {
+      if (currentCounter) {
+        currentCounter.textContent = String(currentSlide + 1).padStart(2, "0");
+      }
     }
-  }
 
-  // =========================
-  // AUTOPLAY
-  // =========================
-  function startAutoplay() {
+    // =========================
+    // SLIDES
+    // =========================
+    function updateSlides(direction = "next") {
 
-    clearTimeout(autoplayTimeout);
+      slides.forEach((slide, index) => {
 
-    resetProgress();
-    startProgressBar();
+        slide.classList.remove(
+          "active",
+          "slide-out-left",
+          "slide-out-right",
+          "slide-in-right",
+          "slide-in-left"
+        );
 
-    autoplayTimeout = setTimeout(() => {
+        if (index === currentSlide) {
 
-      nextSlide();
+          slide.classList.add("active");
 
-      if (autoplayEnabled && currentSlide < totalSlides - 1) {
-        startAutoplay();
+          if (direction === "next") {
+            slide.classList.add("slide-in-right");
+          } else {
+            slide.classList.add("slide-in-left");
+          }
+
+        } else {
+
+          if (direction === "next") {
+            slide.classList.add("slide-out-left");
+          } else {
+            slide.classList.add("slide-out-right");
+          }
+        }
+      });
+
+      dots.forEach(dot => dot.classList.remove("active"));
+
+      if (dots[currentSlide]) {
+        dots[currentSlide].classList.add("active");
       }
 
-    }, autoplayTime);
-  }
+      if (prevBtn) {
+        prevBtn.disabled = currentSlide === 0;
+        prevBtn.classList.toggle("disabled", currentSlide === 0);
+      }
 
-  // =========================
-  // NEXT SLIDE (STOP AT LAST)
-  // =========================
-  function nextSlide() {
+      if (nextBtn) {
+        nextBtn.disabled = currentSlide === totalSlides - 1;
+        nextBtn.classList.toggle("disabled", currentSlide === totalSlides - 1);
+      }
+    }
 
-    if (currentSlide >= totalSlides - 1) return;
+    // =========================
+    // AUTOPLAY
+    // =========================
+    function startAutoplay() {
 
-    resetProgress();
+      clearTimeout(autoplayTimeout);
 
-    currentSlide++;
+      resetProgress();
+      startProgressBar();
 
-    updateSlides("next");
-    updateCounter();
+      autoplayTimeout = setTimeout(() => {
 
-    if (autoplayEnabled) startAutoplay();
-  }
+        nextSlide();
 
-  // =========================
-  // PREV SLIDE (STOP AT FIRST)
-  // =========================
-  function prevSlide() {
+        if (autoplayEnabled && currentSlide < totalSlides - 1) {
+          startAutoplay();
+        }
 
-    if (currentSlide <= 0) return;
+      }, autoplayTime);
+    }
 
-    resetProgress();
+    // =========================
+    // NEXT SLIDE (STOP AT LAST)
+    // =========================
+    function nextSlide() {
 
-    currentSlide--;
+      if (currentSlide >= totalSlides - 1) return;
 
-    updateSlides("prev");
-    updateCounter();
+      resetProgress();
 
-    if (autoplayEnabled) startAutoplay();
-  }
+      currentSlide++;
 
-  // =========================
-  // BUTTONS
-  // =========================
-  if (nextBtn) nextBtn.addEventListener("click", nextSlide);
-  if (prevBtn) prevBtn.addEventListener("click", prevSlide);
-
-  // =========================
-  // DOTS
-  // =========================
-  dots.forEach((dot, index) => {
-
-    dot.addEventListener("click", () => {
-
-      const direction = index > currentSlide ? "next" : "prev";
-
-      currentSlide = index;
-
-      updateSlides(direction);
+      updateSlides("next");
       updateCounter();
 
       if (autoplayEnabled) startAutoplay();
+    }
+
+    // =========================
+    // PREV SLIDE (STOP AT FIRST)
+    // =========================
+    function prevSlide() {
+
+      if (currentSlide <= 0) return;
+
+      resetProgress();
+
+      currentSlide--;
+
+      updateSlides("prev");
+      updateCounter();
+
+      if (autoplayEnabled) startAutoplay();
+    }
+
+    // =========================
+    // BUTTONS
+    // =========================
+    if (nextBtn) nextBtn.addEventListener("click", nextSlide);
+    if (prevBtn) prevBtn.addEventListener("click", prevSlide);
+
+    // =========================
+    // DOTS
+    // =========================
+    dots.forEach((dot, index) => {
+
+      dot.addEventListener("click", () => {
+
+        const direction = index > currentSlide ? "next" : "prev";
+
+        currentSlide = index;
+
+        updateSlides(direction);
+        updateCounter();
+
+        if (autoplayEnabled) startAutoplay();
+      });
     });
+
+    // =========================
+    // TOUCH / DRAG
+    // =========================
+    let startX = 0, endX = 0;
+
+    if (slider) {
+      slider.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+      });
+
+      slider.addEventListener("touchmove", (e) => {
+        endX = e.touches[0].clientX;
+      });
+
+      slider.addEventListener("touchend", () => {
+
+        let diff = startX - endX;
+
+        if (diff > 50) nextSlide();
+        if (diff < -50) prevSlide();
+      });
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    updateSlides();
+    updateCounter();
+
+    if (autoplayEnabled) {
+      startAutoplay();
+    }
+
   });
-
-  // =========================
-  // TOUCH / DRAG
-  // =========================
-  let startX = 0, endX = 0;
-
-  if (slider) {
-    slider.addEventListener("touchstart", (e) => {
-      startX = e.touches[0].clientX;
-    });
-
-    slider.addEventListener("touchmove", (e) => {
-      endX = e.touches[0].clientX;
-    });
-
-    slider.addEventListener("touchend", () => {
-
-      let diff = startX - endX;
-
-      if (diff > 50) nextSlide();
-      if (diff < -50) prevSlide();
-    });
-  }
-
-  // =========================
-  // INIT
-  // =========================
-  updateSlides();
-  updateCounter();
-
-  if (autoplayEnabled) {
-    startAutoplay();
-  }
-
-});
 </script>
 
 {% schema %}

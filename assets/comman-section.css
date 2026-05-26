@@ -5,7 +5,7 @@
 }
 
 .cms-row >* {
-    padding: 0 1.5rem;
+    padding: 1.5rem;
 }
 
 img,
@@ -44,6 +44,8 @@ canvas {
     .cms-cell {
         width: 1%;
         flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
     }
 }
 

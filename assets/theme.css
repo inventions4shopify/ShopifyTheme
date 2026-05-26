@@ -346,7 +346,7 @@ svg {
   text-align: right;
 }
  
-
+.items-left,
 .items-start {
   align-items: flex-start;
 }
@@ -355,6 +355,7 @@ svg {
   align-items: center;
 }
 
+.items-right,
 .items-end {
   align-items: flex-end;
 }
@@ -363,6 +364,7 @@ svg {
   align-items: stretch;
 }
 
+.justify-left,
 .justify-start {
   justify-content: flex-start;
 }
@@ -371,6 +373,7 @@ svg {
   justify-content: center;
 }
 
+.justify-right,
 .justify-end {
   justify-content: flex-end;
 }
@@ -381,4 +384,12 @@ svg {
 
 .justify-around {
   justify-content: space-around;
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+.font-normal {
+  font-style: normal;
 }

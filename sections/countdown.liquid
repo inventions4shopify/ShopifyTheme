@@ -1,0 +1,323 @@
+{{ 'countdown.css' | asset_url | stylesheet_tag }}
+
+{% if section.settings.image_show == false %}
+  <style>
+    .cms-cell--{{ section.settings.width }} >* {
+      border-radius: var(--spacing-20);
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+{% endif %}
+{% if section.settings.image_show %}
+    <style>
+        .cms-countdown-main {
+            position: relative;
+            background-image: url({{ section.settings.desktop_image | image_url }});
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cms-countdown-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        @media (max-width: 767px) {
+            .cms-countdown-main {
+                background-image: url({{ section.settings.mb_image | image_url }});
+            }
+        }
+
+        .cms-countdown-main .cms-row {
+            position: relative;
+            z-index: 2;
+            justify-content: center;
+        }
+    </style>
+{% endif %}
+
+<div class="cms-countdown-main">
+  <div class="{{ section.settings.section_width }}">
+    <div class="cms-row flex-{{ section.settings.image_position }}">
+        {% if section.settings.image_show == false %}
+            <div class="cms-cell--{{ section.settings.width }}">
+                <picture>
+                    {% if section.settings.mb_image != blank %}
+                        <source
+                        media="(max-width: 767px)"
+                        srcset="{{ section.settings.mb_image | image_url }}"
+                        >
+                    {% endif %}
+                    {% if section.settings.desktop_image != blank %}
+                        <img
+                            src="{{ section.settings.desktop_image | image_url }}"
+                            alt="{{ section.settings.desktop_image.alt | escape }}"
+                            loading="lazy"
+                            width="auto"
+                            height="auto"
+                        >
+                    {% endif %}
+                </picture>
+            </div>
+        {% endif %}
+        <div class="cms-cell justify-{{ section.settings.content_alignment }}">
+            <div class="cms-countdown-wrapper text-{{ section.settings.text_alignment }}">
+            {% if section.settings.subheading != blank %}
+                <span class="countdown-subheading">{{ section.settings.subheading }}</span>
+            {% endif %}
+            {% if section.settings.heading != blank %}
+                <h2 class="h2">{{ section.settings.heading }}</h2>
+            {% endif %}
+            <div class="h1 countdown-timer justify-{{ section.settings.text_alignment }}" data-countdown="{{ section.settings.countdown_date }}">
+                <div class="countdown-day">
+                    <span class="countdown-number h1">00</span>
+                    <span class="sub-heading">Days</span>
+                </div>
+                <span class="countdown-separator">:</span>
+                <div class="countdown-hour">
+                    <span class="countdown-number h1">00</span>
+                    <span class="sub-heading">Hours</span>
+                </div>
+                <span class="countdown-separator">:</span>
+                <div class="countdown-minute">
+                    <span class="countdown-number h1">00</span>
+                    <span class="sub-heading">Minutes</span>
+                </div>
+                <span class="countdown-separator">:</span>
+                <div class="countdown-second">
+                    <span class="countdown-number h1">00</span>
+                    <span class="sub-heading">Seconds</span>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    const countdownElements = document.querySelectorAll('.countdown-timer');
+
+    countdownElements.forEach(function (element) {
+
+      // Example format:
+      // data-countdown="2026-12-31T23:59:59"
+      const countdownDate = new Date(
+        element.getAttribute('data-countdown')
+      ).getTime();
+
+      // Get individual fields
+      const dayEl = element.querySelector('.countdown-day .countdown-number');
+      const hourEl = element.querySelector('.countdown-hour .countdown-number');
+      const minuteEl = element.querySelector('.countdown-minute .countdown-number');
+      const secondEl = element.querySelector('.countdown-second .countdown-number');
+
+      function updateCountdown() {
+
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+
+        // Expired
+        if (distance <= 0) {
+
+          clearInterval(interval);
+
+          if (dayEl) dayEl.textContent = '00';
+          if (hourEl) hourEl.textContent = '00';
+          if (minuteEl) minuteEl.textContent = '00';
+          if (secondEl) secondEl.textContent = '00';
+
+          return;
+        }
+
+        // Time calculations
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) /
+          (1000 * 60 * 60)
+        );
+
+        const minutes = Math.floor(
+          (distance % (1000 * 60 * 60)) /
+          (1000 * 60)
+        );
+
+        const seconds = Math.floor(
+          (distance % (1000 * 60)) / 1000
+        );
+
+        // Add leading zero
+        if (dayEl) dayEl.textContent = String(days).padStart(2, '0');
+        if (hourEl) hourEl.textContent = String(hours).padStart(2, '0');
+        if (minuteEl) minuteEl.textContent = String(minutes).padStart(2, '0');
+        if (secondEl) secondEl.textContent = String(seconds).padStart(2, '0');
+      }
+
+      // Initial call
+      updateCountdown();
+
+      // Update every second
+      const interval = setInterval(updateCountdown, 1000);
+
+    });
+
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Countdown",
+  "class": "section cms-countdown",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page Width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Width"
+    },
+    {
+        "type": "header",
+        "content": "Content"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "options": [
+        {
+          "value": "row",
+          "label": "Image First"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Image Second"
+        }
+      ],
+      "default": "row",
+      "label": "Image Position"
+    },
+    {
+        "type": "checkbox",
+        "id": "image_show",
+        "label": "Show Image In Background",
+        "default": false
+    },
+    {
+        "type": "image_picker",
+        "id": "mb_image",
+        "label": "Mobile Image"
+    },
+    {
+        "type": "image_picker",
+        "id": "desktop_image",
+        "label": "Desktop Image"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "End"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "End"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown Date",
+      "info": "Enter a date in the format MM-DD-YYYY HH:MM:SS",
+        "default": "12-31-2028 23:59:59"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown"
+    }
+  ]
+}
+{% endschema %}

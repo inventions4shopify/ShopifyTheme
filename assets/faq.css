@@ -39,7 +39,7 @@
 }
 
 .cms-faq-item.active .cms-faq-answer {
-  max-height:500px;
+  max-height: 500px;
 }
 
 .cms-faq-answer-inner >:first-child {
@@ -55,5 +55,5 @@
 }
 
 .cms-faq-item.active .cms-faq-icon {
-  transform:rotate(45deg);
+  transform:rotate(180deg);
 }
