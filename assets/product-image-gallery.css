@@ -1,0 +1,11 @@
+.main-product-section{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .main-product-section{
+        flex-direction: column;
+    }
+}
