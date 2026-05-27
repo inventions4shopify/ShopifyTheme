@@ -14,7 +14,7 @@
     width:100%;
     display:flex;
     gap: var(--spacing-12);
-    align-items:center;
+    text-align: start;
     justify-content:space-between;
     cursor:pointer;
     --button-background: inherit;
