@@ -1,8 +1,3 @@
-.after-before-section {
-  padding-top: var(--section-spacing-top);
-  padding-bottom: var(--section-spacing-bottom);
-}
-
 .before-after-wrapper {
   position: relative;
   overflow: hidden;
