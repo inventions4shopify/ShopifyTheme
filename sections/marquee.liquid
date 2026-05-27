@@ -1,0 +1,197 @@
+{{ 'marquee.css' | asset_url | stylesheet_tag }}
+
+
+{%- liquid
+  assign s = section.settings
+
+  # ── Gap class ─────────────────────────────────────────────────────────────
+  assign gap_value = s.gap | default: '24'
+  assign gap_class = ''
+  if gap_value != 'default'
+    assign gap_class = 'gap-' | append: gap_value
+  endif
+-%}
+
+
+<div {%- render 'section-variables', section: section, class: 'rich-text__section' -%}>
+    <div
+    id="marquee-{{ section.id }}"
+    style="
+        --marquee-speed: {{ section.settings.speed }}s;
+        --logo-height: {{ section.settings.logo_height }}px;
+    "
+    >
+    <div class="{{ section.settings.container_width }}">
+
+        <div class="marquee-wrapper {% if section.settings.pause_hover %}pause-hover{% endif %}">
+        
+        <div class="marquee-track flex items-center {{ gap_class }} {% if section.settings.direction == 'right' %}reverse{% endif %}">
+            
+            {% for block in section.blocks %}
+            <div class="marquee-item" {{ block.shopify_attributes }}>
+
+                {% if block.settings.image != blank %}
+                <img
+                    src="{{ block.settings.image | image_url: width: 300 }}"
+                    alt="{{ block.settings.text }}"
+                    class="marquee-logo"
+                    loading="lazy"
+                    width="auto"
+                    height="auto"
+                >
+                {% endif %}
+
+                {% if block.settings.text != blank %}
+                <span class="marquee-text">
+                    {{ block.settings.text }}
+                </span>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+
+            {% for block in section.blocks %}
+            <div class="marquee-item">
+
+                {% if block.settings.image != blank %}
+                <img
+                    src="{{ block.settings.image | image_url: width: 300 }}"
+                    alt="{{ block.settings.text }}"
+                    class="marquee-logo"
+                    loading="lazy"
+                    width="auto"
+                    height="auto"
+                >
+                {% endif %}
+
+                {% if block.settings.text != blank %}
+                <span class="marquee-text">
+                    {{ block.settings.text }}
+                </span>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "Marquee",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Layout Width",
+      "default": "page-width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page Width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Speed",
+      "min": 5,
+      "max": 60,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "gap",
+      "label": "Block gap",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "8", "label": "Extra small" },
+        { "value": "12", "label": "Small" },
+        { "value": "16", "label": "Medium" },
+        { "value": "24", "label": "Large" },
+        { "value": "32", "label": "Extra large" },
+        { "value": "48", "label": "2× large" }
+      ],
+      "default": "24"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo Height",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "default": 36
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_hover",
+      "label": "Pause On Hover",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Scroll Direction",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Marquee Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Logo"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Special Offer"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Marquee",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

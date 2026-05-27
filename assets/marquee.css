@@ -1,0 +1,68 @@
+.custom-marquee-section {
+  overflow: hidden;
+  position: relative;
+}
+
+.custom-marquee-section.border-top {
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.custom-marquee-section.border-bottom {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.marquee-container.full-width {
+  max-width: 100%;
+  padding: 0;
+}
+
+.marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.marquee-track {
+  width: max-content;
+  animation: marqueeScroll var(--marquee-speed) linear infinite;
+}
+
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+
+.pause-hover:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-item {
+  padding: var(--spacing-12);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.marquee-item:hover {
+    transform: translateY(-0.2rem);
+}
+
+.marquee-logo {
+  height: var(--logo-height);
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .marquee-item {
+    padding: var(--spacing-12) var(--spacing-16);
+  }
+}
