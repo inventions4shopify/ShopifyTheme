@@ -6,7 +6,7 @@
 .before-after-wrapper {
   position: relative;
   overflow: hidden;
-  border-radius: var(--spacing-20);
+  border-radius: var(--media-radius);
   width: 100%;
 }
 
@@ -98,7 +98,6 @@
   display: flex;
   justify-content: space-between;
   pointer-events: none;
-  align-items: baseline;
 }
 
 .badge {
@@ -115,6 +114,9 @@
   text-transform: uppercase;
 }
 
+.items-alternate .badge:first-child {
+  margin-bottom: auto;
+}
 
 .items-alternate .badge:last-child {
   margin-top: auto;

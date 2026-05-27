@@ -5,15 +5,10 @@
     .cms-faq-item {
       border: 0.1rem solid {%if section.settings.faq_button_border_color != blank %}{{ section.settings.faq_button_border_color }}{% else %}#ccc{% endif %};
       border-radius: {%if section.settings.faq_button_br != blank %}{{ section.settings.faq_button_br }}{% else %}0{% endif %}px;
+      background-color: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
+      color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
       position: relative;
       overflow: hidden;
-    }
-
-    .cms-faq-question {
-        --button-background: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
-        --button-text: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
-        border: 0;
-        border-radius: 0;
     }
 
     .cms-faq-question {{ section.settings.faq_heading_size }} {
@@ -38,33 +33,65 @@
 <div class="cms-faq-main">
   <div class="{{ section.settings.section_width }}">
     <div class="cms-faq-content">
-        <div class="faq-content-head text-{{ section.settings.text_alignment }}">
+        <div class="faq-content-head ps-rte text-{{ section.settings.text_alignment }}">
         
-        {% if section.settings.subheading != blank %}
-            <span class="faq-content-subheading">
-            {{ section.settings.subheading }}
-            </span>
-        {% endif %}
+          {% if section.settings.subheading != blank %}
+              {%- assign sub_color = section.settings.subheading_color -%}
+              <span class="subheading"
+                {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                  style="color: rgb({{ sub_color.rgb }});"
+                {%- endunless %}
+              >
+              {{ section.settings.subheading }}
+              </span>
+          {% endif %}
 
-        {% if section.settings.heading != blank %}
-            <h2 class="faq-content-heading">
-            {{ section.settings.heading }}
-            </h2>
-        {% endif %}
+          {% if section.settings.heading != blank %}
+            {%- assign head_color = section.settings.heading_color -%}
+            {%- assign head_grad = section.settings.heading_gradient -%}
 
-        {% if section.settings.description != blank %}
-            {{ section.settings.description }}
-        {% endif %}
+            {%- capture heading_style -%}
+              {%- if head_grad != blank -%}
+                background: {{ head_grad }};
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+              {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
+                --color-heading: {{ head_color.rgb }};
+              {%- endif -%}
+            {%- endcapture -%}
 
-        {% if section.settings.link_label != blank %}
-            {% render 'button',
-            text: section.settings.link_label,
-            href: section.settings.link,
-            background_color: section.settings.button_background_color,
-            text_color: section.settings.button_text_color,
-            outline_color: section.settings.button_outline_color
-            %}
-        {% endif %}
+              <h2 class="faq-content-heading"
+                {%- unless heading_style == blank %}
+                  style="{{ heading_style | strip }}"
+                {%- endunless %}
+              >
+              {{ section.settings.heading }}
+              </h2>
+          {% endif %}
+
+          {% if section.settings.description != blank %}
+            {%- assign block_color = section.settings.text_color -%}
+            <div
+                class="rich-text__text ps-rte"
+                {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
+                  style="color: rgb({{ block_color.rgb }});"
+                {%- endunless %}
+              >
+                {{ section.settings.description }}
+              </div>
+          {% endif %}
+
+          {% if section.settings.link_label != blank %}
+            {%- render 'button',
+              text: section.settings.link_label,
+              href: section.settings.link,
+              style: section.settings.button_style,
+              background_color: section.settings.button_background_color,
+              text_color: section.settings.button_text_color,
+              outline_color: section.settings.button_outline_color
+            -%}
+          {% endif %}
 
         </div>
 
@@ -93,19 +120,21 @@
             <div class="cms-cell justify-{{ section.settings.faq_alignment }}">
                 <div class="cms-faq-wrapper">
                     {% for block in section.blocks %}
+                      {% if block.settings.heading != blank %}
                         <div class="cms-faq-item" {{ block.shopify_attributes }}>
-                            <button class="cms-faq-question" type="button">
-                                <{{ section.settings.faq_heading_size }} class="faq-title {{ section.settings.faq_heading_size }}">{{ block.settings.heading }}</{{ section.settings.faq_heading_size }}>
-                                <span class="cms-faq-icon">
-                                  {% render 'icon', icon: 'chevron-bottom', width: '2rem', height: '2rem' %}
-                                </span>
-                            </button>
+                              <button class="cms-faq-question button" type="button">
+                                  <{{ section.settings.faq_heading_size }} class="faq-title {{ section.settings.faq_heading_size }}">{{ block.settings.heading }}</{{ section.settings.faq_heading_size }}>
+                                  <span class="cms-faq-icon">
+                                    {% render 'icon', icon: 'chevron-bottom', width: '2rem', height: '2rem' %}
+                                  </span>
+                              </button>
                             <div class="cms-faq-answer">
                                 <div class="cms-faq-answer-inner">
                                 {{ block.settings.description }}
                                 </div>
                             </div>
                         </div>
+                      {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -270,14 +299,34 @@
       "default": "center"
     },
     {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
       "type": "text",
       "id": "subheading",
       "label": "Sub heading"
     },
     {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
     },
     {
       "type": "richtext",

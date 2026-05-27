@@ -2,8 +2,8 @@
 
 {% if section.settings.image_show == false %}
   <style>
-    .cms-cell--{{ section.settings.width }} >* {
-      border-radius: var(--spacing-20);
+    .cms-countdown-main .cms-cell--{{ section.settings.width }} >* {
+      border-radius: var(--media-radius);
       position: relative;
       overflow: hidden;
     }
@@ -70,31 +70,75 @@
         {% endif %}
         <div class="cms-cell justify-{{ section.settings.content_alignment }}">
             <div class="cms-countdown-wrapper text-{{ section.settings.text_alignment }}">
+              {%- assign sub_color = section.settings.subheading_color -%}
             {% if section.settings.subheading != blank %}
-                <span class="countdown-subheading">{{ section.settings.subheading }}</span>
+                <span class="subheading"
+                  {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                    style="color: rgb({{ sub_color.rgb }});"
+                  {%- endunless %}
+                >{{ section.settings.subheading }}</span>
             {% endif %}
+
             {% if section.settings.heading != blank %}
-                <h2 class="h2">{{ section.settings.heading }}</h2>
+              {%- assign head_color = section.settings.heading_color -%}
+              {%- assign head_grad = section.settings.heading_gradient -%}
+              {%- capture heading_style -%}
+                {%- if head_grad != blank -%}
+                  background: {{ head_grad }};
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  background-clip: text;
+                {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
+                  --color-heading: {{ head_color.rgb }};
+                {%- endif -%}
+              {%- endcapture -%}
+                <h2 class="h2"
+                {%- unless heading_style == blank %}
+                    style="{{ heading_style | strip }}"
+                  {%- endunless %}
+                >{{ section.settings.heading }}</h2>
             {% endif %}
-            <div class="h1 countdown-timer justify-{{ section.settings.text_alignment }}" data-countdown="{{ section.settings.countdown_date }}">
+
+            {%- assign date_color = section.settings.date_color -%}
+            <div class="h1 countdown-timer justify-{{ section.settings.text_alignment }}" data-countdown="{{ section.settings.countdown_date }}"
+              {%- unless date_color == blank or date_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ date_color.rgb }});"
+              {%- endunless %}
+            >
                 <div class="countdown-day">
                     <span class="countdown-number h1">00</span>
-                    <span class="sub-heading">Days</span>
+                    <span class="sub-heading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >Days</span>
                 </div>
                 <span class="countdown-separator">:</span>
                 <div class="countdown-hour">
                     <span class="countdown-number h1">00</span>
-                    <span class="sub-heading">Hours</span>
+                    <span class="sub-heading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >Hours</span>
                 </div>
                 <span class="countdown-separator">:</span>
                 <div class="countdown-minute">
                     <span class="countdown-number h1">00</span>
-                    <span class="sub-heading">Minutes</span>
+                    <span class="sub-heading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >Minutes</span>
                 </div>
                 <span class="countdown-separator">:</span>
                 <div class="countdown-second">
                     <span class="countdown-number h1">00</span>
-                    <span class="sub-heading">Seconds</span>
+                    <span class="sub-heading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >Seconds</span>
                 </div>
             </div>
             </div>
@@ -262,7 +306,7 @@
       "label": "Text Alignment",
       "options": [
         {
-          "value": "left",
+          "value": "start",
           "label": "Start"
         },
         {
@@ -270,7 +314,7 @@
           "label": "Center"
         },
         {
-          "value": "right",
+          "value": "end",
           "label": "End"
         }
       ],
@@ -282,7 +326,7 @@
       "label": "Content Alignment",
       "options": [
         {
-          "value": "left",
+          "value": "start",
           "label": "Start"
         },
         {
@@ -290,7 +334,7 @@
           "label": "Center"
         },
         {
-          "value": "right",
+          "value": "end",
           "label": "End"
         }
       ],
@@ -304,14 +348,34 @@
         "default": "12-31-2028 23:59:59"
     },
     {
+      "type": "color",
+      "id": "date_color",
+      "label": "Date color"
+    },
+    {
       "type": "text",
       "id": "subheading",
       "label": "Sub heading"
     },
     {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
     }
   ],
   "presets": [

@@ -22,6 +22,10 @@
     align-items:center;
     justify-content:space-between;
     cursor:pointer;
+    --button-background: inherit;
+    --button-text: inherit;
+    border: 0;
+    border-radius: 0;
 }
 
 .cms-faq-question >:first-child {

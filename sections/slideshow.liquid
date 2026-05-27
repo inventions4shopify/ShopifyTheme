@@ -61,13 +61,13 @@
               {% endif %}
 
               {% if block.settings.link_label != blank %}
-                {% render 'button',
+                {%- render 'button',
                   text: block.settings.link_label,
                   href: block.settings.link,
                   background_color: block.settings.button_background_color,
                   text_color: block.settings.button_text_color,
                   outline_color: block.settings.button_outline_color
-                %}
+                -%}
               {% endif %}
             </div>
               <div class="media-overlay" style="background:{{ block.settings.overlay_color | default: 'rgba(0, 0, 0, 0.5)' }};"></div>
@@ -654,7 +654,7 @@
           "label": "Vertical Position",
           "options": [
             {
-              "value": "left",
+              "value": "start",
               "label": "Top"
             },
             {
@@ -662,7 +662,7 @@
               "label": "Center"
             },
             {
-              "value": "right",
+              "value": "end",
               "label": "Bottom"
             }
           ],
