@@ -1,0 +1,105 @@
+{{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
+
+
+
+<div class="page-width">
+  <div class="main-product-section">
+    <div class="product-image-gallery-wrapper">
+      {% render 'product-image-gallery',
+        product: product,
+        thumbnail_layout: section.settings.thumbnail_layout,
+        gallery_arrows_visibility: section.settings.gallery_arrows_device,
+        gallery_zoom_type: section.settings.gallery_zoom_type,
+        hover_zoom_style: section.settings.hover_zoom_style
+        %}
+    </div>
+
+    <div class="product-info-wrapper">
+      {% render 'product-details', product: product, blocks: section.blocks %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "thumbnail_layout",
+      "label": "Thumbnail Layout",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        },
+        {
+          "value": "vertical",
+          "label": "Vertical"
+        }
+      ],
+      "default": "horizontal"
+    },
+    {
+      "type": "select",
+      "id": "gallery_arrows_device",
+      "label": "Show Arrows On",
+      "options": [
+        {
+          "value": "desktop",
+          "label": "Desktop Only"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "both",
+          "label": "Desktop + Mobile"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "both"
+    },
+    {
+      "type": "select",
+      "id": "gallery_zoom_type",
+      "label": "Image Zoom Type",
+      "options": [
+        { "value": "none", "label": "No Zoom" },
+        { "value": "hover", "label": "Hover Zoom" },
+        { "value": "lightbox", "label": "Lightbox Slider" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "hover_zoom_style",
+      "label": "Hover Zoom Style",
+      "options": [
+        {
+          "value": "magnifier",
+          "label": "Same Image Magnifier"
+        },
+        {
+          "value": "preview_window",
+          "label": "Separate Preview Window"
+        }
+      ],
+      "default": "magnifier",
+      "visible_if": "{{ section.settings.gallery_zoom_type == 'hover' }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Section"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
