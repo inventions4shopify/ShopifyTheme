@@ -11,204 +11,211 @@
 %}
 
 <style>
-     #shopify-section-{{ section.id }} {
-       --overlay-opacity: {{ overlay_opacity }};
-       --section-radius: {{ video_block.settings.border_radius }}px;
-       --text-color: {{ content_block.settings.text_color }};
-     }
-     .custom-video-section {
-       position: relative;
-     }
-     .custom-video-wrapper {
-       position: relative;
-       overflow: hidden;
-       border-radius: var(--section-radius);
-     }
-     .custom-video-wrapper.full-width {
-       width: 100%;
-     }
-     .custom-video-wrapper.page-width {
-       max-width: 1200px;
-       margin-inline: auto;
-     }
-     .custom-video-media {
-       position: relative;
-       overflow: hidden;
-       border-radius: inherit;
-     }
-     .custom-video-media video,
-     .custom-video-media iframe {
-       width: 100%;
-       height: 100%;
-       object-fit: cover;
-       display: block;
-     }
-     .desktop-small { height: 400px; }
-     .desktop-medium { height: 550px; }
-     .desktop-large { height: 700px; }
-     .desktop-full { height: 100vh; }
-     .custom-video-overlay {
-       position: absolute;
-       inset: 0;
-       background: {{ video_block.settings.overlay_color }};
-       opacity: var(--overlay-opacity);
-       z-index: 1;
-       pointer-events: none;
-     }
-     .custom-video-content {
-       position: relative;
-       z-index: 2;
-       color: var(--text-color);
-     }
-     .custom-video-content * {
-       color: inherit;
-     }
-     .inside-content {
-       position: absolute;
-       inset: 0;
-       display: flex;
-       flex-direction: column;
-       padding: 40px;
-     }
-     .outside-content {
-       padding-top: 30px;
-     }
-     .content-top-left {
-       justify-content: flex-start;
-       align-items: flex-start;
-       text-align: left;
-     }
-     .content-top-center {
-       justify-content: flex-start;
-       align-items: center;
-       text-align: center;
-     }
-     .content-top-right {
-       justify-content: flex-start;
-       align-items: flex-end;
-       text-align: right;
-     }
-     .content-middle-left {
-       justify-content: center;
-       align-items: flex-start;
-       text-align: left;
-     }
-     .content-middle-center {
-       justify-content: center;
-       align-items: center;
-       text-align: center;
-     }
-     .content-middle-right {
-       justify-content: center;
-       align-items: flex-end;
-       text-align: right;
-     }
-     .content-bottom-left {
-       justify-content: flex-end;
-       align-items: flex-start;
-       text-align: left;
-     }
-     .content-bottom-center {
-       justify-content: flex-end;
-       align-items: center;
-       text-align: center;
-     }
-     .content-bottom-right {
-       justify-content: flex-end;
-       align-items: flex-end;
-       text-align: right;
-     }
-     .outside-left { text-align: left; }
-     .outside-center { text-align: center; }
-     .outside-right { text-align: right; }
-     .custom-video-subheading {
-       margin-bottom: 10px;
-       text-transform: uppercase;
-       font-size: var(--text-xs);
-     }
-     .custom-video-description {
-       max-width: 600px;
-       margin-bottom: 24px;
-       font-size: var(--text-sm);
-     }
-     .custom-video-button {
-       display: inline-flex;
-       align-items: center;
-       justify-content: center;
-       width: fit-content;
-       padding: 14px 28px;
-       border-radius: 4px;
-       background: #fff;
-       color: #000 !important;
-       text-decoration: none;
-       transition: opacity 0.3s ease;
-       font-size: var(--text-sm);
-     }
-     .custom-video-button:hover {
-       opacity: 0.8;
-     }
-     .custom-video-play-btn {
-       position: absolute;
-       top: 50%;
-       left: 50%;
-       z-index: 5;
-       transform: translate(-50%, -50%);
-       width: 80px;
-       height: 80px;
-       border: 0;
-       border-radius: 50%;
-       background: rgba(255, 255, 255, 0.9);
-       color: #000;
-       cursor: pointer;
-       display: flex;
-       align-items: center;
-       justify-content: center;
-       transition: transform 0.3s ease;
-     }
-     .custom-video-play-btn:hover {
-       transform: translate(-50%, -50%) scale(1.08);
-     }
-     .custom-video-play-btn svg {
-       width: 28px;
-       height: 28px;
-     }
-     .hidden {
-       display: none;
-     }
-     @media screen and (max-width: 767px) {
-       .custom-video-media {
-         height: {{ video_block.settings.mobile_height }};
-       }
-       .inside-content {
-         padding: 24px;
-       }
-     }
-  	{% if section.settings.enable_section_spacing == true %}
-  		#shopify-section-{{ section.id }} {
-  			{% if section.settings.enable_section_spacing %}
-  				padding-top: var(--section-spacing-top);
-  				padding-bottom: var(--section-spacing-bottom);
-  			{% endif %}
-  		}
+  #shopify-section-{{ section.id }} {
+    --overlay-opacity: {{ overlay_opacity }};
+    --section-radius: {{ video_block.settings.border_radius }}px;
+    --text-color: {{ content_block.settings.text_color }};
+  }
+  .custom-video-section {
+    position: relative;
+  }
+  .custom-video-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--section-radius);
+  }
+  .custom-video-wrapper.full-width {
+    width: 100%;
+  }
+  .custom-video-wrapper.page-width {
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+  .custom-video-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+  .custom-video-media video,
+  .custom-video-media iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .desktop-small { height: 400px; }
+  .desktop-medium { height: 550px; }
+  .desktop-large { height: 700px; }
+  .desktop-full { height: 100vh; }
+  .custom-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: {{ video_block.settings.overlay_color }};
+    opacity: var(--overlay-opacity);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .custom-video-content {
+    position: relative;
+    z-index: 2;
+    color: var(--text-color);
+  }
+  .custom-video-content * {
+    color: inherit;
+  }
+  .inside-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+  }
+  .content-top-left {
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .content-top-center {
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+  }
+  .content-top-right {
+    justify-content: flex-start;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .content-middle-left {
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .content-middle-center {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .content-middle-right {
+    justify-content: center;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .content-bottom-left {
+    justify-content: flex-end;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .content-bottom-center {
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+  }
+  .content-bottom-right {
+    justify-content: flex-end;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .outside-left { text-align: left; }
+  .outside-center { text-align: center; }
+  .outside-right { text-align: right; }
+  .custom-video-subheading {
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: var(--text-xs);
+  }
+  .custom-video-description {
+    max-width: 600px;
+    margin-bottom: 24px;
+    font-size: var(--text-sm);
+  }
+  .custom-video-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 14px 28px;
+    border-radius: 4px;
+    background: #fff;
+    color: #000 !important;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    font-size: var(--text-sm);
+  }
+  .custom-video-button:hover {
+    opacity: 0.8;
+  }
+  .custom-video-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 5;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  .custom-video-play-btn:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  .custom-video-play-btn svg {
+    width: 28px;
+    height: 28px;
+  }
+  .hidden {
+    display: none;
+  }
+  @media screen and (max-width: 767px) {
+    .custom-video-media {
+      height: {{ video_block.settings.mobile_height }};
+    }
+    .inside-content {
+      padding: 24px;
+    }
+  }
+  {% if section.settings.enable_section_spacing == true %}
+    #shopify-section-{{ section.id }} {
+      {% if section.settings.enable_section_spacing %}
+        padding-top: var(--section-spacing-top);
+        padding-bottom: var(--section-spacing-bottom);
+      {% endif %}
+    }
 
-  		@media screen and (min-width: 768px) {
-  			#shopify-section-{{ section.id }} {
-  				{% if section.settings.enable_section_spacing %}
-  					--section-spacing-top: var(--section-spacing-top-tablet);
-  					--section-spacing-bottom: var(--section-spacing-bottom-tablet);
-  				{% endif %}
-  			}
-  		}
+    @media screen and (min-width: 768px) {
+      #shopify-section-{{ section.id }} {
+        {% if section.settings.enable_section_spacing %}
+          --section-spacing-top: var(--section-spacing-top-tablet);
+          --section-spacing-bottom: var(--section-spacing-bottom-tablet);
+        {% endif %}
+      }
+    }
 
-  		@media screen and (min-width: 1024px) {
-  			#shopify-section-{{ section.id }} {
-  				{% if section.settings.enable_section_spacing %}
-  					--section-spacing-top: var(--section-spacing-top-desktop);
-  					--section-spacing-bottom: var(--section-spacing-bottom-desktop);
-  				{% endif %}
-  			}
-  		}
+    @media screen and (min-width: 1024px) {
+      #shopify-section-{{ section.id }} {
+        {% if section.settings.enable_section_spacing %}
+          --section-spacing-top: var(--section-spacing-top-desktop);
+          --section-spacing-bottom: var(--section-spacing-bottom-desktop);
+        {% endif %}
+      }
+    }
   {% endif %}
+  {% for block in section.blocks %}
+    .outside-content {
+        padding: {{ block.settings.padding_top_mobile }}px 0 {{ block.settings.padding_bottom_mobile }}px 0;
+    }
+    @media screen and (min-width: 768px){
+      .outside-content {
+        padding: {{ block.settings.padding_top }}px 0 {{ block.settings.padding_bottom }}px 0;
+      }
+    }
+  {% endfor %}
 </style>
 
 {% capture video_content %}
@@ -262,9 +269,6 @@
                 {% if block.settings.show_controls %}
                   controls
                 {% endif %}
-                {% if block.settings.poster_image != blank %}
-                  poster="{{ block.settings.poster_image | image_url }}"
-                {% endif %}
               >
                 {% if block.settings.mobile_video != blank %}
                   <source
@@ -282,13 +286,14 @@
                 {% endif %}
               </video>
 
-              {% unless block.settings.autoplay %}
-                <button class="custom-video-play-btn" aria-label="Play video">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                    <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
-                  </svg>
-                </button>
-              {% endunless %}
+              <button
+                class="custom-video-play-btn {% if block.settings.autoplay %}hidden{% endif %}"
+                aria-label="Play video"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                  <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                </svg>
+              </button>
 
             {% elsif block.settings.source == 'external_url' and block.settings.video_url != blank %}
               {% liquid
@@ -395,36 +400,52 @@
     {% endfor %}
   </div>
 </div>
-
 <script>
-  (() => {
-    const section = document.querySelector('#shopify-section-{{ section.id }}');
+  document.addEventListener('DOMContentLoaded', function () {
+    const videoWrappers = document.querySelectorAll('.custom-video-media');
 
-    if (!section) return;
+    videoWrappers.forEach((wrapper) => {
+      const video = wrapper.querySelector('.custom-video-element');
+      const playBtn = wrapper.querySelector('.custom-video-play-btn');
 
-    const video = section.querySelector('.custom-video-element');
-    const playButton = section.querySelector('.custom-video-play-btn');
+      if (!video || !playBtn) return;
 
-    if (!video || !playButton) return;
+      if (video.paused) {
+        playBtn.classList.remove('hidden');
+      } else {
+        playBtn.classList.add('hidden');
+      }
 
-    const togglePlayButton = () => {
-      playButton.classList.toggle('hidden', !video.paused);
-    };
+      playBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
 
-    playButton.addEventListener('click', () => {
-      video.play();
-    });
-
-    video.addEventListener('play', togglePlayButton);
-    video.addEventListener('pause', togglePlayButton);
-
-    {% unless video_block.settings.loop %}
-      video.addEventListener('ended', () => {
-        video.currentTime = 0;
-        togglePlayButton();
+        video.play();
+        playBtn.classList.add('hidden');
       });
-    {% endunless %}
-  })();
+
+      video.addEventListener('click', function () {
+        if (video.paused) {
+          video.play();
+          playBtn.classList.add('hidden');
+        } else {
+          video.pause();
+          playBtn.classList.remove('hidden');
+        }
+      });
+
+      video.addEventListener('play', function () {
+        playBtn.classList.add('hidden');
+      });
+
+      video.addEventListener('pause', function () {
+        playBtn.classList.remove('hidden');
+      });
+
+      video.addEventListener('ended', function () {
+        playBtn.classList.remove('hidden');
+      });
+    });
+  });
 </script>
 {% schema %}
 {
@@ -477,12 +498,6 @@
           "id": "video_url",
           "accept": ["youtube", "vimeo"],
           "label": "Video URL",
-          "visible_if": "{{ block.settings.source == 'external_url' }}"
-        },
-        {
-          "type": "image_picker",
-          "id": "poster_image",
-          "label": "Poster Image",
           "visible_if": "{{ block.settings.source == 'external_url' }}"
         },
         {
@@ -726,6 +741,55 @@
           "id": "text_color",
           "label": "Text Color",
           "default": "#ffffff"
+        },
+        {
+          "type": "header",
+          "content": "Section padding",
+          "visible_if": "{{ block.settings.content_layout == 'outside' }}"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Padding top",
+          "default": 10,
+          "visible_if": "{{ block.settings.content_layout == 'outside' }}"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Padding bottom",
+          "default": 10,
+          "visible_if": "{{ block.settings.content_layout == 'outside' }}"
+        },
+        {
+          "type": "range",
+          "id": "padding_top_mobile",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Top Mobile",
+          "default": 5,
+          "visible_if": "{{ block.settings.content_layout == 'outside' }}"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom_mobile",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Bottom Mobile",
+          "default": 5,
+          "visible_if": "{{ block.settings.content_layout == 'outside' }}"
         }
       ]
     }
