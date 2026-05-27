@@ -1,0 +1,14 @@
+.icon-box {
+  padding: var(--spacing-20);
+}
+
+.icon-image {
+  width: 6rem;
+  height: 6rem;
+  object-fit: contain;
+  margin-bottom: var(--spacing-16);
+}
+
+.icon-title {
+  margin: var(--spacing-10) 0 var(--spacing-4);
+}
