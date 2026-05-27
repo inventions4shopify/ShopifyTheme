@@ -171,15 +171,63 @@
       <div class="product_lightbox_overlay"></div>
 
       <div class="product_lightbox_content">
-        <button class="product_lightbox_close">×</button>
+        <button class="product_lightbox_close">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="50"
+            height="50"
+            x="0"
+            y="0"
+            viewBox="0 0 24 24"
+            style="enable-background:new 0 0 20 20"
+            xml:space="preserve"
+            class="hovered-paths"
+          >
+            <g><path fill="#000000" fill-rule="evenodd" d="M5 17.586a1 1 0 1 0 1.415 1.415L12 13.414 17.586 19A1 1 0 0 0 19 17.586L13.414 12 19 6.414A1 1 0 0 0 17.585 5L12 10.586 6.414 5A1 1 0 0 0 5 6.414L10.586 12z" clip-rule="evenodd" opacity="1" data-original="#000000" class="hovered-path"></path></g>
+          </svg>
+        </button>
 
-        <button class="product_lightbox_prev">‹</button>
+        <button class="product_lightbox_prev">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="20"
+            height="20"
+            x="0"
+            y="0"
+            viewBox="0 0 128 128"
+            style="enable-background:new 0 0 512 512"
+            xml:space="preserve"
+            class=""
+          >
+            <g><path d="M84 108a3.988 3.988 0 0 1-2.828-1.172l-40-40a3.997 3.997 0 0 1 0-5.656l40-40c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656L49.656 64l37.172 37.172a3.997 3.997 0 0 1 0 5.656A3.988 3.988 0 0 1 84 108z" fill="#000000" opacity="1" data-original="#000000" class=""></path></g>
+          </svg>
+        </button>
 
         <div class="product_lightbox_track_wrapper">
           <div class="product_lightbox_track"></div>
         </div>
 
-        <button class="product_lightbox_next">›</button>
+        <button class="product_lightbox_next">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="20"
+            height="20"
+            x="0"
+            y="0"
+            viewBox="0 0 128 128"
+            style="enable-background:new 0 0 512 512"
+            xml:space="preserve"
+            class=""
+          >
+            <g><path d="M44 108a3.988 3.988 0 0 1-2.828-1.172 3.997 3.997 0 0 1 0-5.656L78.344 64 41.172 26.828c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l40 40a3.997 3.997 0 0 1 0 5.656l-40 40A3.988 3.988 0 0 1 44 108z" fill="#000000" opacity="1" data-original="#000000"></path></g>
+          </svg>
+        </button>
       </div>
     </div>
   {% endif %}
@@ -238,23 +286,37 @@
   .product_gallery--vertical {
     display: flex;
     gap: 16px;
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   .product_gallery--vertical .product_gallery_thumbnail_wrapper {
     flex-shrink: 0;
     margin-top: 0;
+
+    height: 100%;
   }
 
   .product_gallery--vertical .product_gallery_thumbnail_track {
     flex-direction: column;
+
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 700px;
+
+    height: 100%;
+
+    scrollbar-width: none;
+  }
+
+  .product_gallery--vertical .product_gallery_thumbnail_track::-webkit-scrollbar {
+    display: none;
   }
 
   .product_gallery--vertical .product_gallery_main_wrapper {
     flex: 1;
+  }
+
+  .product_gallery--vertical .product_gallery_main_slider {
+    height: 100%;
   }
 
   /* ---------------------------------
@@ -274,6 +336,7 @@
     width: 100%;
     overflow: hidden;
     border-radius: 12px;
+    position: relative;
   }
 
   .product_gallery_main_slider:active {
@@ -282,15 +345,29 @@
 
   .product_gallery_main_track {
     display: flex;
+    width: 100%;
     transition: transform 0.4s ease;
     will-change: transform;
+
     aspect-ratio: 1 / 1;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
   }
 
   .product_gallery_main_slide {
     min-width: 100%;
-    flex-shrink: 0;
+    width: 100%;
+    flex: 0 0 100%;
+
     aspect-ratio: 1 / 1;
+
+    position: relative;
+
+    overflow: hidden;
   }
 
   .product_gallery_main_slide img {
@@ -298,13 +375,19 @@
     display: block;
     border-radius: 12px;
 
-    pointer-events: none;
+    pointer-events: auto;
 
     user-drag: none;
     -webkit-user-drag: none;
 
     user-select: none;
     -webkit-user-select: none;
+  }
+
+  .product_gallery_main_slider,
+  .product_gallery_main_track,
+  .product_gallery_main_slide {
+    touch-action: pan-y;
   }
 
   /* ---------------------------------
@@ -465,6 +548,9 @@
     border-radius: 50%;
     cursor: pointer;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .product_lightbox_close {
@@ -617,6 +703,13 @@
       width: 64px;
       height: 64px;
     }
+
+    .product_lightbox_close,
+    .product_lightbox_prev,
+    .product_lightbox_next {
+      width: 35px;
+      height: 35px;
+    }
   }
 {% endstyle %}
 
@@ -644,6 +737,24 @@
       let currentIndex = 0;
 
       // ---------------------------------
+      // MATCH VERTICAL THUMB HEIGHT
+      // ---------------------------------
+
+      function setVerticalThumbnailHeight() {
+        if (!isVertical) return;
+
+        const mainSliderHeight = slider.offsetHeight;
+
+        const thumbnailWrapper = gallery.querySelector('.product_gallery_thumbnail_wrapper');
+
+        thumbnailWrapper.style.height = `${mainSliderHeight}px`;
+      }
+
+      setVerticalThumbnailHeight();
+
+      window.addEventListener('resize', setVerticalThumbnailHeight);
+
+      // ---------------------------------
       // UPDATE SLIDER
       // ---------------------------------
 
@@ -656,7 +767,7 @@
           index = 0;
         }
 
-        track.style.transform = `translateX(-${index * 100}%)`;
+        track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
 
         thumbnails.forEach((thumb) => {
           thumb.classList.remove('active');
@@ -702,43 +813,107 @@
       // MAIN SLIDER SWIPE / DRAG
       // ---------------------------------
 
-      let startX = 0;
+      // ---------------------------------
+      // MAIN SLIDER SWIPE / DRAG
+      // ---------------------------------
 
+      let startX = 0;
       let currentX = 0;
 
       let isDragging = false;
+
+      let currentTranslate = 0;
+      let prevTranslate = 0;
+
+      const sliderWidth = () => slider.offsetWidth;
+
+      // -----------------------------
+      // UPDATE POSITION
+      // -----------------------------
+
+      function setSliderPosition(value) {
+        track.style.transition = 'none';
+
+        track.style.transform = `translate3d(${value}px,0,0)`;
+      }
+
+      // -----------------------------
+      // START DRAG
+      // -----------------------------
 
       function startDrag(x) {
         isDragging = true;
 
         startX = x;
 
-        currentX = x;
+        prevTranslate = -currentIndex * sliderWidth();
+
+        track.style.transition = 'none';
       }
+
+      // -----------------------------
+      // MOVE DRAG
+      // -----------------------------
 
       function moveDrag(x) {
         if (!isDragging) return;
 
         currentX = x;
+
+        const diff = currentX - startX;
+
+        currentTranslate = prevTranslate + diff;
+
+        setSliderPosition(currentTranslate);
       }
+
+      // -----------------------------
+      // END DRAG
+      // -----------------------------
 
       function endDrag() {
         if (!isDragging) return;
 
-        const diff = startX - currentX;
+        isDragging = false;
 
-        if (Math.abs(diff) > 50) {
-          if (diff > 0) {
-            updateSlider(currentIndex + 1);
-          } else {
-            updateSlider(currentIndex - 1);
-          }
+        const movedBy = currentX - startX;
+
+        if (movedBy < -50) {
+          currentIndex += 1;
         }
 
-        isDragging = false;
+        if (movedBy > 50) {
+          currentIndex -= 1;
+        }
+
+        if (currentIndex < 0) {
+          currentIndex = slides.length - 1;
+        }
+
+        if (currentIndex >= slides.length) {
+          currentIndex = 0;
+        }
+
+        track.style.transition = 'transform 0.4s ease';
+
+        track.style.transform = `translate3d(-${currentIndex * sliderWidth()}px,0,0)`;
+
+        thumbnails.forEach((thumb) => {
+          thumb.classList.remove('active');
+        });
+
+        thumbnails[currentIndex].classList.add('active');
+
+        thumbnails[currentIndex].scrollIntoView({
+          behavior: 'smooth',
+          inline: 'center',
+          block: 'nearest',
+        });
       }
 
+      // -----------------------------
       // TOUCH EVENTS
+      // -----------------------------
 
       slider.addEventListener(
         'touchstart',
@@ -758,14 +933,12 @@
 
       slider.addEventListener('touchend', endDrag);
 
-      // DESKTOP DRAG
-
-      let mouseDown = false;
+      // -----------------------------
+      // DESKTOP EVENTS
+      // -----------------------------
 
       slider.addEventListener('mousedown', (e) => {
         e.preventDefault();
-
-        mouseDown = true;
 
         startDrag(e.clientX);
 
@@ -773,15 +946,13 @@
       });
 
       window.addEventListener('mousemove', (e) => {
-        if (!mouseDown) return;
+        if (!isDragging) return;
 
         moveDrag(e.clientX);
       });
 
       window.addEventListener('mouseup', () => {
-        if (!mouseDown) return;
-
-        mouseDown = false;
+        if (!isDragging) return;
 
         endDrag();
 
@@ -930,13 +1101,17 @@
       // -----------------------------
       // ZOOM + PAN
       // -----------------------------
+
       function attachZoom() {
         const img = trackLB.querySelectorAll('.zoom-image')[lbIndex];
+
         if (!img) return;
 
-        // reset transform
-        img.style.transform = 'scale(1)';
+        img.style.transform = 'translate(0px,0px) scale(1)';
+        img.style.transformOrigin = 'center center';
         img.style.cursor = 'zoom-in';
+
+        const wrapper = img.closest('.zoom-wrapper');
 
         img.onclick = (e) => {
           e.stopPropagation();
@@ -946,20 +1121,45 @@
           if (!zoomState.zoomed) {
             zoomState.offsetX = 0;
             zoomState.offsetY = 0;
-            img.style.transform = 'scale(1)';
+
+            img.style.transition = 'transform 0.3s ease';
+
+            img.style.transform = 'translate(0px,0px) scale(1)';
+
             img.style.cursor = 'zoom-in';
-          } else {
-            img.style.transform = `scale(${zoomState.scale}) translate(0px,0px)`;
-            img.style.cursor = 'grab';
+
+            return;
           }
+
+          img.style.transition = 'transform 0.2s ease';
+
+          // click position
+          const rect = img.getBoundingClientRect();
+
+          const clickX = e.clientX - rect.left;
+          const clickY = e.clientY - rect.top;
+
+          // calculate movement
+          const moveX = (rect.width / 2 - clickX) * (zoomState.scale - 1);
+
+          const moveY = (rect.height / 2 - clickY) * (zoomState.scale - 1);
+
+          zoomState.offsetX = moveX;
+          zoomState.offsetY = moveY;
+
+          img.style.transform = `translate(${moveX}px, ${moveY}px) scale(${zoomState.scale})`;
+
+          img.style.cursor = 'grab';
         };
 
         img.onmousedown = (e) => {
           if (!zoomState.zoomed) return;
 
           zoomState.drag = true;
+
           zoomState.startX = e.clientX;
           zoomState.startY = e.clientY;
+
           img.style.cursor = 'grabbing';
         };
 
@@ -975,12 +1175,26 @@
           zoomState.offsetX += dx;
           zoomState.offsetY += dy;
 
-          img.style.transform = `scale(${zoomState.scale}) translate(${zoomState.offsetX}px, ${zoomState.offsetY}px)`;
+          // boundaries
+          const maxX = (img.clientWidth * (zoomState.scale - 1)) / 2;
+
+          const maxY = (img.clientHeight * (zoomState.scale - 1)) / 2;
+
+          zoomState.offsetX = Math.max(-maxX, Math.min(maxX, zoomState.offsetX));
+
+          zoomState.offsetY = Math.max(-maxY, Math.min(maxY, zoomState.offsetY));
+
+          img.style.transition = 'none';
+
+          img.style.transform = `translate(${zoomState.offsetX}px, ${zoomState.offsetY}px) scale(${zoomState.scale})`;
         };
 
         window.onmouseup = () => {
           zoomState.drag = false;
-          if (zoomState.zoomed && img) img.style.cursor = 'grab';
+
+          if (zoomState.zoomed) {
+            img.style.cursor = 'grab';
+          }
         };
       }
 
@@ -1012,6 +1226,44 @@
         if (Math.abs(diff) > 50) {
           moveLightbox(diff > 0 ? 1 : -1);
         }
+      });
+
+      // ---------------------------------
+      // DESKTOP DRAG SWIPE
+      // ---------------------------------
+
+      let isMouseDragging = false;
+
+      let dragStartX = 0;
+
+      trackLB?.addEventListener('mousedown', (e) => {
+        if (zoomState.zoomed) return;
+
+        isMouseDragging = true;
+
+        dragStartX = e.clientX;
+
+        trackLB.style.cursor = 'grabbing';
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!isMouseDragging) return;
+
+        isMouseDragging = false;
+
+        trackLB.style.cursor = '';
+
+        const diff = dragStartX - e.clientX;
+
+        if (Math.abs(diff) > 50) {
+          moveLightbox(diff > 0 ? 1 : -1);
+        }
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isMouseDragging) return;
+
+        e.preventDefault();
       });
     });
   });
@@ -1106,8 +1358,6 @@
     });
   });
 </script>
-
-
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {

@@ -1,6 +1,6 @@
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
 
-<script src="{{ 'product-image-gallery.js' | asset_url }}" defer></script>
+
 
 <div class="page-width">
   <div class="main-product-section">
@@ -39,12 +39,6 @@
         }
       ],
       "default": "horizontal"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_gallery_arrows",
-      "label": "Show Gallery Arrows",
-      "default": true
     },
     {
       "type": "select",
