@@ -1,5 +1,11 @@
 {{ 'marquee.css' | asset_url | stylesheet_tag }}
 
+<style>
+  .marquee-text {
+    color: {{ section.settings.text_color }};
+  }
+</style>
+
 
 {%- liquid
   assign s = section.settings
@@ -31,20 +37,18 @@
             <div class="marquee-item" {{ block.shopify_attributes }}>
 
                 {% if block.settings.image != blank %}
-                <img
-                    src="{{ block.settings.image | image_url: width: 300 }}"
-                    alt="{{ block.settings.text }}"
-                    class="marquee-logo"
-                    loading="lazy"
-                    width="auto"
-                    height="auto"
-                >
-                {% endif %}
-
-                {% if block.settings.text != blank %}
-                <span class="marquee-text">
-                    {{ block.settings.text }}
-                </span>
+                  <img
+                      src="{{ block.settings.image | image_url: width: 300 }}"
+                      alt="{{ block.settings.text }}"
+                      class="marquee-logo"
+                      loading="lazy"
+                      width="auto"
+                      height="auto"
+                  >
+                {% elsif block.settings.text != blank %}
+                  <span class="marquee-text">
+                      {{ block.settings.text }}
+                  </span>
                 {% endif %}
 
             </div>
@@ -62,12 +66,10 @@
                     width="auto"
                     height="auto"
                 >
-                {% endif %}
-
-                {% if block.settings.text != blank %}
-                <span class="marquee-text">
-                    {{ block.settings.text }}
-                </span>
+                {% elsif block.settings.text != blank %}
+                  <span class="marquee-text">
+                      {{ block.settings.text }}
+                  </span>
                 {% endif %}
 
             </div>
@@ -78,6 +80,50 @@
     </div>
     </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const marquee = document.querySelector(".marquee-track");
+
+    if (!marquee) return;
+
+    // Clone original items
+    const items = [...marquee.children];
+
+    items.forEach((item) => {
+      const clone = item.cloneNode(true);
+      marquee.appendChild(clone);
+    });
+
+    let animationFrame;
+    let position = 0;
+    const speed = 1; // increase for faster
+
+    function animate() {
+      position -= speed;
+
+      // Smooth infinite loop without jump
+      if (Math.abs(position) >= marquee.scrollWidth / 2) {
+        position = 0;
+      }
+
+      marquee.style.transform = `translateX(${position}px)`;
+
+      animationFrame = requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Pause on hover
+    marquee.addEventListener("mouseenter", () => {
+      cancelAnimationFrame(animationFrame);
+    });
+
+    marquee.addEventListener("mouseleave", () => {
+      animate();
+    });
+  });
+</script>
 
 {% schema %}
 {
@@ -107,7 +153,7 @@
       "min": 5,
       "max": 60,
       "step": 1,
-      "default": 20
+      "default": 30
     },
     {
       "type": "select",
@@ -154,6 +200,21 @@
           "label": "Right"
         }
       ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
     }
   ],
 
