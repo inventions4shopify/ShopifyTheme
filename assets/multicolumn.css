@@ -5,12 +5,29 @@
   background-color: var(--card-bg-color);
 }
 
+.multicolumn__content .heading {
+  margin: 0;
+}
+
 .multicolumn__content .icon-wrapper {
   display: block;
+}
+
+.multicolumn__content .icon-wrapper-svg {
+  background-color: var(--icon-bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+   border: 1px solid color-mix(in srgb, var(--card-border-color) 60%, transparent);
 }
 
 .multicolumn__content .icon-image {
   width: auto;
   max-height: 100%;
   object-fit: contain;
+}
+
+.multicolumn__content .grid {
+  margin: 4rem 0;
 }

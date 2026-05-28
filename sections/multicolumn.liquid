@@ -9,7 +9,7 @@
 
 <div {%- render 'section-variables', section: section, class: 'multicolumn__section' -%}>
   <div class="{{ section.settings.container_width }}">
-    <div class="multicolumn__content ps-rte">
+    <div class="multicolumn__content flex flex-col items-{{ section.settings.heading_alignment }}">
         {% if section.settings.heading != blank %}
             {%- assign head_color = section.settings.heading_color -%}
             {%- assign head_grad = section.settings.heading_gradient -%}
@@ -34,14 +34,13 @@
                 {{ section.settings.heading }}
             </h2>
         {% endif %}
-        <div class="grid grid--3-col">
+        <div class="grid xs:grid--2-col md:grid--3-col">
 
           {% for block in section.blocks %}
             {%- assign text_color = section.settings.text_color -%}
             {%- assign card_bg_color = section.settings.bg_color -%}
             {%- assign border_color = section.settings.border_color -%}
             {%- assign border_radius = section.settings.border_radius -%}
-            {%- assign icon-height = block.settings.icon-height -%}
 
               {%- capture card_style -%}
                 {%- if card_bg_color != blank and card_bg_color != 'rgba(0,0,0,0)' -%}
@@ -59,13 +58,17 @@
               {%- endcapture -%}
 
             <div class="grid__item ps-rte" style="{{ card_style | strip }}">
+              {%- assign icon_height = block.settings.icon-height -%}
+              {%- assign svg_size = block.settings.icon-height | divided_by: 2 -%}
+              {%- assign thumb_height = block.settings.thumb-height -%}
 
                 {% if block.settings.media_type == 'icon' %}
-                  <span class="icon-wrapper" style="height: {{ icon-height }}px;">
-                      {% render 'icon', name: block.settings.icon_name, size: icon-height, color: text_color %}
+                  <span class="icon-wrapper-svg" style="height: {{ icon_height }}px; width: {{ icon_height }}px;">
+                      {% render 'icon', icon: block.settings.icon_name, width: svg_size, height: svg_size %}
                   </span>
-                {% elsif block.settings.media_type == 'image' %}
-                  <span class="icon-wrapper" style="height: {{ icon-height }}px;">
+                {% endif %}
+                {% if block.settings.media_type == 'image' %}
+                  <span class="icon-wrapper" style="height: {{ thumb_height }}px;">
                       <img 
                       src="{{ block.settings.icon | img_url: 'master' }}" 
                       alt="{{ block.settings.title }}"
@@ -201,26 +204,29 @@
         "id": "title_size",
         "label": "Title size (visual)",
         "options": [
-          { "value": "h4", "label": "Large" },
-          { "value": "h5", "label": "Medium" },
-          { "value": "h6", "label": "Small" }
+          { "value": "h3", "label": "Large" },
+          { "value": "h4", "label": "Medium" },
+          { "value": "h5", "label": "Small" }
         ],
-        "default": "h5"
+        "default": "h4"
     },
     {
         "type": "color",
         "id": "bg_color",
-        "label": "Card Background color"
+        "label": "Card Background color",
+        "default": "#FDF2E7"
     },
     {
         "type": "color",
         "id": "text_color",
-        "label": "Card Text color"
+        "label": "Card Text color",
+        "default": "#4A3230"
     },
     {
         "type": "color",
         "id": "border_color",
-        "label": "Card Border color"
+        "label": "Card Border color",
+        "default": "#E4E2E2"
     },
     {
       "type": "range",
@@ -362,7 +368,17 @@
               "label": "Gift Icon"
             }
           ],
-          "default": "shopping_cart",
+          "default": "truck",
+          "visible_if": "{{block.settings.media_type == 'icon'}}"
+        },
+        {
+          "type": "range",
+          "id": "icon-height",
+          "label": "Icon Size",
+          "min": 1,
+          "max": 80,
+          "step": 1,
+          "default": 60,
           "visible_if": "{{block.settings.media_type == 'icon'}}"
         },
         {
@@ -373,7 +389,7 @@
         },
         {
           "type": "range",
-          "id": "icon-height",
+          "id": "thumb-height",
           "label": "Image Height",
           "min": 1,
           "max": 60,
@@ -391,7 +407,7 @@
           "type": "richtext",
           "id": "text",
           "label": "Description",
-          "default": "<p>Short description here</p>"
+          "default": "<p>Optimized rendering and lightweight architecture for smooth and responsive user experience across all devices.</p>"
         }
       ]
     }
