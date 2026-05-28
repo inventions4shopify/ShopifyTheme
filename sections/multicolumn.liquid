@@ -1,12 +1,18 @@
 
 {{ 'multicolumn.css' | asset_url | stylesheet_tag }}
 
+<style>
+    .multicolumn__content .grid__item >* {
+      color: var(--card-text-color);
+    }
+</style>
+
 <div {%- render 'section-variables', section: section, class: 'multicolumn__section' -%}>
   <div class="{{ section.settings.container_width }}">
     <div class="multicolumn__content ps-rte">
         {% if section.settings.heading != blank %}
-            {%- assign head_color = block.settings.heading_color -%}
-            {%- assign head_grad = block.settings.heading_gradient -%}
+            {%- assign head_color = section.settings.heading_color -%}
+            {%- assign head_grad = section.settings.heading_gradient -%}
 
             {%- capture heading_style -%}
               {%- if head_grad != blank -%}
@@ -30,29 +36,57 @@
         {% endif %}
         <div class="grid grid--3-col">
 
-        {% for block in section.blocks %}
-            {%- assign text_color = block.settings.text_color -%}
+          {% for block in section.blocks %}
+            {%- assign text_color = section.settings.text_color -%}
+            {%- assign card_bg_color = section.settings.bg_color -%}
+            {%- assign border_color = section.settings.border_color -%}
+            {%- assign border_radius = section.settings.border_radius -%}
+            {%- assign icon-height = block.settings.icon-height -%}
 
-            <div class="grid__item icon-box ps-rte">
-            {% if block.settings.icon != blank %}
-                <img 
-                src="{{ block.settings.icon | img_url: '100x' }}" 
-                alt="{{ block.settings.title }}"
-                class="icon-image"
-                width="auto"
-                height="auto"
-                >
-            {% endif %}
+              {%- capture card_style -%}
+                {%- if card_bg_color != blank and card_bg_color != 'rgba(0,0,0,0)' -%}
+                  --card-bg-color: {{ card_bg_color }};
+                {%- endif -%}
+                {%- if text_color != blank and text_color != 'rgba(0,0,0,0)' -%}
+                  --card-text-color: {{ text_color }};
+                {%- endif -%}
+                {%- if border_color != blank and border_color != 'rgba(0,0,0,0)' -%}
+                  --card-border-color: {{ border_color }};
+                {%- endif -%}
+                {%- if border_radius != blank -%}
+                  --card-border-radius: {{ border_radius }}px;
+                {%- endif -%}
+              {%- endcapture -%}
+
+            <div class="grid__item ps-rte" style="{{ card_style | strip }}">
+
+                {% if block.settings.media_type == 'icon' %}
+                  <span class="icon-wrapper" style="height: {{ icon-height }}px;">
+                      {% render 'icon', name: block.settings.icon_name, size: icon-height, color: text_color %}
+                  </span>
+                {% elsif block.settings.media_type == 'image' %}
+                  <span class="icon-wrapper" style="height: {{ icon-height }}px;">
+                      <img 
+                      src="{{ block.settings.icon | img_url: 'master' }}" 
+                      alt="{{ block.settings.title }}"
+                      class="icon-image"
+                      width="auto"
+                      height="auto"
+                      >
+                  </span>
+                {% endif %}
 
             {% if block.settings.title != blank %}
-                <h3 class="icon-title">{{ block.settings.title }}</h3>
+                <{{ section.settings.title_size }} class="{{ section.settings.title_size }}">
+                  {{ block.settings.title }}
+                </{{ section.settings.title_size }}>
             {% endif %}
 
             {% if block.settings.text != blank %}
-                <p class="icon-text">{{ block.settings.text }}</p>
+                <div class="icon-text">{{ block.settings.text }}</div>
             {% endif %}
             </div>
-        {% endfor %}
+          {% endfor %}
 
         </div>
         {%- render 'button',
@@ -98,6 +132,20 @@
       "label": "Custom max-width",
       "default": 800,
       "visible_if": "{{ section.settings.container_width == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
     },
     {
         "type": "header",
@@ -146,6 +194,46 @@
     },
     {
       "type": "header",
+      "content": "Card Style"
+    },
+    {
+        "type": "select",
+        "id": "title_size",
+        "label": "Title size (visual)",
+        "options": [
+          { "value": "h4", "label": "Large" },
+          { "value": "h5", "label": "Medium" },
+          { "value": "h6", "label": "Small" }
+        ],
+        "default": "h5"
+    },
+    {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Card Background color"
+    },
+    {
+        "type": "color",
+        "id": "text_color",
+        "label": "Card Text color"
+    },
+    {
+        "type": "color",
+        "id": "border_color",
+        "label": "Card Border color"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "header",
       "content": "Button Content"
     },
     {
@@ -154,9 +242,9 @@
         "label": "Button Alignment",
         "options": [
         { "value": "inherit", "label": "Inherit from section" },
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
         ],
         "default": "center"
     },
@@ -185,31 +273,113 @@
         "type": "color",
         "id": "button_outline_color",
         "label": "Button outline"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color_background",
-      "id": "background_gradient",
-      "label": "Background gradient"
     }
   ],
   "blocks": [
     {
       "type": "icon",
-      "name": "Icon Item",
+      "name": "Card",
       "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Select Type",
+          "options": [
+            {
+              "value": "icon",
+              "label": "SVG Icon"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            }
+          ],
+          "default": "icon"
+        },
+        {
+          "type": "select",
+          "id": "icon_name",
+          "label": "Select Icon",
+          "options": [
+            {
+              "value": "shopping_basket",
+              "label": "Shopping Basket Icon"
+            },
+            {
+              "value": "shopping_bag",
+              "label": "Shopping Bag Icon"
+            },
+            {
+              "value": "shopping_cart",
+              "label": "Shopping Cart Icon"
+            },
+            {
+              "value": "share",
+              "label": "Share Icon"
+            },
+            {
+              "value": "discount",
+              "label": "Discount Icon"
+            },
+            {
+              "value": "blog-author",
+              "label": "Blog Author Icon"
+            },
+            {
+              "value": "blog-comment",
+              "label": "Blog Comment Icon"
+            },
+            {
+              "value": "blog-date",
+              "label": "Blog Date Icon"
+            },
+            {
+              "value": "email",
+              "label": "Email Icon"
+            },
+            {
+              "value": "phone",
+              "label": "Phone Icon"
+            },
+            {
+              "value": "return",
+              "label": "Return Icon"
+            },
+            {
+              "value": "truck",
+              "label": "Truck Icon"
+            },
+            {
+              "value": "security",
+              "label": "Security Icon"
+            },
+            {
+              "value": "trust",
+              "label": "Trust Icon"
+            },
+            {
+              "value": "gift",
+              "label": "Gift Icon"
+            }
+          ],
+          "default": "shopping_cart",
+          "visible_if": "{{block.settings.media_type == 'icon'}}"
+        },
         {
           "type": "image_picker",
           "id": "icon",
-          "label": "Icon"
+          "label": "Icon",
+          "visible_if": "{{block.settings.media_type == 'image'}}"
+        },
+        {
+          "type": "range",
+          "id": "icon-height",
+          "label": "Image Height",
+          "min": 1,
+          "max": 60,
+          "step": 1,
+          "default": 40,
+          "visible_if": "{{block.settings.media_type == 'image'}}"
         },
         {
           "type": "text",
@@ -218,26 +388,11 @@
           "default": "Feature Title"
         },
         {
-          "type": "text",
+          "type": "richtext",
           "id": "text",
-          "label": "Text",
-          "default": "Short description here"
-        },
-        {
-            "type": "color",
-            "id": "bg_color",
-            "label": "Card Background color"
-        },
-        {
-            "type": "color",
-            "id": "text_color",
-            "label": "Card Text color"
-        },
-        {
-            "type": "color",
-            "id": "border_color",
-            "label": "Card Border color"
-        },
+          "label": "Description",
+          "default": "<p>Short description here</p>"
+        }
       ]
     }
   ],
