@@ -187,8 +187,7 @@ ol {
   z-index: 2;
 }
 
-.media-overlay-content>* {
-  color: inherit;
+.media-overlay-content >* {
   margin: 0;
 }
 

@@ -13,6 +13,10 @@
     display: flex;
 }
 
+.cms-slideshow-main .media-overlay-content>* {
+  color: inherit;
+}
+
 .cms-slideshow-slide {
     position: absolute;
     inset: 0;
