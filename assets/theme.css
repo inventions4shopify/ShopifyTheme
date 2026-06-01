@@ -783,6 +783,9 @@ canvas {
    ============================================================ */
 
 /* ── Base gap ── */
+.grid-spacing {
+  gap: var(--grid-spacing);
+}
 .gap-2 {
   gap: var(--spacing-2);
 }
