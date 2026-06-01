@@ -1,6 +1,26 @@
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
+{% comment %} {{ 'product-image-gallery.js' | asset_url | script_tag }} {% endcomment %}
 
+{%  style  %}  
+.product-image-gallery-wrapper {
+    width: 100%;
+    max-width: 100%;
+}
 
+.product-info-wrapper {
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+@media (min-width: 768px) {
+    .product-image-gallery-wrapper {
+        max-width: 50%;
+    }
+    .product-info-wrapper {
+      width: 1%;
+    }
+}
+{% endstyle %}
 
 <div class="page-width">
   <div class="main-product-section">
@@ -10,8 +30,9 @@
         thumbnail_layout: section.settings.thumbnail_layout,
         gallery_arrows_visibility: section.settings.gallery_arrows_device,
         gallery_zoom_type: section.settings.gallery_zoom_type,
-        hover_zoom_style: section.settings.hover_zoom_style
-        %}
+        hover_zoom_style: section.settings.hover_zoom_style,
+        gallery_arrow_display: section.settings.gallery_arrow_display
+      %}
     </div>
 
     <div class="product-info-wrapper">
@@ -55,7 +76,7 @@
         },
         {
           "value": "both",
-          "label": "Desktop + Mobile"
+          "label": "Both"
         },
         {
           "value": "none",
@@ -63,6 +84,23 @@
         }
       ],
       "default": "both"
+    },
+    {
+      "type": "select",
+      "id": "gallery_arrow_display",
+      "label": "Arrow visibility style",
+      "options": [
+        {
+          "value": "always",
+          "label": "Always show"
+        },
+        {
+          "value": "hover",
+          "label": "Show on hover"
+        }
+      ],
+      "default": "always",
+      "visible_if": "{{ section.settings.gallery_arrows_device != 'none' }}"
     },
     {
       "type": "select",
