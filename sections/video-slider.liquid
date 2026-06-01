@@ -1,23 +1,7 @@
-{% comment %}
-  ----------------------------------------------------------------------------------------------------------------------
-  SECTION: rich-text.liquid
-  ----------------------------------------------------------------------------------------------------------------------
-{% endcomment %}
+{{ 'video-slider.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign s = section.settings
-
-  # ── Container width ──────────────────────────────────────────────────────
-  assign container_class = 'page-width'
-  if s.container_width == 'full-width'
-    assign container_class = 'page-width--full'
-  elsif s.container_width == 'narrow'
-    assign container_class = 'page-width page-width--narrow'
-  elsif s.container_width == 'small'
-    assign container_class = 'page-width page-width--small'
-  elsif s.container_width == 'custom'
-    assign container_class = 'page-width rich-text__container--custom'
-  endif
 
   # ── Alignment class ───────────────────────────────────────────────────────
   assign align_value = s.content_alignment | default: 'center'
@@ -40,101 +24,97 @@
 {%- endif -%}
 
 <div {%- render 'section-variables', section: section, class: 'rich-text__section' -%}>
-  <div class="{{ container_class }}">
+  <div class="{{ s.container_width }}">
     <div class="rich-text__body flex flex-col {{ align_class }} {{ gap_class }}">
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'subheading' -%}
-            {%- assign sub_align = block.settings.subheading_alignment | default: 'inherit' -%}
-            {%- assign sub_color = block.settings.subheading_color -%}
+      
+        {%- assign sub_align = section.settings.subheading_alignment | default: 'inherit' -%}
+        {%- assign sub_color = section.settings.subheading_color -%}
 
-            {%- if block.settings.subheading != blank -%}
-              <p
-                class="section-header__subheading subheading{% if sub_align != 'inherit' %} text-{{ sub_align }}{% endif %}"
-                {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
-                  style="color: rgb({{ sub_color.rgb }});"
-                {%- endunless %}
-                {{ block.shopify_attributes }}
-              >
-                {{- block.settings.subheading | escape -}}
-              </p>
-            {%- endif -%}
-
-          {%- when 'heading' -%}
-            {%- assign tag = block.settings.heading_tag | default: 'h2' -%}
-            {%- assign size = block.settings.heading_size | default: 'h2' -%}
-            {%- assign head_align = block.settings.heading_alignment | default: 'inherit' -%}
-            {%- assign head_color = block.settings.heading_color -%}
-            {%- assign head_grad = block.settings.heading_gradient -%}
-
-            {%- capture heading_style -%}
-              {%- if head_grad != blank -%}
-                background: {{ head_grad }};
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-              {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-                --color-heading: {{ head_color.rgb }};
-              {%- endif -%}
-            {%- endcapture -%}
-
-            {%- if block.settings.heading != blank -%}
-              <{{ tag }}
-                class="section-header__heading {{ size }}{% if head_align != 'inherit' %} text-{{ head_align }}{% endif %}"
-                {%- unless heading_style == blank %}
-                  style="{{ heading_style | strip }}"
-                {%- endunless %}
-                {{ block.shopify_attributes }}
-              >
-                {{- block.settings.heading | escape -}}
-              </{{ tag }}>
-            {%- endif -%}
-
-          {%- when 'text' -%}
-            {%- assign text_align = block.settings.text_alignment | default: 'inherit' -%}
-            {%- assign text_width = block.settings.text_width | default: '' -%}
-            {%- assign block_color = block.settings.text_color -%}
-            <div
-              class="rich-text__text ps-rte{% if text_align != 'inherit' %} text-{{ text_align }}{% endif %}"
-              data-block-id="{{ block.id }}"
-              {%- if text_width != blank or block_color != blank and block_color != 'rgba(0,0,0,0)' %}
-                style="
-                  {%- if text_width != blank -%}max-width: {{ text_width }};{%- endif -%}
-                  {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' -%}color: rgb({{ block_color.rgb }});{%- endunless -%}
-                "
-              {%- endif %}
-              {{ block.shopify_attributes }}
+        {%- if section.settings.subheading != blank -%}
+            <p
+            class="section-header__subheading subheading{% if sub_align != 'inherit' %} text-{{ sub_align }}{% endif %}"
+            {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ sub_color.rgb }});"
+            {%- endunless %}
+            {{ section.shopify_attributes }}
             >
-              {{- block.settings.text -}}
-            </div>
+            {{- section.settings.subheading | escape -}}
+            </p>
+        {%- endif -%}
 
-          {%- when 'button' -%}
-            {%- assign btn_align = block.settings.button_alignment | default: 'inherit' -%}
-            {%- if block.settings.link_label != blank -%}
-              <div
-                class="rich-text__button-wrapper{% if btn_align != 'inherit' %} text-{{ btn_align }}{% endif %}"
-                {{ block.shopify_attributes }}
-              >
-                {%- render 'button',
-                  text: block.settings.link_label,
-                  href: block.settings.link,
-                  style: block.settings.button_style,
-                  background_color: block.settings.button_background_color,
-                  text_color: block.settings.button_text_color,
-                  outline_color: block.settings.button_outline_color
-                -%}
-              </div>
+        {%- assign tag = section.settings.heading_tag | default: 'h2' -%}
+        {%- assign size = section.settings.heading_size | default: 'h2' -%}
+        {%- assign head_align = section.settings.heading_alignment | default: 'inherit' -%}
+        {%- assign head_color = section.settings.heading_color -%}
+        {%- assign head_grad = section.settings.heading_gradient -%}
+
+        {%- capture heading_style -%}
+            {%- if head_grad != blank -%}
+            background: {{ head_grad }};
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
+            --color-heading: {{ head_color.rgb }};
             {%- endif -%}
+        {%- endcapture -%}
 
-          {%- when 'spacer' -%}
+        {%- if section.settings.heading != blank -%}
+            <{{ tag }}
+            class="section-header__heading {{ size }}{% if head_align != 'inherit' %} text-{{ head_align }}{% endif %}"
+            {%- unless heading_style == blank %}
+                style="{{ heading_style | strip }}"
+            {%- endunless %}
+            {{ section.shopify_attributes }}
+            >
+            {{- section.settings.heading | escape -}}
+            </{{ tag }}>
+        {%- endif -%}
+
+        {%- assign text_align = section.settings.text_alignment | default: 'inherit' -%}
+        {%- assign text_width = section.settings.text_width | default: '' -%}
+        {%- assign section_color = section.settings.text_color -%}
+
+        <div
+            class="rich-text__text ps-rte{% if text_align != 'inherit' %} text-{{ text_align }}{% endif %}"
+            data-block-id="{{ section.id }}"
+            {%- if text_width != blank or section_color != blank and section_color != 'rgba(0,0,0,0)' %}
+            style="
+                {%- if text_width != blank -%}max-width: {{ text_width }};{%- endif -%}
+                {%- unless section_color == blank or section_color == 'rgba(0,0,0,0)' -%}color: rgb({{ section_color.rgb }});{%- endunless -%}
+            "
+            {%- endif %}
+            {{ section.shopify_attributes }}
+        >
+            {{- section.settings.text -}}
+        </div>
+
+        
+        {%- assign btn_align = section.settings.button_alignment | default: 'inherit' -%}
+        {%- if section.settings.link_label != blank -%}
             <div
-              class="rich-text__spacer"
-              style="height: {{ block.settings.spacer_height | default: 20 }}px;"
-              aria-hidden="true"
-              {{ block.shopify_attributes }}
-            ></div>
-        {%- endcase -%}
-      {%- endfor -%}
+            class="rich-text__button-wrapper{% if btn_align != 'inherit' %} text-{{ btn_align }}{% endif %}"
+            {{ section.shopify_attributes }}
+            >
+            {%- render 'button',
+                text: section.settings.link_label,
+                href: section.settings.link,
+                style: section.settings.button_style,
+                background_color: section.settings.button_background_color,
+                text_color: section.settings.button_text_color,
+                outline_color: section.settings.button_outline_color
+            -%}
+            </div>
+        {%- endif -%}
+    </div>
+    <div class="video-slider__content">
+        <div class="video-slider__slider">
+            {%- for block in section.blocks -%}
+                <div class="video-slider__slide">
+                    <div>video here</div>
+                </div>
+            {%- endfor -%}
+        </div>
     </div>
   </div>
 </div>
@@ -155,32 +135,18 @@
       "label": "Container width",
       "options": [
         { "value": "page-width", "label": "Page width" },
-        { "value": "narrow", "label": "Narrow" },
-        { "value": "small", "label": "Small" },
-        { "value": "full-width", "label": "Full width" },
-        { "value": "custom", "label": "Custom" }
+        { "value": "full-width", "label": "Full width" }
       ],
-      "default": "small"
-    },
-    {
-      "type": "range",
-      "id": "custom_container_width",
-      "min": 400,
-      "max": 1200,
-      "step": 10,
-      "unit": "px",
-      "label": "Custom max-width",
-      "default": 800,
-      "visible_if": "{{ section.settings.container_width == 'custom' }}"
+      "default": "page-width"
     },
     {
       "type": "select",
       "id": "content_alignment",
       "label": "Content alignment",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Start" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "End" }
       ],
       "default": "center"
     },
@@ -198,6 +164,162 @@
         { "value": "48", "label": "2× large" }
       ],
       "default": "24"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Watch & Shop Our Latest Collection"
+    },
+    {
+        "type": "select",
+        "id": "heading_tag",
+        "label": "Heading tag (SEO)",
+        "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+        ],
+        "default": "h2"
+    },
+    {
+        "type": "select",
+        "id": "heading_size",
+        "label": "Heading size (visual)",
+        "options": [
+        { "value": "h1", "label": "H1 — Largest" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6 — Smallest" }
+        ],
+        "default": "h2"
+    },
+    {
+        "type": "select",
+        "id": "heading_alignment",
+        "label": "Alignment",
+        "options": [
+        { "value": "inherit", "label": "Inherit from section" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+        ],
+        "default": "inherit"
+    },
+    {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color"
+    },
+    {
+        "type": "color_background",
+        "id": "heading_gradient",
+        "label": "Heading gradient"
+    },
+    {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "Innovative solutions designed to help your business grow faster."
+    },
+    {
+        "type": "select",
+        "id": "subheading_alignment",
+        "label": "Alignment",
+        "options": [
+        { "value": "inherit", "label": "Inherit from section" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+        ],
+        "default": "inherit"
+    },
+    {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Subheading color"
+    },
+    {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Discover powerful strategies, cutting-edge technology, and expert support that drive success and create lasting impact.</p>"
+    },
+    {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Alignment",
+        "options": [
+        { "value": "inherit", "label": "Inherit from section" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+        ],
+        "default": "inherit"
+    },
+    {
+        "type": "select",
+        "id": "text_width",
+        "label": "Text max-width",
+        "options": [
+        { "value": "", "label": "Full" },
+        { "value": "80rem", "label": "Narrow" },
+        { "value": "60rem", "label": "Extra narrow" },
+        { "value": "48rem", "label": "Small" }
+        ],
+        "default": ""
+    },
+    {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color"
+    },
+    {
+        "type": "text",
+        "id": "link_label",
+        "label": "Button label",
+        "default": "Get Started"
+    },
+    {
+        "type": "url",
+        "id": "link",
+        "label": "Button link"
+    },
+    {
+        "type": "select",
+        "id": "button_alignment",
+        "label": "Alignment",
+        "options": [
+        { "value": "inherit", "label": "Inherit from section" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+        ],
+        "default": "inherit"
+    },
+    {
+        "type": "color",
+        "id": "button_background_color",
+        "label": "Button background"
+    },
+    {
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Button text"
+    },
+    {
+        "type": "color",
+        "id": "button_outline_color",
+        "label": "Button outline"
     },
     {
       "type": "header",
@@ -270,194 +392,64 @@
   ],
   "blocks": [
     {
-      "type": "heading",
-      "name": "Heading",
+      "type": "slide",
+      "name": "Video Slide",
       "settings": [
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Source",
+          "options": [
+            {
+              "value": "uploaded",
+              "label": "Uploaded"
+            },
+            {
+              "value": "external_url",
+              "label": "External url"
+            }
+          ]
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Desktop Video",
+          "visible_if": "{{ block.settings.source == 'uploaded' }}"
+        },
+        {
+          "type": "video",
+          "id": "mobile_video",
+          "label": "Mobile Video",
+          "visible_if": "{{ block.settings.source == 'uploaded' }}"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "label": "Video URL",
+          "visible_if": "{{ block.settings.source == 'external_url' }}"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Enable autoplay",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "loop",
+          "label": "Loop video",
+          "default": true
+        },
+        {
+          "type": "product",
+          "id": "product_url",
+          "label": "Product"
+        },
         {
           "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Talk about your brand"
-        },
-        {
-          "type": "select",
-          "id": "heading_tag",
-          "label": "Heading tag (SEO)",
-          "options": [
-            { "value": "h1", "label": "H1" },
-            { "value": "h2", "label": "H2" },
-            { "value": "h3", "label": "H3" },
-            { "value": "h4", "label": "H4" },
-            { "value": "h5", "label": "H5" },
-            { "value": "h6", "label": "H6" }
-          ],
-          "default": "h2"
-        },
-        {
-          "type": "select",
-          "id": "heading_size",
-          "label": "Heading size (visual)",
-          "options": [
-            { "value": "h1", "label": "H1 — Largest" },
-            { "value": "h2", "label": "H2" },
-            { "value": "h3", "label": "H3" },
-            { "value": "h4", "label": "H4" },
-            { "value": "h5", "label": "H5" },
-            { "value": "h6", "label": "H6 — Smallest" }
-          ],
-          "default": "h2"
-        },
-        {
-          "type": "select",
-          "id": "heading_alignment",
-          "label": "Alignment",
-          "options": [
-            { "value": "inherit", "label": "Inherit from section" },
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
-          ],
-          "default": "inherit"
-        },
-        {
-          "type": "color",
-          "id": "heading_color",
-          "label": "Heading color"
-        },
-        {
-          "type": "color_background",
-          "id": "heading_gradient",
-          "label": "Heading gradient"
-        }
-      ]
-    },
-    {
-      "type": "subheading",
-      "name": "Subheading",
-      "settings": [
-        {
-          "type": "text",
-          "id": "subheading",
-          "label": "Subheading",
-          "default": "Our story"
-        },
-        {
-          "type": "select",
-          "id": "subheading_alignment",
-          "label": "Alignment",
-          "options": [
-            { "value": "inherit", "label": "Inherit from section" },
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
-          ],
-          "default": "inherit"
-        },
-        {
-          "type": "color",
-          "id": "subheading_color",
-          "label": "Subheading color"
-        }
-      ]
-    },
-    {
-      "type": "text",
-      "name": "Text",
-      "settings": [
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
-        },
-        {
-          "type": "select",
-          "id": "text_alignment",
-          "label": "Alignment",
-          "options": [
-            { "value": "inherit", "label": "Inherit from section" },
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
-          ],
-          "default": "inherit"
-        },
-        {
-          "type": "select",
-          "id": "text_width",
-          "label": "Text max-width",
-          "options": [
-            { "value": "", "label": "Full" },
-            { "value": "80rem", "label": "Narrow" },
-            { "value": "60rem", "label": "Extra narrow" },
-            { "value": "48rem", "label": "Small" }
-          ],
-          "default": ""
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text color"
-        }
-      ]
-    },
-    {
-      "type": "button",
-      "name": "Button",
-      "settings": [
-        {
-          "type": "text",
-          "id": "link_label",
-          "label": "Button label",
-          "default": "Shop now"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Button link"
-        },
-        {
-          "type": "select",
-          "id": "button_alignment",
-          "label": "Alignment",
-          "options": [
-            { "value": "inherit", "label": "Inherit from section" },
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
-          ],
-          "default": "inherit"
-        },
-        {
-          "type": "color",
-          "id": "button_background_color",
-          "label": "Button background"
-        },
-        {
-          "type": "color",
-          "id": "button_text_color",
-          "label": "Button text"
-        },
-        {
-          "type": "color",
-          "id": "button_outline_color",
-          "label": "Button outline"
-        }
-      ]
-    },
-    {
-      "type": "spacer",
-      "name": "Spacer",
-      "settings": [
-        {
-          "type": "range",
-          "id": "spacer_height",
-          "min": 4,
-          "max": 120,
-          "step": 4,
-          "unit": "px",
-          "label": "Height",
-          "default": 20
+          "id": "caption",
+          "label": "Caption"
         }
       ]
     }
@@ -465,7 +457,9 @@
   "presets": [
     {
       "name": "Video Slider",
-      "blocks": [{ "type": "subheading" }, { "type": "heading" }, { "type": "text" }, { "type": "button" }]
+      "blocks": [
+        { "type": "slide" }
+    ]
     }
   ]
 }
