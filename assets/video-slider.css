@@ -1,0 +1,8 @@
+.video-slider__content {
+    margin-top: var(--spacing-40);
+}
+
+.video-slider__slider {
+    display: flex;
+    gap: var(--grid-spacing);
+}
