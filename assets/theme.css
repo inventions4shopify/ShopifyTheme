@@ -286,6 +286,7 @@ input[type="submit"] {
   --button-background: rgb(var(--color-button-primary-background));
   --button-outline: rgb(var(--color-button-primary-outline));
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
