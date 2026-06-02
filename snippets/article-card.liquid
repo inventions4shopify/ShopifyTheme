@@ -1,0 +1,122 @@
+{%- if article and article != empty -%}
+  {% liquid
+    assign sub_color = section.settings.subheading_color
+    assign head_color = section.settings.heading_color
+    assign block_color = section.settings.text_color
+    assign background_color = section.settings.bg_color
+
+    if section.settings.card_style
+      if section.settings.author_date != blank and section.settings.author_date != 'rgba(0,0,0,0)'
+        assign sub_color = section.settings.author_date
+      endif
+
+      if section.settings.card_heading_color != blank and section.settings.card_heading_color != 'rgba(0,0,0,0)'
+        assign head_color = section.settings.card_heading_color
+      endif
+
+      if section.settings.card_text != blank and section.settings.card_text != 'rgba(0,0,0,0)'
+        assign block_color = section.settings.card_text
+      endif
+
+      if section.settings.card_bg != blank and section.settings.card_bg != 'rgba(0,0,0,0)'
+        assign background_color = section.settings.card_bg
+      endif
+    endif
+  %}
+
+  <div class="article-card-wrapper card-wrapper underline-links-hover" style="background: {{ background_color }};">
+    <div
+      class="
+        card article-card
+        {% if article.image and show_image %}card--media{% else %}card--text{% endif %}
+      "
+    >
+      {% if article.image and show_image %}
+        <div class="article-card__image-wrapper">
+          <a href="{{ article.url }}" class="full-unstyled-link">
+            <div class="article-card__image ratio-{{ media_height }}">
+              <img
+                srcset="
+                  {%- if article.image.width >= 165 -%}{{ article.image | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if article.image.width >= 360 -%}{{ article.image | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if article.image.width >= 533 -%}{{ article.image | image_url: width: 533 }} 533w,{%- endif -%}
+                  {%- if article.image.width >= 720 -%}{{ article.image | image_url: width: 720 }} 720w,{%- endif -%}
+                  {%- if article.image.width >= 1000 -%}{{ article.image | image_url: width: 1000 }} 1000w,{%- endif -%}
+                  {{ article.image | image_url }} {{ article.image.width }}w
+                "
+                src="{{ article.image | image_url: width: 720 }}"
+                sizes="(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw"
+                alt="{{ article.image.alt | escape }}"
+                loading="lazy"
+                width="{{ article.image.width }}"
+                height="{{ article.image.height }}"
+              >
+            </div>
+          </a>
+        </div>
+      {% endif %}
+
+      <div class="card__content">
+        <div class="card__information ps-rte">
+          {% if show_date or show_author %}
+            <div
+              class="article-card__info text-sm"
+              {% unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ sub_color.rgb }});"
+              {% endunless %}
+            >
+              {% if show_date %}
+                <span>
+                  {{ article.published_at | date: '%b %d, %Y' }}
+                </span>
+              {% endif %}
+
+              {% if show_author %}
+                <span>
+                  {% if show_date %} • {% endif %}
+                  {{ article.author }}
+                </span>
+              {% endif %}
+            </div>
+          {% endif %}
+          <h3
+            class="card__heading h5"
+            {% unless head_color == blank or head_color == 'rgba(0,0,0,0)' %}
+              style="color: rgb({{ head_color.rgb }});"
+            {% endunless %}
+          >
+            <a href="{{ article.url }}" class="full-unstyled-link">
+              {{ article.title | escape }}
+            </a>
+          </h3>
+
+          {% if show_excerpt %}
+            <div
+              class="article-card__excerpt text-sm"
+              {% unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ block_color.rgb }});"
+              {% endunless %}
+            >
+              {% if article.excerpt != blank %}
+                {{ article.excerpt | strip_html | truncatewords: 25 }}
+              {% else %}
+                {{ article.content | strip_html | truncatewords: 25 }}
+              {% endif %}
+            </div>
+          {% endif %}
+          {% if read_more_label != blank %}
+            <a
+              href="{{ article.url }}"
+              class="blog-read-more text-sm"
+              {% unless head_color == blank or head_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ head_color.rgb }});"
+              {% endunless %}
+            >
+              {{ read_more_label }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
