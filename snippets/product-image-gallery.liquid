@@ -755,6 +755,7 @@
     overflow: hidden;
   }
 
+
   .product_lightbox_thumbnail.active {
     border-color: #000000;
   }
@@ -784,7 +785,8 @@ LIGHTBOX IMAGES
   }
 
   .product_lightbox_image_item {
-    margin-bottom: 24px;
+    margin: 0 auto 24px;
+    max-width: 565px;
   }
 
   .product_lightbox_image_item img {
@@ -1022,6 +1024,7 @@ MOBILE
         isDragging = true;
 
         startX = x;
+        currentX = x;
 
         prevTranslate = -currentIndex * sliderWidth();
 
@@ -1252,270 +1255,7 @@ MOBILE
   });
 </script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const galleries = document.querySelectorAll('.product_gallery');
-
-    galleries.forEach((gallery) => {
-      const zoomType = gallery.dataset.zoomType || 'none';
-      if (zoomType !== 'lightbox') return;
-
-      const slides = gallery.querySelectorAll('.product_gallery_main_slide');
-      const slidesData = Array.from(slides).map((s) => s.dataset.full);
-
-      const lightbox = gallery.parentElement.querySelector('.product_lightbox');
-      if (!lightbox) return;
-
-      const trackLB = lightbox.querySelector('.product_lightbox_track');
-      const closeBtn = lightbox.querySelector('.product_lightbox_close');
-      const overlay = lightbox.querySelector('.product_lightbox_overlay');
-      const prevLB = lightbox.querySelector('.product_lightbox_prev');
-      const nextLB = lightbox.querySelector('.product_lightbox_next');
-
-      let lbIndex = 0;
-
-      // -----------------------------
-      // ZOOM STATE
-      // -----------------------------
-      const zoomState = {
-        zoomed: false,
-        scale: 2,
-        offsetX: 0,
-        offsetY: 0,
-        drag: false,
-        startX: 0,
-        startY: 0,
-      };
-
-      // -----------------------------
-      // BUILD LIGHTBOX
-      // -----------------------------
-      function renderLightbox(index) {
-        trackLB.innerHTML = '';
-
-        slidesData.forEach((src) => {
-          const div = document.createElement('div');
-          div.className = 'product_lightbox_slide';
-
-          div.innerHTML = `
-          <div class="zoom-wrapper">
-            <img src="${src}" class="zoom-image" draggable="false"/>
-          </div>
-        `;
-
-          trackLB.appendChild(div);
-        });
-
-        lbIndex = index;
-        resetZoom();
-        updateSlide();
-        attachZoom();
-      }
-
-      function updateSlide() {
-        trackLB.style.transform = `translateX(-${lbIndex * 100}%)`;
-      }
-
-      function resetZoom() {
-        zoomState.zoomed = false;
-        zoomState.offsetX = 0;
-        zoomState.offsetY = 0;
-      }
-
-      function moveLightbox(dir) {
-        if (zoomState.zoomed) return;
-
-        lbIndex += dir;
-
-        if (lbIndex < 0) lbIndex = slidesData.length - 1;
-        if (lbIndex >= slidesData.length) lbIndex = 0;
-
-        resetZoom();
-        updateSlide();
-        attachZoom();
-      }
-
-      function openLightbox(index) {
-        lightbox.hidden = false;
-        document.body.style.overflow = 'hidden';
-        renderLightbox(index);
-      }
-
-      function closeLightbox() {
-        lightbox.hidden = true;
-        document.body.style.overflow = '';
-      }
-
-      // -----------------------------
-      // ZOOM + PAN
-      // -----------------------------
-
-      function attachZoom() {
-        const img = trackLB.querySelectorAll('.zoom-image')[lbIndex];
-
-        if (!img) return;
-
-        img.style.transform = 'translate(0px,0px) scale(1)';
-        img.style.transformOrigin = 'center center';
-        img.style.cursor = 'zoom-in';
-
-        const wrapper = img.closest('.zoom-wrapper');
-
-        img.onclick = (e) => {
-          e.stopPropagation();
-
-          zoomState.zoomed = !zoomState.zoomed;
-
-          if (!zoomState.zoomed) {
-            zoomState.offsetX = 0;
-            zoomState.offsetY = 0;
-
-            img.style.transition = 'transform 0.3s ease';
-
-            img.style.transform = 'translate(0px,0px) scale(1)';
-
-            img.style.cursor = 'zoom-in';
-
-            return;
-          }
-
-          img.style.transition = 'transform 0.2s ease';
-
-          // click position
-          const rect = img.getBoundingClientRect();
-
-          const clickX = e.clientX - rect.left;
-          const clickY = e.clientY - rect.top;
-
-          // calculate movement
-          const moveX = (rect.width / 2 - clickX) * (zoomState.scale - 1);
-
-          const moveY = (rect.height / 2 - clickY) * (zoomState.scale - 1);
-
-          zoomState.offsetX = moveX;
-          zoomState.offsetY = moveY;
-
-          img.style.transform = `translate(${moveX}px, ${moveY}px) scale(${zoomState.scale})`;
-
-          img.style.cursor = 'grab';
-        };
-
-        img.onmousedown = (e) => {
-          if (!zoomState.zoomed) return;
-
-          zoomState.drag = true;
-
-          zoomState.startX = e.clientX;
-          zoomState.startY = e.clientY;
-
-          img.style.cursor = 'grabbing';
-        };
-
-        window.onmousemove = (e) => {
-          if (!zoomState.drag || !zoomState.zoomed) return;
-
-          const dx = e.clientX - zoomState.startX;
-          const dy = e.clientY - zoomState.startY;
-
-          zoomState.startX = e.clientX;
-          zoomState.startY = e.clientY;
-
-          zoomState.offsetX += dx;
-          zoomState.offsetY += dy;
-
-          // boundaries
-          const maxX = (img.clientWidth * (zoomState.scale - 1)) / 2;
-
-          const maxY = (img.clientHeight * (zoomState.scale - 1)) / 2;
-
-          zoomState.offsetX = Math.max(-maxX, Math.min(maxX, zoomState.offsetX));
-
-          zoomState.offsetY = Math.max(-maxY, Math.min(maxY, zoomState.offsetY));
-
-          img.style.transition = 'none';
-
-          img.style.transform = `translate(${zoomState.offsetX}px, ${zoomState.offsetY}px) scale(${zoomState.scale})`;
-        };
-
-        window.onmouseup = () => {
-          zoomState.drag = false;
-
-          if (zoomState.zoomed) {
-            img.style.cursor = 'grab';
-          }
-        };
-      }
-
-      // -----------------------------
-      // EVENTS
-      // -----------------------------
-      slides.forEach((slide, i) => {
-        slide.addEventListener('click', () => openLightbox(i));
-      });
-
-      closeBtn?.addEventListener('click', closeLightbox);
-      overlay?.addEventListener('click', closeLightbox);
-
-      nextLB?.addEventListener('click', () => moveLightbox(1));
-      prevLB?.addEventListener('click', () => moveLightbox(-1));
-
-      // swipe navigation (only when NOT zoomed)
-      let swipeStartX = 0;
-
-      trackLB?.addEventListener('touchstart', (e) => {
-        swipeStartX = e.touches[0].clientX;
-      });
-
-      trackLB?.addEventListener('touchend', (e) => {
-        if (zoomState.zoomed) return;
-
-        const diff = swipeStartX - e.changedTouches[0].clientX;
-
-        if (Math.abs(diff) > 50) {
-          moveLightbox(diff > 0 ? 1 : -1);
-        }
-      });
-
-      // ---------------------------------
-      // DESKTOP DRAG SWIPE
-      // ---------------------------------
-
-      let isMouseDragging = false;
-
-      let dragStartX = 0;
-
-      trackLB?.addEventListener('mousedown', (e) => {
-        if (zoomState.zoomed) return;
-
-        isMouseDragging = true;
-
-        dragStartX = e.clientX;
-
-        trackLB.style.cursor = 'grabbing';
-      });
-
-      window.addEventListener('mouseup', (e) => {
-        if (!isMouseDragging) return;
-
-        isMouseDragging = false;
-
-        trackLB.style.cursor = '';
-
-        const diff = dragStartX - e.clientX;
-
-        if (Math.abs(diff) > 50) {
-          moveLightbox(diff > 0 ? 1 : -1);
-        }
-      });
-
-      window.addEventListener('mousemove', (e) => {
-        if (!isMouseDragging) return;
-
-        e.preventDefault();
-      });
-    });
-  });
-</script>
+{% comment %} Below script block is for preview window zoom style, keep it if you support it. {% endcomment %}
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -1607,6 +1347,8 @@ MOBILE
   });
 </script>
 
+{% comment %} Below script block Keep it if you support Magnifier zoom. {% endcomment %}
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const galleries = document.querySelectorAll('.product_gallery');
@@ -1672,6 +1414,8 @@ MOBILE
   });
 </script>
 
+{% comment %} Below script block is for Lightbox zoom style, keep it if you support it. {% endcomment %}
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const galleries = document.querySelectorAll('.product_gallery');
@@ -1700,6 +1444,8 @@ MOBILE
       // ---------------------------------
       // OPEN LIGHTBOX
       // ---------------------------------
+
+      let isThumbnailScrolling = false;
 
       function openLightbox(index) {
         lightbox.hidden = false;
@@ -1761,17 +1507,28 @@ MOBILE
 
       const observer = new IntersectionObserver(
         (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const index = Number(entry.target.dataset.index);
+          if (isThumbnailScrolling) return;
 
-              updateActiveThumbnail(index);
+          let activeEntry = null;
+
+          entries.forEach((entry) => {
+            if (
+              entry.isIntersecting &&
+              (!activeEntry || entry.intersectionRatio > activeEntry.intersectionRatio)
+            ) {
+              activeEntry = entry;
             }
           });
+
+          if (activeEntry) {
+            updateActiveThumbnail(
+              Number(activeEntry.target.dataset.index)
+            );
+          }
         },
         {
           root: imagesWrapper,
-          threshold: 0.4,
+          threshold: [0.2, 0.4, 0.6, 0.8, 1],
         }
       );
 
@@ -1795,7 +1552,17 @@ MOBILE
 
       thumbnails.forEach((thumbnail) => {
         thumbnail.addEventListener('click', () => {
-          scrollToImage(Number(thumbnail.dataset.index));
+          isThumbnailScrolling = true;
+
+          const index = Number(thumbnail.dataset.index);
+
+          scrollToImage(index);
+
+          updateActiveThumbnail(index);
+
+          setTimeout(() => {
+            isThumbnailScrolling = false;
+          }, 600);
         });
       });
 

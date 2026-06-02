@@ -544,6 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // LIGHTBOX
     // =====================================
 
+    
     if (zoomType === 'lightbox') {
       const lightbox =
         gallery.parentElement.querySelector(
