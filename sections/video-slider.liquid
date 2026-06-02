@@ -23,7 +23,7 @@
   </style>
 {%- endif -%}
 
-<div {%- render 'section-variables', section: section, class: 'rich-text__section' -%}>
+<div {%- render 'section-variables', section: section, class: 'video-slider__section' -%}>
   <div class="{{ s.container_width }}">
     <div class="rich-text__body flex flex-col {{ align_class }} {{ gap_class }}">
       
@@ -107,23 +107,353 @@
             </div>
         {%- endif -%}
     </div>
+
     <div class="video-slider__content">
-        <div class="video-slider__slider">
+        <div class="video-slider__slider js-video-slider">
             {%- for block in section.blocks -%}
                 <div class="video-slider__slide">
-                    <div>video here</div>
+                    <div class="video-slider__media image_media--{{ section.settings.desktop_height }}">
+						{% if block.settings.source == 'uploaded' %}
+						<video
+							class="video-slider__element"
+							playsinline
+							{% if section.settings.autoplay %}
+							autoplay
+							{% endif %}
+							{% if section.settings.loop %}
+							loop
+							{% endif %}
+							{% if section.settings.muted %}
+							muted
+							{% endif %}
+						>
+							{% if block.settings.mobile_video != blank %}
+							<source
+								media="(max-width: 767px)"
+								src="{{ block.settings.mobile_video.sources[1].url }}"
+								type="video/mp4"
+							>
+							{% endif %}
+
+							{% if block.settings.video != blank %}
+							<source
+								src="{{ block.settings.video.sources[1].url }}"
+								type="video/mp4"
+							>
+							{% endif %}
+						</video>
+
+						<button
+							class="video-slider__play-btn{% if section.settings.autoplay %} hidden{% endif %}"
+							aria-label="Play video"
+						>
+							{% render 'icon', icon: 'play-button', width: 24, height: 24 %}
+						</button>
+
+						{% elsif block.settings.source == 'external_url' and block.settings.video_url != blank %}
+							{% liquid
+								assign autoplay = 0
+								assign muted = 0
+								assign loop = 0
+
+								if section.settings.autoplay
+								assign autoplay = 1
+								endif
+
+								if section.settings.muted
+								assign muted = 1
+								endif
+
+								if section.settings.loop
+								assign loop = 1
+								endif
+							%}
+
+							{% if block.settings.video_url.type == 'youtube' %}
+								<iframe
+								src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}?autoplay={{ autoplay }}&mute={{ muted }}&loop={{ loop }}&playlist={{ block.settings.video_url.id }}"
+								allow="autoplay; encrypted-media"
+								allowfullscreen
+								loading="lazy"
+								></iframe>
+
+							{% else %}
+								<iframe
+								src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?autoplay={{ autoplay }}&muted={{ muted }}&loop={{ loop }}"
+								allow="autoplay; encrypted-media"
+								allowfullscreen
+								loading="lazy"
+								></iframe>
+							{% endif %}
+						{% endif %}
+					</div>
                 </div>
             {%- endfor -%}
         </div>
+		<div class="video-slider__controls">
+			<button class="button button--secondary video-slider__control--prev" aria-label="Previous slide">
+				{% render 'icon', icon: 'chevron-left', width: 20, height: 20 %}
+			</button>
+			<button class="button button--secondary video-slider__control--next" aria-label="Next slide">
+				{% render 'icon', icon: 'chevron-right', width: 20, height: 20 %}
+			</button>
+		</div>
     </div>
   </div>
 </div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const slider = document.querySelector('.js-video-slider');
+		if (!slider) return;
+
+		const prevBtn = document.querySelector('.video-slider__control--prev');
+		const nextBtn = document.querySelector('.video-slider__control--next');
+
+		let slides = Array.from(slider.children);
+		if (slides.length < 2) return;
+
+		const container = slider.parentElement;
+
+		let index = 2; // 3rd active
+		let startX = 0;
+		let isDragging = false;
+		let startTranslate = 0;
+		let currentTranslate = 0;
+
+		const slideWidth = slides[0].offsetWidth;
+
+		// --------------------------
+		// CLONE SETUP
+		// --------------------------
+		const firstClone = slides[0].cloneNode(true);
+		const lastClone = slides[slides.length - 1].cloneNode(true);
+
+		slider.appendChild(firstClone);
+		slider.insertBefore(lastClone, slides[0]);
+
+		slides = Array.from(slider.children);
+
+		index = index + 1;
+
+		// --------------------------
+		// POSITION
+		// --------------------------
+		function getTranslate() {
+			const containerCenter = container.offsetWidth / 2;
+			const centerOffset = (containerCenter - slideWidth / 2);
+			return -index * slideWidth + centerOffset;
+		}
+
+		function apply(animate = true) {
+			slider.style.transition = animate ? 'transform 0.5s ease' : 'none';
+			currentTranslate = getTranslate();
+			slider.style.transform = `translate3d(${currentTranslate}px,0,0)`;
+		}
+
+		// --------------------------
+		// CLASS UPDATE
+		// --------------------------
+		function updateClasses() {
+			slides.forEach(s => {
+				s.classList.remove(
+					'center-slide',
+					'previous-slide',
+					'next-slide',
+					'prev-outer-slide',
+					'next-outer-slide'
+				);
+			});
+
+			const prev = index - 1;
+			const next = index + 1;
+			const prev2 = index - 2;
+			const next2 = index + 2;
+
+			// center
+			if (slides[index]) slides[index].classList.add('center-slide');
+
+			// near
+			if (slides[prev]) slides[prev].classList.add('previous-slide');
+			if (slides[next]) slides[next].classList.add('next-slide');
+
+			// outer (THIS WAS MISSING / BROKEN)
+			if (slides[prev2]) slides[prev2].classList.add('prev-outer-slide');
+			if (slides[next2]) slides[next2].classList.add('next-outer-slide');
+		}
+
+		function update(animate = true) {
+			updateClasses();
+			apply(animate);
+			updateButtons();
+		}
+
+		// --------------------------
+		// BUTTON STATE (DISABLED LOGIC)
+		// --------------------------
+		function updateButtons() {
+			const realFirst = 0;
+			const realLast = slides.length - 1;
+
+			if (prevBtn) {
+				if (index <= realFirst) {
+					prevBtn.setAttribute('disabled', 'true');
+				} else {
+					prevBtn.removeAttribute('disabled');
+				}
+			}
+
+			if (nextBtn) {
+				if (index >= realLast) {
+					nextBtn.setAttribute('disabled', 'true');
+				} else {
+					nextBtn.removeAttribute('disabled');
+				}
+			}
+		}
+
+		// --------------------------
+		// NEXT / PREV
+		// --------------------------
+		function next() {
+			const max = slides.length - 1;
+			if (index >= max) return;
+
+			index++;
+			update(true);
+		}
+
+		function prev() {
+			if (index <= 0) return;
+
+			index--;
+			update(true);
+		}
+
+		// --------------------------
+		// BUTTON EVENTS
+		// --------------------------
+		if (nextBtn) {
+			nextBtn.addEventListener('click', next);
+		}
+
+		if (prevBtn) {
+			prevBtn.addEventListener('click', prev);
+		}
+
+		// --------------------------
+		// DRAG
+		// --------------------------
+		slider.addEventListener('mousedown', (e) => {
+			isDragging = true;
+			startX = e.clientX;
+			startTranslate = currentTranslate;
+			slider.style.transition = 'none';
+		});
+
+		slider.addEventListener('mousemove', (e) => {
+			if (!isDragging) return;
+
+			const diff = e.clientX - startX;
+			slider.style.transform = `translate3d(${startTranslate + diff}px,0,0)`;
+		});
+
+		slider.addEventListener('mouseup', (e) => {
+			if (!isDragging) return;
+
+			const diff = e.clientX - startX;
+
+			if (Math.abs(diff) > 50) {
+				diff > 0 ? prev() : next();
+			} else {
+				update(true);
+			}
+
+			isDragging = false;
+		});
+
+		slider.addEventListener('mouseleave', () => {
+			isDragging = false;
+			update(true);
+		});
+
+		// --------------------------
+		// TOUCH
+		// --------------------------
+		slider.addEventListener('touchstart', (e) => {
+			startX = e.touches[0].clientX;
+		});
+
+		slider.addEventListener('touchend', (e) => {
+			const diff = startX - e.changedTouches[0].clientX;
+
+			if (Math.abs(diff) > 50) {
+				diff > 0 ? next() : prev();
+			}
+		});
+
+		// --------------------------
+		// INIT
+		// --------------------------
+		update(false);
+	});
+
+	document.addEventListener('DOMContentLoaded', () => {
+		const wrappers = document.querySelectorAll('.video-slider__media');
+
+		wrappers.forEach((wrapper) => {
+			const video = wrapper.querySelector('.video-slider__element');
+			const playBtn = wrapper.querySelector('.video-slider__play-btn');
+
+			if (!video || !playBtn) return;
+
+			// Initial state
+			if (video.paused) {
+			playBtn.classList.remove('hidden');
+			} else {
+			playBtn.classList.add('hidden');
+			}
+
+			// Play button click
+			playBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+
+			video.play();
+			playBtn.classList.add('hidden');
+			});
+
+			// Video click = pause video and show play button
+			video.addEventListener('click', () => {
+			if (!video.paused) {
+				video.pause();
+				playBtn.classList.remove('hidden');
+			}
+			});
+
+			// When video starts playing
+			video.addEventListener('play', () => {
+			playBtn.classList.add('hidden');
+			});
+
+			// When video pauses
+			video.addEventListener('pause', () => {
+			playBtn.classList.remove('hidden');
+			});
+
+			// When video ends
+			video.addEventListener('ended', () => {
+			playBtn.classList.remove('hidden');
+			});
+		});
+	});
+</script>
 
 {% schema %}
 {
   "name": "Video Slider",
   "tag": "section",
-  "class": "section-rich-text",
+  "class": "section-video-slider",
   "settings": [
     {
       "type": "header",
@@ -165,6 +495,48 @@
       ],
       "default": "24"
     },
+	{
+      "type": "header",
+      "content": "Media settings"
+    },
+	{
+		"type": "select",
+		"id": "desktop_height",
+		"label": "Video Slide Height",
+		"options": [
+			{
+				"value": "small",
+				"label": "Small"
+			},
+			{
+				"value": "medium",
+				"label": "Medium"
+			},
+			{
+				"value": "large",
+				"label": "Large"
+			}
+		],
+		"default": "medium"
+	},
+	{
+		"type": "checkbox",
+		"id": "autoplay",
+		"label": "Enable autoplay",
+		"default": false
+	},
+	{
+		"type": "checkbox",
+		"id": "muted",
+		"label": "Mute video",
+		"default": true
+	},
+	{
+		"type": "checkbox",
+		"id": "loop",
+		"label": "Loop video",
+		"default": false
+	},
     {
       "type": "header",
       "content": "Content"
@@ -430,26 +802,9 @@
           "visible_if": "{{ block.settings.source == 'external_url' }}"
         },
         {
-          "type": "checkbox",
-          "id": "autoplay",
-          "label": "Enable autoplay",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "loop",
-          "label": "Loop video",
-          "default": true
-        },
-        {
           "type": "product",
           "id": "product_url",
           "label": "Product"
-        },
-        {
-          "type": "text",
-          "id": "caption",
-          "label": "Caption"
         }
       ]
     }
