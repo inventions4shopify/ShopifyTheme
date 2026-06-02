@@ -1,27 +1,26 @@
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
-{% comment %} {{ 'product-image-gallery.js' | asset_url | script_tag }} {% endcomment %}
+{{ 'product-image-gallery.js' | asset_url | script_tag }}
 
-{%  style  %}  
-.product-image-gallery-wrapper {
+{% style %}
+  .product-image-gallery-wrapper {
     width: 100%;
     max-width: 100%;
-}
+  }
 
-.product-info-wrapper {
-  width: 100%;
-  flex: 1 1 auto;
-}
+  .product-info-wrapper {
+    width: 100%;
+    flex: 1 1 auto;
+  }
 
-@media (min-width: 768px) {
+  @media (min-width: 768px) {
     .product-image-gallery-wrapper {
-        max-width: 50%;
+      max-width: 40%;
     }
     .product-info-wrapper {
       width: 1%;
     }
-}
+  }
 {% endstyle %}
-
 
 <div class="page-width">
   <div class="main-product-section">
@@ -130,6 +129,12 @@
       ],
       "default": "magnifier",
       "visible_if": "{{ section.settings.gallery_zoom_type == 'hover' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_desktop_drag",
+      "label": "Enable desktop image drag",
+      "default": true
     }
   ],
   "presets": [
