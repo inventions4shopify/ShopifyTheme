@@ -464,6 +464,9 @@
           "info": "https://open.spotify.com/shopify"
         }
       }
+    },
+    "cart":{
+      "name": "Cart",
     }
   },
   "labels": {

@@ -1,29 +1,182 @@
-  .header-info-wrap {
-      height: 5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-  }
+/* ============================================================
+   HEADER  —  GRID LAYOUT
+   (logo / nav / utils zones placed with grid-template-areas)
+   ============================================================ */
 
-  header a {
-      position: relative;
-      text-decoration: none;
-      color: var(--color-foreground);
-  }
+/* ----- Sticky -----
+   The actual `position: sticky` is applied by JS to the .shopify-section
+   host (its parent is <body>, which is tall enough for sticky to engage).
+   These rules only handle the visual transitions/effects. */
+.header-sticky-host {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+.main-header-wrapper {
+  transition: transform .3s ease;
+}
+/* "On scroll up" — slide the bar away when scrolling down */
+.main-header-wrapper.is-hidden {
+  transform: translateY(-100%);
+}
+/* "Always, reduce logo size" — compact header + smaller logo after scroll */
+.header__logo img,
+.header__heading-logo { transition: transform .25s ease; }
+.main-header-wrapper.is-scrolled .header__inner { padding-top: 6px; padding-bottom: 6px; }
+.main-header-wrapper.is-scrolled .header__logo img,
+.main-header-wrapper.is-scrolled .header__heading-logo { transform: scale(.8); }
+.header--logo-left  .header__logo { transform-origin: left center; }
+.header--logo-right .header__logo { transform-origin: right center; }
 
-  header a sup {
-      position: absolute;
-      left: 100%;
-      overflow: hidden;
-      max-width: var(--page-margin);
-  }
+.main-header-wrapper.is-transparent {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: transparent;
+}
 
-  header svg {
-      width: 2rem;
-  }
+/* ----- Base grid ----- */
+.header__inner {
+  display: grid;
+  align-items: center;
+  column-gap: 24px;
+  row-gap: 8px;
+  margin: 0 auto;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "logo nav utils";
+}
 
-  header .header__menu,
-  header .header__icons {
-      display: flex;
-      gap: 1rem;
+
+.header__burger { grid-area: burger; }
+.header__logo   { grid-area: logo; }
+.header__nav    { grid-area: nav; }
+.header__utils  { grid-area: utils; justify-self: end; }
+
+/* ----- Logo positions ----- */
+/* Left (default): logo | nav | utils */
+.header--logo-left .header__inner {
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "logo nav utils";
+}
+
+/* Center: nav | logo | utils  (logo centered, equal side columns) */
+.header--logo-center .header__inner {
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: "nav logo utils";
+}
+.header--logo-center .header__logo { justify-self: center; }
+
+/* Right: nav | utils | logo */
+.header--logo-right .header__inner {
+  grid-template-columns: 1fr auto auto;
+  grid-template-areas: "nav utils logo";
+}
+.header--logo-right .header__logo { justify-self: end; }
+
+/* ----- Menu position (within its grid cell) ----- */
+.header--menu-left   .header__nav { justify-self: start; }
+.header--menu-center .header__nav { justify-self: center; }
+.header--menu-right  .header__nav { justify-self: end; }
+
+/* ----- Menu row: bottom (nav on a full-width second row) ----- */
+.header--row-bottom .header__inner {
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "logo .   utils"
+    "nav  nav nav";
+}
+.header--logo-center.header--row-bottom .header__inner {
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas:
+    ".   logo utils"
+    "nav nav  nav";
+}
+.header--logo-right.header--row-bottom .header__inner {
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "utils .   logo"
+    "nav   nav nav";
+}
+.header--row-bottom .header__nav {
+  justify-self: stretch;        /* nav fills the full-width row */
+  border-top: 1px solid var(--header-separator, #e5e5e5);
+  padding-top: 8px;
+}
+/* Align the menu list inside the full-width nav (overrides any inline justify-content) */
+.header--row-bottom.header--menu-left   .header__nav { justify-content: flex-start; }
+.header--row-bottom.header--menu-center .header__nav { justify-content: center; }
+.header--row-bottom.header--menu-right  .header__nav { justify-content: flex-end; }
+
+/* ----- Logo ----- */
+.header__logo img { display: block; max-width: 100%; height: auto; }
+.header__logo-text { font-size: 24px; font-weight: 700; text-decoration: none; color: inherit; }
+
+/* ----- Nav ----- */
+.header__nav { display: flex; align-items: center; gap: 8px; }
+.header__nav-list { display: flex; list-style: none; margin: 0; padding: 0; gap: 4px; }
+.header__nav-item { position: relative; }
+.header__nav-link {
+  display: block; padding: 8px 14px; text-decoration: none;
+  color: inherit; font-size: 15px; white-space: nowrap;
+}
+
+
+/* ----- Dropdown ----- */
+.header__nav-item:hover > .header__submenu { opacity: 1; visibility: visible; transform: translateY(0); }
+.header__submenu .header__nav-link { padding: 8px 18px; }
+
+/* ----- Mega menu ----- */
+.header--mega .header__submenu {
+  left: 50%; transform: translate(-50%, 6px);
+  min-width: 640px; display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px 24px; padding: 24px;
+}
+.header--mega .header__nav-item:hover > .header__submenu { transform: translate(-50%, 0); }
+
+/* ----- Utilities ----- */
+.header__utils { display: flex; align-items: center; gap: 12px; }
+.header__loc-form { display: inline-flex; }
+.header__loc-form select {
+  background: transparent; color: inherit; border: 1px solid currentColor;
+  border-radius: 6px; padding: 6px 10px; font-size: 14px; cursor: pointer;
+}
+.header__icon-btn { background: none; border: 0; color: inherit; cursor: pointer; padding: 6px; }
+
+/* ----- Drawer / mobile toggle ----- */
+.header__burger { display: none; background: none; border: 0; cursor: pointer; color: inherit; padding: 6px; }
+.header__drawer.is-open { left: 0; }
+.header__drawer-list { list-style: none; margin: 0; padding: 0; }
+.header__drawer-list a {
+  display: block; padding: 12px 0; text-decoration: none; color: inherit;
+  border-bottom: 1px solid var(--header-separator, #e5e5e5);
+}
+.header__overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.4);
+  opacity: 0; visibility: hidden; transition: .25s; z-index: 55;
+}
+.header__overlay.is-open { opacity: 1; visibility: visible; }
+
+/* ----- Responsive ----- */
+@media (max-width: 990px) {
+  /* mobile grid: burger | logo | utils */
+  .header__inner,
+  .header--logo-left .header__inner,
+  .header--logo-center .header__inner,
+  .header--logo-right .header__inner,
+  .header--row-bottom .header__inner {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "burger logo utils";
   }
+  .header__nav.header__nav--desktop { display: none; }
+  .header__burger { display: inline-flex; }
+
+  .header--mobile-logo-center .header__logo { justify-self: center; }
+  .header--mobile-logo-left   .header__logo { justify-self: start; }
+
+  .header__inner { column-gap: 12px; }
+}
+@media (min-width: 991px) {
+  .header--drawer .header__nav--desktop { display: none; }
+  .header--drawer .header__burger { display: inline-flex; }
+}
