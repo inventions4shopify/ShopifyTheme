@@ -1,0 +1,61 @@
+<nav class="header__nav header__nav--desktop header__nav--dropdown" aria-label="Primary">
+  <ul class="header__nav-list">
+    {%- for link in section.settings.main_menu.links -%}
+      {%- assign has_children = false -%}
+      {%- if link.links != blank -%}{%- assign has_children = true -%}{%- endif -%}
+      <li class="header__nav-item{% if has_children %} has-children{% endif %}">
+        <a
+          href="{{ link.url }}"
+          class="header__nav-link"
+          {% if link.current %}aria-current="page"{% endif %}
+        >
+          <span>{{ link.title }}</span>
+          {%- if has_children -%}
+            <svg class="header__caret" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          {%- endif -%}
+        </a>
+
+        {%- if has_children -%}
+          <ul class="header__submenu">
+            {%- for child in link.links -%}
+              {%- assign has_grand = false -%}
+              {%- if child.links != blank -%}{%- assign has_grand = true -%}{%- endif -%}
+              <li class="header__nav-item{% if has_grand %} has-children{% endif %}">
+                <a
+                  href="{{ child.url }}"
+                  class="header__nav-link"
+                  {% if child.current %}aria-current="page"{% endif %}
+                >
+                  <span>{{ child.title }}</span>
+                  {%- if has_grand -%}
+                    <svg class="header__caret header__caret--side" width="6" height="10" viewBox="0 0 6 10" fill="none" aria-hidden="true">
+                      <path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  {%- endif -%}
+                </a>
+
+                {%- if has_grand -%}
+                  <ul class="header__submenu header__submenu--nested">
+                    {%- for grandchild in child.links -%}
+                      <li class="header__nav-item">
+                        <a
+                          href="{{ grandchild.url }}"
+                          class="header__nav-link"
+                          {% if grandchild.current %}aria-current="page"{% endif %}
+                        >
+                          <span>{{ grandchild.title }}</span>
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

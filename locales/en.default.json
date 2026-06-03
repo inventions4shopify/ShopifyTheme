@@ -55,7 +55,11 @@
       "password": "Password",
       "submit": "Sign in",
       "title": "Login"
-    }
+    },
+    "account": {
+      "title": "Account",
+    },
+    "log_in": "Log in",
   },
   "collections": {
     "title": "Collections"

@@ -3,10 +3,11 @@
    (logo / nav / utils zones placed with grid-template-areas)
    ============================================================ */
 
-/* ----- Sticky -----
-   The actual `position: sticky` is applied by JS to the .shopify-section
-   host (its parent is <body>, which is tall enough for sticky to engage).
-   These rules only handle the visual transitions/effects. */
+
+.main-header-wrapper{
+    background: rgb(var(--color-header-background));
+    color: rgb(var(--color-header-text));
+}
 .header-sticky-host {
   position: sticky;
   top: 0;
@@ -109,7 +110,7 @@
 
 /* ----- Logo ----- */
 .header__logo img { display: block; max-width: 100%; height: auto; }
-.header__logo-text { font-size: 24px; font-weight: 700; text-decoration: none; color: inherit; }
+.header__logo-text { font-size: var(--text-lg); font-weight: 700; text-decoration: none; color: rgb(var(--color-header-text)); }
 
 /* ----- Nav ----- */
 .header__nav { display: flex; align-items: center; gap: 8px; }
@@ -117,7 +118,7 @@
 .header__nav-item { position: relative; }
 .header__nav-link {
   display: block; padding: 8px 14px; text-decoration: none;
-  color: inherit; font-size: 15px; white-space: nowrap;
+  color: inherit; white-space: nowrap;
 }
 
 
@@ -139,10 +140,25 @@
 .header__loc-form { display: inline-flex; }
 .header__loc-form select {
   background: transparent; color: inherit; border: 1px solid currentColor;
-  border-radius: 6px; padding: 6px 10px; font-size: 14px; cursor: pointer;
+  border-radius: 6px; padding: 6px 10px; font-size: var(--text-sm); cursor: pointer;
 }
-.header__icon-btn { background: none; border: 0; color: inherit; cursor: pointer; padding: 6px; }
-
+.header__icon-btn { background: none; border: 0; color: inherit; cursor: pointer; padding: 6px;  position: relative; }
+.header__icon-btn:hover { color: inherit; transform: scale(1.07);}
+.header__cart-count {
+  background: rgb(var(--color-header-text));
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: block;
+  color: rgb(var(--color-header-background));
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  right: -5px;
+  top: -1px;
+  font-size: var(--text-sm);
+  align-items: center;
+}
 /* ----- Drawer / mobile toggle ----- */
 .header__burger { display: none; background: none; border: 0; cursor: pointer; color: inherit; padding: 6px; }
 .header__drawer.is-open { left: 0; }
@@ -180,3 +196,126 @@
   .header--drawer .header__nav--desktop { display: none; }
   .header--drawer .header__burger { display: inline-flex; }
 }
+
+/* ============================================================
+   MENU SNIPPETS — dropdown / mega / drawer
+   ============================================================ */
+
+/* ----- shared: nav link with caret ----- */
+.header__nav-link { display: flex; align-items: center; gap: 6px; }
+.header__caret { transition: transform .2s ease; flex: none; }
+.header__nav-item.has-children:hover > .header__nav-link > .header__caret { transform: rotate(180deg); }
+.header__caret--side { transform: none; }
+.header__nav-item.has-children:hover > .header__nav-link > .header__caret--side { transform: none; }
+
+/* keyboard accessibility — open on focus too */
+.header__nav-item:focus-within > .header__submenu { opacity: 1; visibility: visible; transform: translateY(0); }
+.header__nav-item:focus-within > .header__mega { opacity: 1; visibility: visible; transform: translateY(0); }
+
+/* ----- DROPDOWN: grandchild side flyout ----- */
+.header__submenu--nested {
+  top: -8px;
+  left: 100%;
+  transform: translateX(8px);
+}
+.header__submenu .header__nav-item:hover > .header__submenu--nested,
+.header__submenu .header__nav-item:focus-within > .header__submenu--nested {
+  opacity: 1; visibility: visible; transform: translateX(0);
+}
+.header__submenu.header__submenu--nested {
+  left: 100%;
+  top: 0;
+}
+/* small hover bridge so the pointer can travel to the submenu */
+.header__submenu::before { content: ""; position: absolute; top: -8px; left: 0; right: 0; height: 8px; }
+
+/* ----- MEGA: full-width panel under the header ----- */
+.header__nav--mega .header__nav-list > .header__nav-item { position: static; }
+.header__mega {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgb(var(--color-header-background));
+  color: rgb(var(--color-header-text));
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
+  border-top: 1px solid var(--header-separator, #e5e5e5);
+  padding: 28px 24px;
+  opacity: 0; visibility: hidden; transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+  z-index: 40;
+}
+.header__mega::before { content: ""; position: absolute; top: -12px; left: 0; right: 0; height: 12px; }
+.header__nav--mega .header__nav-item:hover > .header__mega,
+.header__nav--mega .header__nav-item:focus-within > .header__mega {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.header__mega-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 20px 32px;
+}
+.header__mega-title {
+  display: block; font-weight: 600; text-decoration: none; color: inherit;
+  margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--header-separator, #e5e5e5);
+}
+.header__mega-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.header__mega-link { text-decoration: none; color: inherit; opacity: .8; transition: opacity .15s ease; }
+.header__mega-link:hover { opacity: 1; color: rgb(var(--color-header-text)); }
+
+/* ----- DRAWER ----- */
+.header__drawer { display: flex; flex-direction: column; }
+.header__drawer-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 8px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--header-separator, #e5e5e5);
+}
+.header__drawer-logo img { max-width: 120px; height: auto; display: block; }
+.header__drawer-nav { flex: 1 1 auto; overflow-y: auto; }
+.header__drawer-list { list-style: none; margin: 0; padding: 0; }
+.header__drawer-list .header__drawer-item { border: 0; }
+.header__drawer-list > .header__drawer-item { border-bottom: 1px solid var(--header-separator, #e5e5e5); }
+
+.header__drawer-row { display: flex; align-items: center; justify-content: space-between; }
+.header__drawer-link {
+  display: block; flex: 1 1 auto; padding: 13px 0;
+  text-decoration: none; color: inherit; border-bottom: 0;
+}
+.header__drawer-toggle {
+  background: none; border: 0; cursor: pointer; color: inherit;
+  padding: 10px; display: inline-flex; transition: transform .2s ease;
+}
+.header__drawer-toggle.is-open { transform: rotate(180deg); }
+
+/* nested accordion panels */
+.header__drawer-sub {
+  list-style: none; margin: 0; padding-left: 14px;
+  max-height: 0; overflow: hidden;
+  transition: max-height .3s ease;
+}
+.header__drawer-sub.is-open { max-height: 1200px; }
+.header__drawer-sub--grand { padding-left: 14px; }
+.header__drawer-sub .header__drawer-link { padding: 10px 0; opacity: .85; }
+
+/* drawer footer: account, localization, social */
+.header__drawer-footer {
+  margin-top: auto; padding-top: 18px;
+  border-top: 1px solid var(--header-separator, #e5e5e5);
+}
+.header__drawer-account {
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none; color: inherit; padding: 10px 0; font-weight: 500;
+}
+.header__drawer-loc { display: block; margin: 10px 0; }
+.header__drawer-loc select {
+  width: 100%; background: transparent; color: inherit;
+  border: 1px solid currentColor; border-radius: 6px;
+  padding: 8px 10px; cursor: pointer;
+}
+.header__social { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 16px; }
+.header__social a { color: inherit; display: inline-flex; transition: opacity .15s ease; }
+.header__social a:hover { opacity: .65; }
+
+/* on desktop the drawer overlay/aside stay hidden until toggled (drawer menu type) */

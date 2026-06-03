@@ -1,9 +1,5 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 {% style %}
-  .main-header-wrapper{
-    background: {{ settings.header_background_color }};
-    color: {{ settings.header_text_color }};
-  }
   .header {
     --header-padding: {{ section.settings.padding_vertical }}px;
     --header-separator: {{ section.settings.separator_color }};
@@ -38,6 +34,13 @@
     z-index: 60; padding: 24px; overflow-y: auto;
   }
   .header__nav-link:hover { color: {{ settings.header_hover_text_color }} }
+  {%- if section.settings.menu_type != "drawer" -%}
+    @media screen and (min-width: 990px) {
+      header-drawer {
+        display: none;
+      }
+    }
+  {%- endif -%}
 {% endstyle %}
 {%- liquid
   assign logo_pos = section.settings.logo_position
@@ -60,61 +63,69 @@
   class="main-header-wrapper header--sticky-{{ sticky }} {% if is_transparent %}is-transparent{% endif %}"
   data-sticky="{{ sticky }}"
 >
-    <header
-      class="
-        header
-        header--logo-{{ logo_pos }}
-        header--menu-{{ menu_pos }}
-        header--row-{{ menu_row }}
-        header--{{ menu_type }}
-        header--mobile-logo-{{ mobile_logo }}
-        {{ section.settings.section_width }}
-        {% if section.settings.separator_line %}has-separator{% endif %}
-      "
-    >
-      <div class="header__inner">
-        {%- comment -%} ---------- Mobile / drawer burger ---------- {%- endcomment -%}
-        <button class="header__burger" aria-label="Open menu" data-drawer-open>
-          {% render 'icon', icon: 'hamburger', width: 20, height: 20 %}
-        </button>
+  <header
+    class="
+      header
+      header--logo-{{ logo_pos }}
+      header--menu-{{ menu_pos }}
+      header--row-{{ menu_row }}
+      header--{{ menu_type }}
+      header--mobile-logo-{{ mobile_logo }}
+      {% if section.settings.menu_type == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu_type != blank %} header--has-menu{% endif %}
+      {{ section.settings.section_width }}
+       {% if shop.customer_accounts_enabled %} header--has-account{% endif %}
+      {% if section.settings.separator_line %}has-separator{% endif %}
+    "
+  >
+    <div class="header__inner">
+      {%- liquid
+        if section.settings.main_menu != blank
+          render 'header-drawer'
+        endif
+      -%}
+      {%- comment -%} ---------- Mobile / drawer burger ---------- {%- endcomment -%}
+      {% comment %} <button class="header__burger" aria-label="Open menu" data-drawer-open>
+        {% render 'icon', icon: 'hamburger', width: 20, height: 20 %}
+      </button> {% endcomment %}
 
-        {%- comment -%} ---------- Logo ---------- {%- endcomment -%}
-        <div class="header__logo">
-          <a href="{{ routes.root_url }}" class="header__logo-link">
-            {%- if settings.logo != blank -%}
-              {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-              {%- assign logo_height = settings.logo_width_desktop | divided_by: settings.logo.aspect_ratio -%}
-              {% capture sizes %}(min-width: 750px) {{ settings.logo_width_desktop }}px, {{ settings.logo_width_mobile }}px{% endcapture %}
-              {% capture widths %}{{ settings.logo_width_desktop }}, {{ settings.logo_width_desktop | times: 1.5 | round }}, {{ settings.logo_width_desktop | times: 2 }}{% endcapture %}
-              {{
-                settings.logo
-                | image_url: width: 600
-                | image_tag:
-                  class: 'header__heading-logo',
-                  widths: widths,
-                  height: logo_height,
-                  alt: logo_alt,
-                  sizes: sizes,
-                  preload: true
-              }}
-            {%- else -%}
-              <span class="header__logo-text">{{ shop.name }}</span>
-            {%- endif -%}
-          </a>
-        </div>
+      {%- comment -%} ---------- Logo ---------- {%- endcomment -%}
+      <div class="header__logo">
+        <a href="{{ routes.root_url }}" class="header__logo-link">
+          {%- if settings.logo != blank -%}
+            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+            {%- assign logo_height = settings.logo_width_desktop | divided_by: settings.logo.aspect_ratio -%}
+            {% capture sizes %}(min-width: 750px) {{ settings.logo_width_desktop }}px, {{ settings.logo_width_mobile }}px{% endcapture %}
+            {% capture widths %}{{ settings.logo_width_desktop }}, {{ settings.logo_width_desktop | times: 1.5 | round }}, {{ settings.logo_width_desktop | times: 2 }}{% endcapture %}
+            {{
+              settings.logo
+              | image_url: width: 600
+              | image_tag:
+                class: 'header__heading-logo',
+                widths: widths,
+                height: logo_height,
+                alt: logo_alt,
+                sizes: sizes,
+                preload: true
+            }}
+          {%- else -%}
+            <span class="header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      </div>
 
-        {%- comment -%} ---------- Desktop nav (dropdown / mega) ---------- {%- endcomment -%}
+      {%- comment -%} ---------- Desktop nav (dropdown / mega) ---------- {%- endcomment -%}
+      {% comment %}
         {%- if menu_type != 'drawer' -%}
           <nav class="header__nav header__nav--desktop" aria-label="Primary">
             <ul class="header__nav-list">
               {%- for link in section.settings.main_menu.links -%}
                 <li class="header__nav-item">
-                  <a href="{{ link.url }}" class="header__nav-link">{{ link.title }}</a>
+                  <a href="{{ link.url }}" class="header__nav-link sm:text-base text-sm">{{ link.title }}</a>
                   {%- if link.links != blank -%}
                     <ul class="header__submenu">
                       {%- for child in link.links -%}
                         <li class="header__nav-item">
-                          <a href="{{ child.url }}" class="header__nav-link">{{ child.title }}</a>
+                          <a href="{{ child.url }}" class="header__nav-link sm:text-base">{{ child.title }}</a>
                         </li>
                       {%- endfor -%}
                     </ul>
@@ -124,79 +135,121 @@
             </ul>
           </nav>
         {%- endif -%}
+      {% endcomment %}
+      {%- liquid
+        if section.settings.main_menu != blank
+          if menu_type == 'dropdown'
+            render 'header-dropdown-menu'
+          elsif menu_type != 'drawer'
+            render 'header-mega-menu'
+          endif
+        endif
+      %}
 
-        {%- comment -%} ---------- Utilities ---------- {%- endcomment -%}
-        <div class="header__utils">
-          {%- comment -%} Country / region selector {%- endcomment -%}
-          {%- if section.settings.show_country and localization.available_countries.size > 1 -%}
-            {%- form 'localization', class: 'header__loc-form' -%}
-              <select name="country_code" onchange="this.form.submit()" aria-label="Country/region">
-                {%- for country in localization.available_countries -%}
-                  <option
-                    value="{{ country.iso_code }}"
-                    {% if country.iso_code == localization.country.iso_code %}
-                      selected
-                    {% endif %}
-                  >
-                    {{ country.name }} ({{ country.currency.iso_code }}
-                    {{ country.currency.symbol }})
-                  </option>
-                {%- endfor -%}
-              </select>
-            {%- endform -%}
-          {%- endif -%}
+      {%- comment -%} ---------- Utilities ---------- {%- endcomment -%}
+      <div class="header__utils">
+        {%- comment -%} Country / region selector {%- endcomment -%}
+        {%- if section.settings.show_country and localization.available_countries.size > 1 -%}
+          {%- form 'localization', class: 'header__loc-form' -%}
+            <select name="country_code" onchange="this.form.submit()" aria-label="Country/region">
+              {%- for country in localization.available_countries -%}
+                <option
+                  value="{{ country.iso_code }}"
+                  {% if country.iso_code == localization.country.iso_code %}
+                    selected
+                  {% endif %}
+                >
+                  {{ country.name }} ({{ country.currency.iso_code }}
+                  {{ country.currency.symbol }})
+                </option>
+              {%- endfor -%}
+            </select>
+          {%- endform -%}
+        {%- endif -%}
 
-          {%- comment -%} Language selector {%- endcomment -%}
-          {%- if section.settings.show_language and localization.available_languages.size > 1 -%}
-            {%- form 'localization', class: 'header__loc-form' -%}
-              <select name="locale_code" onchange="this.form.submit()" aria-label="Language">
-                {%- for language in localization.available_languages -%}
-                  <option
-                    value="{{ language.iso_code }}"
-                    {% if language.iso_code == localization.language.iso_code %}
-                      selected
-                    {% endif %}
-                  >
-                    {{ language.endonym_name }}
-                  </option>
-                {%- endfor -%}
-              </select>
-            {%- endform -%}
-          {%- endif -%}
+        {%- comment -%} Language selector {%- endcomment -%}
+        {%- if section.settings.show_language and localization.available_languages.size > 1 -%}
+          {%- form 'localization', class: 'header__loc-form' -%}
+            <select name="locale_code" onchange="this.form.submit()" aria-label="Language">
+              {%- for language in localization.available_languages -%}
+                <option
+                  value="{{ language.iso_code }}"
+                  {% if language.iso_code == localization.language.iso_code %}
+                    selected
+                  {% endif %}
+                >
+                  {{ language.endonym_name }}
+                </option>
+              {%- endfor -%}
+            </select>
+          {%- endform -%}
+        {%- endif -%}
 
-          {%- comment -%} Search + Cart {%- endcomment -%}
-          <a href="{{ routes.search_url }}" class="header__icon-btn" aria-label="Search">
-            {% render 'icon', icon: 'search', width: 20, height: 20 %}
+        {%- comment -%} Search + Cart {%- endcomment -%}
+        <a href="{{ routes.search_url }}" class="header__icon-btn" aria-label="Search">
+          {% render 'icon', icon: 'search', width: 20, height: 20 %}
+        </a>
+        {%- if shop.customer_accounts_enabled -%}
+          <a
+            href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+            class="header__icon-btn header__icon--account {% if section.settings.menu != blank %} small-hide{% endif %}"
+            rel="nofollow"
+          >
+            {%- if section.settings.enable_customer_avatar -%}
+              <account-icon>
+                {%- if customer and customer.has_avatar? -%}
+                  {{ customer | avatar }}
+                {%- else -%}
+                  <span class="svg-wrapper">
+                    {% render 'icon', icon: 'account', width: 20, height: 20 %}
+                  </span>
+                {%- endif -%}
+              </account-icon>
+            {%- else -%}
+              <span class="svg-wrapper"> {% render 'icon', icon: 'account', width: 20, height: 20 %}</span>
+            {%- endif -%}
+            <span class="visually-hidden">
+              {%- liquid
+                if customer
+                  echo 'Account'
+                else
+                  echo 'Log in'
+                endif
+              -%}
+            </span>
           </a>
-          <a href="{{ routes.cart_url }}" class="header__icon-btn" aria-label="Cart">
-             {% render 'icon', icon: 'cart', width: 20, height: 20 %}
-            <span class="header__cart-count">{{ cart.item_count }}</span>
-          </a>
-        </div>
+        {%- endif -%}
+        <a href="{{ routes.cart_url }}" class="header__icon-btn" aria-label="Cart">
+          {% render 'icon', icon: 'cart', width: 20, height: 20 %}
+          <span class="header__cart-count">{{ cart.item_count }}</span>
+        </a>
       </div>
-    </header>
+    </div>
+  </header>
 </div>
 {%- comment -%} ---------- Drawer (mobile + drawer menu type) ---------- {%- endcomment -%}
-<div class="header__overlay" data-drawer-close></div>
-<aside class="header__drawer" aria-label="Mobile menu">
-  <button class="header__icon-btn" data-drawer-close aria-label="Close menu" style="margin-bottom:16px;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-    </svg>
-  </button>
-  <ul class="header__drawer-list">
-    {%- for link in section.settings.main_menu.links -%}
-      <li>
-        <a href="{{ link.url }}">{{ link.title }}</a>
-        {%- if link.links != blank -%}
-          {%- for child in link.links -%}
-            <a href="{{ child.url }}" style="padding-left:16px;opacity:.8;">{{ child.title }}</a>
-          {%- endfor -%}
-        {%- endif -%}
-      </li>
-    {%- endfor -%}
-  </ul>
-</aside>
+{% comment %}
+  <div class="header__overlay" data-drawer-close></div>
+  <aside class="header__drawer" aria-label="Mobile menu">
+    <button class="header__icon-btn" data-drawer-close aria-label="Close menu" style="margin-bottom:16px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <ul class="header__drawer-list">
+      {%- for link in section.settings.main_menu.links -%}
+        <li>
+          <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- if link.links != blank -%}
+            {%- for child in link.links -%}
+              <a href="{{ child.url }}" style="padding-left:16px;opacity:.8;">{{ child.title }}</a>
+            {%- endfor -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </aside>
+{% endcomment %}
 
 <script>
   (function () {
@@ -242,7 +295,7 @@
         }
         if (mode === 'scroll-up') {
           if (y > lastY && y > 100) {
-            wrapper.classList.add('is-hidden');   // scrolling down -> hide
+            wrapper.classList.add('is-hidden'); // scrolling down -> hide
           } else {
             wrapper.classList.remove('is-hidden'); // scrolling up -> show
           }
@@ -360,6 +413,13 @@
       "id": "show_language",
       "label": "Language selector",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_customer_avatar",
+      "default": true,
+      "label": "Customer account avatar",
+      "info": "Only visible when customers are signed in with Shop. [Manage customer accounts](/admin/settings/customer_accounts)"
     },
     {
       "type": "header",
