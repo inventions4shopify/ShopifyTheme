@@ -15,6 +15,16 @@
 {% assign arrows = gallery_arrows_visibility | default: 'both' %}
 {% assign gallery_arrow_display = gallery_arrow_display | default: 'always' %}
 
+<style>
+  @media (min-width: 768px) {
+  {% if thumbnail_layout == 'vertical' %}
+    .product_gallery_thumbnail_wrapper {
+      height: calc(var(--thumbnail-height) * 1rem);
+    }
+  {% endif %}
+  }
+</style>
+
 {%- if product != blank and product.media.size > 0 -%}
   <div
     class="
@@ -61,11 +71,11 @@
           type="button"
           aria-label="Previous image"
         >
-         {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
+          {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
         </button>
 
         <button
-          class="product_gallery_arrow product_gallery_arrow_next button--secondary"
+          class="product_gallery_arrow product_gallery_arrow_next button button--secondary"
           type="button"
           aria-label="Next image"
         >
