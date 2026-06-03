@@ -1,42 +1,24 @@
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'product-image-gallery.js' | asset_url | script_tag }}
 
-{% style %}
-  .product-image-gallery-wrapper {
-    width: 100%;
-    max-width: 100%;
-  }
 
-  .product-info-wrapper {
-    width: 100%;
-    flex: 1 1 auto;
-  }
+<div {%- render 'section-variables', section: section, class: 'slideshow__section' -%}>
+  <div class="page-width">
+    <div class="main-product-section">
+      <div class="product-image-gallery-wrapper cms-cell--{{ section.settings.width }}">
+        {% render 'product-image-gallery',
+          product: product,
+          thumbnail_layout: section.settings.thumbnail_layout,
+          gallery_arrows_visibility: section.settings.gallery_arrows_device,
+          gallery_zoom_type: section.settings.gallery_zoom_type,
+          hover_zoom_style: section.settings.hover_zoom_style,
+          gallery_arrow_display: section.settings.gallery_arrow_display
+        %}
+      </div>
 
-  @media (min-width: 768px) {
-    .product-image-gallery-wrapper {
-      max-width: 40%;
-    }
-    .product-info-wrapper {
-      width: 1%;
-    }
-  }
-{% endstyle %}
-
-<div class="page-width">
-  <div class="main-product-section">
-    <div class="product-image-gallery-wrapper">
-      {% render 'product-image-gallery',
-        product: product,
-        thumbnail_layout: section.settings.thumbnail_layout,
-        gallery_arrows_visibility: section.settings.gallery_arrows_device,
-        gallery_zoom_type: section.settings.gallery_zoom_type,
-        hover_zoom_style: section.settings.hover_zoom_style,
-        gallery_arrow_display: section.settings.gallery_arrow_display
-      %}
-    </div>
-
-    <div class="product-info-wrapper">
-      {% render 'product-details', product: product, blocks: section.blocks %}
+      <div class="product-info-wrapper">
+        {% render 'product-details', product: product, blocks: section.blocks %}
+      </div>
     </div>
   </div>
 </div>
@@ -45,6 +27,26 @@
 {
   "name": "Product Section",
   "settings": [
+    {
+      "type": "select",
+      "id": "width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Width"
+    },
     {
       "type": "select",
       "id": "thumbnail_layout",
@@ -135,6 +137,60 @@
       "id": "enable_desktop_drag",
       "label": "Enable desktop image drag",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
     }
   ],
   "presets": [

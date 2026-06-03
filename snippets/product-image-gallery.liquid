@@ -57,25 +57,11 @@
     <div class="product_gallery_main_wrapper">
       {% if arrows != 'none' %}
         <button
-          class="product_gallery_arrow product_gallery_arrow_prev button--secondary"
+          class="product_gallery_arrow product_gallery_arrow_prev button button--secondary"
           type="button"
           aria-label="Previous image"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="20"
-            height="20"
-            viewBox="0 0 128 128"
-          >
-            <g>
-              <path
-                d="M84 108a3.988 3.988 0 0 1-2.828-1.172l-40-40a3.997 3.997 0 0 1 0-5.656l40-40c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656L49.656 64l37.172 37.172a3.997 3.997 0 0 1 0 5.656A3.988 3.988 0 0 1 84 108z"
-                fill="currentColor"
-              ></path>
-            </g>
-          </svg>
+         {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
         </button>
 
         <button
@@ -83,21 +69,7 @@
           type="button"
           aria-label="Next image"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="20"
-            height="20"
-            viewBox="0 0 128 128"
-          >
-            <g>
-              <path
-                d="M44 108a3.988 3.988 0 0 1-2.828-1.172 3.997 3.997 0 0 1 0-5.656L78.344 64 41.172 26.828c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l40 40a3.997 3.997 0 0 1 0 5.656l-40 40A3.988 3.988 0 0 1 44 108z"
-                fill="currentColor"
-              ></path>
-            </g>
-          </svg>
+          {% render 'icon', icon: 'chevron-right', width: 22, height: 22 %}
         </button>
       {% endif %}
 
@@ -180,21 +152,8 @@
       <div class="product_lightbox_overlay"></div>
 
       <div class="product_lightbox_content">
-        <button class="product_lightbox_close button--secondary" aria-label="Close lightbox">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M18 6L6 18M6 6l12 12"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
+        <button class="product_lightbox_close button button--secondary" aria-label="Close lightbox">
+          {% render 'icon', icon: 'close', width: 22, height: 22 %}
         </button>
 
         <div class="product_lightbox_layout">
@@ -203,7 +162,7 @@
               {% for media in product.media %}
                 {% if media.media_type == 'image' %}
                   <button
-                    class="product_lightbox_thumbnail {% if forloop.first %}active{% endif %}"
+                    class="product_lightbox_thumbnail aspect-square {% if forloop.first %}active{% endif %}"
                     data-index="{{ forloop.index0 }}"
                     type="button"
                   >
