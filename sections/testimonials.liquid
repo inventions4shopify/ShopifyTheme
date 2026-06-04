@@ -1,127 +1,4 @@
-<style>
-.testimonial-wrapper.is-grid {
-  grid-template-columns: repeat(1, 1fr);
-}
-.testimonial-wrapper.is-slider .testimonial-card {
-  flex: 0 0 calc((100% - 0rem) / 1);
-  flex-shrink:0;
-}
-.testimonial-wrapper.is-slider {
-  padding: 0.5rem;
-  overflow:hidden;
-  gap: var(--spacing-20);
-  transition: transform 0.5s ease;
-  scroll-behavior: auto;
-}
-.testimonial-slider-arrow-btn {
-  width: 100%;
-  justify-content: center;
-  margin-top: 3rem;
-  gap: var(--spacing-16);
-}
-.testimonial-slider-arrow-btn button {
-  cursor: pointer;
-  padding: 0;
-  width: 3rem;
-  height: 3rem;
-}
-.testimonial-slider-arrow-btn button svg.icon {
-  width: 1.8rem;
-  height: 1.8rem;
-}
-.testimonial-card {
-  background: var(--input-background);
-  padding: 2rem;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: var(--input-radius);
-  border: var(--input-border-width) var(--input-border-style) var(--input-border-color);
-}
-.testimonial-stars {
-  gap: var(--spacing-4);
-  align-items: center;
-}
-.testimonial-content>*:last-child {
-  margin-bottom: 0;
-}
-.testimonial-content {
-  margin-top: 1.6rem;
-}
-.testimonial-content p {
-  font-size: var(--text-sm);
-  line-height: 1.4;
-}
-.testimonial-footer {
-  margin-top: 1.5rem;
-  align-items: center;
-  gap: var(--spacing-12);
-}
-.testimonial-stars svg {
-  width: 1.8rem;
-  height: 1.8rem;
-}
-.testimonial-footer img {
-  border-radius: 50%;
-  width: 6rem;
-  height: 6rem;
-}
-span.testimonial-author-name {
-  font-size: var(--text-sm);
-  display: block;
-  font-weight: 600;
-  line-height: 1.5;
-}
-span.testimonial-author-position {
-  font-size: var(--text-xs);
-  display: block;
-  line-height: 1.5;
-}
-@media (min-width: 576px) {
-  .testimonial-slider-arrow-btn button {
-    width: 4rem;
-    height: 4rem;
-  }
-  .testimonial-slider-arrow-btn button svg.icon {
-    width: 2.4rem;
-    height: 2.4rem;
-  }
-  .testimonial-footer img {
-    width: 7rem;
-    height: 7rem;
-  }
-  .testimonial-wrapper.is-grid.testimonial-grid-4,
-  .testimonial-wrapper.is-grid.testimonial-grid-3,
-  .testimonial-wrapper.is-grid.testimonial-grid-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .testimonial-wrapper.is-slider.testimonial-grid-4 .testimonial-card,
-  .testimonial-wrapper.is-slider.testimonial-grid-2 .testimonial-card,
-  .testimonial-wrapper.is-slider.testimonial-grid-3 .testimonial-card {
-    flex: 0 0 calc((100% - 2rem) / 2);
-  }
-}
-@media (min-width: 992px) {
-  .testimonial-footer img {
-    width: 8rem;
-    height: 8rem;
-  }
-  .testimonial-wrapper.is-grid.testimonial-grid-4,
-  .testimonial-wrapper.is-grid.testimonial-grid-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .testimonial-wrapper.is-slider.testimonial-grid-4 .testimonial-card,
-  .testimonial-wrapper.is-slider.testimonial-grid-3 .testimonial-card {
-    flex: 0 0 calc((100% - 4rem) / 3);
-  }
-}
-@media (min-width: 1200px) {
-  .testimonial-wrapper.is-grid.testimonial-grid-4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .testimonial-wrapper.is-slider.testimonial-grid-4 .testimonial-card {
-    flex: 0 0 calc((100% - 6rem) / 4);
-  }
-}
-</style>
+{{ 'testimonials.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign s = section.settings
@@ -326,9 +203,9 @@ document.addEventListener('DOMContentLoaded', function () {
       "id": "content_alignment",
       "label": "Content alignment",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ],
       "default": "center"
     },
