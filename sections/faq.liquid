@@ -145,19 +145,29 @@
 </div>
 
 <script>
-  function initFaq() {
+  function initFaq(container = document) {
 
-    const faqItems = document.querySelectorAll('.cms-faq-item');
+    const faqItems = container.querySelectorAll('.cms-faq-item');
 
     faqItems.forEach((item) => {
 
+      // Duplicate event binding અટકાવવા
+      if (item.dataset.faqInitialized) return;
+
+      item.dataset.faqInitialized = "true";
+
       const question = item.querySelector('.cms-faq-question');
+
+      if (!question) return;
 
       question.addEventListener('click', () => {
 
+        const wrapper = item.closest('.cms-faq-wrapper');
+        const wrapperFaqs = wrapper.querySelectorAll('.cms-faq-item');
+
         const isActive = item.classList.contains('active');
 
-        faqItems.forEach((faq) => {
+        wrapperFaqs.forEach((faq) => {
           faq.classList.remove('active');
         });
 
@@ -171,9 +181,13 @@
 
   }
 
-  document.addEventListener('DOMContentLoaded', initFaq);
+  document.addEventListener('DOMContentLoaded', () => {
+    initFaq();
+  });
 
-  document.addEventListener('shopify:section:load', initFaq);
+  document.addEventListener('shopify:section:load', (event) => {
+    initFaq(event.target);
+  });
 </script>
 
 {% schema %}

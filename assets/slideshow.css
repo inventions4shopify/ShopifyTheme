@@ -11,10 +11,7 @@
     position: relative;
     overflow: hidden;
     display: flex;
-}
-
-.cms-slideshow-main .media-overlay-content>* {
-  color: inherit;
+    height: 50rem;
 }
 
 .cms-slideshow-slide {
