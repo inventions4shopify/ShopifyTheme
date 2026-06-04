@@ -1,0 +1,216 @@
+<product-form
+  class="product_form"
+  {{ block.shopify_attributes }}
+>
+  {% form 'product',
+    product,
+    class: 'product_form_form',
+    novalidate: 'novalidate'
+  %}
+
+    <input
+      type="hidden"
+      name="id"
+      value="{{ product.selected_or_first_available_variant.id }}"
+      data-variant-id
+    >
+
+    {% if block.settings.show_quantity_selector %}
+      <div class="product_form_quantity">
+        <button
+          type="button"
+          data-quantity-decrease
+        >
+          -
+        </button>
+
+        <input
+          type="number"
+          name="quantity"
+          value="1"
+          min="1"
+          data-quantity-input
+        >
+
+        <button
+          type="button"
+          data-quantity-increase
+        >
+          +
+        </button>
+      </div>
+    {% endif %}
+
+    <button
+      type="submit"
+      name="add"
+      class="product_form_submit"
+      data-add-to-cart
+      {% unless product.selected_or_first_available_variant.available %}
+        disabled
+      {% endunless %}
+    >
+      <span data-add-to-cart-text>
+        {% if product.selected_or_first_available_variant.available %}
+          Add to cart
+        {% else %}
+          Sold out
+        {% endif %}
+      </span>
+    </button>
+
+    {% if block.settings.show_dynamic_checkout %}
+      {{ form | payment_button }}
+    {% endif %}
+
+  {% endform %}
+</product-form>
+
+<script>
+  class ProductForm extends HTMLElement {
+    constructor() {
+      super();
+
+      this.onVariantChange =
+        this.onVariantChange.bind(this);
+
+      this.onQuantityDecrease =
+        this.onQuantityDecrease.bind(this);
+
+      this.onQuantityIncrease =
+        this.onQuantityIncrease.bind(this);
+    }
+
+    connectedCallback() {
+      this.form =
+        this.querySelector('form');
+
+      this.variantInput =
+        this.querySelector(
+          '[data-variant-id]'
+        );
+
+      this.addToCartButton =
+        this.querySelector(
+          '[data-add-to-cart]'
+        );
+
+      this.addToCartText =
+        this.querySelector(
+          '[data-add-to-cart-text]'
+        );
+
+      this.quantityInput =
+        this.querySelector(
+          '[data-quantity-input]'
+        );
+
+      this.quantityDecreaseButton =
+        this.querySelector(
+          '[data-quantity-decrease]'
+        );
+
+      this.quantityIncreaseButton =
+        this.querySelector(
+          '[data-quantity-increase]'
+        );
+
+      this.productRoot =
+        this.closest(
+          '[data-product-root]'
+        );
+
+      this.productRoot?.addEventListener(
+        'product:variant-change',
+        this.onVariantChange
+      );
+
+      this.quantityDecreaseButton?.addEventListener(
+        'click',
+        this.onQuantityDecrease
+      );
+
+      this.quantityIncreaseButton?.addEventListener(
+        'click',
+        this.onQuantityIncrease
+      );
+    }
+
+    disconnectedCallback() {
+      this.productRoot?.removeEventListener(
+        'product:variant-change',
+        this.onVariantChange
+      );
+
+      this.quantityDecreaseButton?.removeEventListener(
+        'click',
+        this.onQuantityDecrease
+      );
+
+      this.quantityIncreaseButton?.removeEventListener(
+        'click',
+        this.onQuantityIncrease
+      );
+    }
+
+    onVariantChange(event) {
+      const variant =
+        event.detail.variant;
+
+      if (!variant) return;
+
+      this.variantInput.value =
+        variant.id;
+
+      this.currentVariant =
+        variant;
+
+      this.updateButton(variant);
+    }
+
+    updateButton(variant) {
+      if (!this.addToCartButton) return;
+
+      if (variant.available) {
+        this.addToCartButton.disabled =
+          false;
+
+        this.addToCartText.textContent =
+          'Add to cart';
+      } else {
+        this.addToCartButton.disabled =
+          true;
+
+        this.addToCartText.textContent =
+          'Sold out';
+      }
+    }
+
+    onQuantityDecrease() {
+      if (!this.quantityInput) return;
+
+      const currentQuantity =
+        Number(this.quantityInput.value) || 1;
+
+      this.quantityInput.value =
+        Math.max(1, currentQuantity - 1);
+    }
+
+    onQuantityIncrease() {
+      if (!this.quantityInput) return;
+
+      const currentQuantity =
+        Number(this.quantityInput.value) || 1;
+
+      this.quantityInput.value =
+        currentQuantity + 1;
+    }
+  }
+
+  if (!customElements.get('product-form')) {
+    customElements.define(
+      'product-form',
+      ProductForm
+    );
+  }
+</script>
