@@ -50,17 +50,9 @@
   assign mobile_logo = section.settings.mobile_logo_position
   assign sticky = section.settings.sticky_header
 
-  assign is_transparent = false
-  if template.name == 'index' and section.settings.transparent_home
-    assign is_transparent = true
-  elsif template.name == 'product' and section.settings.transparent_product
-    assign is_transparent = true
-  elsif template.name == 'collection' and section.settings.transparent_collection
-    assign is_transparent = true
-  endif
 -%}
 <div
-  class="main-header-wrapper header--sticky-{{ sticky }} {% if is_transparent %}is-transparent{% endif %}"
+  class="main-header-wrapper header--sticky-{{ sticky }}"
   data-sticky="{{ sticky }}"
 >
   <header

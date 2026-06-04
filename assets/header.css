@@ -29,12 +29,6 @@
 .header--logo-left  .header__logo { transform-origin: left center; }
 .header--logo-right .header__logo { transform-origin: right center; }
 
-.main-header-wrapper.is-transparent {
-  position: absolute;
-  left: 0;
-  right: 0;
-  background: transparent;
-}
 
 /* ----- Base grid ----- */
 .header__inner {
