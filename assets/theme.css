@@ -792,6 +792,11 @@ canvas {
 .grid-spacing {
   gap: var(--grid-spacing);
 }
+
+.gap-0 {
+  gap: 0;
+}
+
 .gap-2 {
   gap: var(--spacing-2);
 }
@@ -1180,7 +1185,7 @@ canvas {
 
 /* ── Base hidden ── */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 @media (min-width: 320px) {

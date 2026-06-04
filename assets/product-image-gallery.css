@@ -1,11 +1,572 @@
-.main-product-section{
+.main-product-section {
     display: flex;
-    flex-direction: row;
-    gap: 20px;
+    flex-direction: column;
+    gap: var(--grid-spacing-desktop);
 }
 
-@media (max-width: 768px) {
-    .main-product-section{
+@media (min-width: 768px) {
+    .main-product-section {
+        flex-direction: row;
+    }
+}
+
+/* ==========================================================================
+   PRODUCT GALLERY - WRAPPER
+   ========================================================================== */
+.product-image-gallery-wrapper {
+    overflow: visible;
+}
+
+.product-info-wrapper {
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+.product_gallery {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .product-info-wrapper {
+        width: 1%;
+    }
+}
+
+
+/* ---------------------------------
+  LAYOUT
+  --------------------------------- */
+
+.product_gallery--horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--grid-spacing-mobile);
+}
+
+.product_gallery--vertical {
+    display: flex;
+    gap: var(--grid-spacing-mobile);
+    flex-direction: column-reverse;
+}
+
+/* ---------------------------------
+  MAIN WRAPPER
+  --------------------------------- */
+
+.product_gallery_main_wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.product_gallery--vertical .product_gallery_main_wrapper {
+    flex: 1;
+}
+
+/* ---------------------------------
+  MAIN SLIDER
+  --------------------------------- */
+
+.product_gallery_main_slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: var(--media-radius);
+    touch-action: none;
+}
+
+.product_gallery_main_slider:active {
+    cursor: grabbing;
+}
+
+.product_gallery_main_track {
+    display: flex;
+    gap: var(--grid-spacing-desktop);
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    transition: transform 0.4s ease;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+.product_gallery_main_slide {
+    position: relative;
+    overflow: hidden;
+    min-width: 100%;
+    width: 100%;
+    flex: 0 0 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.product_gallery_main_slide img {
+    display: block;
+    width: 100%;
+    border-radius: var(--media-radius);
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    user-drag: none;
+    -webkit-user-drag: none;
+    touch-action: manipulation;
+    touch-action: none;
+    transform-origin: center center;
+    will-change: transform;
+    transition: transform 0.3s ease;
+}
+
+.product_gallery_main_slider,
+.product_gallery_main_track,
+.product_gallery_main_slide {
+    touch-action: pan-y;
+}
+
+.product_gallery--vertical .product_gallery_main_slider {
+    height: 100%;
+}
+
+/* ---------------------------------
+  ARROWS
+  --------------------------------- */
+
+.product_gallery_arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    border: 0.1rem solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: 0;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+.product_gallery_arrow_prev {
+    left: 1rem;
+}
+
+.product_gallery_arrow_next {
+    right: 1rem;
+}
+
+/* ---------------------------------
+  ARROW DEVICE VISIBILITY
+  --------------------------------- */
+
+.product_gallery--arrows-none .product_gallery_arrow,
+.product_gallery--arrows-desktop .product_gallery_arrow {
+    display: none;
+}
+
+
+@media screen and (min-width: 768px) {
+    .product_gallery--arrows-mobile .product_gallery_arrow {
+        display: none;
+    }
+
+    .product_gallery--arrows-desktop .product_gallery_arrow {
+        display: flex;
+    }
+}
+
+/* ---------------------------------
+  ARROW DISPLAY STYLE
+  --------------------------------- */
+
+.product_gallery--arrow-display-hover .product_gallery_arrow {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.product_gallery--arrow-display-hover .product_gallery_main_wrapper:hover .product_gallery_arrow {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.product_gallery--arrow-display-always .product_gallery_arrow {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* ---------------------------------
+  THUMBNAILS
+  --------------------------------- */
+
+.product_gallery_thumbnail_wrapper {
+    overflow: hidden;
+}
+
+.product_gallery_thumbnail_track {
+    display: flex;
+    gap: var(--grid-spacing-mobile);
+    overflow-x: auto;
+    cursor: grab;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.product_gallery_thumbnail_track::-webkit-scrollbar {
+    display: none;
+}
+
+.product_gallery_thumbnail_track.dragging {
+    cursor: grabbing;
+}
+
+.product_gallery_thumbnail {
+    flex-shrink: 0;
+    padding: 0;
+    border: 0.2rem solid transparent;
+    border-radius: var(--media-radius);
+    overflow: hidden;
+    background: transparent;
+    cursor: pointer;
+    width: 6.4rem;
+    height: 6.4rem;
+}
+
+.product_gallery_thumbnail.active {
+    border-color: var(--color-border);
+}
+
+.product_gallery_thumbnail img {
+    border-radius: 0;
+}
+
+/* ---------------------------------
+  VERTICAL THUMBNAILS
+  --------------------------------- */
+
+.product_gallery--vertical .product_gallery_thumbnail_wrapper {
+    flex-shrink: 0;
+    margin-top: 0;
+    overflow: hidden;
+}
+
+.product_gallery--vertical .product_gallery_thumbnail_track {
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.product_gallery--vertical .product_gallery_thumbnail_track::-webkit-scrollbar {
+    display: none;
+}
+
+/* ---------------------------------
+  HOVER ZOOM BASE
+  --------------------------------- */
+
+.product_gallery--zoom-hover .product_gallery_main_slide img {
+    transition: transform 0.35s ease;
+    cursor: zoom-in;
+}
+
+@media (hover: none) {
+    .product_gallery--zoom-hover .product_gallery_main_slide img {
+        cursor: default;
+    }
+}
+
+/* ---------------------------------
+  MAGNIFIER ZOOM
+  --------------------------------- */
+
+.product_gallery[data-hover-zoom-style="magnifier"] .product_gallery_main_slide {
+    overflow: hidden;
+}
+
+.product_gallery[data-hover-zoom-style="magnifier"] .product_gallery_main_slide img {
+    transition: transform 0.35s ease;
+    cursor: zoom-in;
+}
+
+.product_gallery_main_slide.magnifier_active img {
+    transform: scale(2);
+    cursor: zoom-in;
+}
+
+/* ---------------------------------
+  PREVIEW WINDOW ZOOM
+  --------------------------------- */
+
+.product_gallery_zoom_preview {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 20px);
+    z-index: 5;
+    width: 50rem;
+    height: 50rem;
+    overflow: hidden;
+    border: 0.1rem solid var(--color-border);
+    background: #ffffff;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+}
+
+.product_gallery_zoom_preview.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.product_gallery_zoom_preview_image {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-color: #ffffff;
+    will-change: background-position;
+}
+
+/* ---------------------------------
+  ZOOM LENS
+  --------------------------------- */
+
+.product_gallery_zoom_lens {
+    position: absolute;
+    z-index: 2;
+    width: 12rem;
+    height: 12rem;
+    border: 0.1rem solid var(--color-border);
+    background: rgba(255, 255, 255, 0.35);
+    pointer-events: none;
+    opacity: 0;
+}
+
+.product_gallery_zoom_lens.active {
+    opacity: 1;
+}
+
+/* ---------------------------------
+  LIGHTBOX
+  --------------------------------- */
+
+.product_lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+}
+
+.product_lightbox_overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 20, 20, 0.65);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+}
+
+.product_lightbox_slide img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    cursor: zoom-in;
+}
+
+/* ---------------------------------
+  LIGHTBOX BUTTONS
+  --------------------------------- */
+
+.product_lightbox_prev,
+.product_lightbox_next {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    border: none;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.product_lightbox_prev {
+    top: 50%;
+    left: 2rem;
+    transform: translateY(-50%);
+}
+
+.product_lightbox_next {
+    top: 50%;
+    right: 2rem;
+    transform: translateY(-50%);
+}
+
+/* ---------------------------------
+  LIGHTBOX LAYOUT
+  --------------------------------- */
+
+.product_lightbox_content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.product_lightbox_layout {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    gap: var(--grid-spacing-mobile);
+    padding: 5rem 1.4rem 2rem;
+}
+
+/* ---------------------------------
+  LIGHTBOX THUMBNAILS
+  --------------------------------- */
+
+.product_lightbox_thumbnails_wrapper {
+    position: relative;
+    flex-shrink: 0;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.product_lightbox_thumbnails_wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.product_lightbox_thumbnails {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--grid-spacing-mobile);
+    height: fit-content;
+    overflow-y: auto;
+    scrollbar-width: none;
+    width: 6.4rem;
+    min-width: 6.4rem;
+}
+
+.product_lightbox_thumbnails::-webkit-scrollbar {
+    display: none;
+}
+
+.product_lightbox_thumbnail {
+    padding: 0;
+    border: 0.2rem solid transparent;
+    background: transparent;
+    border-radius: var(--media-radius);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.product_lightbox_thumbnail.active {
+    border-color: var(--color-border);
+}
+
+/* ---------------------------------
+  LIGHTBOX IMAGES
+  --------------------------------- */
+
+.product_lightbox_images {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    width: 100%;
+    max-width: 56.5rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--grid-spacing);
+}
+
+.product_lightbox_images::-webkit-scrollbar {
+    display: none;
+}
+
+/* ---------------------------------
+  LIGHTBOX CLOSE
+  --------------------------------- */
+
+.product_lightbox_close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    padding: 0;
+}
+
+/* ---------------------------------
+  MOBILE
+  --------------------------------- */
+
+@media screen and (min-width: 768px) {
+    .product_lightbox_layout {
+        gap: var(--grid-spacing-desktop);
+        padding: var(--spacing-40);
+    }
+
+    .product_lightbox_thumbnails {
+        width: 10rem;
+        min-width: 8rem;
+    }
+}
+
+/* ---------------------------------
+  TABLET
+  --------------------------------- */
+
+@media screen and (max-width: 991px) {
+
+    .product_gallery_zoom_preview,
+    .product_gallery_zoom_lens {
+        display: none;
+    }
+}
+
+/* ---------------------------------
+  MOBILE
+  --------------------------------- */
+
+@media screen and (min-width: 767px) {
+    .product_gallery--vertical {
+        flex-direction: row;
+    }
+
+    .product_gallery--vertical .product_gallery_thumbnail_track {
         flex-direction: column;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .product_gallery_arrow {
+        width: 4.4rem;
+        height: 4.4rem;
+    }
+
+    .product_gallery_thumbnail {
+        width: 8rem;
+        height: 8rem;
     }
 }

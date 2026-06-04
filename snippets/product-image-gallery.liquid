@@ -1,47 +1,64 @@
 {% comment %}
   Render with:
+
   {% render 'product-image-gallery',
     product: product,
-    thumbnail_layout: section.settings.thumbnail_layout
+    thumbnail_layout: section.settings.thumbnail_layout,
+    gallery_zoom_type: section.settings.gallery_zoom_type,
+    hover_zoom_style: section.settings.hover_zoom_style,
+    gallery_arrows_visibility: section.settings.gallery_arrows_visibility,
+    gallery_arrow_display: section.settings.gallery_arrow_display
   %}
 {% endcomment %}
 
 {%- assign thumbnail_layout = thumbnail_layout | default: 'horizontal' -%}
 {% assign arrows = gallery_arrows_visibility | default: 'both' %}
+{% assign gallery_arrow_display = gallery_arrow_display | default: 'always' %}
 
-{%- if product != blank and product.images.size > 0 -%}
+<style>
+  @media (min-width: 768px) {
+  {% if thumbnail_layout == 'vertical' %}
+    .product_gallery_thumbnail_wrapper {
+      height: calc(var(--thumbnail-height) * 1rem);
+    }
+  {% endif %}
+  }
+</style>
+
+{%- if product != blank and product.media.size > 0 -%}
   <div
     class="
-        product_gallery
-        product_gallery--{{ thumbnail_layout }}
-        product_gallery--arrows-{{ arrows }}
-        {% if gallery_zoom_type == 'hover' %}
+      product_gallery product_gallery--{{ thumbnail_layout }} product_gallery--arrows-{{ arrows }} product_gallery--arrow-display-{{ gallery_arrow_display }}
+      {% if gallery_zoom_type == 'hover' %}
         product_gallery--zoom-hover
       {% endif %}
     "
     id="product-gallery-{{ product.id }}"
+    data-enable-desktop-drag="{{ section.settings.enable_desktop_drag }}"
     data-zoom-type="{{ gallery_zoom_type }}"
-    data-hover-zoom-style="{{ hover_zoom_style }}"
+    {% if gallery_zoom_type != 'none' %}
+      data-hover-zoom-style="{{ hover_zoom_style }}"
+    {% endif %}
   >
     {% if thumbnail_layout == 'vertical' %}
       <div class="product_gallery_thumbnail_wrapper">
         <div class="product_gallery_thumbnail_track">
-          {% for image in product.images %}
-            <button
-              class="product_gallery_thumbnail {% if forloop.first %}active{% endif %}"
-              type="button"
-              data-index="{{ forloop.index0 }}"
-              data-alt="{{ image.alt | escape }}"
-              aria-label="{{ image.alt | escape }}"
-            >
-              <img
-                src="{{ image | image_url: width: 150 }}"
-                alt="{{ image.alt | escape }}"
-                loading="lazy"
-                width="150"
-                height="150"
+          {% for media in product.media %}
+            {% if media.media_type == 'image' %}
+              <button
+                type="button"
+                class="product_gallery_thumbnail {% if forloop.first %}active{% endif %}"
+                data-index="{{ forloop.index0 }}"
               >
-            </button>
+                <img
+                  src="{{ media | image_url: width: 160 }}"
+                  alt="{{ media.alt | escape }}"
+                  loading="lazy"
+                  width="80"
+                  height="80"
+                >
+              </button>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
@@ -50,116 +67,90 @@
     <div class="product_gallery_main_wrapper">
       {% if arrows != 'none' %}
         <button
-          class="product_gallery_arrow product_gallery_arrow_prev"
+          class="product_gallery_arrow product_gallery_arrow_prev button button--secondary"
           type="button"
           aria-label="Previous image"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="20"
-            height="20"
-            x="0"
-            y="0"
-            viewBox="0 0 128 128"
-            style="enable-background:new 0 0 512 512"
-            xml:space="preserve"
-            class=""
-          >
-            <g><path d="M84 108a3.988 3.988 0 0 1-2.828-1.172l-40-40a3.997 3.997 0 0 1 0-5.656l40-40c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656L49.656 64l37.172 37.172a3.997 3.997 0 0 1 0 5.656A3.988 3.988 0 0 1 84 108z" fill="#000000" opacity="1" data-original="#000000" class=""></path></g>
-          </svg>
+          {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
         </button>
-      {% endif %}
 
-      <div class="product_gallery_main_slider">
-        {% if gallery_zoom_type == 'hover' and hover_zoom_style == 'preview_window' %}
-          <div class="product_gallery_zoom_preview">
-            <div class="product_gallery_zoom_preview_image"></div>
-          </div>
-        {% endif %}
-        <div class="product_gallery_main_track">
-          {% for image in product.images %}
-            <div
-              class="product_gallery_main_slide"
-              data-alt="{{ image.alt | escape }}"
-              data-index="{{ forloop.index0 }}"
-              data-full="{{ image | image_url: width: 2000 }}"
-            >
-              <picture>
-                <source
-                  media="(min-width: 768px)"
-                  srcset="
-                    {{ image | image_url: width: 1200 }} 1200w,
-                    {{ image | image_url: width: 1600 }} 1600w
-                  "
-                >
-
-                <source
-                  media="(max-width: 767px)"
-                  srcset="
-                    {{ image | image_url: width: 600 }} 600w,
-                    {{ image | image_url: width: 900 }} 900w
-                  "
-                >
-
-                <img
-                  src="{{ image | image_url: width: 1200 }}"
-                  alt="{{ image.alt | escape }}"
-                  loading="lazy"
-                  width="{{ image.width }}"
-                  height="{{ image.height }}"
-                >
-              </picture>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-
-      {% if arrows != 'none' %}
         <button
-          class="product_gallery_arrow product_gallery_arrow_next"
+          class="product_gallery_arrow product_gallery_arrow_next button button--secondary"
           type="button"
           aria-label="Next image"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="20"
-            height="20"
-            x="0"
-            y="0"
-            viewBox="0 0 128 128"
-            style="enable-background:new 0 0 512 512"
-            xml:space="preserve"
-            class=""
-          >
-            <g><path d="M44 108a3.988 3.988 0 0 1-2.828-1.172 3.997 3.997 0 0 1 0-5.656L78.344 64 41.172 26.828c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l40 40a3.997 3.997 0 0 1 0 5.656l-40 40A3.988 3.988 0 0 1 44 108z" fill="#000000" opacity="1" data-original="#000000"></path></g>
-          </svg>
+          {% render 'icon', icon: 'chevron-right', width: 22, height: 22 %}
         </button>
       {% endif %}
+
+      {% if gallery_zoom_type == 'hover' and hover_zoom_style == 'preview_window' %}
+        <div class="product_gallery_zoom_preview">
+          <div class="product_gallery_zoom_preview_image"></div>
+        </div>
+      {% endif %}
+
+      <div class="product_gallery_main_slider">
+        <div class="product_gallery_main_track">
+          {% for media in product.media %}
+            {% if media.media_type == 'image' %}
+              <div
+                class="product_gallery_main_slide"
+                data-index="{{ forloop.index0 }}"
+                data-full="{{ media | image_url: width: 2200 }}"
+              >
+                <picture>
+                  <source
+                    media="(min-width: 768px)"
+                    srcset="
+                      {{ media | image_url: width: 1200 }} 1200w,
+                      {{ media | image_url: width: 1600 }} 1600w
+                    "
+                  >
+
+                  <source
+                    media="(max-width: 767px)"
+                    srcset="
+                      {{ media | image_url: width: 600 }} 600w,
+                      {{ media | image_url: width: 900 }} 900w
+                    "
+                  >
+
+                  <img
+                    src="{{ media | image_url: width: 1200 }}"
+                    alt="{{ media.alt | escape }}"
+                    width="{{ media.width }}"
+                    height="{{ media.height }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
+                    draggable="false"
+                  >
+                </picture>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
     </div>
 
     {% if thumbnail_layout == 'horizontal' %}
       <div class="product_gallery_thumbnail_wrapper">
         <div class="product_gallery_thumbnail_track">
-          {% for image in product.images %}
-            <button
-              class="product_gallery_thumbnail {% if forloop.first %}active{% endif %}"
-              type="button"
-              data-index="{{ forloop.index0 }}"
-              data-alt="{{ image.alt | escape }}"
-              aria-label="{{ image.alt | escape }}"
-            >
-              <img
-                src="{{ image | image_url: width: 150 }}"
-                alt="{{ image.alt | escape }}"
-                loading="lazy"
-                width="150"
-                height="150"
+          {% for media in product.media %}
+            {% if media.media_type == 'image' %}
+              <button
+                class="product_gallery_thumbnail {% if forloop.first %}active{% endif %}"
+                type="button"
+                data-index="{{ forloop.index0 }}"
               >
-            </button>
+                <img
+                  src="{{ media | image_url: width: 160 }}"
+                  alt="{{ media.alt | escape }}"
+                  loading="lazy"
+                  width="80"
+                  height="80"
+                >
+              </button>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
@@ -171,1255 +162,53 @@
       <div class="product_lightbox_overlay"></div>
 
       <div class="product_lightbox_content">
-        <button class="product_lightbox_close">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="50"
-            height="50"
-            x="0"
-            y="0"
-            viewBox="0 0 24 24"
-            style="enable-background:new 0 0 20 20"
-            xml:space="preserve"
-            class="hovered-paths"
-          >
-            <g><path fill="#000000" fill-rule="evenodd" d="M5 17.586a1 1 0 1 0 1.415 1.415L12 13.414 17.586 19A1 1 0 0 0 19 17.586L13.414 12 19 6.414A1 1 0 0 0 17.585 5L12 10.586 6.414 5A1 1 0 0 0 5 6.414L10.586 12z" clip-rule="evenodd" opacity="1" data-original="#000000" class="hovered-path"></path></g>
-          </svg>
+        <button class="product_lightbox_close button button--secondary" aria-label="Close lightbox">
+          {% render 'icon', icon: 'close', width: 22, height: 22 %}
         </button>
 
-        <button class="product_lightbox_prev">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="20"
-            height="20"
-            x="0"
-            y="0"
-            viewBox="0 0 128 128"
-            style="enable-background:new 0 0 512 512"
-            xml:space="preserve"
-            class=""
-          >
-            <g><path d="M84 108a3.988 3.988 0 0 1-2.828-1.172l-40-40a3.997 3.997 0 0 1 0-5.656l40-40c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656L49.656 64l37.172 37.172a3.997 3.997 0 0 1 0 5.656A3.988 3.988 0 0 1 84 108z" fill="#000000" opacity="1" data-original="#000000" class=""></path></g>
-          </svg>
-        </button>
+        <div class="product_lightbox_layout">
+          <div class="product_lightbox_thumbnails_wrapper">
+            <div class="product_lightbox_thumbnails">
+              {% for media in product.media %}
+                {% if media.media_type == 'image' %}
+                  <button
+                    class="product_lightbox_thumbnail aspect-square {% if forloop.first %}active{% endif %}"
+                    data-index="{{ forloop.index0 }}"
+                    type="button"
+                  >
+                    <img
+                      src="{{ media | image_url: width: 160 }}"
+                      alt="{{ media.alt | escape }}"
+                      width="80"
+                      height="80"
+                      loading="lazy"
+                    >
+                  </button>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
 
-        <div class="product_lightbox_track_wrapper">
-          <div class="product_lightbox_track"></div>
+          <div class="product_lightbox_images">
+            {% for media in product.media %}
+              {% if media.media_type == 'image' %}
+                <div
+                  class="product_lightbox_image_item"
+                  data-index="{{ forloop.index0 }}"
+                >
+                  <img
+                    src="{{ media | image_url: width: 2200 }}"
+                    alt="{{ media.alt | escape }}"
+                    width="{{ media.width }}"
+                    height="{{ media.height }}"
+                    loading="lazy"
+                  >
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
         </div>
-
-        <button class="product_lightbox_next">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="20"
-            height="20"
-            x="0"
-            y="0"
-            viewBox="0 0 128 128"
-            style="enable-background:new 0 0 512 512"
-            xml:space="preserve"
-            class=""
-          >
-            <g><path d="M44 108a3.988 3.988 0 0 1-2.828-1.172 3.997 3.997 0 0 1 0-5.656L78.344 64 41.172 26.828c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l40 40a3.997 3.997 0 0 1 0 5.656l-40 40A3.988 3.988 0 0 1 44 108z" fill="#000000" opacity="1" data-original="#000000"></path></g>
-          </svg>
-        </button>
       </div>
     </div>
   {% endif %}
 {%- endif -%}
-
-{% style %}
-  /* ---------------------------------
-   WRAPPER
---------------------------------- */
-
-  .product-image-gallery-wrapper {
-    width: 50%;
-  }
-
-  .product_gallery {
-    width: 100%;
-  }
-
-  /* ---------------------------------
-   ARROW VISIBILITY
---------------------------------- */
-
-  .product_gallery--arrows-none .product_gallery_arrow {
-    display: none;
-  }
-
-  /* Desktop Only */
-
-  @media screen and (max-width: 767px) {
-    .product_gallery--arrows-desktop .product_gallery_arrow {
-      display: none;
-    }
-  }
-
-  /* Mobile Only */
-
-  @media screen and (min-width: 768px) {
-    .product_gallery--arrows-mobile .product_gallery_arrow {
-      display: none;
-    }
-  }
-
-  /* ---------------------------------
-   HORIZONTAL
---------------------------------- */
-
-  .product_gallery--horizontal {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ---------------------------------
-   VERTICAL
---------------------------------- */
-
-  .product_gallery--vertical {
-    display: flex;
-    gap: 16px;
-    align-items: stretch;
-  }
-
-  .product_gallery--vertical .product_gallery_thumbnail_wrapper {
-    flex-shrink: 0;
-    margin-top: 0;
-
-    height: 100%;
-  }
-
-  .product_gallery--vertical .product_gallery_thumbnail_track {
-    flex-direction: column;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    height: 100%;
-
-    scrollbar-width: none;
-  }
-
-  .product_gallery--vertical .product_gallery_thumbnail_track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .product_gallery--vertical .product_gallery_main_wrapper {
-    flex: 1;
-  }
-
-  .product_gallery--vertical .product_gallery_main_slider {
-    height: 100%;
-  }
-
-  /* ---------------------------------
-   MAIN WRAPPER
---------------------------------- */
-
-  .product_gallery_main_wrapper {
-    position: relative;
-    width: 100%;
-  }
-
-  /* ---------------------------------
-   MAIN SLIDER
---------------------------------- */
-
-  .product_gallery_main_slider {
-    width: 100%;
-    overflow: hidden;
-    border-radius: 12px;
-    position: relative;
-  }
-
-  .product_gallery_main_slider:active {
-    cursor: grabbing;
-  }
-
-  .product_gallery_main_track {
-    display: flex;
-    width: 100%;
-    transition: transform 0.4s ease;
-    will-change: transform;
-
-    aspect-ratio: 1 / 1;
-
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-  }
-
-  .product_gallery_main_slide {
-    min-width: 100%;
-    width: 100%;
-    flex: 0 0 100%;
-
-    aspect-ratio: 1 / 1;
-
-    position: relative;
-
-    overflow: hidden;
-  }
-
-  .product_gallery_main_slide img {
-    width: 100%;
-    display: block;
-    border-radius: 12px;
-
-    pointer-events: auto;
-
-    user-drag: none;
-    -webkit-user-drag: none;
-
-    user-select: none;
-    -webkit-user-select: none;
-  }
-
-  .product_gallery_main_slider,
-  .product_gallery_main_track,
-  .product_gallery_main_slide {
-    touch-action: pan-y;
-  }
-
-  /* ---------------------------------
-   ARROWS
---------------------------------- */
-
-  .product_gallery_arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    border: 1px solid #d9d9d9;
-    background: rgba(255, 255, 255, 0.9);
-    cursor: pointer;
-    border-radius: 50%;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .product_gallery_arrow_prev {
-    left: 10px;
-  }
-
-  .product_gallery_arrow_next {
-    right: 10px;
-  }
-
-  /* ---------------------------------
-   THUMBNAILS
---------------------------------- */
-
-  .product_gallery_thumbnail_wrapper {
-    margin-top: 16px;
-    overflow: hidden;
-  }
-
-  .product_gallery_thumbnail_track {
-    display: flex;
-    gap: 12px;
-
-    overflow-x: auto;
-
-    scrollbar-width: none;
-
-    cursor: grab;
-
-    scroll-behavior: smooth;
-  }
-
-  .product_gallery_thumbnail_track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .product_gallery_thumbnail_track.dragging {
-    cursor: grabbing;
-  }
-
-  .product_gallery_thumbnail {
-    border: 2px solid transparent;
-
-    padding: 0;
-
-    background: transparent;
-
-    cursor: pointer;
-
-    flex-shrink: 0;
-
-    border-radius: 8px;
-
-    overflow: hidden;
-  }
-
-  .product_gallery_thumbnail.active {
-    border-color: #000000;
-  }
-
-  .product_gallery_thumbnail img {
-    width: 80px;
-    height: 80px;
-
-    object-fit: cover;
-
-    display: block;
-  }
-
-  /* HOVER ZOOM */
-  .product_gallery--zoom-hover .product_gallery_main_slide img {
-    transition: transform 0.35s ease;
-    cursor: zoom-in;
-  }
-
-  /* ---------------------------------
-   SAME IMAGE HOVER ZOOM
---------------------------------- */
-
-  .product_gallery[data-hover-zoom-style='magnifier'] .product_gallery_main_slide {
-    overflow: hidden;
-  }
-
-  .product_gallery[data-hover-zoom-style='magnifier'] .product_gallery_main_slide img {
-    transition: transform 0.35s ease;
-    cursor: zoom-in;
-  }
-
-  .product_lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-  }
-
-  .product_lightbox_overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-  }
-
-  .product_lightbox_content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .product_lightbox_track_wrapper {
-    overflow: hidden;
-  }
-  .product_lightbox_track {
-    display: flex;
-  }
-
-  .product_lightbox_slide {
-    min-width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .product_lightbox_slide img {
-    max-width: 90vw;
-    max-height: 90vh;
-    object-fit: contain;
-    cursor: zoom-in;
-  }
-
-  .product_lightbox_close,
-  .product_lightbox_prev,
-  .product_lightbox_next {
-    position: absolute;
-    background: white;
-    border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .product_lightbox_close {
-    top: 20px;
-    right: 20px;
-  }
-  .product_lightbox_prev {
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .product_lightbox_next {
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .zoom-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    cursor: zoom-in;
-  }
-
-  .zoom-image {
-    max-width: 90vw;
-    max-height: 90vh;
-    transition: transform 0.25s ease;
-    transform: scale(1);
-    cursor: zoom-in;
-  }
-
-  .zoom-image.zoomed {
-    transform: scale(2);
-    cursor: grab;
-  }
-
-  /* ---------------------------------
-   HOVER ZOOM PREVIEW WINDOW
---------------------------------- */
-
-  .product_gallery_zoom_preview {
-    position: absolute;
-
-    top: 0;
-    left: calc(100% + 20px);
-
-    width: 500px;
-    height: 500px;
-
-    border: 1px solid #d9d9d9;
-
-    background: #ffffff;
-
-    overflow: hidden;
-
-    opacity: 0;
-    visibility: hidden;
-
-    transition: opacity 0.2s ease;
-
-    z-index: 5;
-  }
-
-  .product_gallery_zoom_preview.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .product_gallery_zoom_preview_image {
-    width: 100%;
-    height: 100%;
-
-    background-repeat: no-repeat;
-    background-color: #ffffff;
-  }
-
-  /* ---------------------------------
-   ZOOM LENS
---------------------------------- */
-
-  .product_gallery_zoom_lens {
-    position: absolute;
-
-    width: 120px;
-    height: 120px;
-
-    border: 1px solid #d9d9d9;
-
-    background: rgba(255, 255, 255, 0.35);
-
-    pointer-events: none;
-
-    opacity: 0;
-
-    z-index: 2;
-  }
-
-  .product_gallery_zoom_lens.active {
-    opacity: 1;
-  }
-  .product_gallery_main_slide {
-    position: relative;
-  }
-
-  /* ---------------------------------
-   MOBILE DISABLE
---------------------------------- */
-
-  @media screen and (max-width: 991px) {
-    .product_gallery_zoom_preview,
-    .product_gallery_zoom_lens {
-      display: none;
-    }
-  }
-
-  /* ---------------------------------
-   MOBILE
---------------------------------- */
-
-  @media screen and (max-width: 767px) {
-    .product-image-gallery-wrapper {
-      width: 100%;
-    }
-
-    .product_gallery--vertical {
-      flex-direction: column-reverse;
-    }
-
-    .product_gallery--vertical .product_gallery_thumbnail_wrapper {
-      width: 100%;
-    }
-
-    .product_gallery--vertical .product_gallery_thumbnail_track {
-      flex-direction: row;
-      overflow-x: auto;
-      overflow-y: hidden;
-      max-height: none;
-    }
-
-    .product_gallery_arrow {
-      width: 36px;
-      height: 36px;
-      font-size: 22px;
-    }
-
-    .product_gallery_thumbnail img {
-      width: 64px;
-      height: 64px;
-    }
-
-    .product_lightbox_close,
-    .product_lightbox_prev,
-    .product_lightbox_next {
-      width: 35px;
-      height: 35px;
-    }
-  }
-{% endstyle %}
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const galleries = document.querySelectorAll('.product_gallery');
-
-    galleries.forEach((gallery) => {
-      const slider = gallery.querySelector('.product_gallery_main_slider');
-
-      const track = gallery.querySelector('.product_gallery_main_track');
-
-      const slides = gallery.querySelectorAll('.product_gallery_main_slide');
-
-      const thumbnails = gallery.querySelectorAll('.product_gallery_thumbnail');
-
-      const thumbnailTrack = gallery.querySelector('.product_gallery_thumbnail_track');
-
-      const prevButton = gallery.querySelector('.product_gallery_arrow_prev');
-
-      const nextButton = gallery.querySelector('.product_gallery_arrow_next');
-
-      const isVertical = gallery.classList.contains('product_gallery--vertical');
-
-      let currentIndex = 0;
-
-      // ---------------------------------
-      // MATCH VERTICAL THUMB HEIGHT
-      // ---------------------------------
-
-      function setVerticalThumbnailHeight() {
-        if (!isVertical) return;
-
-        const mainSliderHeight = slider.offsetHeight;
-
-        const thumbnailWrapper = gallery.querySelector('.product_gallery_thumbnail_wrapper');
-
-        thumbnailWrapper.style.height = `${mainSliderHeight}px`;
-      }
-
-      setVerticalThumbnailHeight();
-
-      window.addEventListener('resize', setVerticalThumbnailHeight);
-
-      // ---------------------------------
-      // UPDATE SLIDER
-      // ---------------------------------
-
-      function updateSlider(index) {
-        if (index < 0) {
-          index = slides.length - 1;
-        }
-
-        if (index >= slides.length) {
-          index = 0;
-        }
-
-        track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
-
-        thumbnails.forEach((thumb) => {
-          thumb.classList.remove('active');
-        });
-
-        thumbnails[index].classList.add('active');
-
-        thumbnails[index].scrollIntoView({
-          behavior: 'smooth',
-          inline: 'center',
-          block: 'nearest',
-        });
-
-        currentIndex = index;
-      }
-
-      // ---------------------------------
-      // BUTTONS
-      // ---------------------------------
-
-      if (nextButton) {
-        nextButton.addEventListener('click', () => {
-          updateSlider(currentIndex + 1);
-        });
-      }
-      if (prevButton) {
-        prevButton.addEventListener('click', () => {
-          updateSlider(currentIndex - 1);
-        });
-      }
-
-      // ---------------------------------
-      // THUMBNAIL CLICK
-      // ---------------------------------
-
-      thumbnails.forEach((thumbnail) => {
-        thumbnail.addEventListener('click', function () {
-          updateSlider(Number(this.dataset.index));
-        });
-      });
-
-      // ---------------------------------
-      // MAIN SLIDER SWIPE / DRAG
-      // ---------------------------------
-
-      // ---------------------------------
-      // MAIN SLIDER SWIPE / DRAG
-      // ---------------------------------
-
-      let startX = 0;
-      let currentX = 0;
-
-      let isDragging = false;
-
-      let currentTranslate = 0;
-      let prevTranslate = 0;
-
-      const sliderWidth = () => slider.offsetWidth;
-
-      // -----------------------------
-      // UPDATE POSITION
-      // -----------------------------
-
-      function setSliderPosition(value) {
-        track.style.transition = 'none';
-
-        track.style.transform = `translate3d(${value}px,0,0)`;
-      }
-
-      // -----------------------------
-      // START DRAG
-      // -----------------------------
-
-      function startDrag(x) {
-        isDragging = true;
-
-        startX = x;
-
-        prevTranslate = -currentIndex * sliderWidth();
-
-        track.style.transition = 'none';
-      }
-
-      // -----------------------------
-      // MOVE DRAG
-      // -----------------------------
-
-      function moveDrag(x) {
-        if (!isDragging) return;
-
-        currentX = x;
-
-        const diff = currentX - startX;
-
-        currentTranslate = prevTranslate + diff;
-
-        setSliderPosition(currentTranslate);
-      }
-
-      // -----------------------------
-      // END DRAG
-      // -----------------------------
-
-      function endDrag() {
-        if (!isDragging) return;
-
-        isDragging = false;
-
-        const movedBy = currentX - startX;
-
-        if (movedBy < -50) {
-          currentIndex += 1;
-        }
-
-        if (movedBy > 50) {
-          currentIndex -= 1;
-        }
-
-        if (currentIndex < 0) {
-          currentIndex = slides.length - 1;
-        }
-
-        if (currentIndex >= slides.length) {
-          currentIndex = 0;
-        }
-
-        track.style.transition = 'transform 0.4s ease';
-
-        track.style.transform = `translate3d(-${currentIndex * sliderWidth()}px,0,0)`;
-
-        thumbnails.forEach((thumb) => {
-          thumb.classList.remove('active');
-        });
-
-        thumbnails[currentIndex].classList.add('active');
-
-        thumbnails[currentIndex].scrollIntoView({
-          behavior: 'smooth',
-          inline: 'center',
-          block: 'nearest',
-        });
-      }
-
-      // -----------------------------
-      // TOUCH EVENTS
-      // -----------------------------
-
-      slider.addEventListener(
-        'touchstart',
-        (e) => {
-          startDrag(e.touches[0].clientX);
-        },
-        { passive: true }
-      );
-
-      slider.addEventListener(
-        'touchmove',
-        (e) => {
-          moveDrag(e.touches[0].clientX);
-        },
-        { passive: true }
-      );
-
-      slider.addEventListener('touchend', endDrag);
-
-      // -----------------------------
-      // DESKTOP EVENTS
-      // -----------------------------
-
-      slider.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-
-        startDrag(e.clientX);
-
-        slider.style.cursor = 'grabbing';
-      });
-
-      window.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-
-        moveDrag(e.clientX);
-      });
-
-      window.addEventListener('mouseup', () => {
-        if (!isDragging) return;
-
-        endDrag();
-
-        slider.style.cursor = 'grab';
-      });
-
-      // ---------------------------------
-      // THUMBNAIL DRAG SCROLL
-      // ---------------------------------
-
-      let isDown = false;
-
-      let startPosition;
-
-      let scrollPosition;
-
-      thumbnailTrack.addEventListener('mousedown', (e) => {
-        isDown = true;
-
-        thumbnailTrack.classList.add('dragging');
-
-        startPosition = isVertical ? e.pageY : e.pageX;
-
-        scrollPosition = isVertical ? thumbnailTrack.scrollTop : thumbnailTrack.scrollLeft;
-      });
-
-      window.addEventListener('mouseup', () => {
-        isDown = false;
-
-        thumbnailTrack.classList.remove('dragging');
-      });
-
-      thumbnailTrack.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-
-        e.preventDefault();
-
-        const currentPosition = isVertical ? e.pageY : e.pageX;
-
-        const walk = (currentPosition - startPosition) * 1.5;
-
-        if (isVertical) {
-          thumbnailTrack.scrollTop = scrollPosition - walk;
-        } else {
-          thumbnailTrack.scrollLeft = scrollPosition - walk;
-        }
-      });
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const galleries = document.querySelectorAll('.product_gallery');
-
-    galleries.forEach((gallery) => {
-      const zoomType = gallery.dataset.zoomType || 'none';
-      if (zoomType !== 'lightbox') return;
-
-      const slides = gallery.querySelectorAll('.product_gallery_main_slide');
-      const slidesData = Array.from(slides).map((s) => s.dataset.full);
-
-      const lightbox = document.querySelector('.product_lightbox');
-      if (!lightbox) return;
-
-      const trackLB = lightbox.querySelector('.product_lightbox_track');
-      const closeBtn = lightbox.querySelector('.product_lightbox_close');
-      const overlay = lightbox.querySelector('.product_lightbox_overlay');
-      const prevLB = lightbox.querySelector('.product_lightbox_prev');
-      const nextLB = lightbox.querySelector('.product_lightbox_next');
-
-      let lbIndex = 0;
-
-      // -----------------------------
-      // ZOOM STATE
-      // -----------------------------
-      const zoomState = {
-        zoomed: false,
-        scale: 2,
-        offsetX: 0,
-        offsetY: 0,
-        drag: false,
-        startX: 0,
-        startY: 0,
-      };
-
-      // -----------------------------
-      // BUILD LIGHTBOX
-      // -----------------------------
-      function renderLightbox(index) {
-        trackLB.innerHTML = '';
-
-        slidesData.forEach((src) => {
-          const div = document.createElement('div');
-          div.className = 'product_lightbox_slide';
-
-          div.innerHTML = `
-          <div class="zoom-wrapper">
-            <img src="${src}" class="zoom-image" draggable="false"/>
-          </div>
-        `;
-
-          trackLB.appendChild(div);
-        });
-
-        lbIndex = index;
-        resetZoom();
-        updateSlide();
-        attachZoom();
-      }
-
-      function updateSlide() {
-        trackLB.style.transform = `translateX(-${lbIndex * 100}%)`;
-      }
-
-      function resetZoom() {
-        zoomState.zoomed = false;
-        zoomState.offsetX = 0;
-        zoomState.offsetY = 0;
-      }
-
-      function moveLightbox(dir) {
-        if (zoomState.zoomed) return;
-
-        lbIndex += dir;
-
-        if (lbIndex < 0) lbIndex = slidesData.length - 1;
-        if (lbIndex >= slidesData.length) lbIndex = 0;
-
-        resetZoom();
-        updateSlide();
-        attachZoom();
-      }
-
-      function openLightbox(index) {
-        lightbox.hidden = false;
-        document.body.style.overflow = 'hidden';
-        renderLightbox(index);
-      }
-
-      function closeLightbox() {
-        lightbox.hidden = true;
-        document.body.style.overflow = '';
-      }
-
-      // -----------------------------
-      // ZOOM + PAN
-      // -----------------------------
-
-      function attachZoom() {
-        const img = trackLB.querySelectorAll('.zoom-image')[lbIndex];
-
-        if (!img) return;
-
-        img.style.transform = 'translate(0px,0px) scale(1)';
-        img.style.transformOrigin = 'center center';
-        img.style.cursor = 'zoom-in';
-
-        const wrapper = img.closest('.zoom-wrapper');
-
-        img.onclick = (e) => {
-          e.stopPropagation();
-
-          zoomState.zoomed = !zoomState.zoomed;
-
-          if (!zoomState.zoomed) {
-            zoomState.offsetX = 0;
-            zoomState.offsetY = 0;
-
-            img.style.transition = 'transform 0.3s ease';
-
-            img.style.transform = 'translate(0px,0px) scale(1)';
-
-            img.style.cursor = 'zoom-in';
-
-            return;
-          }
-
-          img.style.transition = 'transform 0.2s ease';
-
-          // click position
-          const rect = img.getBoundingClientRect();
-
-          const clickX = e.clientX - rect.left;
-          const clickY = e.clientY - rect.top;
-
-          // calculate movement
-          const moveX = (rect.width / 2 - clickX) * (zoomState.scale - 1);
-
-          const moveY = (rect.height / 2 - clickY) * (zoomState.scale - 1);
-
-          zoomState.offsetX = moveX;
-          zoomState.offsetY = moveY;
-
-          img.style.transform = `translate(${moveX}px, ${moveY}px) scale(${zoomState.scale})`;
-
-          img.style.cursor = 'grab';
-        };
-
-        img.onmousedown = (e) => {
-          if (!zoomState.zoomed) return;
-
-          zoomState.drag = true;
-
-          zoomState.startX = e.clientX;
-          zoomState.startY = e.clientY;
-
-          img.style.cursor = 'grabbing';
-        };
-
-        window.onmousemove = (e) => {
-          if (!zoomState.drag || !zoomState.zoomed) return;
-
-          const dx = e.clientX - zoomState.startX;
-          const dy = e.clientY - zoomState.startY;
-
-          zoomState.startX = e.clientX;
-          zoomState.startY = e.clientY;
-
-          zoomState.offsetX += dx;
-          zoomState.offsetY += dy;
-
-          // boundaries
-          const maxX = (img.clientWidth * (zoomState.scale - 1)) / 2;
-
-          const maxY = (img.clientHeight * (zoomState.scale - 1)) / 2;
-
-          zoomState.offsetX = Math.max(-maxX, Math.min(maxX, zoomState.offsetX));
-
-          zoomState.offsetY = Math.max(-maxY, Math.min(maxY, zoomState.offsetY));
-
-          img.style.transition = 'none';
-
-          img.style.transform = `translate(${zoomState.offsetX}px, ${zoomState.offsetY}px) scale(${zoomState.scale})`;
-        };
-
-        window.onmouseup = () => {
-          zoomState.drag = false;
-
-          if (zoomState.zoomed) {
-            img.style.cursor = 'grab';
-          }
-        };
-      }
-
-      // -----------------------------
-      // EVENTS
-      // -----------------------------
-      slides.forEach((slide, i) => {
-        slide.addEventListener('click', () => openLightbox(i));
-      });
-
-      closeBtn?.addEventListener('click', closeLightbox);
-      overlay?.addEventListener('click', closeLightbox);
-
-      nextLB?.addEventListener('click', () => moveLightbox(1));
-      prevLB?.addEventListener('click', () => moveLightbox(-1));
-
-      // swipe navigation (only when NOT zoomed)
-      let swipeStartX = 0;
-
-      trackLB?.addEventListener('touchstart', (e) => {
-        swipeStartX = e.touches[0].clientX;
-      });
-
-      trackLB?.addEventListener('touchend', (e) => {
-        if (zoomState.zoomed) return;
-
-        const diff = swipeStartX - e.changedTouches[0].clientX;
-
-        if (Math.abs(diff) > 50) {
-          moveLightbox(diff > 0 ? 1 : -1);
-        }
-      });
-
-      // ---------------------------------
-      // DESKTOP DRAG SWIPE
-      // ---------------------------------
-
-      let isMouseDragging = false;
-
-      let dragStartX = 0;
-
-      trackLB?.addEventListener('mousedown', (e) => {
-        if (zoomState.zoomed) return;
-
-        isMouseDragging = true;
-
-        dragStartX = e.clientX;
-
-        trackLB.style.cursor = 'grabbing';
-      });
-
-      window.addEventListener('mouseup', (e) => {
-        if (!isMouseDragging) return;
-
-        isMouseDragging = false;
-
-        trackLB.style.cursor = '';
-
-        const diff = dragStartX - e.clientX;
-
-        if (Math.abs(diff) > 50) {
-          moveLightbox(diff > 0 ? 1 : -1);
-        }
-      });
-
-      window.addEventListener('mousemove', (e) => {
-        if (!isMouseDragging) return;
-
-        e.preventDefault();
-      });
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const galleries = document.querySelectorAll('.product_gallery');
-
-    galleries.forEach((gallery) => {
-      const zoomType = gallery.dataset.zoomType || 'none';
-
-      const hoverZoomStyle = gallery.dataset.hoverZoomStyle || 'same_image';
-
-      // only run for preview window style
-      if (zoomType !== 'hover' || hoverZoomStyle !== 'preview_window') {
-        return;
-      }
-
-      const slides = gallery.querySelectorAll('.product_gallery_main_slide');
-
-      const preview = gallery.querySelector('.product_gallery_zoom_preview');
-
-      const previewImage = gallery.querySelector('.product_gallery_zoom_preview_image');
-
-      if (!preview || !previewImage) return;
-
-      slides.forEach((slide) => {
-        const image = slide.querySelector('img');
-
-        if (!image) return;
-
-        // -----------------------------
-        // CREATE LENS
-        // -----------------------------
-
-        const lens = document.createElement('div');
-
-        lens.className = 'product_gallery_zoom_lens';
-
-        slide.appendChild(lens);
-
-        // -----------------------------
-        // MOUSE ENTER
-        // -----------------------------
-
-        slide.addEventListener('mouseenter', () => {
-          preview.classList.add('active');
-
-          lens.classList.add('active');
-
-          previewImage.style.backgroundImage = `url(${slide.dataset.full})`;
-
-          previewImage.style.backgroundSize = '200%';
-        });
-
-        // -----------------------------
-        // MOUSE LEAVE
-        // -----------------------------
-
-        slide.addEventListener('mouseleave', () => {
-          preview.classList.remove('active');
-
-          lens.classList.remove('active');
-        });
-
-        // -----------------------------
-        // MOUSE MOVE
-        // -----------------------------
-
-        slide.addEventListener('mousemove', (event) => {
-          const rect = slide.getBoundingClientRect();
-
-          const x = event.clientX - rect.left;
-
-          const y = event.clientY - rect.top;
-
-          // percent position
-          const percentX = (x / rect.width) * 100;
-
-          const percentY = (y / rect.height) * 100;
-
-          // move lens
-          lens.style.left = `${x - lens.offsetWidth / 2}px`;
-
-          lens.style.top = `${y - lens.offsetHeight / 2}px`;
-
-          // move preview background
-          previewImage.style.backgroundPosition = `${percentX}% ${percentY}%`;
-        });
-      });
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const galleries = document.querySelectorAll('.product_gallery');
-
-    galleries.forEach((gallery) => {
-      const zoomType = gallery.dataset.zoomType;
-      const hoverZoomStyle = gallery.dataset.hoverZoomStyle;
-
-      if (zoomType !== 'hover' || hoverZoomStyle !== 'magnifier') {
-        return;
-      }
-
-      const slides = gallery.querySelectorAll('.product_gallery_main_slide');
-
-      slides.forEach((slide) => {
-        const img = slide.querySelector('img');
-
-        if (!img) return;
-
-        let isZooming = false;
-
-        // -----------------------------
-        // MOUSE ENTER
-        // -----------------------------
-        slide.addEventListener('mouseenter', () => {
-          isZooming = true;
-
-          img.style.transition = 'none';
-          img.style.transform = 'scale(2)';
-          img.style.cursor = 'zoom-in';
-        });
-
-        // -----------------------------
-        // MOUSE MOVE
-        // -----------------------------
-        slide.addEventListener('mousemove', (e) => {
-          if (!isZooming) return;
-
-          const rect = slide.getBoundingClientRect();
-
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-
-          const xPercent = (x / rect.width) * 100;
-          const yPercent = (y / rect.height) * 100;
-
-          img.style.transformOrigin = `${xPercent}% ${yPercent}%`;
-        });
-
-        // -----------------------------
-        // MOUSE LEAVE
-        // -----------------------------
-        slide.addEventListener('mouseleave', () => {
-          isZooming = false;
-
-          img.style.transition = 'transform 0.3s ease';
-
-          img.style.transform = 'scale(1)';
-          img.style.transformOrigin = 'center center';
-        });
-      });
-    });
-  });
-</script>
