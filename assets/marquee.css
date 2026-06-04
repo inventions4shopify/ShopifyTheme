@@ -53,7 +53,7 @@
   height: var(--logo-height);
   width: auto;
   object-fit: contain;
-  display: block;
+  border-radius: 0;
 }
 
 @media screen and (max-width: 768px) {
