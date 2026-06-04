@@ -14,10 +14,6 @@
     height: 50rem;
 }
 
-.cms-slideshow-main .media-overlay-content>* {
-  color: inherit;
-}
-
 .cms-slideshow-slide {
     position: absolute;
     inset: 0;
