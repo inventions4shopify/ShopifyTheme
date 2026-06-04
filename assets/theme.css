@@ -340,7 +340,9 @@ input:disabled {
   color: rgba(var(--color-body-text), 0.5);
 }
 
-
+input::-webkit-search-cancel-button {
+  display: none;
+}
 
 img,
 video,
@@ -1284,4 +1286,30 @@ canvas {
 /* "See all" link */
 .section-header__link {
   margin-top: var(--spacing-4);
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
+.field {
+  position: relative;
+  width: 100%;
+  display: flex;
+  transition: box-shadow var(--duration-short) ease;
+}
+.field__button {
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  color: currentColor;
+  cursor: pointer;
+  display: flex;
+  height: 3.6rem;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 3.6rem;
 }
