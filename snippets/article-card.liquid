@@ -1,8 +1,6 @@
 {%- if article and article != empty -%}
   {% liquid
-    assign sub_color = section.settings.subheading_color
     assign head_color = section.settings.heading_color
-    assign block_color = section.settings.text_color
     assign background_color = section.settings.bg_color
 
     if section.settings.card_style
