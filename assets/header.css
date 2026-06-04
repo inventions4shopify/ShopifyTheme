@@ -150,7 +150,7 @@
   position: absolute;
   right: -5px;
   top: -1px;
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   align-items: center;
 }
 /* ----- Drawer / mobile toggle ----- */
@@ -216,12 +216,12 @@
 .header__submenu .header__nav-item:focus-within > .header__submenu--nested {
   opacity: 1; visibility: visible; transform: translateX(0);
 }
+/* small hover bridge so the pointer can travel to the submenu */
+.header__submenu::before { content: ""; position: absolute; top: -8px; left: 0; right: 0; height: 8px; }
 .header__submenu.header__submenu--nested {
   left: 100%;
   top: 0;
 }
-/* small hover bridge so the pointer can travel to the submenu */
-.header__submenu::before { content: ""; position: absolute; top: -8px; left: 0; right: 0; height: 8px; }
 
 /* ----- MEGA: full-width panel under the header ----- */
 .header__nav--mega .header__nav-list > .header__nav-item { position: static; }
@@ -245,9 +245,9 @@
   opacity: 1; visibility: visible; transform: translateY(0);
 }
 .header__mega-inner {
-  max-width: 1200px; margin: 0 auto;
+margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(4, 1fr);;
   gap: 20px 32px;
 }
 .header__mega-title {
@@ -313,3 +313,31 @@
 .header__social a:hover { opacity: .65; }
 
 /* on desktop the drawer overlay/aside stay hidden until toggled (drawer menu type) */
+/* ----- MEGA: Image Banner block ----- */
+.header__mega-banner {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(127,127,127,.08);
+  min-width: 220px;
+}
+.header__mega-banner-img { width: 100%; height: 150px; object-fit: cover; display: block; }
+.header__mega-banner-body { padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+.header__mega-banner-title { font-weight: 600; }
+.header__mega-banner-desc { font-size: var(--text-sm); opacity: .8; }
+.header__mega-banner-btn {
+  margin-top: 6px;
+  align-self: flex-start;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: var(--text-sm);
+  transition: background .15s ease, color .15s ease;
+}
+.header__mega-banner:hover .header__mega-banner-btn {
+  background: rgb(var(--color-header-text));
+  color: rgb(var(--color-header-background));
+}

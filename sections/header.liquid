@@ -28,7 +28,7 @@
   }
   /* ----- Drawer / mobile toggle ----- */
   .header__drawer {
-    position: fixed; top: 0; left: -320px; width: 300px; height: 100%;
+    position: fixed; top: 0; left: -320px; width: 300px; height: 100dvh;
     background: {{ settings.header_background_color }}; color: {{ settings.header_text_color }};
     box-shadow: 2px 0 20px rgba(0,0,0,.2); transition: left .25s ease;
     z-index: 60; padding: 24px; overflow-y: auto;
@@ -49,8 +49,12 @@
   assign menu_type = section.settings.menu_type
   assign mobile_logo = section.settings.mobile_logo_position
   assign sticky = section.settings.sticky_header
-
+  assign localization_forms = false
+  if localization.available_countries.size > 1 and section.settings.enable_country_selector or section.settings.enable_language_selector and localization.available_languages.size > 1
+    assign localization_forms = true
+  endif
 -%}
+
 <div
   class="main-header-wrapper header--sticky-{{ sticky }}"
   data-sticky="{{ sticky }}"
@@ -67,6 +71,7 @@
       {{ section.settings.section_width }}
        {% if shop.customer_accounts_enabled %} header--has-account{% endif %}
       {% if section.settings.separator_line %}has-separator{% endif %}
+       {% if localization_forms %} header--has-localizations{% endif %}
     "
   >
     <div class="header__inner">
@@ -76,9 +81,11 @@
         endif
       -%}
       {%- comment -%} ---------- Mobile / drawer burger ---------- {%- endcomment -%}
-      {% comment %} <button class="header__burger" aria-label="Open menu" data-drawer-open>
-        {% render 'icon', icon: 'hamburger', width: 20, height: 20 %}
-      </button> {% endcomment %}
+      {% comment %}
+        <button class="header__burger" aria-label="Open menu" data-drawer-open>
+          {% render 'icon', icon: 'hamburger', width: 20, height: 20 %}
+        </button>
+      {% endcomment %}
 
       {%- comment -%} ---------- Logo ---------- {%- endcomment -%}
       <div class="header__logo">
@@ -105,76 +112,69 @@
         </a>
       </div>
 
-      {%- comment -%} ---------- Desktop nav (dropdown / mega) ---------- {%- endcomment -%}
-      {% comment %}
-        {%- if menu_type != 'drawer' -%}
-          <nav class="header__nav header__nav--desktop" aria-label="Primary">
-            <ul class="header__nav-list">
-              {%- for link in section.settings.main_menu.links -%}
-                <li class="header__nav-item">
-                  <a href="{{ link.url }}" class="header__nav-link sm:text-base text-sm">{{ link.title }}</a>
-                  {%- if link.links != blank -%}
-                    <ul class="header__submenu">
-                      {%- for child in link.links -%}
-                        <li class="header__nav-item">
-                          <a href="{{ child.url }}" class="header__nav-link sm:text-base">{{ child.title }}</a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  {%- endif -%}
-                </li>
-              {%- endfor -%}
-            </ul>
-          </nav>
-        {%- endif -%}
-      {% endcomment %}
       {%- liquid
+        assign has_blocks = false
+
         if section.settings.main_menu != blank
+          if section.blocks.size > 0
+            for link in section.settings.main_menu.links
+              for block in section.blocks
+                if block.settings.parent_item != blank
+                  assign block_target = block.settings.parent_item | downcase | strip
+                  assign link_title = link.title | downcase | strip
+
+                  if block_target == link_title
+                    assign has_blocks = true
+                    break
+                  endif
+                endif
+              endfor
+
+              if has_blocks
+                break
+              endif
+            endfor
+          endif
           if menu_type == 'dropdown'
-            render 'header-dropdown-menu'
+            if has_blocks
+              render 'header-mega-menu'
+            else
+              render 'header-dropdown-menu'
+            endif
           elsif menu_type != 'drawer'
             render 'header-mega-menu'
           endif
         endif
-      %}
+      -%}
 
       {%- comment -%} ---------- Utilities ---------- {%- endcomment -%}
-      <div class="header__utils">
+      <div class="header__utils {% if section.settings.show_country or section.settings.show_language %} header__icons--localization header-localization{% endif %}">
         {%- comment -%} Country / region selector {%- endcomment -%}
         {%- if section.settings.show_country and localization.available_countries.size > 1 -%}
-          {%- form 'localization', class: 'header__loc-form' -%}
-            <select name="country_code" onchange="this.form.submit()" aria-label="Country/region">
-              {%- for country in localization.available_countries -%}
-                <option
-                  value="{{ country.iso_code }}"
-                  {% if country.iso_code == localization.country.iso_code %}
-                    selected
-                  {% endif %}
-                >
-                  {{ country.name }} ({{ country.currency.iso_code }}
-                  {{ country.currency.symbol }})
-                </option>
-              {%- endfor -%}
-            </select>
-          {%- endform -%}
+          <localization-form>
+            {%- form 'localization', id: 'FooterCountryForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="caption-large text-body text-xss sm:text-xs" id="FooterCountryLabel">
+                  {{ 'localization.country_label' | t }}
+                </h2>
+                {%- render 'country-localization', localPosition: 'FooterCountry' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
         {%- endif -%}
 
         {%- comment -%} Language selector {%- endcomment -%}
         {%- if section.settings.show_language and localization.available_languages.size > 1 -%}
-          {%- form 'localization', class: 'header__loc-form' -%}
-            <select name="locale_code" onchange="this.form.submit()" aria-label="Language">
-              {%- for language in localization.available_languages -%}
-                <option
-                  value="{{ language.iso_code }}"
-                  {% if language.iso_code == localization.language.iso_code %}
-                    selected
-                  {% endif %}
-                >
-                  {{ language.endonym_name }}
-                </option>
-              {%- endfor -%}
-            </select>
-          {%- endform -%}
+          <localization-form>
+            {%- form 'localization', id: 'FooterLanguageForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="caption-large text-body text-xss sm:text-xs" id="FooterLanguageLabel">
+                  {{ 'localization.language_label' | t }}
+                </h2>
+                {%- render 'language-localization', localPosition: 'FooterLanguage' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
         {%- endif -%}
 
         {%- comment -%} Search + Cart {%- endcomment -%}
@@ -273,9 +273,8 @@
     if (wrapper) {
       var mode = wrapper.getAttribute('data-sticky'); // none | scroll-up | always | reduce
       var host = wrapper.closest('.shopify-section') || wrapper;
-      var transparent = wrapper.classList.contains('is-transparent');
 
-      if (mode !== 'none' && !transparent) {
+      if (mode !== 'none') {
         host.classList.add('header-sticky-host');
       }
 
@@ -415,28 +414,6 @@
     },
     {
       "type": "header",
-      "content": "Transparent background"
-    },
-    {
-      "type": "checkbox",
-      "id": "transparent_home",
-      "label": "Home page",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "transparent_product",
-      "label": "Product page",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "transparent_collection",
-      "label": "Collection page",
-      "default": false
-    },
-    {
-      "type": "header",
       "content": "Colors & spacing"
     },
     {
@@ -468,6 +445,67 @@
         { "value": "full-width", "label": "Full Width" }
       ],
       "default": "page-width"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_column",
+      "name": "Menu Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "parent_item",
+          "label": "Menu item",
+          "info": "Exact top-level menu item title this column appears under (e.g. Shop)."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Column Heading"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "image_banner",
+      "name": "Image Banner",
+      "settings": [
+        {
+          "type": "text",
+          "id": "parent_item",
+          "label": "Menu item",
+          "info": "Exact top-level menu item title this banner appears under (e.g. Shop)."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
     }
   ]
 }
