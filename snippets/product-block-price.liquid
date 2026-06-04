@@ -1,0 +1,35 @@
+{% assign variant = product.selected_or_first_available_variant %}
+
+<div
+  class="product_price_block"
+  {{ block.shopify_attributes }}
+>
+  <span class="product_price">
+    {{ variant.price | money }}
+  </span>
+
+  {% if variant.compare_at_price > variant.price %}
+    <span class="product_compare_price">
+      {{ variant.compare_at_price | money }}
+    </span>
+
+    {% if block.settings.show_save_badge %}
+      {% assign difference = variant.compare_at_price | minus: variant.price %}
+
+      {% if block.settings.save_type == 'money' %}
+        <span class="product_save_badge">
+          Save {{ difference | money }}
+        </span>
+      {% else %}
+        {% assign percentage = difference
+          | times: 100
+          | divided_by: variant.compare_at_price
+        %}
+
+        <span class="product_save_badge">
+          Save {{ percentage }}%
+        </span>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+</div>

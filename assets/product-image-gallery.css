@@ -317,6 +317,7 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease;
+    display: none;
 }
 
 .product_gallery_zoom_preview.active {
@@ -345,6 +346,7 @@
     background: rgba(255, 255, 255, 0.35);
     pointer-events: none;
     opacity: 0;
+    display: none;
 }
 
 .product_gallery_zoom_lens.active {
@@ -533,15 +535,16 @@
     }
 }
 
+
+
 /* ---------------------------------
   TABLET
   --------------------------------- */
 
-@media screen and (max-width: 991px) {
-
-    .product_gallery_zoom_preview,
+@media screen and (min-width: 992px) {
+.product_gallery_zoom_preview,
     .product_gallery_zoom_lens {
-        display: none;
+        display: block;
     }
 }
 
