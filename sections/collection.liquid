@@ -7,10 +7,11 @@
 
 <h1>{{ collection.title }}</h1>
 
-<div class="collection-products">
+<div class="collection-products grid grid--2-col sm:grid--3-col lg:grid--4-col">
   {% paginate collection.products by 20 %}
     {% for product in collection.products %}
-      <div class="collection-product">
+      {%- render 'product-card', product: product -%}
+      {% comment %} <div class="collection-product">
         {% if product.featured_image %}
           {% render 'image',
             class: 'collection-product__image',
@@ -25,19 +26,12 @@
           <p>{{ product.title | escape | link_to: product.url }}</p>
           <p>{{ product.price | money }}</p>
         </div>
-      </div>
+      </div> {% endcomment %}
     {% endfor %}
 
     {{ paginate | default_pagination }}
   {% endpaginate %}
 </div>
-
-{% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  }
-{% endstylesheet %}
 
 {% schema %}
 {

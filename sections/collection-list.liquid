@@ -8,6 +8,7 @@
     flex: 0 0 calc((100% - 2rem) / {{ section.settings.mobile_column_count }});
     flex-shrink:0;
   }
+
   .collection-grid.columns-4.is-slider .collection-card,
   .collection-grid.columns-3.is-slider .collection-card,
   .collection-grid.columns-2.is-slider .collection-card,
@@ -15,6 +16,7 @@
     flex: 0 0 calc((100% - 0rem) / {{ section.settings.mobile_column_count }});
     flex-shrink:0;
   }
+  
   .collection-grid.is-grid.columns-4,
   .collection-grid.is-grid.columns-3,
   .collection-grid.is-grid.columns-2,
@@ -113,11 +115,11 @@
                 <h3 class="collection__heading h5">
                   {{ collection.title | escape }}
                 </h3>
-                <span>
-                  {%if s.collection_heading_alignment == 'start' %}
+                {%if s.collection_heading_alignment == 'start' %}
+                  <span>
                     {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
-                  {% endif %}
-                </span>
+                  </span>
+                {% endif %}
               </div>
             </a>
           {% endif %}

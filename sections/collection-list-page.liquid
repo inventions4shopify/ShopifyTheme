@@ -46,44 +46,48 @@
       -%}
     </div>
     <div class="collection-wrapper-main section-{{ section.id }}">
-      <div class="collection-grid grid--{{ section.settings.mobile_column_count }}-col sm:grid--3-col lg:grid--{{ section.settings.columns }}-col grid">
-        {% for collection in collections %}
-          <a href="{{ collection.url }}" class="collection-card">
-            <div class="collection-card__image">
-              {% assign collection_image = collection.featured_image %}
+      {% paginate collections by section.settings.rows %}
+        <div class="collection-grid grid--{{ section.settings.mobile_column_count }}-col sm:grid--3-col lg:grid--{{ section.settings.columns }}-col grid">
+          {% for collection in collections %}
+            <a href="{{ collection.url }}" class="collection-card{%if section.settings.enable_card_text %} has-overlay-text{% endif %}">
+              <div class="collection-card__image">
+                {% assign collection_image = collection.featured_image %}
 
-              {% if collection_image == blank and collection.products.first %}
-                {% assign collection_image = collection.products.first.featured_image %}
-              {% endif %}
-
-              {% if collection_image %}
-                {{
-                  collection_image
-                  | image_url: width: 800
-                  | image_tag:
-                    loading: 'lazy',
-                    widths: '320,480,640,800',
-                    sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                    alt: collection.title
-                }}
-              {% else %}
-                {{ 'collection-1' | placeholder_svg_tag }}
-              {% endif %}
-            </div>
-
-            <div class="collection-card__content text-{{ section.settings.collection_heading_alignment }} justify-{{ section.settings.collection_heading_alignment }}">
-              <h3 class="collection__heading h5">
-                {{ collection.title | escape }}
-              </h3>
-              <span>
-                {%if section.settings.collection_heading_alignment == 'start' %}
-                  {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
+                {% if collection_image == blank and collection.products.first %}
+                  {% assign collection_image = collection.products.first.featured_image %}
                 {% endif %}
-              </span>
-            </div>
-          </a>
-        {% endfor %}
-      </div>
+
+                {% if collection_image %}
+                  {{
+                    collection_image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '320,480,640,800',
+                      sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                      alt: collection.title
+                  }}
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag }}
+                {% endif %}
+              </div>
+
+              <div class="collection-card__content{%if section.settings.enable_card_text == false %} text-{{ section.settings.collection_heading_alignment }} justify-{{ section.settings.collection_heading_alignment }}{% endif %}">
+                <h3 class="collection__heading h5">
+                  {{ collection.title | escape }}
+                </h3>
+                {%if section.settings.collection_heading_alignment == 'start' %}
+                  <span>
+                    {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
+                  </span>
+                {% endif %}
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+      {% endpaginate %}
     </div>
   </div>
 </div>
@@ -109,8 +113,7 @@
     {
       "type": "richtext",
       "id": "description",
-      "label": "Text",
-      "default": "<p>Most Populer Products</p>"
+      "label": "Text"
     },
     {
       "type": "color",
@@ -178,6 +181,15 @@
       "default": 4
     },
     {
+      "type": "range",
+      "id": "rows",
+      "label": "Card Per Page",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 16
+    },
+    {
       "type": "select",
       "id": "mobile_column_count",
       "label": "Mobile Columns",
@@ -206,6 +218,16 @@
       "type": "color_background",
       "id": "background_gradient",
       "label": "Background gradient"
+    },
+    {
+      "type": "header",
+      "content": "Card Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_card_text",
+      "label": "Overlay Text on Card Images",
+      "default": false
     },
     {
       "type": "color",
