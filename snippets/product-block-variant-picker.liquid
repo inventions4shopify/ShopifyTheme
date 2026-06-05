@@ -1,0 +1,375 @@
+{% style %}
+  .variant_picker {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .variant_picker_option {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .variant_picker_option_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .variant_picker_option_name {
+    font-weight: 600;
+  }
+
+  .variant_picker_selected_value {
+    opacity: 0.7;
+  }
+
+  .variant_picker_values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .variant_picker_value {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .variant_picker_value input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .variant_picker_swatch {
+    width: calc(var(--swatch-size, 36) * 1px);
+    height: calc(var(--swatch-size, 36) * 1px);
+    display: block;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+  }
+
+  .variant_picker_swatch--circle {
+    border-radius: 50%;
+  }
+
+  .variant_picker_swatch--square {
+    border-radius: 0;
+  }
+
+  .variant_picker_swatch--rounded {
+    border-radius: 8px;
+  }
+  .variant_picker_value input:checked + .variant_picker_swatch {
+    border-color: #000;
+    box-shadow: 0 0 0 2px #000;
+  }
+  .variant_picker_values--swatch .variant_picker_value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .variant_picker_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 8px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+  }
+  .variant_picker_button--square {
+    border-radius: 0;
+  }
+
+  .variant_picker_button--rounded {
+    border-radius: 8px;
+  }
+
+  .variant_picker_button--pill {
+    border-radius: 999px;
+  }
+  .variant_picker_value input:checked + .variant_picker_button {
+    border-color: #000;
+    background: #000;
+    color: #fff;
+  }
+  .variant_picker_dropdown select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 16px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: transparent;
+    cursor: pointer;
+  }
+  .variant_picker_swatch:hover,
+  .variant_picker_button:hover,
+  .variant_picker_dropdown select:hover {
+    border-color: #000;
+  }
+  .variant_picker_value.is_unavailable {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+{% endstyle %}
+
+<variant-picker
+  class="variant_picker"
+  style="--swatch-size: {{ block.settings.swatch_size }};"
+  data-product-id="{{ product.id }}"
+  data-update-url="{{ block.settings.update_url }}"
+  data-hide-unavailable-options="{{ block.settings.hide_unavailable_options }}"
+  data-show-selected-value="{{ block.settings.show_selected_value }}"
+  data-show-option-labels="{{ block.settings.show_option_labels }}"
+  data-show-color-name="{{ block.settings.show_color_name }}"
+  data-show-dropdown-swatches="{{ block.settings.show_dropdown_swatches }}"
+  data-swatch-source="{{ block.settings.swatch_source }}"
+  data-swatch-size="{{ block.settings.swatch_size }}"
+  data-swatch-shape="{{ block.settings.swatch_shape }}"
+  data-button-shape="{{ block.settings.button_shape }}"
+  {{ block.shopify_attributes }}
+>
+  {% for option in product.options_with_values %}
+    {% liquid
+      assign option_position = forloop.index
+
+      case option_position
+        when 1
+          assign option_layout = block.settings.option_1_layout
+        when 2
+          assign option_layout = block.settings.option_2_layout
+        when 3
+          assign option_layout = block.settings.option_3_layout
+      endcase
+    %}
+
+    <div
+      class="variant_picker_option"
+      data-option-position="{{ option.position }}"
+      data-option-name="{{ option.name | escape }}"
+      data-option-layout="{{ option_layout }}"
+    >
+      {% if block.settings.show_option_labels %}
+        <div class="variant_picker_option_header">
+          <span class="variant_picker_option_name">
+            {{ option.name }}
+          </span>
+
+          {% if block.settings.show_selected_value %}
+            <span
+              class="variant_picker_selected_value"
+              data-selected-value
+            >
+              {{ option.selected_value }}
+            </span>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% case option_layout %}
+        {% when 'swatch' %}
+          <div class="variant_picker_values variant_picker_values--swatch">
+            {% for value in option.values %}
+              <label
+                class="variant_picker_value"
+              >
+                <input
+                  type="radio"
+                  name="option-{{ option.position }}"
+                  value="{{ value | escape }}"
+                  {% if option.selected_value == value %}
+                    checked
+                  {% endif %}
+                >
+
+                <span
+                  class="
+                    variant_picker_swatch
+                    variant_picker_swatch--{{ block.settings.swatch_shape }}
+                  "
+                  {% if value.swatch.color %}
+                    style="background-color: {{ value.swatch.color }};"
+                  {% endif %}
+                  data-option-value="{{ value | escape }}"
+                ></span>
+
+                {% if block.settings.show_color_name %}
+                  <span class="variant_picker_value_text">
+                    {{ value }}
+                  </span>
+                {% endif %}
+              </label>
+            {% endfor %}
+          </div>
+
+        {% when 'button' %}
+          <div class="variant_picker_values variant_picker_values--button">
+            {% for value in option.values %}
+              <label
+                class="variant_picker_value"
+              >
+                <input
+                  type="radio"
+                  name="option-{{ option.position }}"
+                  value="{{ value | escape }}"
+                  {% if option.selected_value == value %}
+                    checked
+                  {% endif %}
+                >
+
+                <span
+                  class="
+                    variant_picker_button
+                    variant_picker_button--{{ block.settings.button_shape }}
+                  "
+                >
+                  {{ value }}
+                </span>
+              </label>
+            {% endfor %}
+          </div>
+
+        {% when 'dropdown' %}
+          <div class="variant_picker_dropdown">
+            <select
+              name="option-{{ option.position }}"
+              data-option-select
+            >
+              {% for value in option.values %}
+                <option
+                  value="{{ value | escape }}"
+                  {% if option.selected_value == value %}
+                    selected
+                  {% endif %}
+                >
+                  {{ value }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+      {% endcase %}
+    </div>
+  {% endfor %}
+  <script
+    type="application/json"
+    class="variant_picker_data"
+  >
+    {{ product.variants | json }}
+  </script>
+</variant-picker>
+
+<script>
+  class VariantPicker extends HTMLElement {
+    constructor() {
+      super();
+
+      this.onChange = this.onChange.bind(this);
+    }
+
+    connectedCallback() {
+      this.variantData = this.querySelector('.variant_picker_data');
+
+      if (!this.variantData) return;
+
+      try {
+        this.variants = JSON.parse(this.variantData.textContent);
+      } catch (error) {
+        console.error('Variant data is invalid', error);
+        return;
+      }
+
+      this.inputs = this.querySelectorAll('input[type="radio"], select');
+
+      this.inputs.forEach((input) => {
+        input.addEventListener('change', this.onChange);
+      });
+
+      this.optionElements = this.querySelectorAll('.variant_picker_option');
+
+      this.updateVariant();
+    }
+
+    disconnectedCallback() {
+      this.inputs?.forEach((input) => {
+        input.removeEventListener('change', this.onChange);
+      });
+    }
+
+    onChange() {
+      this.updateVariant();
+    }
+
+    getSelectedOptions() {
+      const options = [];
+
+      this.optionElements.forEach((option) => {
+        const radio = option.querySelector('input[type="radio"]:checked');
+
+        const select = option.querySelector('select');
+
+        if (radio) {
+          options.push(radio.value);
+        } else if (select) {
+          options.push(select.value);
+        }
+      });
+
+      return options;
+    }
+
+    findVariant(selectedOptions) {
+      return this.variants.find((variant) => {
+        return variant.options.every((value, index) => {
+          return value === selectedOptions[index];
+        });
+      });
+    }
+
+    updateSelectedLabels(selectedOptions) {
+      this.optionElements.forEach((option, index) => {
+        const selectedLabel = option.querySelector('[data-selected-value]');
+
+        if (!selectedLabel) return;
+
+        selectedLabel.textContent = selectedOptions[index];
+      });
+    }
+
+    updateVariant() {
+      const selectedOptions = this.getSelectedOptions();
+
+      const variant = this.findVariant(selectedOptions);
+
+      this.updateSelectedLabels(selectedOptions);
+
+      if (!variant) return;
+
+      this.currentVariant = variant;
+
+      if (this.dataset.updateUrl === 'true' && window.location.pathname.includes('/products/')) {
+        const url = new URL(window.location.href);
+
+        url.searchParams.set('variant', variant.id);
+
+        window.history.replaceState({}, '', url);
+      }
+
+      const productRoot = this.closest('[data-product-root]');
+
+      productRoot?.dispatchEvent(
+        new CustomEvent('product:variant-change', {
+          detail: {
+            variant,
+            selectedOptions,
+          },
+        })
+      );
+    }
+  }
+
+  if (!customElements.get('variant-picker')) {
+    customElements.define('variant-picker', VariantPicker);
+  }
+</script>
