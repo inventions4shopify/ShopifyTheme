@@ -1,9 +1,5 @@
 {%- comment -%}
   Header mega menu (desktop)
-  - Each block (Menu Column / Image Banner) has a "Menu item" setting (parent_item).
-  - A top-level menu item opens a BLOCK-driven panel built from the blocks whose
-    parent_item matches that item's title.
-  - Items without matching blocks fall back to a normal link-based panel (child/grandchild).
 {%- endcomment -%}
 
 <nav class="header__nav header__nav--desktop header__nav--mega" aria-label="Primary">
@@ -34,9 +30,7 @@
         >
           <span>{{ link.title }}</span>
           {%- if show_panel -%}
-            <svg class="header__caret" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
-              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            {% render 'icon' , icon: 'chevron-down' , width: 20, height: 20 %}
           {%- endif -%}
         </a>
 
@@ -86,7 +80,7 @@
                             <span class="header__mega-banner-desc">{{ block.settings.description }}</span>
                           {%- endif -%}
                           {%- if block.settings.button_label != blank -%}
-                            <span class="header__mega-banner-btn">{{ block.settings.button_label }}</span>
+                            <span class="header__mega-banner-btn button button--secondary">{{ block.settings.button_label }}</span>
                           {%- endif -%}
                         </span>
                       </a>

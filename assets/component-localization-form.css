@@ -86,10 +86,9 @@ localization-form h2{
   color: var(--input-text-color);
 }
 
-.localization-form__select .icon-caret {
+.localization-form__select .icon {
   position: absolute;
   content: '';
-  height: 0.6rem;
   right: calc(var(--input-border-width) + 1.5rem);
   top: calc(50% - 0.2rem);
 }
@@ -180,6 +179,9 @@ localization-form h2{
   top: -0.02rem;
   background-color: rgb(var(--color-background));
   z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .country-filter__input {
@@ -251,9 +253,10 @@ localization-form h2{
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(var(--color-foreground), 0.5);
+    background: rgba(0, 0, 0, .5);
     z-index: 3;
     animation: animateLocalization var(--duration-default) ease;
+    display: none;
   }
 
   .disclosure__list-wrapper.country-selector {
@@ -262,7 +265,7 @@ localization-form h2{
     left: 0;
     width: 100%;
     height: 80%;
-    max-height: 80vh;
+    max-height: 50vh;
     border-radius: 0;
     border: none;
     box-shadow: none;
@@ -282,8 +285,10 @@ localization-form h2{
     align-items: center;
     padding: 0rem;
     background-color: transparent;
-    height: 4.4rem;
-    width: 4.4rem;
+    height: 3.4rem;
+    width: 3.4rem;
+    border: 0;
+    cursor: pointer;
   }
 
   .country-selector__close-button .icon {
@@ -344,7 +349,7 @@ localization-form h2{
   opacity: 1;
 }
 
-.disclosure__button[aria-expanded='true'] .icon-caret {
+.disclosure__button[aria-expanded='true'] .icon {
   transform: rotate(180deg);
 }
 
@@ -415,7 +420,7 @@ localization-form h2{
   max-width: 26ch;
 }
 
-.header-localization:not(.menu-drawer__localization) .localization-form__select .icon-caret {
+.header-localization:not(.menu-drawer__localization) .localization-form__select .icon {
   right: 0.8rem;
 }
 
