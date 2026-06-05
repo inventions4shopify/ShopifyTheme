@@ -1,40 +1,26 @@
 {{ 'collection-list.css' | asset_url | stylesheet_tag }}
 
 <style>
-  .collection-grid.columns-4.is-slider.collection-mobile-grid-2 .collection-card,
-  .collection-grid.columns-3.is-slider.collection-mobile-grid-2 .collection-card,
-  .collection-grid.columns-2.is-slider.collection-mobile-grid-2 .collection-card,
-  .collection-grid.columns-1.is-slider.collection-mobile-grid-2 .collection-card {
-    flex: 0 0 calc((100% - 2rem) / {{ section.settings.mobile_column_count }});
-    flex-shrink:0;
-  }
-  .collection-grid.columns-4.is-slider .collection-card,
-  .collection-grid.columns-3.is-slider .collection-card,
-  .collection-grid.columns-2.is-slider .collection-card,
-  .collection-grid.columns-1.is-slider .collection-card {
-    flex: 0 0 calc((100% - 0rem) / {{ section.settings.mobile_column_count }});
-    flex-shrink:0;
-  }
-  .collection-grid.is-grid.columns-4,
-  .collection-grid.is-grid.columns-3,
-  .collection-grid.is-grid.columns-2,
-  .collection-grid.is-grid.columns-1 {
-    grid-template-columns: repeat({{ section.settings.mobile_column_count }}, 1fr);
+  .section-{{ section.id }} .collection-card {
+    background-color:
+      {% if section.settings.card_bg_color != blank and section.settings.card_bg_color != 'rgba(0,0,0,0)' %}
+        {{ section.settings.card_bg_color }}
+      {% else %}
+        rgb(var(--color-product-card-background))
+      {% endif %};
   }
 
-  .collection-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    overflow: hidden;
-    border-radius: var(--input-radius);
-    background: {{ section.settings.card_bg_color }};
+  .section-{{ section.id }} .collection-card__content > * {
+    color:
+      {% if section.settings.card_heading_color != blank and section.settings.card_heading_color != 'rgba(0,0,0,0)' %}
+        {{ section.settings.card_heading_color }}
+      {% else %}
+        rgb(var(--color-product-card-text))
+      {% endif %};
   }
-
 </style>
 
 {% liquid
-  assign columns = section.settings.columns
 
   assign s = section.settings
 
@@ -56,79 +42,55 @@
         subheading:    section.settings.subheading,
         heading:       section.settings.heading,
         content:       section.settings.description,
-        text_alignment: 'center'
+        text_alignment: align_value
       -%}
     </div>
-    <div class="collection-wrapper-main">
-      <div class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} collection-mobile-grid-{{ section.settings.mobile_column_count }}">
-        {% for block in section.blocks %}
-          {% assign collection = block.settings.collection %}
-          {% if collection != blank %}
-            {% assign collection_image = collection.featured_image %}
-            {% if collection_image == blank and collection.products.first %}
-              {% assign collection_image = collection.products.first.featured_image %}
-            {% endif %}
-            <a
-              href="{{ collection.url }}"
-              class="collection-card"
-              {{ block.shopify_attributes }}
-            >
-              <div class="collection-card__image">
-                {% if block.settings.custom_image != blank %}
-                  {{
-                    block.settings.custom_image
-                    | image_url: width: 800
-                    | image_tag:
-                      loading: 'lazy',
-                      widths: '320,480,640,800',
-                      sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                      alt: collection.title
-                  }}
-                  {% else collection_image != blank %}
-                  {{
-                    collection_image
-                    | image_url: width: 800
-                    | image_tag:
-                      loading: 'lazy',
-                      widths: '320,480,640,800',
-                      sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                      alt: collection.title
-                  }}
-                {% else %}
-                  {{ 'collection-1' | placeholder_svg_tag }}
+    <div class="collection-wrapper-main section-{{ section.id }}">
+      <div class="collection-grid grid--{{ section.settings.mobile_column_count }}-col sm:grid--3-col lg:grid--{{ section.settings.columns }}-col grid">
+        {% for collection in collections %}
+          <a href="{{ collection.url }}" class="collection-card">
+            <div class="collection-card__image">
+              {% assign collection_image = collection.featured_image %}
+
+              {% if collection_image == blank and collection.products.first %}
+                {% assign collection_image = collection.products.first.featured_image %}
+              {% endif %}
+
+              {% if collection_image %}
+                {{
+                  collection_image
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '320,480,640,800',
+                    sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                    alt: collection.title
+                }}
+              {% else %}
+                {{ 'collection-1' | placeholder_svg_tag }}
+              {% endif %}
+            </div>
+
+            <div class="collection-card__content text-{{ section.settings.collection_heading_alignment }} justify-{{ section.settings.collection_heading_alignment }}">
+              <h3 class="collection__heading h5">
+                {{ collection.title | escape }}
+              </h3>
+              <span>
+                {%if section.settings.collection_heading_alignment == 'start' %}
+                  {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
                 {% endif %}
-              </div>
-              {%- assign align_value = s.collection_heading_alignment | default: 'center' -%}
-              {%- assign align_class = 'text-' | append: align_value -%}
-              <div class="collection-card__content {{ align_class }}">
-                {%- capture heading_style -%}
-                    --color-heading: {{ head_color.rgb }};
-                {%- endcapture -%}
-                  {%if block.settings.custom_title != blank %}
-                    <h3 class="collection__heading h5">{{ block.settings.custom_title }} </h3>
-                  {%  else %}
-                    <h3 class="collection__heading h5">{{- collection.title | escape -}} </h3>
-                  {% endif %}
-              </div>
-            </a>
-          {% endif %}
+              </span>
+            </div>
+          </a>
         {% endfor %}
       </div>
-      {% if section.settings.layout == 'slider' %}
-        {% if section.settings.show_arrow %}
-          <div class="collection-grid-slider-arrow-btn flex">
-            <button class="collection-grid-prev button">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
-            <button class="collection-grid-next button">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
-          </div>
-        {% endif %}
-      {% endif %}
     </div>
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Collection List",
+  "name": "Collection List Page",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -151,6 +113,26 @@
       "default": "<p>Most Populer Products</p>"
     },
     {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
       "type": "header",
       "content": "Layout"
     },
@@ -169,9 +151,9 @@
       "id": "content_alignment",
       "label": "Content alignment",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ],
       "default": "center"
     },
@@ -180,59 +162,18 @@
       "id": "collection_heading_alignment",
       "label": "Card Content alignment",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ],
       "default": "center"
-    },
-    {
-      "type": "select",
-      "id": "layout",
-      "label": "Layout",
-      "options": [
-        {
-          "value": "grid",
-          "label": "Grid"
-        },
-        {
-          "value": "slider",
-          "label": "Slider"
-        }
-      ],
-      "default": "slider"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_arrow",
-      "label": "Enable Arrow",
-      "default": true,
-      "visible_if": "{{ section.settings.layout == 'slider' }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "autoplay",
-      "label": "Enable Autoplay",
-      "default": true,
-      "visible_if": "{{ section.settings.layout == 'slider' }}"
-    },
-    {
-      "type": "range",
-      "id": "autoplay_speed",
-      "min": 1,
-      "max": 10,
-      "step": 1,
-      "unit": "sec",
-      "label": "Autoplay Speed",
-      "default": 5,
-      "visible_if": "{{ section.settings.layout == 'slider' }}"
     },
     {
       "type": "range",
       "id": "columns",
       "label": "Desktop Columns",
       "min": 2,
-      "max": 4,
+      "max": 6,
       "step": 1,
       "default": 4
     },
@@ -250,7 +191,7 @@
           "label": "2 Columns"
         }
       ],
-      "default": "1"
+      "default": "2"
     },
     {
       "type": "header",
@@ -273,23 +214,8 @@
     },
     {
       "type": "color",
-      "id": "subheading_color",
-      "label": "Subheading color"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color"
-    },
-    {
-      "type": "color_background",
-      "id": "heading_gradient",
-      "label": "Heading gradient"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "id": "card_heading_color",
+      "label": "Card Heading Color"
     },
     {
       "type": "header",
@@ -346,32 +272,10 @@
       "visible_if": "{{ section.settings.custom_spacing }}"
     }
   ],
-  "blocks": [
-    {
-      "type": "collection",
-      "name": "Collection",
-      "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Select Collection"
-        },
-        {
-          "type": "image_picker",
-          "id": "custom_image",
-          "label": "Custom Image"
-        },
-        {
-          "type": "text",
-          "id": "custom_title",
-          "label": "Custom Heading"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "Collection List"
+      "name": "Collection List Page",
+      "category": "Collections"
     }
   ]
 }

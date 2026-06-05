@@ -22,18 +22,24 @@
   height: 1.8rem;
 }
 
-.collection-card__image img,
-.collection-card__image svg {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
-}
-h3.collection__heading {
+.collection__heading {
   margin-bottom: 0;
+  flex: 1 1 auto;
 }
+
+.collection-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  border-radius: var(--input-radius);
+}
+
 .collection-card__content {
   padding: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
 }
 
 @media (min-width: 576px) {

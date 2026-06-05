@@ -136,13 +136,13 @@
         {% if section.settings.icons_style != 'none' %}
           <button class="cms-slide-button cms-slideshow-prev">
             {% if section.settings.icons_style == 'chevron' %}
-              {% render 'icon', icon: 'chevron-left', width: '2.2rem', height: '2.2rem' %}
+              {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
               {% elsif section.settings.icons_style == 'chevron_large' %}
-                {% render 'icon', icon: 'chevron-left', width: '2.8rem', height: '2.8rem' %}
+                {% render 'icon', icon: 'chevron-left', width: 28, height: 28 %}
               {% elsif section.settings.icons_style == 'arrow' %}
-                {% render 'icon', icon: 'arrow-left', width: '2.2rem', height: '2.2rem' %}
+                {% render 'icon', icon: 'arrow-left', width: 22, height: 22 %}
               {% elsif section.settings.icons_style == 'arrows_large' %}
-                {% render 'icon', icon: 'arrow-left', width: '2.8rem', height: '2.8rem' %}
+                {% render 'icon', icon: 'arrow-left', width: 28, height: 28 %}
             {% endif %}
           </button>
         {% endif %}
