@@ -8,21 +8,18 @@
           <div class="media-with-content">
             <div class="media-with-content-media">
               {% if block.settings.media_type == 'image' %}
-                {% if block.settings.image_1 %}
-                  <picture>
-                    {% if block.settings.image_2 != blank %}
-                      <source
-                        media="(max-width: 767px)"
-                        srcset="{{ block.settings.image_2 | img_url: 'master' }}">
-                    {% endif %}
-
-                    <img
-                      src="{{ block.settings.image_1 | img_url: 'master' }}"
-                      alt="{{ block.settings.heading | escape }}"
-                      width="auto"
-                      height="auto" />
-                  </picture>
-                {% endif %}
+                <picture>
+                  <source
+                    media="(max-width: 767px)"
+                    srcset="{% if block.settings.image_2 %}{{ block.settings.image_2 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
+                  >
+                  <img
+                    src="{% if block.settings.image_1 %}{{ block.settings.image_1 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
+                    alt="{{ block.settings.heading | escape }}"
+                    width="auto"
+                    height="auto"
+                  />
+                </picture>
               {% elsif block.settings.media_type == 'video' %}
                 {% if block.settings.video_1 %}
                   {{
@@ -589,7 +586,8 @@
         {
           "type": "checkbox",
           "id": "toggle_overlay",
-          "label": "Media Overlay"
+          "label": "Media Overlay",
+          "default": true
         },
         {
           "type": "color",
@@ -742,6 +740,9 @@
     {
       "name": "Slideshow",
       "blocks": [
+        {
+          "type": "slide"
+        },
         {
           "type": "slide"
         }

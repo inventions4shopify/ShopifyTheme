@@ -13,7 +13,7 @@
     <style>
         .cms-countdown-main {
             position: relative;
-            background-image: url({{ section.settings.desktop_image | image_url }});
+            background-image: url({% if section.settings.desktop_image != blank %}{{ section.settings.desktop_image | image_url }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %});
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -32,7 +32,7 @@
 
         @media (max-width: 767px) {
             .cms-countdown-main {
-                background-image: url({{ section.settings.mb_image | image_url }});
+                background-image: url({% if section.settings.mb_image != blank %}{{ section.settings.mb_image | image_url }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %});
             }
         }
 
@@ -55,22 +55,19 @@
     <div class="cms-row flex-{{ section.settings.image_position }}">
         {% if section.settings.image_show == false %}
             <div class="cms-cell--{{ section.settings.width }} aspect-portrait">
-                <picture>
-                    {% if section.settings.mb_image != blank %}
-                        <source
-                        media="(max-width: 767px)"
-                        srcset="{{ section.settings.mb_image | image_url }}"
-                        >
-                    {% endif %}
-                    {% if section.settings.desktop_image != blank %}
-                        <img
-                            src="{{ section.settings.desktop_image | image_url }}"
-                            alt="{{ section.settings.desktop_image.alt | escape }}"
-                            loading="lazy"
-                            width="auto"
-                            height="auto"
-                        >
-                    {% endif %}
+                <picture> 
+                  <source
+                  media="(max-width: 767px)"
+                  srcset="{% if section.settings.mb_image != blank %}{{ section.settings.mb_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
+                  >
+              
+                  <img
+                      src="{% if section.settings.desktop_image != blank %}{{ section.settings.desktop_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
+                      alt="{{ section.settings.desktop_image.alt | escape }}"
+                      loading="lazy"
+                      width="auto"
+                      height="auto"
+                  >
                 </picture>
             </div>
         {% endif %}
@@ -313,7 +310,7 @@
         "type": "checkbox",
         "id": "image_show",
         "label": "Show Image In Background",
-        "default": false
+        "default": true
     },
     {
         "type": "image_picker",

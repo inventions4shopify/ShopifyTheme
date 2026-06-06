@@ -74,7 +74,6 @@
       <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} collection-mobile-grid-{{ section.settings.mobile_column_count }}" data-autoplay="{{ section.settings.autoplay }}" data-autoplay-speed="{{ section.settings.autoplay_speed }}">
         {% for block in section.blocks %}
           {% assign collection = block.settings.collection %}
-          {% if collection != blank %}
             {% assign collection_image = collection.featured_image %}
             {% if collection_image == blank and collection.products.first %}
               {% assign collection_image = collection.products.first.featured_image %}
@@ -85,7 +84,7 @@
               {{ block.shopify_attributes }}
             >
               <div class="collection-card__image">
-                {% if block.settings.custom_image != blank %}
+                {% if block.settings.custom_image %}
                   {{
                     block.settings.custom_image
                     | image_url: width: 800
@@ -95,7 +94,7 @@
                       sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
                       alt: collection.title
                   }}
-                  {% else collection_image != blank %}
+                {% elsif collection_image %}
                   {{
                     collection_image
                     | image_url: width: 800
@@ -106,7 +105,12 @@
                       alt: collection.title
                   }}
                 {% else %}
-                  {{ 'collection-1' | placeholder_svg_tag }}
+                  <img
+                    src="{{ 'thumbnail.svg' | asset_url }}"
+                    alt="{{ collection.title | escape }}"
+                    loading="lazy"
+                    width="auto"
+                    height="auto">
                 {% endif %}
               </div>
               {%- assign align_value = s.collection_heading_alignment | default: 'center' -%}
@@ -122,7 +126,6 @@
                 {% endif %}
               </div>
             </a>
-          {% endif %}
         {% endfor %}
       </div>
       {% if s.layout == 'slider' %}
@@ -475,14 +478,32 @@
         {
           "type": "text",
           "id": "custom_title",
-          "label": "Custom Heading"
+          "label": "Custom Heading",
+          "default": "Collection"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Collection List"
+      "name": "Collection List",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
     }
   ]
 }

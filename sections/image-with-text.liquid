@@ -59,25 +59,20 @@
           <div class="cms-cell--{{ section.settings.width }}">
               <div class="cms-image-with-text__media image_media--{{ section.settings.media_height }}">
                   {% if section.settings.media_type == 'image' %}
-                      {% if section.settings.mb_image != blank or section.settings.desktop_image != blank %}
-                          <picture>
-                              {% if section.settings.mb_image != blank %}
-                                  <source
-                                  media="(max-width: 767px)"
-                                  srcset="{{ section.settings.mb_image | image_url }}"
-                                  >
-                              {% endif %}
-                              {% if section.settings.desktop_image != blank %}
-                                  <img
-                                      src="{{ section.settings.desktop_image | image_url }}"
-                                      alt="{{ section.settings.desktop_image.alt | escape }}"
-                                      loading="lazy"
-                                      width="auto"
-                                      height="auto"
-                                  >
-                              {% endif %}
-                          </picture>
-                      {% endif  %}
+                    <picture>
+                      <source
+                        media="(max-width: 767px)"
+                        srcset="{% if section.settings.mb_image != blank %}{{ section.settings.mb_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
+                      >
+
+                      <img
+                        src="{% if section.settings.desktop_image != blank %}{{ section.settings.desktop_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
+                        alt="{{ section.settings.desktop_image.alt | escape }}"
+                        loading="lazy"
+                        width="auto"
+                        height="auto"
+                      >
+                    </picture>
                   {% elsif section.settings.media_type == 'video' %}
                       {% if section.settings.desktop_video != blank %}
                           <video
