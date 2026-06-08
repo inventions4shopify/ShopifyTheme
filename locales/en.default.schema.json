@@ -385,21 +385,17 @@
         "image_ratio": {
           "label": "Product image size",
           "options": {
-            "option_1": "Natural",
-            "option_2": "Short (4:3)",
-            "option_3": "Square (1:1)",
-            "option_4": "Tall (2:3)",
-            "option_5": "Short (4:3) - fill card",
-            "option_6": "Tall (2:3) - fill card",
-            "option_7": "Tall (2:3) - fill card"
+            "option_1": "Default",
+            "option_2": "portrait (4:5)",
+            "option_3": "Square (1:1)"
           }
         },
         "content_alignment": {
           "label": "Product info alignment",
           "options": {
-            "option_1": "Left",
+            "option_1": "Start",
             "option_2": "Center",
-            "option_3": "Right"
+            "option_3": "End"
           }
         }
       }
@@ -468,7 +464,7 @@
         }
       }
     },
-    "cart":{
+    "cart": {
       "name": "Cart",
     }
   },
@@ -512,5 +508,4 @@
       "normal": "Normal text"
     }
   },
-
 }

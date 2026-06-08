@@ -28,7 +28,7 @@
   assign gap_class = ''
   if gap_value != 'default'
     assign gap_class = 'gap-' | append: gap_value
-  else 
+  else
     assign gap_class = 'gap-24'
   endif
 -%}
@@ -180,9 +180,9 @@
       "id": "content_alignment",
       "label": "Content alignment",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ],
       "default": "center"
     },

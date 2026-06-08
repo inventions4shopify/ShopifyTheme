@@ -1,27 +1,27 @@
-<div
-  class="
-    product-card
-    {% if enable_image_zoom %}
-      product-card--zoom
-    {% endif %}
-  "
->
-  <!-- Product Media -->
-  <div
-    class="
-      product-card__media
-      product-card__media--{{ image_ratio }}
-      {% if image_shape != 'default' %}
-        product-card__media--{{ image_shape }}
-      {% endif %}
-    "
-  >
-    {% if show_sale_badge and product.compare_at_price > product.price %}
-      <span class="product-card__badge sale-badge"> Sale </span>
+<div class="product-card">
+  {% assign first_variant = product.selected_or_first_available_variant %}
+
+  <div class="product-card__media product-card__media--{{ image_ratio }} aspect-{{ image_ratio }}">
+    {% if show_sold_out_badge and product.available == false %}
+      <span class="product-card__badge sold-out-badge text-xss rounded-sm"> Sold Out </span>
+    {% elsif show_discount_badge and product.compare_at_price > product.price %}
+      <span class="product-card__badge sale-badge text-xss rounded-sm">
+        {% case discount_type %}
+          {% when 'sale' %}
+            Sale
+
+          {% when 'percentage' %}
+            {% assign discount = product.compare_at_price | minus: product.price %}
+            {% assign discount_percent = discount | times: 100 | divided_by: product.compare_at_price %}
+            {{ discount_percent }}% OFF
+
+          {% when 'save_amount' %}
+            Save {{ product.compare_at_price | minus: product.price | money }}
+        {% endcase %}
+      </span>
     {% endif %}
 
     <a href="{{ product.url }}" class="product-card__image-link">
-      <!-- Main Image -->
       {% if product.featured_image %}
         <img
           src="{{ product.featured_image | image_url: width: 800 }}"
@@ -33,7 +33,6 @@
         >
       {% endif %}
 
-      <!-- Hover Image -->
       {% if show_secondary_image and product.images.size > 1 %}
         <img
           src="{{ product.images[1] | image_url: width: 800 }}"
@@ -47,112 +46,111 @@
     </a>
   </div>
 
-  <!-- Color Swatches -->
-  {% if show_color_swatches %}
-    {% assign color_option = blank %}
+  {% assign color_option = blank %}
 
-    {% for option in product.options_with_values %}
-      {% if option.name contains 'Color'
-        or option.name contains 'Colour'
-        or option.name contains 'color'
-        or option.name contains 'colour'
-      %}
-        {% assign color_option = option %}
-        {% break %}
-      {% endif %}
-    {% endfor %}
-
-    {% if color_option != blank %}
-      <div class="product-card__swatches">
-        {% for value in color_option.values %}
-          <span
-            class="product-card__swatch"
-            style="background-color: {{ value | downcase }};"
-            title="{{ value }}"
-          ></span>
-        {% endfor %}
-      </div>
+  {% for option in product.options_with_values %}
+    {% if option.name contains 'Color'
+      or option.name contains 'Colour'
+      or option.name contains 'color'
+      or option.name contains 'colour'
+    %}
+      {% assign color_option = option %}
+      {% break %}
     {% endif %}
+  {% endfor %}
+
+  {% if color_option %}
+    {% case color_display_mode %}
+      {% when 'swatch' %}
+        <div class="product-card__swatches text-{{ content_alignment }}">
+          {% for value in color_option.values %}
+            <span
+              class="product-card__swatch rounded-lg"
+              style="background-color: {{ value | downcase }};"
+              title="{{ value }}"
+            ></span>
+          {% endfor %}
+        </div>
+
+      {% when 'count' %}
+        <div class="product-card__color-count">{{ color_option.values.size }} Colors</div>
+    {% endcase %}
   {% endif %}
 
-  <div class="product-card__content">
-    <!-- Vendor -->
+  <div class="product-card__content text-{{ content_alignment }}">
     {% if show_vendor and product.vendor != blank %}
-      <div class="product-card__vendor">
+      <div class="product-card__vendor text-xss">
         {{ product.vendor }}
       </div>
     {% endif %}
 
-    <!-- Product Title -->
-    <h3 class="product-card__title">
+    <h3 class="product-card__title text-xlg">
       <a href="{{ product.url }}">
         {{ product.title }}
       </a>
     </h3>
 
-    <!-- Rating -->
     {% if show_rating and product.metafields.reviews.rating.value %}
       <div class="product-card__rating">
-        {{ product.metafields.reviews.rating.value.rating }}
-        ★
-        <span> ({{ product.metafields.reviews.rating_count.value }}) </span>
+        {% if rating_display == 'average' %}
+          {{ product.metafields.reviews.rating.value.rating }}
+          ★
+        {% else %}
+          {{ product.metafields.reviews.rating_count.value }}
+          Reviews
+        {% endif %}
       </div>
     {% endif %}
 
-    <!-- Price -->
     <div class="product-card__price">
       {% if product.compare_at_price > product.price %}
-        <span class="product-card__price--sale">
+        <span class="product-card__price--sale text-lg">
           {{ product.price | money }}
         </span>
 
-        <span class="product-card__price--compare">
+        <span class="product-card__price--compare text-lg">
           {{ product.compare_at_price | money }}
         </span>
       {% else %}
-        <span class="product-card__price--regular">
+        <span class="product-card__price--regular text-lg">
           {{ product.price | money }}
         </span>
       {% endif %}
     </div>
+  </div>
+  {% if show_quick_buy %}
+    {% if product.available %}
+      {% if product.variants.size == 1 %}
+        <form method="post" action="{{ routes.cart_add_url }}">
+          <input
+            type="hidden"
+            name="id"
+            value="{{ first_variant.id }}"
+          >
 
-    <!-- Quick Add -->
-    {% if enable_quick_add %}
-      {% if product.available %}
-        {% if product.variants.size == 1 %}
-          <form method="post" action="{{ routes.cart_add_url }}">
-            <input
-              type="hidden"
-              name="id"
-              value="{{ product.selected_or_first_available_variant.id }}"
-            >
-
-            <button
-              type="submit"
-              class="product-card__quick-add button"
-            >
-              Add to Cart
-            </button>
-          </form>
-
-        {% else %}
-          <a
-            href="{{ product.url }}"
+          <button
+            type="submit"
             class="product-card__quick-add button"
           >
-            Choose Options
-          </a>
-        {% endif %}
-
+            Add to Cart
+          </button>
+        </form>
       {% else %}
-        <button
-          type="button"
+        <a
+          href="{{ product.url }}"
           class="product-card__quick-add button"
-          disabled
         >
-          Sold Out
-        </button>
+          Choose Options
+        </a>
       {% endif %}
+    {% else %}
+      <button
+        type="button"
+        class="product-card__quick-add button"
+        disabled
+      >
+        Sold Out
+      </button>
     {% endif %}
-  </div>
+  {% endif %}
 </div>
