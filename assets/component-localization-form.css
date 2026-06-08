@@ -90,7 +90,8 @@ localization-form h2{
   position: absolute;
   content: '';
   right: calc(var(--input-border-width) + 1.5rem);
-  top: calc(50% - 0.2rem);
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .localization-selector.link {
@@ -100,12 +101,12 @@ localization-form h2{
   -moz-appearance: none;
   width: 100%;
   padding-right: var(--spacing-40);
-  padding-bottom: var(--spacing-16);
-  padding-left: var(--spacing-16);
+  padding-bottom: var(--spacing-8);
+  padding-left: var(--spacing-8);
 }
 
 .disclosure .localization-form__select {
-  padding-top: var(--spacing-16);
+  padding-top: var(--spacing-8);
 }
 
 .localization-selector option {
@@ -350,7 +351,7 @@ localization-form h2{
 }
 
 .disclosure__button[aria-expanded='true'] .icon {
-  transform: rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 /* Header localization */
@@ -361,7 +362,6 @@ localization-form h2{
 
 .header-localization .disclosure .localization-form__select {
   font-size: 1.4rem;
-  letter-spacing: 0.06rem;
   min-height: initial;
 }
 

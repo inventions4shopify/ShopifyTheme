@@ -5,6 +5,9 @@
   <div class="page-width">
     <div class="main-product-section">
       <div class="product-image-gallery-wrapper cms-cell--{{ section.settings.width }}">
+
+        {% render 'breadcrumbs' %}
+        
         {% render 'product-image-gallery',
           product: product,
           thumbnail_layout: section.settings.thumbnail_layout,
