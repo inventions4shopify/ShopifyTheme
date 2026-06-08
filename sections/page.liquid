@@ -26,12 +26,6 @@
   assign align_value = s.content_alignment | default: 'center'
   assign align_class = 'text-' | append: align_value
 
-  assign gap_value = s.gap | default: '24'
-  assign gap_class = ''
-  if gap_value != 'default'
-    assign gap_class = 'gap-' | append: gap_value
-  endif
-
   assign tag = s.heading_tag | default: 'h2'
 -%}
 
@@ -52,7 +46,7 @@
 
   <div class="main-page__inner">
     <div class="{{ container_class }}">
-      <div class="main-page__content flex ps-rte flex-col {{ align_class }} {{ gap_class }}">
+      <div class="main-page__content flex ps-rte flex-col {{ align_class }}">
         {% if section.settings.subheading != blank %}
           <div
             class="page-subheading subheading"
@@ -170,9 +164,9 @@
       "id": "content_alignment",
       "label": "Content alignment",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ],
       "default": "center"
     },
