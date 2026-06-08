@@ -766,7 +766,7 @@
         "label": "t:settings_schema.product_card.settings.content_alignment.label",
         "options": [
           {
-            "value": "left",
+            "value": "start",
             "label": "t:settings_schema.product_card.settings.content_alignment.options.option_1"
           },
           {
@@ -774,11 +774,11 @@
             "label": "t:settings_schema.product_card.settings.content_alignment.options.option_2"
           },
           {
-            "value": "right",
+            "value": "end",
             "label": "t:settings_schema.product_card.settings.content_alignment.options.option_3"
           }
         ],
-        "default": "left"
+        "default": "start"
       }
     ]
   },
