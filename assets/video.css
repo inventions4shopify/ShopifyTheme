@@ -1,0 +1,77 @@
+.custom-video-wrapper .page-width,
+.custom-video-wrapper .full-width {
+  height: 100%;
+}
+
+.custom-video-play-btn svg path {
+  fill: currentColor;
+}
+
+.custom-video-play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.custom-video-play-btn svg {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.custom-video-play-btn.hidden {
+  display: none;
+}
+
+.custom-video-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.custom-video-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.custom-video-media video,
+.custom-video-media iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.custom-video-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  width: 8rem;
+  height: 8rem;
+  border: none;
+  border-radius: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-video-section {
+  height: 50rem;
+  padding: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .custom-video-play-btn {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .custom-video-play-btn svg {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+}

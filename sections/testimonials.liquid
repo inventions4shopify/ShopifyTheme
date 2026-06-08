@@ -1,0 +1,414 @@
+{{ 'testimonials.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+
+  # ── Container width ──────────────────────────────────────────────────────
+  assign container_class = 'page-width'
+  if s.container_width == 'full-width'
+    assign container_class = 'page-width--full'
+  endif
+
+  # ── Alignment class ───────────────────────────────────────────────────────
+  assign align_value = s.content_alignment | default: 'center'
+  assign align_class = 'text-' | append: align_value
+-%}
+<div {%- render 'section-variables', section: section, class: 'testimonials__section' -%}>
+  <div class="{{ container_class }}">
+    <div class="testimonial-header {{ align_class }}">
+      {%- render 'section-header',
+        subheading:    section.settings.subheading,
+        heading:       section.settings.heading,
+        content:       section.settings.description,
+        text_alignment: 'center'
+      -%}
+    </div>
+
+    <div class="testimonial-wrapper-main">
+      <div class="testimonial-wrapper {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} testimonial-grid-{{ section.settings.columns }}">
+        {% for block in section.blocks %}
+          <div class="testimonial-card" {{ block.shopify_attributes }}>
+            <div class="testimonial-stars flex">
+              {% for i in (1..block.settings.rating) %}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1294_2)">
+                <path d="M23.9374 8.73752C23.8607 8.49969 23.7156 8.2897 23.5204 8.13374C23.3251 7.97778 23.0882 7.88274 22.8393 7.86046L15.9123 7.23143L13.1731 0.820174C12.9711 0.350334 12.5112 0.0462952 12.0001 0.0462952C11.4891 0.0462952 11.0291 0.350381 10.8271 0.821346L8.08796 7.23148L1.1598 7.86046C0.911176 7.88324 0.674703 7.97848 0.479701 8.13439C0.284698 8.29029 0.139741 8.5 0.0628033 8.73752C-0.0952164 9.22353 0.0507092 9.75656 0.435797 10.0926L5.67187 14.6846L4.12786 21.4858C4.01489 21.9859 4.20896 22.5029 4.6239 22.8028C4.84689 22.9639 5.10785 23.046 5.37097 23.046C5.59785 23.046 5.82286 22.9848 6.02489 22.8639L12.0001 19.2927L17.9732 22.8639C18.4102 23.1269 18.9612 23.1029 19.3752 22.8028C19.5779 22.6561 19.733 22.453 19.8212 22.2189C19.9094 21.9847 19.9268 21.7298 19.8713 21.4858L18.3273 14.6846L23.5633 10.0935C23.7517 9.929 23.8876 9.71278 23.9541 9.4717C24.0206 9.23063 24.0148 8.97533 23.9374 8.73752Z" fill="#FFC107"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_1294_2">
+                <rect width="24" height="24" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>
+              {% endfor %}
+            </div>
+            <div class="testimonial-content">
+              {{ block.settings.review }}
+            </div>
+            <div class="testimonial-footer flex">
+              {% if block.settings.image %}
+                <img
+                  src="{{ block.settings.image | image_url: width: 120 }}"
+                  alt="{{ block.settings.name }}"
+                  loading="lazy"
+                  width="60"
+                  height="60"
+                >
+              {% endif %}
+              <div class="testimonial-author">
+                <span class="testimonial-author-name">{{ block.settings.name }}</span>
+                <span class="testimonial-author-position">{{ block.settings.position }}</span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      {% if section.settings.layout == 'slider' %}
+        {% if section.settings.show_arrow %}
+          <div class="testimonial-slider-arrow-btn flex">
+            <button class="testimonial-prev button">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
+            <button class="testimonial-next button">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const slider = document.querySelector('.testimonial-wrapper.is-slider');
+  const nextBtn = document.querySelector('.testimonial-next');
+  const prevBtn = document.querySelector('.testimonial-prev');
+
+  if (!slider) return;
+
+  const autoplayEnabled = {{ section.settings.autoplay | json }};
+  const autoplaySpeed = {{ section.settings.autoplay_speed }} * 1000;
+
+  // Clone first and last slides
+  const slides = [...slider.querySelectorAll('.testimonial-card')];
+
+  slides.forEach(slide => {
+    const clone = slide.cloneNode(true);
+    clone.classList.add('clone');
+    slider.appendChild(clone);
+  });
+
+  const getScrollAmount = () => {
+    const card = slider.querySelector('.testimonial-card');
+    return card ? card.offsetWidth + 20 : 300;
+  };
+
+  let currentIndex = 0;
+  const originalCount = slides.length;
+
+  function goToSlide(index, smooth = true) {
+    slider.scrollTo({
+      left: index * getScrollAmount(),
+      behavior: smooth ? 'smooth' : 'auto'
+    });
+  }
+
+  nextBtn?.addEventListener('click', () => {
+    currentIndex++;
+    goToSlide(currentIndex);
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      goToSlide(currentIndex);
+    }
+  });
+
+  slider.addEventListener('scroll', () => {
+    if (
+      currentIndex >= originalCount &&
+      slider.scrollLeft >= originalCount * getScrollAmount() - 5
+    ) {
+      setTimeout(() => {
+        currentIndex = 0;
+        goToSlide(0, false);
+      }, 400);
+    }
+  });
+
+  let autoSlide;
+
+  function startAutoplay() {
+    if (!autoplayEnabled) return;
+
+    stopAutoplay();
+
+    autoSlide = setInterval(() => {
+      currentIndex++;
+      goToSlide(currentIndex);
+    }, autoplaySpeed);
+  }
+
+  function stopAutoplay() {
+    clearInterval(autoSlide);
+  }
+
+  if (autoplayEnabled) {
+    startAutoplay();
+
+    slider.addEventListener('mouseenter', stopAutoplay);
+    slider.addEventListener('mouseleave', startAutoplay);
+
+    slider.addEventListener('touchstart', stopAutoplay, { passive: true });
+    slider.addEventListener('touchend', startAutoplay, { passive: true });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Trusted Clients"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Text",
+      "default": "<p>Our Testimonials</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" },
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "slider",
+          "label": "Slider"
+        }
+      ],
+      "default": "slider"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop Columns",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Enable Arrow",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'slider' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Autoplay",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'slider' }}"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "sec",
+      "label": "Autoplay Speed",
+      "default": 5,
+      "visible_if": "{{ section.settings.layout == 'slider' }}"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "review",
+          "label": "Review",
+          "default": "<p>This service exceeded our expectations. The team was professional, responsive, and delivered outstanding results. Highly recommended!</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "Sarah Johnson"
+        },
+        {
+          "type": "text",
+          "id": "position",
+          "label": "Customer Position",
+          "default": "CEO, ThePlanetsoft"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

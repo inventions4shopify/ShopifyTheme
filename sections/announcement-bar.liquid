@@ -1,178 +1,77 @@
+{{ 'announcement-bar.css' | asset_url | stylesheet_tag }}
 <style>
   .announcement-bar {
-    display: block;
     background-color: {{ section.settings.background_color }};
     padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px 0;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .announcement-slider {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .announcement-wrap {
-    text-align: center;
-    text-transform: uppercase;
-  }
-
-  .announcement-bar-text p,
-  .announcement-bar-text a{
-    margin: 0;
-    color: var(--text-color);
-    text-decoration: none;
-    font-size: var(--text-sm);
-  }
-
-  /* Arrow Slider */
-  .announcement-slides {
-    display: flex;
-    transition: transform 0.5s ease;
-    width: 100%;
-  }
-
-  .announcement-slide {
-    min-width: 100%;
-    flex: 0 0 100%;
-  }
-
-  .announcement-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--color-background);
-    border: 0;
-    color: var(--text-color);
-    cursor: pointer;
-    z-index: 2;
-    font-size: 20px;
-    line-height: 1;
-  }
-
-  .announcement-arrow.prev {
-    display: none;
-  }
-
-  .announcement-arrow.next {
-    display: none;
-  }
-
-  /* Auto Scrolling */
-  .announcement-marquee-wrapper {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
   }
 
   .announcement-marquee {
-    display: flex;
-    width: fit-content;
     animation: marqueeScroll {{ section.settings.scrolling_speed }}s linear infinite;
-  }
-
-  .announcement-marquee-content {
-    display: flex;
-    flex-shrink: 0;
-  }
-
-  .announcement-wrap {
-    flex: 0 0 auto;
-    padding: 0 40px;
-    white-space: nowrap;
-    width: auto;
-  }
-
-  .page-width:has(.announcement-marquee-wrapper) {
-    max-width: 100%;
-    width: 100%;
-    overflow: hidden;
-    padding: 0;
-  }
-  .announcement-slider {
-    touch-action: pan-y;
-  }
-
-  .announcement-slides {
-    cursor: grab;
-  }
-  @keyframes marqueeScroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(calc(-100% / 2));
-    }
   }
 
   @media screen and (min-width: 768px){
     .announcement-bar {
       padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
     }
-    .announcement-arrow.prev {
-      left: 0;
-      padding: 0;
-      display: block;
-    }
-
-    .announcement-arrow.next {
-      right: 0;
-      padding: 0;
-      display: block;
-    }
   }
 </style>
 
 {% render 'variables', section: section %}
+{% if section.blocks.size > 0 %}
+  <announcement-bar class="announcement-bar bg-custom text-large" id="announcementBar">
+    <div class="page-width rte">
+      {% if section.settings.type == 'arrows' %}
+        <div class="announcement-slider">
+          <button class="announcement-arrow prev">&#10094;</button>
 
-<announcement-bar class="announcement-bar bg-custom text-large" id="announcementBar">
-  <div class="page-width rte">
-    {% if section.settings.type == 'arrows' %}
-      <div class="announcement-slider">
-        <button class="announcement-arrow prev">&#10094;</button>
-
-        <div class="announcement-slides">
-          {% for block in section.blocks %}
-            <div class="announcement-slide">
-              <div class="announcement-wrap">
-                <div class="announcement-bar-text">
-                  {{ block.settings.text }}
+          <div class="announcement-slides">
+            {% for block in section.blocks %}
+              {% if block.settings.text != blank %}
+                <div class="announcement-slide">
+                  <div class="announcement-wrap">
+                    <div class="announcement-bar-text">
+                      {{ block.settings.text }}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <button class="announcement-arrow next">&#10095;</button>
+        </div>
+
+      {% else %}
+        <div class="announcement-marquee-wrapper">
+          <div class="announcement-marquee">
+            <div class="announcement-marquee-content">
+              {% for block in section.blocks %}
+                {% if block.settings.text != blank %}
+                  <div class="announcement-wrap">
+                    <div class="announcement-bar-text">
+                      {{ block.settings.text }}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
             </div>
-          {% endfor %}
-        </div>
-
-        <button class="announcement-arrow next">&#10095;</button>
-      </div>
-
-    {% else %}
-      <div class="announcement-marquee-wrapper">
-        <div class="announcement-marquee">
-          <div class="announcement-marquee-content">
-            {% for block in section.blocks %}
-              <div class="announcement-wrap">
-                <div class="announcement-bar-text">
-                  {{ block.settings.text }}
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-          <div class="announcement-marquee-content">
-            {% for block in section.blocks %}
-              <div class="announcement-wrap">
-                <div class="announcement-bar-text">
-                  {{ block.settings.text }}
-                </div>
-              </div>
-            {% endfor %}
+            <div class="announcement-marquee-content">
+              {% for block in section.blocks %}
+                {% if block.settings.text != blank %}
+                  <div class="announcement-wrap">
+                    <div class="announcement-bar-text">
+                      {{ block.settings.text }}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div>
-    {% endif %}
-  </div>
-</announcement-bar>
-
+      {% endif %}
+    </div>
+  </announcement-bar>
+{% endif %}
 {% if section.settings.type == 'arrows' %}
   <script>
     document.addEventListener('DOMContentLoaded', function () {

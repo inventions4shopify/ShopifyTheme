@@ -1,0 +1,158 @@
+<div
+  class="
+    product-card
+    {% if enable_image_zoom %}
+      product-card--zoom
+    {% endif %}
+  "
+>
+  <!-- Product Media -->
+  <div
+    class="
+      product-card__media
+      product-card__media--{{ image_ratio }}
+      {% if image_shape != 'default' %}
+        product-card__media--{{ image_shape }}
+      {% endif %}
+    "
+  >
+    {% if show_sale_badge and product.compare_at_price > product.price %}
+      <span class="product-card__badge sale-badge"> Sale </span>
+    {% endif %}
+
+    <a href="{{ product.url }}" class="product-card__image-link">
+      <!-- Main Image -->
+      {% if product.featured_image %}
+        <img
+          src="{{ product.featured_image | image_url: width: 800 }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          class="product-card__image product-card__image--primary"
+          loading="lazy"
+          width="{{ product.featured_image.width }}"
+          height="{{ product.featured_image.height }}"
+        >
+      {% endif %}
+
+      <!-- Hover Image -->
+      {% if show_secondary_image and product.images.size > 1 %}
+        <img
+          src="{{ product.images[1] | image_url: width: 800 }}"
+          alt="{{ product.images[1].alt | escape }}"
+          class="product-card__image product-card__image--secondary"
+          loading="lazy"
+          width="{{ product.images[1].width }}"
+          height="{{ product.images[1].height }}"
+        >
+      {% endif %}
+    </a>
+  </div>
+
+  <!-- Color Swatches -->
+  {% if show_color_swatches %}
+    {% assign color_option = blank %}
+
+    {% for option in product.options_with_values %}
+      {% if option.name contains 'Color'
+        or option.name contains 'Colour'
+        or option.name contains 'color'
+        or option.name contains 'colour'
+      %}
+        {% assign color_option = option %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if color_option != blank %}
+      <div class="product-card__swatches">
+        {% for value in color_option.values %}
+          <span
+            class="product-card__swatch"
+            style="background-color: {{ value | downcase }};"
+            title="{{ value }}"
+          ></span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endif %}
+
+  <div class="product-card__content">
+    <!-- Vendor -->
+    {% if show_vendor and product.vendor != blank %}
+      <div class="product-card__vendor">
+        {{ product.vendor }}
+      </div>
+    {% endif %}
+
+    <!-- Product Title -->
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">
+        {{ product.title }}
+      </a>
+    </h3>
+
+    <!-- Rating -->
+    {% if show_rating and product.metafields.reviews.rating.value %}
+      <div class="product-card__rating">
+        {{ product.metafields.reviews.rating.value.rating }}
+        ★
+        <span> ({{ product.metafields.reviews.rating_count.value }}) </span>
+      </div>
+    {% endif %}
+
+    <!-- Price -->
+    <div class="product-card__price">
+      {% if product.compare_at_price > product.price %}
+        <span class="product-card__price--sale">
+          {{ product.price | money }}
+        </span>
+
+        <span class="product-card__price--compare">
+          {{ product.compare_at_price | money }}
+        </span>
+      {% else %}
+        <span class="product-card__price--regular">
+          {{ product.price | money }}
+        </span>
+      {% endif %}
+    </div>
+
+    <!-- Quick Add -->
+    {% if enable_quick_add %}
+      {% if product.available %}
+        {% if product.variants.size == 1 %}
+          <form method="post" action="{{ routes.cart_add_url }}">
+            <input
+              type="hidden"
+              name="id"
+              value="{{ product.selected_or_first_available_variant.id }}"
+            >
+
+            <button
+              type="submit"
+              class="product-card__quick-add button"
+            >
+              Add to Cart
+            </button>
+          </form>
+
+        {% else %}
+          <a
+            href="{{ product.url }}"
+            class="product-card__quick-add button"
+          >
+            Choose Options
+          </a>
+        {% endif %}
+
+      {% else %}
+        <button
+          type="button"
+          class="product-card__quick-add button"
+          disabled
+        >
+          Sold Out
+        </button>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

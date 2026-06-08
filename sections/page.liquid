@@ -4,14 +4,296 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/page
 {% endcomment %}
+{% comment %}
+  Page section with layout system (like rich-text)
+{% endcomment %}
 
-<h1>{{ page.title }}</h1>
+{%- liquid
+  assign s = section.settings
+  assign bg_color = s.bg_color
+  assign bg_gradient = s.bg_gradient
+  assign container_class = 'page-width'
+  if s.container_width == 'full-width'
+    assign container_class = 'page-width--full'
+  elsif s.container_width == 'narrow'
+    assign container_class = 'page-width page-width--narrow'
+  elsif s.container_width == 'small'
+    assign container_class = 'page-width page-width--small'
+  elsif s.container_width == 'custom'
+    assign container_class = 'page-width main-page__container--custom'
+  endif
 
-{{ page.content }}
+  assign align_value = s.content_alignment | default: 'center'
+  assign align_class = 'text-' | append: align_value
 
+  assign tag = s.heading_tag | default: 'h2'
+-%}
+
+{%- if s.container_width == 'custom' and s.custom_container_width > 0 -%}
+  <style>
+    #shopify-section-{{ section.id }} .main-page__container--custom {
+      max-width: {{ s.custom_container_width }}px;
+    }
+  </style>
+{%- endif -%}
+
+<div
+  {%- render 'section-variables', section: section, class: 'main-page__section' -%}
+>
+  {% if section.settings.image != blank %}
+    <div class="main-page__overlay"></div>
+  {% endif %}
+
+  <div class="main-page__inner">
+    <div class="{{ container_class }}">
+      <div class="main-page__content flex ps-rte flex-col {{ align_class }}">
+        {% if section.settings.subheading != blank %}
+          <div
+            class="page-subheading subheading"
+            {% unless section.settings.subheading_color == blank
+              or section.settings.subheading_color == 'rgba(0,0,0,0)'
+            %}
+              style="color: rgb({{ section.settings.subheading_color.rgb }});"
+            {% endunless %}
+          >
+            {{ section.settings.subheading }}
+          </div>
+        {% endif %}
+
+        <{{ tag }}
+          class="page-heading {{ tag }}"
+          {% unless section.settings.heading_color == blank or section.settings.heading_color == 'rgba(0,0,0,0)' %}
+            style="color: rgb({{ section.settings.heading_color.rgb }});"
+          {% endunless %}
+        >
+          {% if section.settings.heading != blank %}
+            {{ section.settings.heading }}
+          {% else %}
+            {{ page.title }}
+          {% endif %}
+        </{{ tag }}>
+        {% if page.content != blank %}
+          <div
+            class="page-description text-sm"
+            {% unless section.settings.text_color == blank or section.settings.text_color == 'rgba(0,0,0,0)' %}
+              style="color: rgb({{ section.settings.text_color.rgb }});"
+            {% endunless %}
+          >
+            {{ page.content }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .main-page__section{
+    {% if bg_gradient != blank %}
+      background: {{ bg_gradient }};
+    {% elsif bg_color != blank and bg_color != 'rgba(0,0,0,0)' %}
+      background-color: rgb({{ bg_color.rgb }});
+    {% endif %}
+
+    {% if section.settings.image != blank %}
+      background-image: url({{ section.settings.image | image_url: width: 2000 }});
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 40rem;
+      min-height: var(--section-height-{{ section.settings.slide_height }});
+      padding: 0;
+    {% endif %}
+
+    position: relative;
+    overflow: hidden;
+  }
+  .main-page__overlay {
+    position: absolute;
+    inset: 0;
+    background: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity }};
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* content above overlay */
+  .main-page__inner {
+    position: relative;
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+  }
+</style>
 {% schema %}
 {
   "name": "t:general.page",
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "small", "label": "Small" },
+        { "value": "full-width", "label": "Full width" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "range",
+      "id": "custom_container_width",
+      "min": 400,
+      "max": 1400,
+      "step": 10,
+      "unit": "px",
+      "label": "Custom max-width",
+      "default": 800,
+      "visible_if": "{{ section.settings.container_width == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "gap",
+      "label": "Block gap",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "8", "label": "Extra small" },
+        { "value": "12", "label": "Small" },
+        { "value": "16", "label": "Medium" },
+        { "value": "24", "label": "Large" },
+        { "value": "32", "label": "Extra large" }
+      ],
+      "default": "24"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Fallback heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "slide_height",
+      "label": "Media height",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "fullscreen",
+          "label": "Fullscreen"
+        }
+      ],
+      "default": "medium",
+      "visible_if": "{{ section.settings.image != blank }}"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Image overlay color",
+      "default": "#000000",
+      "visible_if": "{{ section.settings.image != blank }}"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.4,
+      "visible_if": "{{ section.settings.image != blank }}"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "bg_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    }
+  ]
 }
 {% endschema %}

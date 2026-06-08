@@ -28,6 +28,8 @@
   assign gap_class = ''
   if gap_value != 'default'
     assign gap_class = 'gap-' | append: gap_value
+  else 
+    assign gap_class = 'gap-24'
   endif
 -%}
 
@@ -154,7 +156,7 @@
       "id": "container_width",
       "label": "Container width",
       "options": [
-        { "value": "page-width", "label": "Page width" },
+        { "value": "page-width", "label": "Default" },
         { "value": "narrow", "label": "Narrow" },
         { "value": "small", "label": "Small" },
         { "value": "full-width", "label": "Full width" },

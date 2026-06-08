@@ -1,0 +1,304 @@
+{{ 'collection-list.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .section-{{ section.id }} .collection-card {
+    background-color:
+      {% if section.settings.card_bg_color != blank and section.settings.card_bg_color != 'rgba(0,0,0,0)' %}
+        {{ section.settings.card_bg_color }}
+      {% else %}
+        rgb(var(--color-product-card-background))
+      {% endif %};
+  }
+
+  .section-{{ section.id }} .collection-card__content > * {
+    color:
+      {% if section.settings.card_heading_color != blank and section.settings.card_heading_color != 'rgba(0,0,0,0)' %}
+        {{ section.settings.card_heading_color }}
+      {% else %}
+        rgb(var(--color-product-card-text))
+      {% endif %};
+  }
+</style>
+
+{% liquid
+
+  assign s = section.settings
+
+  # ── Container width ──────────────────────────────────────────────────────
+  assign container_class = 'page-width'
+  if s.container_width == 'full-width'
+    assign container_class = 'page-width--full'
+  endif
+
+  # ── Alignment class ───────────────────────────────────────────────────────
+  assign align_value = s.content_alignment | default: 'center'
+  assign align_class = 'text-' | append: align_value
+%}
+
+<div {%- render 'section-variables', section: section, class: 'collection-list__section' -%}>
+  <div class="{{ container_class }}">
+    <div class="collection-list-header {{ align_class }}">
+      {%- render 'section-header',
+        subheading:    section.settings.subheading,
+        heading:       section.settings.heading,
+        content:       section.settings.description,
+        text_alignment: align_value
+      -%}
+    </div>
+    <div class="collection-wrapper-main section-{{ section.id }}">
+      {% paginate collections by section.settings.rows %}
+        <div class="collection-grid grid--{{ section.settings.mobile_column_count }}-col sm:grid--3-col lg:grid--{{ section.settings.columns }}-col grid">
+          {% for collection in collections %}
+            <a href="{{ collection.url }}" class="collection-card{%if section.settings.enable_card_text %} has-overlay-text{% endif %}">
+              <div class="collection-card__image">
+                {% assign collection_image = collection.featured_image %}
+
+                {% if collection_image == blank and collection.products.first %}
+                  {% assign collection_image = collection.products.first.featured_image %}
+                {% endif %}
+
+                {% if collection_image %}
+                  {{
+                    collection_image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '320,480,640,800',
+                      sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                      alt: collection.title
+                  }}
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag }}
+                {% endif %}
+              </div>
+
+              <div class="collection-card__content{%if section.settings.enable_card_text == false %} text-{{ section.settings.collection_heading_alignment }} justify-{{ section.settings.collection_heading_alignment }}{% endif %}">
+                <h3 class="collection__heading h5">
+                  {{ collection.title | escape }}
+                </h3>
+                {%if section.settings.collection_heading_alignment == 'start' %}
+                  <span>
+                    {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
+                  </span>
+                {% endif %}
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+      {% endpaginate %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection List Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Collection List"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Text"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" },
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "collection_heading_alignment",
+      "label": "Card Content alignment",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop Columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "rows",
+      "label": "Card Per Page",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "mobile_column_count",
+      "label": "Mobile Columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Column"
+        },
+        {
+          "value": "2",
+          "label": "2 Columns"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "header",
+      "content": "Card Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_card_text",
+      "label": "Overlay Text on Card Images",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color"
+    },
+    {
+      "type": "color",
+      "id": "card_heading_color",
+      "label": "Card Heading Color"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection List Page",
+      "category": "Collections"
+    }
+  ]
+}
+{% endschema %}
