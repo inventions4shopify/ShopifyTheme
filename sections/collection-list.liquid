@@ -8,6 +8,7 @@
     flex: 0 0 calc((100% - 2rem) / {{ section.settings.mobile_column_count }});
     flex-shrink:0;
   }
+
   .collection-grid.columns-4.is-slider .collection-card,
   .collection-grid.columns-3.is-slider .collection-card,
   .collection-grid.columns-2.is-slider .collection-card,
@@ -15,6 +16,7 @@
     flex: 0 0 calc((100% - 0rem) / {{ section.settings.mobile_column_count }});
     flex-shrink:0;
   }
+  
   .collection-grid.is-grid.columns-4,
   .collection-grid.is-grid.columns-3,
   .collection-grid.is-grid.columns-2,
@@ -22,13 +24,22 @@
     grid-template-columns: repeat({{ section.settings.mobile_column_count }}, 1fr);
   }
 
-  .collection-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    overflow: hidden;
-    border-radius: var(--input-radius);
-    background: {{ section.settings.card_bg_color }};
+  .section-{{ section.id }} .collection-card {
+    background-color:
+      {% if section.settings.card_bg_color != blank or section.settings.card_bg_color != 'rgba(0,0,0,0)' %}
+        {{ section.settings.card_bg_color }}
+      {% else %}
+        rgb(var(--color-product-card-background))
+      {% endif %};
+  }
+
+  .section-{{ section.id }} .collection-card__content > * {
+    color:
+      {% if section.settings.card_heading_color != blank or section.settings.card_heading_color != 'rgba(0,0,0,0)' %}
+        {{ section.settings.card_heading_color }}
+      {% else %}
+        rgb(var(--color-product-card-text))
+      {% endif %};
   }
 
 </style>
@@ -59,11 +70,10 @@
         text_alignment: 'center'
       -%}
     </div>
-    <div class="collection-wrapper-main">
-      <div class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} collection-mobile-grid-{{ section.settings.mobile_column_count }}">
+    <div class="collection-wrapper-main section-{{ section.id }}">
+      <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} collection-mobile-grid-{{ section.settings.mobile_column_count }}" data-autoplay="{{ section.settings.autoplay }}" data-autoplay-speed="{{ section.settings.autoplay_speed }}">
         {% for block in section.blocks %}
           {% assign collection = block.settings.collection %}
-          {% if collection != blank %}
             {% assign collection_image = collection.featured_image %}
             {% if collection_image == blank and collection.products.first %}
               {% assign collection_image = collection.products.first.featured_image %}
@@ -74,7 +84,7 @@
               {{ block.shopify_attributes }}
             >
               <div class="collection-card__image">
-                {% if block.settings.custom_image != blank %}
+                {% if block.settings.custom_image %}
                   {{
                     block.settings.custom_image
                     | image_url: width: 800
@@ -84,7 +94,7 @@
                       sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
                       alt: collection.title
                   }}
-                  {% else collection_image != blank %}
+                {% elsif collection_image %}
                   {{
                     collection_image
                     | image_url: width: 800
@@ -95,27 +105,31 @@
                       alt: collection.title
                   }}
                 {% else %}
-                  {{ 'collection-1' | placeholder_svg_tag }}
+                  <img
+                    src="{{ 'thumbnail.svg' | asset_url }}"
+                    alt="{{ collection.title | escape }}"
+                    loading="lazy"
+                    width="auto"
+                    height="auto">
                 {% endif %}
               </div>
               {%- assign align_value = s.collection_heading_alignment | default: 'center' -%}
               {%- assign align_class = 'text-' | append: align_value -%}
-              <div class="collection-card__content {{ align_class }}">
-                {%- capture heading_style -%}
-                    --color-heading: {{ head_color.rgb }};
-                {%- endcapture -%}
-                  {%if block.settings.custom_title != blank %}
-                    <h3 class="collection__heading h5">{{ block.settings.custom_title }} </h3>
-                  {%  else %}
-                    <h3 class="collection__heading h5">{{- collection.title | escape -}} </h3>
-                  {% endif %}
+              <div class="collection-card__content {{ align_class }} justify-{{align_value}}">
+                <h3 class="collection__heading h5">
+                  {{ collection.title | escape }}
+                </h3>
+                {%if s.collection_heading_alignment == 'start' %}
+                  <span>
+                    {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
+                  </span>
+                {% endif %}
               </div>
             </a>
-          {% endif %}
         {% endfor %}
       </div>
-      {% if section.settings.layout == 'slider' %}
-        {% if section.settings.show_arrow %}
+      {% if s.layout == 'slider' %}
+        {% if s.show_arrow %}
           <div class="collection-grid-slider-arrow-btn flex">
             <button class="collection-grid-prev button">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
             <button class="collection-grid-next button">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
@@ -127,91 +141,98 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const slider = document.querySelector('.collection-grid.is-slider');
-  const nextBtn = document.querySelector('.collection-grid-next');
-  const prevBtn = document.querySelector('.collection-grid-prev');
+  document.addEventListener('DOMContentLoaded', function () {
 
-  if (!slider) return;
+    document.querySelectorAll('.collection-grid.is-slider').forEach((slider) => {
 
-  const autoplayEnabled = {{ section.settings.autoplay | json }};
-  const autoplaySpeed = {{ section.settings.autoplay_speed }} * 1000;
+      const section = slider.closest('.shopify-section');
 
-  // Clone first and last slides
-  const slides = [...slider.querySelectorAll('.collection-card')];
+      const nextBtn = section?.querySelector('.collection-grid-next');
+      const prevBtn = section?.querySelector('.collection-grid-prev');
 
-  slides.forEach(slide => {
-    const clone = slide.cloneNode(true);
-    clone.classList.add('clone');
-    slider.appendChild(clone);
-  });
+      const autoplayEnabled = slider.dataset.autoplay === 'true';
+      const autoplaySpeed = (parseInt(slider.dataset.autoplaySpeed) || 5) * 1000;
 
-  const getScrollAmount = () => {
-    const card = slider.querySelector('.collection-card');
-    return card ? card.offsetWidth + 20 : 300;
-  };
+      const slides = [...slider.querySelectorAll('.collection-card')];
 
-  let currentIndex = 0;
-  const originalCount = slides.length;
+      if (!slides.length) return;
 
-  function goToSlide(index, smooth = true) {
-    slider.scrollTo({
-      left: index * getScrollAmount(),
-      behavior: smooth ? 'smooth' : 'auto'
+      // Clone slides
+      slides.forEach(slide => {
+        const clone = slide.cloneNode(true);
+        clone.classList.add('clone');
+        slider.appendChild(clone);
+      });
+
+      let currentIndex = 0;
+      const originalCount = slides.length;
+
+      const getScrollAmount = () => {
+        const card = slider.querySelector('.collection-card');
+        return card ? card.offsetWidth + 20 : 300;
+      };
+
+      function goToSlide(index, smooth = true) {
+        slider.scrollTo({
+          left: index * getScrollAmount(),
+          behavior: smooth ? 'smooth' : 'auto'
+        });
+      }
+
+      nextBtn?.addEventListener('click', () => {
+        currentIndex++;
+        goToSlide(currentIndex);
+      });
+
+      prevBtn?.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          goToSlide(currentIndex);
+        }
+      });
+
+      slider.addEventListener('scroll', () => {
+        if (
+          currentIndex >= originalCount &&
+          slider.scrollLeft >= originalCount * getScrollAmount() - 5
+        ) {
+          setTimeout(() => {
+            currentIndex = 0;
+            goToSlide(0, false);
+          }, 400);
+        }
+      });
+
+      let autoSlide;
+
+      function startAutoplay() {
+        if (!autoplayEnabled) return;
+
+        stopAutoplay();
+
+        autoSlide = setInterval(() => {
+          currentIndex++;
+          goToSlide(currentIndex);
+        }, autoplaySpeed);
+      }
+
+      function stopAutoplay() {
+        clearInterval(autoSlide);
+      }
+
+      if (autoplayEnabled) {
+        startAutoplay();
+
+        slider.addEventListener('mouseenter', stopAutoplay);
+        slider.addEventListener('mouseleave', startAutoplay);
+
+        slider.addEventListener('touchstart', stopAutoplay, { passive: true });
+        slider.addEventListener('touchend', startAutoplay, { passive: true });
+      }
+
     });
-  }
 
-  nextBtn?.addEventListener('click', () => {
-    currentIndex++;
-    goToSlide(currentIndex);
   });
-
-  prevBtn?.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      goToSlide(currentIndex);
-    }
-  });
-
-  slider.addEventListener('scroll', () => {
-    if (
-      currentIndex >= originalCount &&
-      slider.scrollLeft >= originalCount * getScrollAmount() - 5
-    ) {
-      setTimeout(() => {
-        currentIndex = 0;
-        goToSlide(0, false);
-      }, 400);
-    }
-  });
-
-  let autoSlide;
-
-  function startAutoplay() {
-    if (!autoplayEnabled) return;
-
-    stopAutoplay();
-
-    autoSlide = setInterval(() => {
-      currentIndex++;
-      goToSlide(currentIndex);
-    }, autoplaySpeed);
-  }
-
-  function stopAutoplay() {
-    clearInterval(autoSlide);
-  }
-
-  if (autoplayEnabled) {
-    startAutoplay();
-
-    slider.addEventListener('mouseenter', stopAutoplay);
-    slider.addEventListener('mouseleave', startAutoplay);
-
-    slider.addEventListener('touchstart', stopAutoplay, { passive: true });
-    slider.addEventListener('touchend', startAutoplay, { passive: true });
-  }
-});
 </script>
 
 {% schema %}
@@ -239,6 +260,26 @@ document.addEventListener('DOMContentLoaded', function () {
       "default": "<p>Most Populer Products</p>"
     },
     {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
       "type": "header",
       "content": "Layout"
     },
@@ -257,9 +298,9 @@ document.addEventListener('DOMContentLoaded', function () {
       "id": "content_alignment",
       "label": "Content alignment",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ],
       "default": "center"
     },
@@ -268,9 +309,9 @@ document.addEventListener('DOMContentLoaded', function () {
       "id": "collection_heading_alignment",
       "label": "Card Content alignment",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ],
       "default": "center"
     },
@@ -301,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
       "type": "checkbox",
       "id": "autoplay",
       "label": "Enable Autoplay",
-      "default": true,
+      "default": false,
       "visible_if": "{{ section.settings.layout == 'slider' }}"
     },
     {
@@ -361,23 +402,8 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     {
       "type": "color",
-      "id": "subheading_color",
-      "label": "Subheading color"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color"
-    },
-    {
-      "type": "color_background",
-      "id": "heading_gradient",
-      "label": "Heading gradient"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "id": "card_heading_color",
+      "label": "Card Heading Color"
     },
     {
       "type": "header",
@@ -452,14 +478,32 @@ document.addEventListener('DOMContentLoaded', function () {
         {
           "type": "text",
           "id": "custom_title",
-          "label": "Custom Heading"
+          "label": "Custom Heading",
+          "default": "Collection"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Collection List"
+      "name": "Collection List",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
     }
   ]
 }

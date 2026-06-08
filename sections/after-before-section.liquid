@@ -6,29 +6,24 @@
       <div class="cms-cell--{{ section.settings.width }}">
         <div class="before-after-wrapper">
           <div class="before-after-container-inner aspect-square" id="before-after-{{ section.id }}">
-            {% if section.settings.after_image != blank %}
-              <div class="after-img">
-                <img
-                  src="{{ section.settings.after_image | img_url: 'master' }}"
-                  alt="{{ section.settings.after_image.alt }}"
-                  loading="lazy"
-                  width="auto"
-                  height="auto"
-                />
-              </div>
-            {% endif %}
-
-            {% if section.settings.before_image != blank %}
-              <div class="before-image-wrapper">
-                <img
-                  src="{{ section.settings.before_image | img_url: 'master' }}"
-                  alt="{{ section.settings.before_image.alt }}"
-                  loading="lazy"
-                  width="auto"
-                  height="auto"
-                />
-              </div>
-            {% endif %}
+            <div class="after-img">
+              <img
+                src="{% if section.settings.after_image != blank %}{{ section.settings.after_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
+                alt="{{ section.settings.after_image.alt }}"
+                loading="lazy"
+                width="auto"
+                height="auto"
+              />
+            </div>          
+            <div class="before-image-wrapper">
+              <img
+                src="{% if section.settings.before_image != blank %}{{ section.settings.before_image | image_url }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
+                alt="{{ section.settings.before_image.alt }}"
+                loading="lazy"
+                width="auto"
+                height="auto"
+              />
+            </div>
 
             <div class="cms-image-labels items-{{ section.settings.bedge_position }}">
               {% if section.settings.after_text != blank %}
@@ -505,7 +500,21 @@
   ],
   "presets": [
     {
-      "name": "After Before comparison"
+      "name": "After Before comparison",
+      "blocks": [
+        {
+          "type": "caption"
+        },
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "button"
+        }
+      ]
     }
   ]
 }

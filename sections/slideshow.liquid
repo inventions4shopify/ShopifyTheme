@@ -8,21 +8,18 @@
           <div class="media-with-content">
             <div class="media-with-content-media">
               {% if block.settings.media_type == 'image' %}
-                {% if block.settings.image_1 %}
-                  <picture>
-                    {% if block.settings.image_2 != blank %}
-                      <source
-                        media="(max-width: 767px)"
-                        srcset="{{ block.settings.image_2 | img_url: 'master' }}">
-                    {% endif %}
-
-                    <img
-                      src="{{ block.settings.image_1 | img_url: 'master' }}"
-                      alt="{{ block.settings.heading | escape }}"
-                      width="auto"
-                      height="auto" />
-                  </picture>
-                {% endif %}
+                <picture>
+                  <source
+                    media="(max-width: 767px)"
+                    srcset="{% if block.settings.image_2 %}{{ block.settings.image_2 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
+                  >
+                  <img
+                    src="{% if block.settings.image_1 %}{{ block.settings.image_1 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
+                    alt="{{ block.settings.heading | escape }}"
+                    width="auto"
+                    height="auto"
+                  />
+                </picture>
               {% elsif block.settings.media_type == 'video' %}
                 {% if block.settings.video_1 %}
                   {{
@@ -136,13 +133,13 @@
         {% if section.settings.icons_style != 'none' %}
           <button class="cms-slide-button cms-slideshow-prev">
             {% if section.settings.icons_style == 'chevron' %}
-              {% render 'icon', icon: 'chevron-left', width: '2.2rem', height: '2.2rem' %}
+              {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
               {% elsif section.settings.icons_style == 'chevron_large' %}
-                {% render 'icon', icon: 'chevron-left', width: '2.8rem', height: '2.8rem' %}
+                {% render 'icon', icon: 'chevron-left', width: 28, height: 28 %}
               {% elsif section.settings.icons_style == 'arrow' %}
-                {% render 'icon', icon: 'arrow-left', width: '2.2rem', height: '2.2rem' %}
+                {% render 'icon', icon: 'arrow-left', width: 22, height: 22 %}
               {% elsif section.settings.icons_style == 'arrows_large' %}
-                {% render 'icon', icon: 'arrow-left', width: '2.8rem', height: '2.8rem' %}
+                {% render 'icon', icon: 'arrow-left', width: 28, height: 28 %}
             {% endif %}
           </button>
         {% endif %}
@@ -589,7 +586,8 @@
         {
           "type": "checkbox",
           "id": "toggle_overlay",
-          "label": "Media Overlay"
+          "label": "Media Overlay",
+          "default": true
         },
         {
           "type": "color",
@@ -742,6 +740,9 @@
     {
       "name": "Slideshow",
       "blocks": [
+        {
+          "type": "slide"
+        },
         {
           "type": "slide"
         }

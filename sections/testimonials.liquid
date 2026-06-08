@@ -356,7 +356,8 @@ document.addEventListener('DOMContentLoaded', function () {
         {
           "type": "richtext",
           "id": "review",
-          "label": "Review"
+          "label": "Review",
+          "default": "<p>This service exceeded our expectations. The team was professional, responsive, and delivered outstanding results. Highly recommended!</p>"
         },
         {
           "type": "image_picker",
@@ -366,12 +367,14 @@ document.addEventListener('DOMContentLoaded', function () {
         {
           "type": "text",
           "id": "name",
-          "label": "Customer Name"
+          "label": "Customer Name",
+          "default": "Sarah Johnson"
         },
         {
           "type": "text",
           "id": "position",
-          "label": "Customer Position"
+          "label": "Customer Position",
+          "default": "CEO, ThePlanetsoft"
         },
         {
           "type": "range",
@@ -387,7 +390,24 @@ document.addEventListener('DOMContentLoaded', function () {
   ],
   "presets": [
     {
-      "name": "Testimonials"
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
     }
   ]
 }

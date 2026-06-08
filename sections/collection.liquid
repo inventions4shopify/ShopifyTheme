@@ -107,6 +107,29 @@
           </div>
         </div>
       {% endfor %}
+<h1>{{ collection.title }}</h1>
+
+<div class="collection-products grid grid--2-col sm:grid--3-col lg:grid--4-col">
+  {% paginate collection.products by 20 %}
+    {% for product in collection.products %}
+      {%- render 'product-card', product: product -%}
+      {% comment %} <div class="collection-product">
+        {% if product.featured_image %}
+          {% render 'image',
+            class: 'collection-product__image',
+            image: product.featured_image,
+            url: product.url,
+            width: 400,
+            height: 400,
+            crop: 'center'
+          %}
+        {% endif %}
+        <div class="collection-product__content">
+          <p>{{ product.title | escape | link_to: product.url }}</p>
+          <p>{{ product.price | money }}</p>
+        </div>
+      </div> {% endcomment %}
+    {% endfor %}
 
       {{ paginate | default_pagination }}
     {% endpaginate %}
