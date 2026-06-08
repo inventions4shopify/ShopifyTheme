@@ -13,8 +13,10 @@
     aria-controls="{{ localPosition }}List"
     aria-describedby="{{ localPosition }}Label"
   >
-    <span>{{ localization.language.endonym_name | capitalize }}</span>
-    {{ 'icon-caret.svg' | inline_asset_content }}
+    <span>{{ localization.language.iso_code | upcase }}</span>
+    {% comment %} {{ 'icon-caret.svg' | inline_asset_content }} {% endcomment %}
+    {% render 'icon', icon: 'chevron-down', width: 20, height: 20 %}
+
   </button>
   <div class="disclosure__list-wrapper language-selector" hidden>
     <ul id="{{ localPosition }}List" role="list" class="disclosure__list list-unstyled">

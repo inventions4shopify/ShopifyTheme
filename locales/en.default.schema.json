@@ -467,6 +467,9 @@
           "info": "https://open.spotify.com/shopify"
         }
       }
+    },
+    "cart":{
+      "name": "Cart",
     }
   },
   "labels": {
@@ -508,5 +511,6 @@
       "subtitle": "Subtitle",
       "normal": "Normal text"
     }
-  }
+  },
+
 }

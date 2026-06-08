@@ -1,0 +1,113 @@
+{%- comment -%}
+  Header mega menu (desktop)
+{%- endcomment -%}
+
+<nav class="header__nav header__nav--desktop header__nav--mega" aria-label="Primary">
+  <ul class="header__nav-list">
+    {%- for link in section.settings.main_menu.links -%}
+      {%- assign link_title = link.title | downcase | strip -%}
+      {%- assign has_children = false -%}
+      {%- if link.links != blank -%}{%- assign has_children = true -%}{%- endif -%}
+
+      {%- comment -%} Does any block target this menu item? {%- endcomment -%}
+      {%- assign has_blocks = false -%}
+      {%- for block in section.blocks -%}
+        {%- assign btarget = block.settings.parent_item | default: '' | downcase | strip -%}
+        {%- if btarget != '' and btarget == link_title -%}
+          {%- assign has_blocks = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- assign show_panel = false -%}
+      {%- if has_blocks or has_children -%}{%- assign show_panel = true -%}{%- endif -%}
+
+      <li class="header__nav-item{% if show_panel %} has-children{% endif %}">
+        <a
+          href="{{ link.url }}"
+          class="header__nav-link"
+          {% if link.current %}aria-current="page"{% endif %}
+        >
+          <span>{{ link.title }}</span>
+          {%- if show_panel -%}
+            {% render 'icon' , icon: 'chevron-down' , width: 20, height: 20 %}
+          {%- endif -%}
+        </a>
+
+        {%- if show_panel -%}
+          <div class="header__mega">
+            <div class="header__mega-inner">
+              {%- if has_blocks -%}
+                {%- comment -%} ----- Block-driven panel (blocks targeting this item) ----- {%- endcomment -%}
+                {%- for block in section.blocks -%}
+                  {%- assign btarget = block.settings.parent_item | default: '' | downcase | strip -%}
+                  {%- if btarget != link_title -%}{%- continue -%}{%- endif -%}
+                  {%- case block.type -%}
+                    {%- when 'menu_column' -%}
+                      <div class="header__mega-col" {{ block.shopify_attributes }}>
+                        {%- if block.settings.heading != blank -%}
+                          <span class="header__mega-title">{{ block.settings.heading }}</span>
+                        {%- endif -%}
+                        {%- if block.settings.menu != blank -%}
+                          <ul class="header__mega-list">
+                            {%- for item in block.settings.menu.links -%}
+                              <li>
+                                <a href="{{ item.url }}" class="header__mega-link"{% if item.current %} aria-current="page"{% endif %}>{{ item.title }}</a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </div>
+
+                    {%- when 'image_banner' -%}
+                      <a
+                        class="header__mega-banner"
+                        href="{{ block.settings.button_link | default: link.url }}"
+                        {{ block.shopify_attributes }}
+                      >
+                        {%- if block.settings.image != blank -%}
+                          {{
+                            block.settings.image
+                            | image_url: width: 600
+                            | image_tag: class: 'header__mega-banner-img', widths: '300,600', alt: block.settings.heading
+                          }}
+                        {%- endif -%}
+                        <span class="header__mega-banner-body">
+                          {%- if block.settings.heading != blank -%}
+                            <span class="header__mega-banner-title">{{ block.settings.heading }}</span>
+                          {%- endif -%}
+                          {%- if block.settings.description != blank -%}
+                            <span class="header__mega-banner-desc">{{ block.settings.description }}</span>
+                          {%- endif -%}
+                          {%- if block.settings.button_label != blank -%}
+                            <span class="header__mega-banner-btn button button--secondary">{{ block.settings.button_label }}</span>
+                          {%- endif -%}
+                        </span>
+                      </a>
+                  {%- endcase -%}
+                {%- endfor -%}
+
+              {%- else -%}
+                {%- comment -%} ----- Link-driven panel (no blocks for this item) ----- {%- endcomment -%}
+                {%- for child in link.links -%}
+                  <div class="header__mega-col">
+                    <a href="{{ child.url }}" class="header__mega-title"{% if child.current %} aria-current="page"{% endif %}>{{ child.title }}</a>
+                    {%- if child.links != blank -%}
+                      <ul class="header__mega-list">
+                        {%- for grandchild in child.links -%}
+                          <li>
+                            <a href="{{ grandchild.url }}" class="header__mega-link"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title }}</a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
