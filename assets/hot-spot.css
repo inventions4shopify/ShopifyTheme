@@ -1,0 +1,18 @@
+.cms-hot-spot-row {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+}
+
+.cms-hot-spot__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.cms-hot-spot__content {
+    z-index: 2;
+    position: relative;
+}
