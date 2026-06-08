@@ -2,14 +2,21 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--spacing-10);
   margin-bottom: var(--spacing-48);
   flex-wrap: wrap;
 }
-.featured-collection .fc__heading { margin: 0; }
-.featured-collection .fc__content { margin: .5rem 0 0; max-width: 60ch; }
 .fc__header-text .section-header{
   margin-bottom: 0;
+}
+@media (max-width: 749px) {
+  .featured-collection .fc__header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .featured-collection .fc__header .section-header {
+    align-items: center;
+  }
 }
 /* ---------- Grid ---------- */
 .featured-collection .fc__grid {
@@ -40,8 +47,25 @@
 }
 
 /* ---------- Carousel / Slider ---------- */
+.fc__arrows_btn{
+  width: 100%;
+  justify-content: center;
+  margin-top: var(--spacing-32);
+  gap: var(--spacing-16);
+}
+.fc__arrows_btn button {
+  cursor: pointer;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+}
+.fc__arrows_btn button svg.icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
 .featured-collection .fc__slider { position: relative; }
 
+/* Base track = horizontal scroller (used by "always" sliders and mobile sliders) */
 .featured-collection .fc__track {
   display: grid;
   grid-auto-flow: column;
@@ -56,46 +80,73 @@
 }
 .featured-collection .fc__track::-webkit-scrollbar { display: none; }
 .featured-collection .fc__track > * { scroll-snap-align: start; }
+@media (min-width: 576px) {
+  .fc__arrows_btn button {
+    width: 4rem;
+    height: 4rem;
+  }
+  .fc__arrows_btn button svg.icon {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+}
 @media (min-width: 750px) {
-  .featured-collection .fc__track {
+  /* "always" slider (Type = Carousel) keeps scrolling on desktop too */
+  .featured-collection .fc__slider--always .fc__track {
     grid-auto-columns: calc((100% - (var(--fc-columns) - 1) * var(--fc-gap)) / var(--fc-columns));
   }
 }
 
-.featured-collection .fc__arrow {
-  position: absolute;
-  top: 38%;
-  transform: translateY(-50%);
-  z-index: 2;
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  border: 1px solid rgba(0,0,0,.12);
-  background: var(--color-background, #fff);
-  color: var(--color-foreground, #1a1a1a);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0,0,0,.12);
-  transition: transform .2s ease, opacity .2s ease;
+/* ===========================================================
+   MOBILE-ONLY SLIDER
+   =========================================================== */
+@media (max-width: 749px) {
+  .featured-collection .fc__slider--mobile .fc__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: none;                 /* override grid layout cols */
+    grid-auto-columns: calc((100% - (var(--fc-mobile-columns) - 1) * var(--fc-gap)) / var(--fc-mobile-columns));
+    gap: var(--fc-gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .featured-collection .fc__slider--mobile .fc__track::-webkit-scrollbar { display: none; }
+  .featured-collection .fc__slider--mobile .fc__track > * { scroll-snap-align: start; }
+
 }
-.featured-collection .fc__arrow:hover { transform: translateY(-50%) scale(1.08); }
-.featured-collection .fc__arrow--prev { left: -8px; }
-.featured-collection .fc__arrow--next { right: -8px; }
-.featured-collection .fc__arrow[disabled] { opacity: 0; pointer-events: none; }
+
+@media (min-width: 750px) {
+  /* On desktop, mobile-only slider reverts to normal grid/editorial */
+  .featured-collection .fc__slider--mobile .fc__track {
+    overflow: visible;
+    scroll-snap-type: none;
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+  }
+  /* The desktop layout class on the track restores its own columns:
+     .fc__grid / .fc__editorial rules above already apply since the
+     class is present on the same element. Re-assert just in case. */
+  .featured-collection .fc__slider--mobile.fc__slider--desktop-grid .fc__track {
+    grid-template-columns: repeat(var(--fc-columns), minmax(0, 1fr));
+  }
+  .featured-collection .fc__slider--mobile.fc__slider--desktop-editorial .fc__track {
+    grid-template-columns: repeat(var(--fc-columns), minmax(0, 1fr));
+  }
+  .featured-collection .fc__slider--mobile.fc__slider--desktop-editorial .fc__track .product-card:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  /* Hide arrows when the mobile-only slider is inactive (desktop) */
+  .featured-collection .fc__slider--mobile .fc__arrows_btn {
+    display: none;
+  }
+}
 
 @media (max-width: 749px) {
   .featured-collection .fc__arrow { display: none; }
-}
-
-.featured-collection .fc__dots {
-  display: flex; justify-content: center; gap: .4rem; margin-top: 1.25rem;
-}
-.featured-collection .fc__dot {
-  width: 8px; height: 8px; border-radius: 50%; border: 0; padding: 0;
-  background: rgba(0,0,0,.2); cursor: pointer;
-  transition: width .25s ease, background .25s ease;
-}
-.featured-collection .fc__dot.is-active {
-  width: 22px; border-radius: 4px; background: var(--color-foreground, #1a1a1a);
 }
 
 

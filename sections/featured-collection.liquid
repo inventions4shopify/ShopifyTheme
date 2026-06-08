@@ -20,6 +20,24 @@
   if link_url == blank and collection != blank
     assign link_url = collection.url
   endif
+
+  # ── Decide which markup to render ──
+  # Carousel markup is used when:
+  #   - the desktop Type is "carousel", OR
+  #   - mobile_carousel is enabled (desktop stays grid/editorial, mobile becomes slider)
+  assign use_slider_markup = false
+  if layout == 'carousel'
+    assign use_slider_markup = true
+  elsif s.mobile_carousel
+    assign use_slider_markup = true
+  endif
+
+  # data attribute tells the JS whether the slider is active at the current breakpoint
+  if layout == 'carousel'
+    assign slider_mode = 'always'
+  else
+    assign slider_mode = 'mobile'
+  endif
 -%}
 
 {%- style -%}
@@ -27,125 +45,137 @@
     --fc-columns: {{ section.settings.columns }};
     --fc-mobile-columns: {{ section.settings.mobile_columns }};
     --fc-gap: {{ section.settings.horizontal_gap }}px;
-    --fc-info-align: {{ section.settings.product_info_alignment }};
+  }
+  .product-card--card {
+    background-color:
+      {% if section.settings.card_bg_color != blank and section.settings.card_bg_color != 'rgba(0,0,0,0)' %}
+        {{ section.settings.card_bg_color }}
+      {% else %}
+        rgb(var(--color-product-card-background))
+      {% endif %};
+      border-radius: var(--media-radius);
+  }
+  .product-card--card .product-card__content{
+      padding: var(--spacing-6) var(--spacing-10);
+  }
+  .product-card__content > * {
+    color:
+      {% if section.settings.card_heading_color != blank and section.settings.card_heading_color != 'rgba(0,0,0,0)' %}
+        {{ section.settings.card_heading_color }}
+      {% else %}
+        rgb(var(--color-product-card-text))
+      {% endif %};
   }
 {%- endstyle -%}
 
 <div {%- render 'section-variables', section: section, class: 'featured-collection' -%}>
   <div class="{{ container_class }}">
-    {%- if section.settings.heading != blank
-      or section.settings.content != blank
-      or section.settings.link_url != blank
-    -%}
-      <div class="fc__header">
-        <div class="fc__header-text">
-          {%- render 'section-header',
-            subheading: section.settings.subheading,
-            heading: section.settings.heading,
-            content: section.settings.description,
-            text_alignment: 'start'
-          -%}
-        </div>
-        <div class="fc__view-all">
-          {% if section.settings.link_text != blank %}
-            {%- render 'button',
-              text: section.settings.link_text,
-              href: link_url,
-              background_color: section.settings.button_background_color,
-              text_color: section.settings.button_text_color,
-              outline_color: section.settings.button_outline_color
-            -%}
-          {% endif %}
-        </div>
-      </div>
-    {%- endif -%}
+      <div class="fc__wrapper-main section-{{ section.id }}">
+        {%- if section.settings.heading != blank
+          or section.settings.content != blank
+          or section.settings.link_url != blank
+        -%}
+          <div class="fc__header">
+            <div class="fc__header-text">
+              {%- render 'section-header',
+                subheading: section.settings.subheading,
+                heading: section.settings.heading,
+                content: section.settings.description,
+                text_alignment: 'start'
+              -%}
+            </div>
+            <div class="fc__view-all">
+              {% if section.settings.link_text != blank %}
+                {%- render 'button',
+                  text: section.settings.link_text,
+                  href: link_url,
+                  background_color: section.settings.button_background_color,
+                  text_color: section.settings.button_text_color,
+                  outline_color: section.settings.button_outline_color
+                -%}
+              {% endif %}
+            </div>
+          </div>
+        {%- endif -%}
 
-    {%- liquid
-      case layout
-        when 'carousel'
-          assign wrapper_class = 'fc__carousel'
-        when 'editorial'
-          assign wrapper_class = 'fc__editorial'
-        else
-          assign wrapper_class = 'fc__grid'
-      endcase
-    -%}
+        {%- liquid
+          case layout
+            when 'carousel'
+              assign wrapper_class = 'fc__carousel'
+            when 'editorial'
+              assign wrapper_class = 'fc__editorial'
+            else
+              assign wrapper_class = 'fc__grid'
+          endcase
+        -%}
 
-    {%- comment -%} Render one product card with all card variables passed through {%- endcomment -%}
-    {%- capture render_card -%}{%- endcapture -%}
+        {%- comment -%} Render one product card with all card variables passed through {%- endcomment -%}
 
-    {%- if layout == 'carousel' -%}
-      <div class="fc__slider" data-fc-slider>
-        <button type="button" class="fc__arrow fc__arrow--prev" data-fc-prev aria-label="Previous">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 18l-6-6 6-6"/>
-          </svg>
-        </button>
+        {%- if use_slider_markup -%}
+          {%- comment -%}
+            slider_mode="always"  → slider on all breakpoints (Type = Carousel)
+            slider_mode="mobile"  → desktop keeps grid/editorial, mobile becomes slider
+            The desktop layout class (fc__grid / fc__editorial) is added so that at
+            >=750px the track reverts to that layout. CSS handles the switch.
+          {%- endcomment -%}
+          <div
+            class="fc__slider fc__slider--{{ slider_mode }} {% if slider_mode == 'mobile' %}fc__slider--desktop-{{ layout }}{% endif %}"
+            data-fc-slider
+            data-fc-mode="{{ slider_mode }}"
+          >
+            <div class="fc__track {% if slider_mode == 'mobile' %}{{ wrapper_class }}{% endif %}" data-fc-track>
+              {%- if collection != blank and collection_products.size > 0 -%}
+                {%- for product in collection_products limit: products_to_show -%}
+                  {% render 'product-card',
+                    product: product,
+                    enable_image_zoom: section.settings.enable_image_zoom,
+                    card_style: section.settings.card_style,
+                    image_ratio: settings.image_ratio,
+                    image_shape: section.settings.image_shape,
+                    show_sale_badge: settings.show_discount_badge,
+                    show_secondary_image: settings.show_secondary_image,
+                    show_color_swatches: settings.show_color_swatches,
+                    show_vendor: settings.show_vendor,
+                    show_rating: settings.show_rating,
+                    enable_quick_add: settings.show_quick_buy
+                  %}
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
 
-        <div class="fc__track" data-fc-track>
-          {%- if collection != blank and collection_products.size > 0 -%}
-            {%- for product in collection_products limit: products_to_show -%}
-              {% render 'product-card',
-                product: product,
-                enable_image_zoom: section.settings.enable_image_zoom,
-                image_ratio: section.settings.image_ratio,
-                image_shape: section.settings.image_shape,
-                show_sale_badge: section.settings.show_discount_badge,
-                show_secondary_image: section.settings.show_secondary_image,
-                show_color_swatches: section.settings.show_color_swatches,
-                show_vendor: section.settings.show_vendor,
-                show_rating: section.settings.show_rating,
-                enable_quick_add: section.settings.show_quick_buy
-              %}
-            {%- endfor -%}
-            {% comment %}
-              {%- else -%}
-              {%- for i in (1..products_to_show) -%}
-                {% render 'product-card-placeholder', index: i, image_ratio: section.settings.image_ratio %}
+            <div class="fc__arrows_btn flex" data-fc-arrows>
+              <button class="collection-grid-prev button" data-fc-prev aria-label="Previous">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
+              <button class="collection-grid-next button"  data-fc-next aria-label="Next">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
+            </div>
+          </div>
+        {%- else -%}
+          <div class="{{ wrapper_class }}">
+            {%- if collection != blank and collection_products.size > 0 -%}
+              {%- for product in collection_products limit: products_to_show -%}
+                {% render 'product-card',
+                  product: product,
+                  enable_image_zoom: section.settings.enable_image_zoom,
+                  image_ratio: settings.image_ratio,
+                  image_shape: section.settings.image_shape,
+                  show_sale_badge: settings.show_discount_badge,
+                  show_secondary_image: settings.show_secondary_image,
+                  show_color_swatches: settings.show_color_swatches,
+                  show_vendor: settings.show_vendor,
+                  show_rating: settings.show_rating,
+                  enable_quick_add: settings.show_quick_buy
+                %}
               {%- endfor -%}
-            {% endcomment %}
-          {%- endif -%}
-        </div>
-
-        <button type="button" class="fc__arrow fc__arrow--next" data-fc-next aria-label="Next">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </button>
-
-        <div class="fc__dots" data-fc-dots></div>
-      </div>
-    {%- else -%}
-      <div class="{{ wrapper_class }}">
-        {%- if collection != blank and collection_products.size > 0 -%}
-          {%- for product in collection_products limit: products_to_show -%}
-            {% render 'product-card',
-              product: product,
-              enable_image_zoom: section.settings.enable_image_zoom,
-              image_ratio: section.settings.image_ratio,
-              image_shape: section.settings.image_shape,
-              show_sale_badge: section.settings.show_discount_badge,
-              show_secondary_image: section.settings.show_secondary_image,
-              show_color_swatches: section.settings.show_color_swatches,
-              show_vendor: section.settings.show_vendor,
-              show_rating: section.settings.show_rating,
-              enable_quick_add: section.settings.show_quick_buy
-            %}
-          {%- endfor -%}
-          {% comment %}
-            {%- else -%}
-            {%- for i in (1..products_to_show) -%}
-              {% render 'product-card-placeholder', index: i, image_ratio: section.settings.image_ratio %}
-            {%- endfor -%}
-          {% endcomment %}
+            {%- endif -%}
+          </div>
         {%- endif -%}
       </div>
-    {%- endif -%}
   </div>
 </div>
 
 <script>
   (function () {
+    var MOBILE_MQ = window.matchMedia('(max-width: 749px)');
+
     function initSlider(slider) {
       if (slider.dataset.fcInit) return;
       slider.dataset.fcInit = 'true';
@@ -153,87 +183,51 @@
       var track = slider.querySelector('[data-fc-track]');
       var prev = slider.querySelector('[data-fc-prev]');
       var next = slider.querySelector('[data-fc-next]');
-      var dotsWrap = slider.querySelector('[data-fc-dots]');
+      var arrows = slider.querySelector('[data-fc-arrows]');
+      var mode = slider.dataset.fcMode || 'always'; // 'always' | 'mobile'
       if (!track) return;
 
-      function page() {
-        return track.clientWidth;
+      // Is the slider behavior active right now?
+      function isActive() {
+        if (mode === 'always') return true;
+        return MOBILE_MQ.matches; // mobile-only slider
       }
 
-      function pageCount() {
-        return Math.max(1, Math.ceil(track.scrollWidth / track.clientWidth));
-      }
-
-      function buildDots() {
-        if (!dotsWrap) return;
-        dotsWrap.innerHTML = '';
-        var count = pageCount();
-        if (count <= 1) return;
-        for (var i = 0; i < count; i++) {
-          var b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'fc__dot';
-          b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-          (function (idx) {
-            b.addEventListener('click', function () {
-              track.scrollTo({ left: idx * track.clientWidth, behavior: 'smooth' });
-            });
-          })(i);
-          dotsWrap.appendChild(b);
-        }
-        dotsState();
-      }
-
-      function dotsState() {
-        if (!dotsWrap) return;
-        var dots = dotsWrap.querySelectorAll('.fc__dot');
-        if (!dots.length) return;
-        var active = Math.round(track.scrollLeft / track.clientWidth);
-        dots.forEach(function (d, i) {
-          d.classList.toggle('is-active', i === active);
-        });
-      }
+      function page() { return track.clientWidth; }
 
       function updateArrows() {
+        if (!isActive()) {
+          if (arrows) arrows.style.display = 'none';
+          return;
+        }
+        if (arrows) arrows.style.display = '';
         var max = track.scrollWidth - track.clientWidth - 1;
         if (prev) prev.disabled = track.scrollLeft <= 1;
         if (next) next.disabled = track.scrollLeft >= max;
-        dotsState();
       }
 
-      if (prev)
-        prev.addEventListener('click', function () {
-          track.scrollBy({ left: -page(), behavior: 'smooth' });
-        });
-      if (next)
-        next.addEventListener('click', function () {
-          track.scrollBy({ left: page(), behavior: 'smooth' });
-        });
+      if (prev) prev.addEventListener('click', function () {
+        track.scrollBy({ left: -page(), behavior: 'smooth' });
+      });
+      if (next) next.addEventListener('click', function () {
+        track.scrollBy({ left: page(), behavior: 'smooth' });
+      });
 
       var ticking = false;
       track.addEventListener('scroll', function () {
         if (ticking) return;
         ticking = true;
-        requestAnimationFrame(function () {
-          updateArrows();
-          ticking = false;
-        });
+        requestAnimationFrame(function () { updateArrows(); ticking = false; });
       });
 
-      // drag to scroll
-      var isDown = false,
-        startX = 0,
-        startScroll = 0;
+      // drag to scroll (only meaningful while active)
+      var isDown = false, startX = 0, startScroll = 0;
       track.addEventListener('mousedown', function (e) {
-        isDown = true;
-        startX = e.pageX;
-        startScroll = track.scrollLeft;
+        if (!isActive()) return;
+        isDown = true; startX = e.pageX; startScroll = track.scrollLeft;
         track.style.cursor = 'grabbing';
       });
-      window.addEventListener('mouseup', function () {
-        isDown = false;
-        track.style.cursor = '';
-      });
+      window.addEventListener('mouseup', function () { isDown = false; track.style.cursor = ''; });
       track.addEventListener('mousemove', function (e) {
         if (!isDown) return;
         e.preventDefault();
@@ -244,12 +238,22 @@
       window.addEventListener('resize', function () {
         clearTimeout(rt);
         rt = setTimeout(function () {
-          buildDots();
+          // reset scroll when leaving slider mode so grid isn't offset
+          if (!isActive()) track.scrollLeft = 0;
           updateArrows();
         }, 150);
       });
 
-      buildDots();
+      // React to breakpoint changes for mobile-only sliders
+      if (mode === 'mobile') {
+        var onChange = function () {
+          if (!isActive()) track.scrollLeft = 0;
+          updateArrows();
+        };
+        if (MOBILE_MQ.addEventListener) MOBILE_MQ.addEventListener('change', onChange);
+        else if (MOBILE_MQ.addListener) MOBILE_MQ.addListener(onChange);
+      }
+
       updateArrows();
     }
 
@@ -284,16 +288,6 @@
     { "type": "range", "id": "products_count", "label": "Product count", "min": 2, "max": 24, "step": 1, "default": 8 },
     { "type": "range", "id": "columns", "label": "Columns", "min": 1, "max": 6, "step": 1, "default": 4 },
     {
-      "type": "select",
-      "id": "mobile_columns",
-      "label": "Mobile columns",
-      "default": "2",
-      "options": [
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" }
-      ]
-    },
-    {
       "type": "range",
       "id": "horizontal_gap",
       "label": "Horizontal gap",
@@ -302,6 +296,24 @@
       "step": 1,
       "unit": "px",
       "default": 8
+    },
+    { "type": "header", "content": "Mobile layout" },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Columns",
+      "default": "2",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel",
+      "label": "Carousel",
+      "default": false,
+      "info": "When on, the section scrolls horizontally as a slider on mobile (desktop keeps the Type layout above). Has no effect when Type is already Carousel."
     },
     { "type": "header", "content": "Text" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Best sellers" },
@@ -317,50 +329,42 @@
     { "type": "header", "content": "Product card" },
     {
       "type": "select",
-      "id": "image_ratio",
-      "label": "Product image size",
-      "default": "natural",
+      "id": "card_style",
       "options": [
-        { "value": "natural", "label": "Natural" },
-        { "value": "square", "label": "Square (1:1)" },
-        { "value": "portrait", "label": "Portrait (3:4)" },
-        { "value": "landscape", "label": "Landscape (4:3)" }
-      ]
+        {
+          "value": "standard",
+          "label": "standard"
+        },
+        {
+          "value": "card",
+          "label": "card"
+        }
+      ],
+      "default": "standard",
+      "label": "standard"
     },
     {
       "type": "select",
       "id": "image_shape",
-      "label": "Image shape",
-      "default": "default",
+      "label": "Image Shape",
       "options": [
         { "value": "default", "label": "Default" },
-        { "value": "round", "label": "Round" }
-      ]
+        { "value": "rounded", "label": "Rounded" },
+        { "value": "circle", "label": "Circle" }
+      ],
+      "default": "default"
     },
     { "type": "checkbox", "id": "enable_image_zoom", "label": "Zoom image on hover", "default": true },
-    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
-    { "type": "checkbox", "id": "show_secondary_image", "label": "Show secondary image on hover", "default": true },
-    { "type": "checkbox", "id": "show_quick_buy", "label": "Show quick buy", "default": false },
     {
-      "type": "checkbox",
-      "id": "show_rating",
-      "label": "Show product rating",
-      "default": false,
-      "info": "To display a rating, add a product rating app."
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "visible_if": "{{ section.settings.card_style == 'card' }}"
     },
-    { "type": "checkbox", "id": "show_color_swatches", "label": "Show color swatches", "default": true },
-    { "type": "checkbox", "id": "show_sold_out_badge", "label": "Show sold out badge", "default": true },
-    { "type": "checkbox", "id": "show_discount_badge", "label": "Show discount badge", "default": true },
     {
-      "type": "select",
-      "id": "product_info_alignment",
-      "label": "Product info alignment",
-      "default": "left",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
+      "type": "color",
+      "id": "card_heading_color",
+      "label": "Card Heading Color"
     },
     {
       "type": "header",
@@ -390,16 +394,7 @@
       "id": "background_gradient",
       "label": "Background gradient"
     },
-    {
-      "type": "color",
-      "id": "card_bg_color",
-      "label": "Card Background Color"
-    },
-    {
-      "type": "color",
-      "id": "card_heading_color",
-      "label": "Card Heading Color"
-    },
+
     {
       "type": "color",
       "id": "button_background_color",
