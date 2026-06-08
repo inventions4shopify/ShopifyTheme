@@ -8,7 +8,7 @@ localization-form h2{
   display: flex;
   flex-direction: column;
   flex: auto 1 0;
-  padding: 1rem;
+  padding: var(--spacing-10);
   margin: 0 auto;
 }
 
@@ -21,13 +21,13 @@ localization-form h2{
 
 .localization-form:only-child .button,
 .localization-form:only-child .localization-form__select {
-  margin: 1rem 1rem 0.5rem;
+  margin: var(--spacing-10) var(--spacing-10) var(--spacing-6);
   flex-grow: 1;
 }
 
 @media screen and (min-width: 750px) {
   .localization-form {
-    padding: 1rem 2rem 1rem 0;
+    padding: var(--spacing-10) var(--spacing-20) var(--spacing-10) 0;
   }
 
   .localization-form:first-of-type {
@@ -37,24 +37,24 @@ localization-form h2{
   .localization-form:only-child {
     justify-content: start;
     width: auto;
-    margin: 0 1rem 0 0;
+    /* margin: 0 1rem 0 0; */
   }
 
   .localization-form:only-child .button,
   .localization-form:only-child .localization-form__select {
-    margin: 1rem 0;
+    margin: var(--spacing-10) 0;
   }
 }
 
 .localization-form .button {
-  padding: 1rem;
+  padding: var(--spacing-10);
 }
 
 .localization-form__currency {
   opacity: 0;
   transition: opacity 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   white-space: nowrap;
-  padding-right: 1.7rem;
+  padding-right: var(--spacing-16);
 }
 
 @media screen and (max-width: 749px) {
@@ -69,8 +69,8 @@ localization-form h2{
 
 .localization-form__select {
   position: relative;
-  margin-bottom: 1.5rem;
-  padding-left: 1rem;
+  margin-bottom: var(--spacing-16);
+  padding-left: var(--spacing-10);
   text-align: left;
   min-height: calc(4rem + var(--input-border-width) * 2);
   min-width: calc(7rem + var(--input-border-width) * 2);
@@ -99,13 +99,13 @@ localization-form h2{
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 100%;
-  padding-right: 4rem;
-  padding-bottom: 1.5rem;
-  padding-left: 1.5rem;
+  padding-right: var(--spacing-40);
+  padding-bottom: var(--spacing-16);
+  padding-left: var(--spacing-16);
 }
 
 .disclosure .localization-form__select {
-  padding-top: 1.5rem;
+  padding-top: var(--spacing-16);
 }
 
 .localization-selector option {
@@ -126,13 +126,13 @@ localization-form h2{
   cursor: pointer;
   display: flex;
   height: 4rem;
-  padding: 0 1.5rem 0 1.5rem;
+  padding: 0 var(--spacing-16) 0 var(--spacing-16);
   font-size: 1.3rem;
   background-color: transparent;
 }
 
 .disclosure__list-wrapper {
-  border-width: 1px;
+  border-width: 0.1rem;
   border-style: solid;
   border-color: var(--input-text-color);
   overflow: hidden;
@@ -141,7 +141,7 @@ localization-form h2{
   transform: translateY(-1rem);
   z-index: 2;
   background-color: rgb(var(--color-background));
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   max-height: 27.5rem;
     color: var(--input-text-color);
 }
@@ -174,19 +174,19 @@ localization-form h2{
 }
 
 .country-filter {
-  padding: 1.5rem 1.5rem 0.6rem;
+  padding:  var(--spacing-16) var(--spacing-16) var(--spacing-6);
   position: sticky;
   top: -0.02rem;
   background-color: rgb(var(--color-background));
   z-index: 6;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--spacing-6);
 }
 
 .country-filter__input {
-  min-width: 200px;
-    padding: 10px;
+  min-width: 20.0rem;
+    padding: var(--spacing-10);
     width: 100%;
 }
 
@@ -297,7 +297,7 @@ localization-form h2{
   }
 
   .country-filter {
-    padding: 1.5rem 2rem 0.6rem 1.5rem;
+    padding: var(--spacing-16) var(--spacing-20) var(--spacing-6) var(--spacing-16);
   }
 }
 
@@ -308,13 +308,13 @@ localization-form h2{
 }
 
 .countries {
-  padding-top: 0.6rem;
+  padding-top: var(--spacing-6);
 }
 
 .popular-countries {
-  border-bottom: 1px solid rgba(var(--color-foreground), 0.2);
-  padding-bottom: 0.6rem;
-  padding-top: 0.6rem;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  padding-bottom: var(--spacing-6);
+  padding-top: var(--spacing-6);
 }
 
 .disclosure__item {
@@ -325,8 +325,8 @@ localization-form h2{
 .disclosure__link {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 0.5rem;
-  padding: 0.9rem 1.5rem;
+  gap: var(--spacing-6);
+  padding: var(--spacing-10) var(--spacing-16);
   text-decoration: none;
   line-height: calc(1 + 0.8 / var(--font-body-scale));
   color: rgba(var(--color-foreground), 0.75);
@@ -445,7 +445,7 @@ localization-form h2{
 .menu-drawer__localization .localization-form__select {
   background-color: initial;
   margin-top: 0;
-  padding: 1rem 3.6rem 1rem 0rem;
+  padding: var(--spacing-10) var(--spacing-32) var(--spacing-10) 0rem;
 }
 
 .menu-drawer__localization .localization-form {
@@ -457,9 +457,9 @@ localization-form h2{
 }
 
 .menu-drawer__localization + .list-social {
-  margin-top: 1rem;
+  margin-top: var(--spacing-10);
 }
 
 .language-selector .disclosure__list {
-  min-width: 200px;
+  min-width: 20.0rem;
 }
