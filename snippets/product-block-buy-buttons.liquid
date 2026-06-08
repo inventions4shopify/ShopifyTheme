@@ -1,16 +1,23 @@
 {% style %}
+  .product_form {
+    margin-top: 1.5rem;
+    display: block;
+  }
   .product_form_submit {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    width: 1%;
+    flex: 1 1 auto;
   }
 
   .product_quantity_buy_wrapper {
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-bottom: 1.5rem;
   }
 
   .product_form_submit.loading {
@@ -91,6 +98,7 @@
       this.onQuantityDecrease = this.onQuantityDecrease.bind(this);
 
       this.onQuantityIncrease = this.onQuantityIncrease.bind(this);
+      this.onSubmit = this.onSubmit.bind(this);
     }
 
     connectedCallback() {
@@ -115,6 +123,8 @@
       this.quantityDecreaseButton?.addEventListener('click', this.onQuantityDecrease);
 
       this.quantityIncreaseButton?.addEventListener('click', this.onQuantityIncrease);
+
+      this.form?.addEventListener('submit', this.onSubmit);
     }
 
     disconnectedCallback() {
@@ -123,6 +133,8 @@
       this.quantityDecreaseButton?.removeEventListener('click', this.onQuantityDecrease);
 
       this.quantityIncreaseButton?.removeEventListener('click', this.onQuantityIncrease);
+
+      this.form?.removeEventListener('submit', this.onSubmit);
     }
 
     onVariantChange(event) {
@@ -165,6 +177,28 @@
       const currentQuantity = Number(this.quantityInput.value) || 1;
 
       this.quantityInput.value = currentQuantity + 1;
+    }
+
+    async onSubmit(event) {
+      event.preventDefault();
+
+      if (!this.form) return;
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: new FormData(this.form),
+        });
+
+        if (!response.ok) {
+          throw new Error('Unable to add this item to the cart.');
+        }
+
+        window.location.href = '/cart';
+      } catch (error) {
+        console.error(error);
+        window.alert(error.message || 'Unable to add this item to the cart.');
+      }
     }
   }
 

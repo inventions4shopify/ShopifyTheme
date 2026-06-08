@@ -1,41 +1,14 @@
 <product-card-form>
-  <form>
-    <input
-      type="hidden"
-      name="id"
-      value="{{ product.selected_or_first_available_variant.id }}"
-    >
+  <input
+    type="hidden"
+    value="{{ product.selected_or_first_available_variant.id }}"
+    data-variant-id
+  >
 
-    <button
-      type="submit"
-      class="product_card_atc"
-    >
-      Add to cart
-    </button>
-  </form>
+  <button
+    type="button"
+    class="product_card_atc"
+  >
+    Add to cart
+  </button>
 </product-card-form>
-
-<script>
-  class ProductCardForm extends HTMLElement {
-    connectedCallback() {
-      this.form = this.querySelector('form');
-
-      this.form?.addEventListener('submit', this.onSubmit.bind(this));
-    }
-
-    async onSubmit(event) {
-      event.preventDefault();
-
-      const formData = new FormData(this.form);
-
-      await fetch('/cart/add.js', {
-        method: 'POST',
-        body: formData,
-      });
-
-      document.dispatchEvent(new CustomEvent('cart:refresh'));
-    }
-  }
-
-  customElements.define('product-card-form', ProductCardForm);
-</script>

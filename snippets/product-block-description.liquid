@@ -1,24 +1,62 @@
-{%  style  %}  
-read-more-description {
-  display: block;
-}
+{% style %}
+  read-more-description {
+    display: block;
+  }
 
-.product_description_content {
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-}
+  /* Description text */
+  .product_description_content {
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: rgba(var(--color-foreground), 0.75);
+  }
 
-.product_description_toggle {
-  margin-top: 1rem;
-  cursor: pointer;
-}
+  /* Optional spacing wrapper */
+  .product_description_block {
+    margin-top: 1.5rem;
+  }
 
-.product_description_toggle.hidden {
-  display: none;
-}
+  /* Toggle button */
+  .product_description_toggle {
+    margin-top: 1rem;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: rgb(var(--color-foreground));
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+  }
+
+  .product_description_toggle:hover {
+    opacity: 0.7;
+  }
+
+  /* Hidden state */
+  .product_description_toggle.hidden {
+    display: none;
+  }
+
+  /* Optional: nicer spacing when expanded */
+  read-more-description[expanded] .product_description_content {
+    transition: max-height 0.35s ease;
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 750px) {
+    .product_description_content {
+      font-size: 1.5rem;
+    }
+
+    .product_description_toggle {
+      font-size: 1.4rem;
+    }
+  }
 {% endstyle %}
-
-
 
 <div
   class="product_description_block"
@@ -31,7 +69,7 @@ read-more-description {
       data-read-less="{{ block.settings.read_less_text }}"
     >
       <div class="product_description_content">
-        {{ product.description }}
+        {{ block.settings.description_content }}
       </div>
 
       <button
@@ -48,116 +86,82 @@ read-more-description {
   {% endif %}
 </div>
 
-
 <script>
-class ReadMoreDescription extends HTMLElement {
-  constructor() {
-    super();
+  class ReadMoreDescription extends HTMLElement {
+    constructor() {
+      super();
 
-    this.onToggle = this.onToggle.bind(this);
-  }
-
-  connectedCallback() {
-    this.content = this.querySelector(
-      '.product_description_content'
-    );
-
-    this.button = this.querySelector(
-      '.product_description_toggle'
-    );
-
-    if (!this.content || !this.button) return;
-
-    this.lines = parseInt(
-      this.dataset.lines || 4,
-      10
-    );
-
-    this.readMoreText =
-      this.dataset.readMore || 'Read more';
-
-    this.readLessText =
-      this.dataset.readLess || 'Read less';
-
-    requestAnimationFrame(() => {
-      this.initialize();
-    });
-  }
-
-  initialize() {
-    const computedStyle =
-      window.getComputedStyle(this.content);
-
-    let lineHeight = parseFloat(
-      computedStyle.lineHeight
-    );
-
-    if (isNaN(lineHeight)) {
-      const fontSize = parseFloat(
-        computedStyle.fontSize
-      );
-
-      lineHeight = fontSize * 1.2;
+      this.onToggle = this.onToggle.bind(this);
     }
 
-    this.collapsedHeight =
-      lineHeight * this.lines;
+    connectedCallback() {
+      this.content = this.querySelector('.product_description_content');
 
-    if (
-      this.content.scrollHeight <=
-      this.collapsedHeight + 5
-    ) {
-      this.button.classList.add('hidden');
-      this.content.style.maxHeight = 'none';
-      return;
+      this.button = this.querySelector('.product_description_toggle');
+
+      if (!this.content || !this.button) return;
+
+      this.lines = parseInt(this.dataset.lines || 4, 10);
+
+      this.readMoreText = this.dataset.readMore || 'Read more';
+
+      this.readLessText = this.dataset.readLess || 'Read less';
+
+      requestAnimationFrame(() => {
+        this.initialize();
+      });
     }
 
-    this.content.style.maxHeight =
-      `${this.collapsedHeight}px`;
+    initialize() {
+      const computedStyle = window.getComputedStyle(this.content);
 
-    this.button.addEventListener(
-      'click',
-      this.onToggle
-    );
-  }
+      let lineHeight = parseFloat(computedStyle.lineHeight);
 
-  onToggle() {
-    const expanded =
-      this.hasAttribute('expanded');
+      if (isNaN(lineHeight)) {
+        const fontSize = parseFloat(computedStyle.fontSize);
 
-    if (expanded) {
-      this.removeAttribute('expanded');
+        lineHeight = fontSize * 1.2;
+      }
 
-      this.content.style.maxHeight =
-        `${this.collapsedHeight}px`;
+      this.collapsedHeight = lineHeight * this.lines;
 
-      this.button.textContent =
-        this.readMoreText;
-    } else {
-      this.setAttribute('expanded', '');
+      if (this.content.scrollHeight <= this.collapsedHeight + 5) {
+        this.button.classList.add('hidden');
+        this.content.style.maxHeight = 'none';
+        return;
+      }
 
-      this.content.style.maxHeight =
-        `${this.content.scrollHeight}px`;
+      this.content.style.maxHeight = `${this.collapsedHeight}px`;
 
-      this.button.textContent =
-        this.readLessText;
+      this.button.addEventListener('click', this.onToggle);
+    }
+
+    onToggle() {
+      const expanded = this.hasAttribute('expanded');
+
+      if (expanded) {
+        this.removeAttribute('expanded');
+
+        this.content.style.maxHeight = `${this.collapsedHeight}px`;
+
+        this.button.textContent = this.readMoreText;
+      } else {
+        this.setAttribute('expanded', '');
+
+        this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+
+        this.button.textContent = this.readLessText;
+      }
+    }
+
+    disconnectedCallback() {
+      if (this.button) {
+        this.button.removeEventListener('click', this.onToggle);
+      }
     }
   }
 
-  disconnectedCallback() {
-    if (this.button) {
-      this.button.removeEventListener(
-        'click',
-        this.onToggle
-      );
-    }
+  if (!customElements.get('read-more-description')) {
+    customElements.define('read-more-description', ReadMoreDescription);
   }
-}
-
-if (!customElements.get('read-more-description')) {
-  customElements.define(
-    'read-more-description',
-    ReadMoreDescription
-  );
-}
 </script>

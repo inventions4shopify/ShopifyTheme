@@ -1,3 +1,61 @@
+{% style %}
+.product_price_block {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+/* Main price */
+.product_price {
+  font-size: 2rem;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+  line-height: 1.2;
+}
+
+/* Compare at price */
+.product_compare_price {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.6);
+  text-decoration: line-through;
+  font-weight: 400;
+}
+
+/* Save badge */
+.product_save_badge {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #0a7a2f;
+  background: rgba(10, 122, 47, 0.08);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Hover polish (optional) */
+.product_price_block:hover .product_save_badge {
+  background: rgba(10, 122, 47, 0.12);
+}
+
+/* Desktop scaling */
+@media screen and (min-width: 750px) {
+  .product_price {
+    font-size: 2.4rem;
+  }
+
+  .product_compare_price {
+    font-size: 1.5rem;
+  }
+
+  .product_save_badge {
+    font-size: 1.3rem;
+  }
+}
+{% endstyle %}
+
 {% assign variant = product.selected_or_first_available_variant %}
 <product-price
   {{ block.shopify_attributes }}
