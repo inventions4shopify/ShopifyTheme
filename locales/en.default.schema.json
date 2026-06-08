@@ -224,6 +224,9 @@
           "background_color": {
             "label": "Background color"
           },
+          "img_placeholder_color": {
+            "label": "Image Placeholder color"
+          },
           "heading_color": {
             "label": "Heading color"
           },

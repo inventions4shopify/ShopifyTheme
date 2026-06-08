@@ -420,6 +420,12 @@
       },
       {
         "type": "color",
+        "id": "img_placeholder_color",
+        "label": "t:settings_schema.colors.settings.general.img_placeholder_color.label",
+        "default": "#00000026"
+      },
+      {
+        "type": "color",
         "id": "heading_color",
         "label": "t:settings_schema.colors.settings.general.heading_color.label",
         "default": "#111111"

@@ -86,8 +86,6 @@
     const marquee = document.querySelector(".marquee-track");
 
     if (!marquee) return;
-
-    // Clone original items
     const items = [...marquee.children];
 
     items.forEach((item) => {
@@ -101,14 +99,10 @@
 
     function animate() {
       position -= speed;
-
-      // Smooth infinite loop without jump
       if (Math.abs(position) >= marquee.scrollWidth / 2) {
         position = 0;
       }
-
       marquee.style.transform = `translateX(${position}px)`;
-
       animationFrame = requestAnimationFrame(animate);
     }
 
@@ -296,6 +290,21 @@
     {
       "name": "Marquee",
       "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
         {
           "type": "item"
         },

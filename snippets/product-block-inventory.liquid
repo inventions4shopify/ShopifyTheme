@@ -1,0 +1,13 @@
+{% assign variant = product.selected_or_first_available_variant %}
+
+{% if variant.inventory_management
+  and variant.inventory_quantity > 0
+  and variant.inventory_quantity < block.settings.inventory_threshold
+%}
+  <div
+    class="product_inventory_block"
+    {{ block.shopify_attributes }}
+  >
+    Only {{ variant.inventory_quantity }} left
+  </div>
+{% endif %}

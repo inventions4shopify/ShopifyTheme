@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   document.querySelectorAll(".product_gallery").forEach((gallery) => {
     const slider = gallery.querySelector(".product_gallery_main_slider");
     const track = gallery.querySelector(".product_gallery_main_track");
@@ -27,6 +26,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       return slides[0].offsetWidth + gap;
     };
+
+    function updateThumbnailHeight() {
+      const mainWrapper = gallery.querySelector(
+        ".product_gallery_main_wrapper",
+      );
+
+      if (!mainWrapper) return;
+
+      const heightPx = mainWrapper.offsetHeight;
+      const rootFontSize = 10;
+
+      const heightRem = heightPx / rootFontSize;
+
+      gallery.style.setProperty("--thumbnail-height", `${heightRem}`);
+    }
 
     function updateActiveThumbnail(index) {
       thumbnails.forEach((thumb) => thumb.classList.remove("active"));
@@ -307,6 +321,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateSlider(0);
+
+    updateThumbnailHeight();
   });
 });
 
