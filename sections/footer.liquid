@@ -21,21 +21,21 @@
     font-family:var(--font-body-family);
     font-weight:700;
     text-transform: uppercase;
-    margin: 0 0 14px;
+    margin: 0 0 1.4rem;
     color:{{ settings.footer_text_color }};
   }
   .footer_section .social_link {
-    width:35px;
-    height:35px;
+    width:3.5rem;
+    height:3.5rem;
     border-radius:  var(--radius-full);
     color: {{ settings.footer_text_color }}; 
     background: #ffffff36; 
-    border:1px solid #ffffff54;
+    border:0.1rem solid #ffffff54;
     display: flex;
     align-items: center;
     justify-content: center; 
   }
-  /* .footer-{{ section.id }} a:hover { color: {{ section.settings.link_hover_color }}; } */
+  .footer__menu-link:hover { color: {{ settings.footer_text_color }}; opacity: 1; }
   .footer_section .footer__divider { background-color: {{ settings.footer_text_color }};opacity:0.2; }
   .footer__copyright a{ color: {{ settings.footer_text_color }};  text-decoration: none; }
   .footer__copyright a:hover{ text-decoration: underline; }
@@ -107,9 +107,6 @@
             {%- comment -%} ══ MENU block ══ {%- endcomment -%}
             {%- when 'link_list' -%}
               <div class="footer__block {{ col_class }} footer__block--menu" {{ block.shopify_attributes }}>
-                {% comment %} {%- if block.settings.title != blank -%}
-                  <h3 class="footer__block-title">{{ block.settings.title }}</h3>
-                {%- endif -%} {% endcomment %}
                 {%- if block.settings.menu != blank -%}
                   <div class="footer__menu-mobile">
                     <button class="footer__mobile-toggle">
@@ -262,13 +259,6 @@
 
       </div>
     </div>
-
-    {%- comment -%} Follow on Shop {%- endcomment -%}
-    {% comment %} {%- if section.settings.enable_follow_on_shop -%}
-      <div class="footer__follow-on-shop">
-        {{ shop | login_button: action: 'follow' }}
-      </div>
-    {%- endif -%} {% endcomment %}
 
   </div>
 </footer>

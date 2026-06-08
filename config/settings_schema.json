@@ -766,7 +766,7 @@
         "label": "t:settings_schema.product_card.settings.content_alignment.label",
         "options": [
           {
-            "value": "left",
+            "value": "start",
             "label": "t:settings_schema.product_card.settings.content_alignment.options.option_1"
           },
           {
@@ -774,11 +774,11 @@
             "label": "t:settings_schema.product_card.settings.content_alignment.options.option_2"
           },
           {
-            "value": "right",
+            "value": "end",
             "label": "t:settings_schema.product_card.settings.content_alignment.options.option_3"
           }
         ],
-        "default": "left"
+        "default": "start"
       }
     ]
   },
@@ -862,6 +862,31 @@
         "id": "social_spotify_link",
         "label": "t:settings_schema.social_media.settings.social_spotify_link.label",
         "info": "t:settings_schema.social_media.settings.social_spotify_link.info"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.cart.name",
+    "settings": [
+     {
+        "type": "select",
+        "id": "cart_icon",
+        "label": "Cart icon",
+        "options": [
+          {
+            "value": "shopping_basket",
+            "label": "Shopping Basket Icon"
+          },
+          {
+            "value": "shopping_bag",
+            "label": "Shopping Bag Icon"
+          },
+          {
+            "value": "shopping_cart",
+            "label": "Shopping Cart Icon"
+          },
+        ],
+         "default": "shopping_cart"
       }
     ]
   }

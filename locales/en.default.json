@@ -55,7 +55,11 @@
       "password": "Password",
       "submit": "Sign in",
       "title": "Login"
-    }
+    },
+    "account": {
+      "title": "Account",
+    },
+    "log_in": "Log in",
   },
   "collections": {
     "title": "Collections"
@@ -77,7 +81,8 @@
     "placeholder": "Search articles, pages, or products",
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
-    "results_for_html": "{{ count }} results found for {{ terms }}"
+    "results_for_html": "{{ count }} results found for {{ terms }}",
+    "reset": "Clear search term"
   },
   "social_media": {
     "name": "Social Account",
@@ -126,5 +131,17 @@
     "social_spotify_link": {
       "label": "Spotify"
     }
-  }
+  },
+  "accessibility": {
+    "close": "Close",
+  },
+  "localization": {
+    "country_label": "Country/region",
+    "language_label": "Language",
+    "update_language": "Update language",
+    "update_country": "Update country/region",
+    "search": "Search",
+    "popular_countries_regions": "Popular countries/regions",
+    "country_results_count": "{{ count }} countries/regions found"
+  },
 }
