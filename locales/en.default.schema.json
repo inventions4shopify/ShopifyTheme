@@ -490,9 +490,9 @@
   },
   "options": {
     "alignment": {
-      "left": "Left",
+      "start": "Start",
       "center": "Center",
-      "right": "Right"
+      "end": "End"
     },
     "direction": {
       "horizontal": "Horizontal",
