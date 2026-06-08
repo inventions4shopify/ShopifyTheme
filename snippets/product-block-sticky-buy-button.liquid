@@ -1,0 +1,250 @@
+
+{% style %}
+.sticky_add_to_cart {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+
+  background: rgb(var(--color-background));
+  border-top: 1px solid rgba(0,0,0,.1);
+
+  transform: translateY(100%);
+  transition: transform .3s ease;
+}
+
+.sticky_add_to_cart.is-visible {
+  transform: translateY(0);
+}
+
+.sticky_add_to_cart_inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 12px 20px;
+}
+
+.sticky_add_to_cart_product {
+  display: none;
+}
+
+.sticky_add_to_cart_button {
+  width: 100%;
+  min-height: 50px;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+
+  .sticky_add_to_cart_product {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+  }
+
+  .sticky_add_to_cart_image {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+  }
+
+  .sticky_add_to_cart_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .sticky_add_to_cart_content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sticky_add_to_cart_title {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .sticky_add_to_cart_button {
+    width: auto;
+    min-width: 220px;
+  }
+}
+{% endstyle %}
+
+<sticky-add-to-cart
+  class="sticky_add_to_cart"
+  data-product-id="{{ product.id }}"
+>
+  <div class="sticky_add_to_cart_inner">
+
+    <div class="sticky_add_to_cart_product">
+      <div class="sticky_add_to_cart_image">
+        <img
+          src="{{ product.featured_image | image_url: width: 120 }}"
+          alt="{{ product.title }}"
+          loading="lazy"
+          data-sticky-image
+        >
+      </div>
+
+      <div class="sticky_add_to_cart_content">
+        <h3
+          class="sticky_add_to_cart_title"
+          data-sticky-title
+        >
+          {{ product.title }}
+        </h3>
+
+        <div
+          class="sticky_add_to_cart_price"
+          data-sticky-price
+        >
+          {{ product.selected_or_first_available_variant.price | money }}
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="sticky_add_to_cart_button"
+      data-sticky-atc
+    >
+      Add to cart
+    </button>
+
+  </div>
+</sticky-add-to-cart>
+
+
+<script>
+class StickyAddToCart extends HTMLElement {
+  connectedCallback() {
+    this.productRoot =
+      document.querySelector('[data-product-root]');
+
+    this.image =
+      this.querySelector('[data-sticky-image]');
+
+    this.price =
+      this.querySelector('[data-sticky-price]');
+
+    this.button =
+      this.querySelector('[data-sticky-atc]');
+
+    this.buyButtons =
+      document.querySelector('product-form');
+
+    this.variant =
+      null;
+
+    this.onVariantChange =
+      this.onVariantChange.bind(this);
+
+    this.onButtonClick =
+      this.onButtonClick.bind(this);
+
+    this.productRoot?.addEventListener(
+      'product:variant-change',
+      this.onVariantChange
+    );
+
+    this.button?.addEventListener(
+      'click',
+      this.onButtonClick
+    );
+
+    this.initObserver();
+  }
+
+  disconnectedCallback() {
+    this.productRoot?.removeEventListener(
+      'product:variant-change',
+      this.onVariantChange
+    );
+
+    this.button?.removeEventListener(
+      'click',
+      this.onButtonClick
+    );
+
+    this.observer?.disconnect();
+  }
+
+  initObserver() {
+    if (!this.buyButtons) return;
+
+    this.observer =
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              this.classList.remove(
+                'is-visible'
+              );
+            } else {
+              this.classList.add(
+                'is-visible'
+              );
+            }
+          });
+        },
+        {
+          threshold: 0
+        }
+      );
+
+    this.observer.observe(
+      this.buyButtons
+    );
+  }
+
+  onVariantChange(event) {
+    const variant =
+      event.detail.variant;
+
+    if (!variant) return;
+
+    this.variant = variant;
+
+    if (variant.featured_image) {
+      this.image.src =
+        variant.featured_image.src +
+        '&width=120';
+    }
+
+    this.price.textContent =
+      Shopify.formatMoney(
+        variant.price,
+        window.theme.moneyFormat
+      );
+  }
+
+  onButtonClick() {
+    const form =
+      document.querySelector(
+        'product-form form'
+      );
+
+    if (!form) return;
+
+    form.requestSubmit();
+  }
+}
+
+if (
+  !customElements.get(
+    'sticky-add-to-cart'
+  )
+) {
+  customElements.define(
+    'sticky-add-to-cart',
+    StickyAddToCart
+  );
+}
+</script>

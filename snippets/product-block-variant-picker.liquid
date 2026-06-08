@@ -14,7 +14,6 @@
   .variant_picker_option_header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
   }
 
@@ -48,6 +47,7 @@
     display: block;
     border: 1px solid rgba(0, 0, 0, 0.15);
     transition: all 0.2s ease;
+    background-image: var(--swatch-image);
   }
 
   .variant_picker_swatch--circle {
@@ -113,6 +113,130 @@
     opacity: 0.4;
     pointer-events: none;
   }
+
+  .variant_picker_dropdown {
+    position: relative;
+  }
+
+  .variant_picker_dropdown_trigger {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+
+  .variant_picker_dropdown_trigger:hover {
+    border-color: #000;
+  }
+
+  .variant_picker_dropdown_selected_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .variant_picker_dropdown_selected {
+    line-height: 1.2;
+  }
+
+  .variant_picker_dropdown_icon {
+    display: flex;
+    transition: transform 0.25s ease;
+  }
+
+  .variant_picker_dropdown.is-open .variant_picker_dropdown_icon {
+    transform: rotate(180deg);
+  }
+
+  .variant_picker_dropdown_list {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+
+    background: #fff;
+
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    z-index: 20;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  .variant_picker_dropdown.is-open .variant_picker_dropdown_list {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .variant_picker_dropdown_option {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 16px;
+
+    border: none;
+    background: transparent;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition: background 0.15s ease;
+  }
+
+  .variant_picker_dropdown_option:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .variant_picker_dropdown_option.is-selected {
+    font-weight: 600;
+  }
+
+  .variant_picker_dropdown_swatch {
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    flex-shrink: 0;
+
+    background-size: cover;
+    background-position: center;
+  }
+
+  .variant_picker_dropdown_selected_swatch {
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    flex-shrink: 0;
+
+    background-size: cover;
+    background-position: center;
+  }
 {% endstyle %}
 
 <variant-picker
@@ -144,6 +268,14 @@
           assign option_layout = block.settings.option_3_layout
       endcase
     %}
+
+    {% assign is_color_option = false %}
+
+    {% assign option_name = option.name | downcase %}
+
+    {% if option_name contains 'color' or option_name contains 'colour' or option_name contains 'couleur' %}
+      {% assign is_color_option = true %}
+    {% endif %}
 
     <div
       class="variant_picker_option"
@@ -184,6 +316,8 @@
                   {% endif %}
                 >
 
+                {% assign swatch_file_name = value | handleize | append: '.png' %}
+
                 <span
                   class="
                     variant_picker_swatch
@@ -193,6 +327,9 @@
                     style="background-color: {{ value.swatch.color }};"
                   {% endif %}
                   data-option-value="{{ value | escape }}"
+                  {% if value.swatch.color == blank %}
+                  style="--swatch-image: url('{{ swatch_file_name | asset_url }}');"
+                  {% endif %}
                 ></span>
 
                 {% if block.settings.show_color_name %}
@@ -233,21 +370,55 @@
 
         {% when 'dropdown' %}
           <div class="variant_picker_dropdown">
-            <select
-              name="option-{{ option.position }}"
-              data-option-select
-            >
-              {% for value in option.values %}
-                <option
-                  value="{{ value | escape }}"
-                  {% if option.selected_value == value %}
-                    selected
-                  {% endif %}
+            <div class="variant_picker_dropdown">
+              <button
+                type="button"
+                class="variant_picker_dropdown_trigger"
+                data-dropdown-trigger
+              >
+                <span
+                  class="variant_picker_dropdown_selected"
+                  data-dropdown-selected
                 >
-                  {{ value }}
-                </option>
-              {% endfor %}
-            </select>
+                  {{ option.selected_value }}
+                </span>
+
+                {% render 'icon', icon: 'chevron-down', width: 16, height: 16 %}
+              </button>
+
+              <div
+                class="variant_picker_dropdown_list"
+                data-dropdown-list
+              >
+                {% for value in option.values %}
+                  <button
+                    type="button"
+                    class="variant_picker_dropdown_option"
+                    data-option-value="{{ value | escape }}"
+                  >
+                    {% if block.settings.show_dropdown_swatches and is_color_option %}
+                      <span
+                        class="variant_picker_dropdown_swatch"
+                        {% if value.swatch.color %}
+                          style="background-color: {{ value.swatch.color }};"
+                        {% endif %}
+                      ></span>
+                    {% endif %}
+
+                    <span>
+                      {{ value }}
+                    </span>
+                  </button>
+                {% endfor %}
+              </div>
+
+              <input
+                type="hidden"
+                name="option-{{ option.position }}"
+                value="{{ option.selected_value | escape }}"
+                data-dropdown-input
+              >
+            </div>
           </div>
       {% endcase %}
     </div>
@@ -280,12 +451,13 @@
         return;
       }
 
-      this.inputs = this.querySelectorAll('input[type="radio"], select');
+      this.inputs = this.querySelectorAll('input[type="radio"], [data-dropdown-input]');
 
       this.inputs.forEach((input) => {
         input.addEventListener('change', this.onChange);
       });
 
+      this.initDropdowns();
       this.optionElements = this.querySelectorAll('.variant_picker_option');
 
       this.updateVariant();
@@ -301,18 +473,60 @@
       this.updateVariant();
     }
 
+    initDropdowns() {
+      this.querySelectorAll('.variant_picker_dropdown').forEach((dropdown) => {
+        const trigger = dropdown.querySelector('[data-dropdown-trigger]');
+
+        const hiddenInput = dropdown.querySelector('[data-dropdown-input]');
+
+        const selectedText = dropdown.querySelector('[data-dropdown-selected]');
+
+        const options = dropdown.querySelectorAll('.variant_picker_dropdown_option');
+
+        trigger.addEventListener('click', () => {
+          dropdown.classList.toggle('is-open');
+        });
+
+        options.forEach((option) => {
+          option.addEventListener('click', () => {
+            const value = option.dataset.optionValue;
+
+            hiddenInput.value = value;
+
+            selectedText.textContent = value;
+
+            dropdown.classList.remove('is-open');
+
+            hiddenInput.dispatchEvent(
+              new Event('change', {
+                bubbles: true,
+              })
+            );
+          });
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!this.contains(event.target)) {
+          this.querySelectorAll('.variant_picker_dropdown').forEach((dropdown) => {
+            dropdown.classList.remove('is-open');
+          });
+        }
+      });
+    }
+
     getSelectedOptions() {
       const options = [];
 
       this.optionElements.forEach((option) => {
         const radio = option.querySelector('input[type="radio"]:checked');
 
-        const select = option.querySelector('select');
+        const dropdownInput = option.querySelector('[data-dropdown-input]');
 
         if (radio) {
           options.push(radio.value);
-        } else if (select) {
-          options.push(select.value);
+        } else if (dropdownInput) {
+          options.push(dropdownInput.value);
         }
       });
 

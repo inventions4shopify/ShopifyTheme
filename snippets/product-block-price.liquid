@@ -1,35 +1,134 @@
 {% assign variant = product.selected_or_first_available_variant %}
-
-<div
-  class="product_price_block"
+<product-price
   {{ block.shopify_attributes }}
 >
-  <span class="product_price">
-    {{ variant.price | money }}
-  </span>
+  <div
+    class="product_price_block"
+    data-price-block
+  >
+    <span
+      class="product_price"
+      data-price
+    >
+      {{ variant.price | money }}
+    </span>
 
-  {% if variant.compare_at_price > variant.price %}
-    <span class="product_compare_price">
+    <span
+      class="product_compare_price"
+      data-compare-price
+      {% unless variant.compare_at_price > variant.price %}
+        hidden
+      {% endunless %}
+    >
       {{ variant.compare_at_price | money }}
     </span>
 
     {% if block.settings.show_save_badge %}
-      {% assign difference = variant.compare_at_price | minus: variant.price %}
+      <span
+        class="product_save_badge"
+        data-save-badge
+        {% unless variant.compare_at_price > variant.price %}
+          hidden
+        {% endunless %}
+      >
+        {% assign difference = variant.compare_at_price | minus: variant.price %}
 
-      {% if block.settings.save_type == 'money' %}
-        <span class="product_save_badge">
+        {% if block.settings.save_type == 'money' %}
           Save {{ difference | money }}
-        </span>
-      {% else %}
-        {% assign percentage = difference
-          | times: 100
-          | divided_by: variant.compare_at_price
-        %}
+        {% else %}
+          {% assign percentage = difference | times: 100 | divided_by: variant.compare_at_price %}
 
-        <span class="product_save_badge">
           Save {{ percentage }}%
-        </span>
-      {% endif %}
+        {% endif %}
+      </span>
     {% endif %}
-  {% endif %}
-</div>
+  </div>
+
+  <script
+    type="application/json"
+    data-price-settings
+  >
+    {
+        "showSaveBadge": {{ block.settings.show_save_badge | json }},
+        "saveType": {{ block.settings.save_type | json }},
+        "moneyFormat": {{ shop.money_format | json }}
+        }
+  </script>
+</product-price>
+
+<script>
+  class ProductPrice extends HTMLElement {
+    connectedCallback() {
+      this.price = this.querySelector('[data-price]');
+
+      this.comparePrice = this.querySelector('[data-compare-price]');
+
+      this.saveBadge = this.querySelector('[data-save-badge]');
+
+      this.settings = JSON.parse(this.querySelector('[data-price-settings]').textContent);
+
+      this.productRoot = this.closest('[data-product-root]');
+
+      this.onVariantChange = this.onVariantChange.bind(this);
+
+      this.productRoot?.addEventListener('product:variant-change', this.onVariantChange);
+    }
+
+    disconnectedCallback() {
+      this.productRoot?.removeEventListener('product:variant-change', this.onVariantChange);
+    }
+
+    formatMoney(cents) {
+      return new Intl.NumberFormat(document.documentElement.lang || 'en', {
+        style: 'currency',
+        currency: Shopify.currency.active,
+      }).format(cents / 100);
+    }
+
+    onVariantChange(event) {
+      const variant = event.detail.variant;
+
+      if (!variant) return;
+
+      this.price.textContent = this.formatMoney(variant.price);
+
+      const onSale = variant.compare_at_price > variant.price;
+
+      if (!onSale) {
+        this.comparePrice?.setAttribute('hidden', '');
+
+        this.saveBadge?.setAttribute('hidden', '');
+
+        return;
+      }
+
+      if (this.comparePrice) {
+        this.comparePrice.textContent = this.formatMoney(variant.compare_at_price);
+
+        this.comparePrice.removeAttribute('hidden');
+      }
+
+      if (this.saveBadge && this.settings.showSaveBadge) {
+        const difference = variant.compare_at_price - variant.price;
+
+        let saveText = '';
+
+        if (this.settings.saveType === 'money') {
+          saveText = 'Save ' + this.formatMoney(difference);
+        } else {
+          const percentage = Math.round((difference * 100) / variant.compare_at_price);
+
+          saveText = 'Save ' + percentage + '%';
+        }
+
+        this.saveBadge.textContent = saveText;
+
+        this.saveBadge.removeAttribute('hidden');
+      }
+    }
+  }
+
+  if (!customElements.get('product-price')) {
+    customElements.define('product-price', ProductPrice);
+  }
+</script>

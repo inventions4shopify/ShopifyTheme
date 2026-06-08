@@ -18,6 +18,12 @@
       {% when 'variant_picker' %}
         {% render 'product-block-variant-picker', product: product, block: block %}
 
+      {% when 'delivery_date' %}
+        {% render 'product-block-delivery-date', product: product, block: block %}
+
+      {% when 'sticky_add_to_cart' %}
+        {% render 'product-block-sticky-buy-button', product: product, block: block %}
+
       {% when 'buy_buttons' %}
         {% render 'product-block-buy-buttons', product: product, block: block %}
 

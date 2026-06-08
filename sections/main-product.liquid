@@ -60,7 +60,7 @@
           "label": "Vertical"
         }
       ],
-      "default": "horizontal"
+      "default": "vertical"
     },
     {
       "type": "select",
@@ -505,6 +505,37 @@
       ]
     },
     {
+      "type": "sticky_add_to_cart",
+      "name": "Sticky Add to Cart",
+      "settings": []
+    },
+    {
+      "type": "delivery_date",
+      "name": "Delivery Date",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "delivery_gap_days",
+          "label": "Delivery gap in days",
+          "default": 5,
+          "min": 1,
+          "max": 31
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "set_time_limit",
+          "label": "Set Time Limit",
+          "default": false
+        }
+      ]
+    },
+    {
       "type": "accordion",
       "name": "Accordion",
       "settings": [
@@ -528,7 +559,32 @@
     },
     {
       "type": "recommendations",
-      "name": "Recommendations"
+      "name": "Frequently Bought Together",
+      "settings": [
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Products"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_price",
+          "label": "Show price",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_vendor",
+          "label": "Show vendor",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_add_to_cart",
+          "label": "Show add to cart",
+          "default": true
+        }
+      ]
     }
   ],
   "presets": [
@@ -555,6 +611,12 @@
         },
         {
           "type": "buy_buttons"
+        },
+        {
+          "type": "delivery_date"
+        },
+        {
+          "type": "sticky_add_to_cart"
         },
         {
           "type": "accordion"

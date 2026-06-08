@@ -1,0 +1,39 @@
+<frequently-bought-together
+  class="fbt"
+  {{ block.shopify_attributes }}
+>
+  <div class="fbt_slider">
+
+    {% for recommendation_product in block.settings.products %}
+
+      <div class="fbt_slide">
+
+        <a
+          href="{{ recommendation_product.url }}"
+          class="fbt_image"
+        >
+          <img
+            src="{{ recommendation_product.featured_image | image_url: width: 500 }}"
+            alt="{{ recommendation_product.title }}"
+            loading="lazy"
+          >
+        </a>
+
+        <h3 class="fbt_title">
+          {{ recommendation_product.title }}
+        </h3>
+
+        <div class="fbt_price">
+          {{ recommendation_product.price | money }}
+        </div>
+
+        {% render 'product-card-form',
+          product: recommendation_product
+        %}
+
+      </div>
+
+    {% endfor %}
+
+  </div>
+</frequently-bought-together>

@@ -1,0 +1,121 @@
+{% style %}
+    .csm_date_delivery {
+        text-align: center;
+        color: var(--mine-shaft);
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        align-items: center;
+    }
+    .delivery_date_icon{
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+    }
+    .delivery_date_icon img{
+        width: 100%;
+        height: 100%;
+    }
+    .product-delivery-date .csm_date_delivery {
+        font-weight: 500;
+        line-height: 1.3;
+        letter-spacing: 0;
+        background-color:rgba(155, 4, 112, 0.3);
+        padding: 7px;
+        text-align: center;
+        margin: 1rem 0;
+        border-radius: 5px;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        font-size: 14px;
+    }
+    .get_it_by{
+        display: flex;
+        flex-direction: column;
+    }
+    .product-delivery-date .csm_date_delivery svg {
+        fill: currentColor;
+        display: block;
+    }
+    .product-delivery-date .csm_date_delivery img {
+        display: block;
+        min-width: 25px;
+    }
+{% endstyle %}
+
+<div class="product-delivery-date">
+    {% assign delivery_days = block.settings.delivery_gap_days %}
+    {% assign delivery_seconds = delivery_days | times: 86400 %}
+    {% assign delivery_timestamp = 'now' | date: '%s' | plus: delivery_seconds %}
+    {% assign delivery_day = delivery_timestamp | date: '%A' %}
+
+    {% if delivery_day == 'Saturday' %}
+        {% assign delivery_timestamp = delivery_timestamp | plus: 172800 %}
+    {% elsif delivery_day == 'Sunday' %}
+        {% assign delivery_timestamp = delivery_timestamp | plus: 86400 %}
+    {% endif %}
+
+    {% assign delivery_date = delivery_timestamp | date: '%A, %d %b %Y' %}
+    <div class="csm_date_delivery">
+        <span class="delivery_date_icon">
+        {%- if block.settings.image != blank %}
+        <img
+        src="{{ block.settings.image | img_url: "" }}"
+        alt="{{ block.settings.image.alt }}"
+        loading="lazy"
+        class=""
+        >
+        {% endif -%}
+        </span>
+        
+        <span class="get_it_by">Get It By {{ delivery_date }}
+        {% if block.settings.set_time_limit %}, <span>If you Order within next <strong><span id="countdown"></strong></span></span>
+        {% endif %}
+        </span>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const display = document.getElementById('countdown');
+        if (!display) return;
+
+        const STORAGE_KEY = 'offer_countdown_3h45m';
+
+        // 3 hours 45 minutes in seconds
+        const DEFAULT_TIME = 3 * 60 * 60 + 45 * 60;
+
+        let remainingTime = localStorage.getItem(STORAGE_KEY);
+
+        if (!remainingTime) {
+            remainingTime = DEFAULT_TIME;
+            localStorage.setItem(STORAGE_KEY, remainingTime);
+        } else {
+            remainingTime = parseInt(remainingTime, 10);
+        }
+
+        function updateTimer() {
+            if (remainingTime <= 0) {
+            display.textContent = 'Expired';
+            localStorage.removeItem(STORAGE_KEY);
+            return;
+        }
+
+        const hours = Math.floor(remainingTime / 3600);
+        const minutes = Math.floor((remainingTime % 3600) / 60);
+        const seconds = remainingTime % 60;
+
+        display.textContent = `${hours}h ${minutes}m ${seconds}s`;
+
+        remainingTime--;
+        localStorage.setItem(STORAGE_KEY, remainingTime);
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    });
+</script>
+              
