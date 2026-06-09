@@ -631,6 +631,32 @@
     "name": "t:settings_schema.product_card.name",
     "settings": [
       {
+        "type": "select",
+        "id": "style",
+        "label": "t:settings_schema.product_card.settings.style.label",
+        "options": [
+          {
+            "value": "standard",
+            "label": "t:settings_schema.product_card.settings.style.options.option_1"
+          },
+          {
+            "value": "card",
+            "label": "t:settings_schema.product_card.settings.style.options.option_2"
+          }
+        ],
+        "default": "card"
+      },
+      {
+        "type": "range",
+        "id": "card_border_radius",
+        "label": "t:settings_schema.product_card.settings.card_border_radius.label",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 6,
+        "unit": "px"
+      },
+      {
         "type": "checkbox",
         "id": "show_vendor",
         "label": "t:settings_schema.product_card.settings.show_vendor.label",
@@ -650,29 +676,6 @@
       },
       {
         "type": "checkbox",
-        "id": "show_rating",
-        "label": "t:settings_schema.product_card.settings.show_rating.label",
-        "info": "t:settings_schema.product_card.settings.show_rating.info",
-        "default": false
-      },
-      {
-        "type": "select",
-        "id": "rating_display",
-        "label": "t:settings_schema.product_card.settings.rating_display.label",
-        "options": [
-          {
-            "value": "average",
-            "label": "t:settings_schema.product_card.settings.rating_display.options.option_1"
-          },
-          {
-            "value": "count",
-            "label": "t:settings_schema.product_card.settings.rating_display.options.option_2"
-          }
-        ],
-        "default": "average"
-      },
-      {
-        "type": "checkbox",
         "id": "show_sold_out_badge",
         "label": "t:settings_schema.product_card.settings.show_sold_out.label",
         "default": true
@@ -689,11 +692,11 @@
         "label": "t:settings_schema.product_card.settings.discount_type.label",
         "options": [
           {
-            "value": "sale",
+            "value": "percentage",
             "label": "t:settings_schema.product_card.settings.discount_type.options.option_1"
           },
           {
-            "value": "percentage",
+            "value": "sale",
             "label": "t:settings_schema.product_card.settings.discount_type.options.option_2"
           },
           {
@@ -734,31 +737,19 @@
         "label": "t:settings_schema.product_card.settings.image_ratio.label",
         "options": [
           {
-            "value": "natural",
+            "value": "default",
             "label": "t:settings_schema.product_card.settings.image_ratio.options.option_1"
           },
           {
-            "value": "short",
+            "value": "portrait",
             "label": "t:settings_schema.product_card.settings.image_ratio.options.option_2"
           },
           {
             "value": "square",
             "label": "t:settings_schema.product_card.settings.image_ratio.options.option_3"
-          },
-          {
-            "value": "tall",
-            "label": "t:settings_schema.product_card.settings.image_ratio.options.option_4"
-          },
-          {
-            "value": "short_fill",
-            "label": "t:settings_schema.product_card.settings.image_ratio.options.option_5"
-          },
-          {
-            "value": "tall_fill",
-            "label": "t:settings_schema.product_card.settings.image_ratio.options.option_6"
           }
         ],
-        "default": "natural"
+        "default": "square"
       },
       {
         "type": "select",
@@ -868,7 +859,7 @@
   {
     "name": "t:settings_schema.cart.name",
     "settings": [
-     {
+      {
         "type": "select",
         "id": "cart_icon",
         "label": "Cart icon",
@@ -886,7 +877,7 @@
             "label": "Shopping Cart Icon"
           },
         ],
-         "default": "shopping_cart"
+        "default": "shopping_cart"
       }
     ]
   }
