@@ -1328,3 +1328,13 @@ canvas {
   top: 0;
   width: 3.6rem;
 }
+
+@keyframes ping {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(.8);
+  }
+}

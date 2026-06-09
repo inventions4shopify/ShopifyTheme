@@ -30,7 +30,9 @@
         >
           <span>{{ link.title }}</span>
           {%- if show_panel -%}
-            {% render 'icon' , icon: 'chevron-down' , width: 20, height: 20 %}
+            <span class="header__nav-icon">
+              {% render 'icon' , icon: 'chevron-bottom' , width: 16, height: 16 %}
+            </span>
           {%- endif -%}
         </a>
 
