@@ -21,7 +21,6 @@
 }
 
 .pagination__item {
-  color: rgb(var(--color-foreground));
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -30,6 +29,10 @@
   width: 100%;
   padding: 0;
   text-decoration: none;
+}
+
+.pagination__item:not(.button) {
+  color: rgb(var(--color-button-secondary-outline));
 }
 
 a.pagination__item:hover::after {
