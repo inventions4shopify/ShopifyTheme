@@ -1,0 +1,32 @@
+.collection-products {
+    display: grid;
+    gap: 24px;
+}
+
+.main-page__section {
+    position: relative;
+    overflow: hidden;
+}
+
+.main-page__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.main-page__inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+}
+
+.main-page__section {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+}
