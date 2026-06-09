@@ -1,0 +1,17 @@
+{% assign current_variant = variant | default: product.selected_or_first_available_variant %}
+
+<div class="product-card__price">
+  {% if current_variant.compare_at_price > current_variant.price %}
+    <span class="product-card__price--sale text-xlg">
+      {{ current_variant.price | money }}
+    </span>
+
+    <span class="product-card__price--compare text-sm">
+      {{ current_variant.compare_at_price | money }}
+    </span>
+  {% else %}
+    <span class="product-card__price--regular text-lg">
+      {{ current_variant.price | money }}
+    </span>
+  {% endif %}
+</div>

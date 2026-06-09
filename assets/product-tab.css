@@ -70,7 +70,6 @@
 	width: 100%;
 	max-width: calc(100% - var(--grid-spacing));
 	flex: 0 0 calc(100% - var(--grid-spacing));
-	border: 0.1rem solid rgb(var(--color-border));
 	border-radius: var(--media-radius);
 	overflow: hidden;
 }

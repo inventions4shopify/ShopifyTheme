@@ -84,6 +84,20 @@
     "results_for_html": "{{ count }} results found for {{ terms }}",
     "reset": "Clear search term"
   },
+  "card_product": {
+    "sold_out": {
+      "label": "Sold Out"
+    },
+    "sale": {
+      "label": " Sale"
+    },
+    "off": {
+      "label": "% OFF"
+    },
+    "save": {
+      "label": "Save"
+    },
+  },
   "social_media": {
     "name": "Social Account",
     "header": {

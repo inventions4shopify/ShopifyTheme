@@ -341,6 +341,16 @@
         "show_vendor": {
           "label": "Show vendor"
         },
+        "style": {
+          "label": "Style",
+          "options": {
+            "option_1": "Standard",
+            "option_2": "Card"
+          }
+        },
+        "card_border_radius": {
+          "label": "Card border radius"
+        },
         "show_secondary_image": {
           "label": "Show secondary image on hover"
         },

@@ -1,22 +1,25 @@
-<div class="product-card">
+<div class="product-card card_style-{{ style }}">
   {% assign first_variant = product.selected_or_first_available_variant %}
 
   <div class="product-card__media product-card__media--{{ image_ratio }} aspect-{{ image_ratio }}">
     {% if show_sold_out_badge and product.available == false %}
-      <span class="product-card__badge sold-out-badge text-xss rounded-sm"> Sold Out </span>
+      <span class="product-card__badge sold-out-badge text-xss rounded-sm">
+        {{ 'card_product.sold_out.label' | t }}
+      </span>
     {% elsif show_discount_badge and product.compare_at_price > product.price %}
       <span class="product-card__badge sale-badge text-xss rounded-sm">
         {% case discount_type %}
           {% when 'sale' %}
-            Sale
-
+            {{ 'card_product.sale.label' | t }}
           {% when 'percentage' %}
             {% assign discount = product.compare_at_price | minus: product.price %}
             {% assign discount_percent = discount | times: 100 | divided_by: product.compare_at_price %}
-            {{ discount_percent }}% OFF
+            {{ discount_percent -}}
+            {{- 'card_product.off.label' | t }}
 
           {% when 'save_amount' %}
-            Save {{ product.compare_at_price | minus: product.price | money }}
+            {{ 'card_product.save.label' | t }}
+            {{ product.compare_at_price | minus: product.price | money }}
         {% endcase %}
       </span>
     {% endif %}
@@ -46,36 +49,11 @@
     </a>
   </div>
 
-  {% assign color_option = blank %}
-
-  {% for option in product.options_with_values %}
-    {% if option.name contains 'Color'
-      or option.name contains 'Colour'
-      or option.name contains 'color'
-      or option.name contains 'colour'
-    %}
-      {% assign color_option = option %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-
-  {% if color_option %}
-    {% case color_display_mode %}
-      {% when 'swatch' %}
-        <div class="product-card__swatches text-{{ content_alignment }}">
-          {% for value in color_option.values %}
-            <span
-              class="product-card__swatch rounded-lg"
-              style="background-color: {{ value | downcase }};"
-              title="{{ value }}"
-            ></span>
-          {% endfor %}
-        </div>
-
-      {% when 'count' %}
-        <div class="product-card__color-count">{{ color_option.values.size }} Colors</div>
-    {% endcase %}
-  {% endif %}
+  {% render 'product-card-variant',
+    product: product,
+    color_display_mode: color_display_mode,
+    content_alignment: content_alignment
+  %}
 
   <div class="product-card__content text-{{ content_alignment }}">
     {% if show_vendor and product.vendor != blank %}
@@ -102,21 +80,7 @@
       </div>
     {% endif %}
 
-    <div class="product-card__price">
-      {% if product.compare_at_price > product.price %}
-        <span class="product-card__price--sale text-lg">
-          {{ product.price | money }}
-        </span>
-
-        <span class="product-card__price--compare text-lg">
-          {{ product.compare_at_price | money }}
-        </span>
-      {% else %}
-        <span class="product-card__price--regular text-lg">
-          {{ product.price | money }}
-        </span>
-      {% endif %}
-    </div>
+    {% render 'price', product: product, variant: first_variant %}
   </div>
   {% if show_quick_buy %}
     {% if product.available %}
@@ -136,12 +100,12 @@
           </button>
         </form>
       {% else %}
-        <a
-          href="{{ product.url }}"
+        <button
+          type="button"
           class="product-card__quick-add button"
         >
           Choose Options
-        </a>
+        </button>
       {% endif %}
     {% else %}
       <button

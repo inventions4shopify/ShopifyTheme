@@ -631,6 +631,32 @@
     "name": "t:settings_schema.product_card.name",
     "settings": [
       {
+        "type": "select",
+        "id": "style",
+        "label": "t:settings_schema.product_card.settings.style.label",
+        "options": [
+          {
+            "value": "standard",
+            "label": "t:settings_schema.product_card.settings.style.options.option_1"
+          },
+          {
+            "value": "card",
+            "label": "t:settings_schema.product_card.settings.style.options.option_2"
+          }
+        ],
+        "default": "card"
+      },
+      {
+        "type": "range",
+        "id": "card_border_radius",
+        "label": "t:settings_schema.product_card.settings.card_border_radius.label",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 6,
+        "unit": "px"
+      },
+      {
         "type": "checkbox",
         "id": "show_vendor",
         "label": "t:settings_schema.product_card.settings.show_vendor.label",
