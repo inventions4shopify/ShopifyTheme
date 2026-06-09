@@ -11,7 +11,9 @@
         >
           <span>{{ link.title }}</span>
           {%- if has_children -%}
-             {% render 'icon' , icon: 'chevron-down' , width: 20, height: 20 %}
+            <span class="header__nav-icon">
+              {% render 'icon' , icon: 'chevron-bottom' , width: 16, height: 16 %}
+            </span>
           {%- endif -%}
         </a>
 
@@ -28,7 +30,9 @@
                 >
                   <span>{{ child.title }}</span>
                   {%- if has_grand -%}
-                    {% render 'icon' , icon: 'chevron-right' , width: 14, height: 14 %}
+                    <span class="header__nav-icon">
+                      {% render 'icon' , icon: 'chevron-right' , width: 14, height: 14 %}
+                    </span>
                   {%- endif -%}
                 </a>
 

@@ -77,12 +77,18 @@
                       <div class="product-cell js-product-slide">
                         {% render 'product-card',
                           product: product,
-                          show_vendor: section.settings.show_vendor,
-                          show_rating: section.settings.show_rating,
-                          show_color_swatches: section.settings.show_color_swatches,
-                          show_sale_badge: section.settings.show_sale_badge,
-                          show_secondary_image: section.settings.show_secondary_image,
-                          enable_quick_add: section.settings.enable_quick_add
+                          show_vendor: settings.show_vendor,
+                          show_secondary_image: settings.show_secondary_image,
+                          show_quick_buy: settings.show_quick_buy,
+                          show_rating: settings.show_rating,
+                          rating_display: settings.rating_display,
+                          show_sold_out_badge: settings.show_sold_out_badge,
+                          show_discount_badge: settings.show_discount_badge,
+                          discount_type: settings.discount_type,
+                          color_display_mode: settings.color_display_mode,
+                          image_ratio: settings.image_ratio,
+                          content_alignment: settings.content_alignment,
+                          style: settings.style
                         %}
                       </div>
                     {% endfor %}
@@ -362,83 +368,6 @@
       "id": "show_slider",
       "label": "Slider",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Card product"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Image Ratio",
-      "options": [
-        { "value": "adapt", "label": "Adapt to Image" },
-        { "value": "portrait", "label": "Portrait" },
-        { "value": "square", "label": "Square" }
-      ],
-      "default": "adapt"
-    },
-    {
-      "type": "select",
-      "id": "image_shape",
-      "label": "Image Shape",
-      "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "rounded", "label": "Rounded" },
-        { "value": "circle", "label": "Circle" }
-      ],
-      "default": "default"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "label": "Show Second Image on Hover",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_image_zoom",
-      "label": "Enable Image Zoom on Hover",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "label": "Show Vendor",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "label": "Show Product Rating",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_color_swatches",
-      "label": "Show Color Swatches",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_sale_badge",
-      "label": "Show Sale Badge",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_quick_add",
-      "label": "Enable Quick Add",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "products_per_row",
-      "label": "Products per row",
-      "min": 2,
-      "max": 8,
-      "step": 1,
-      "default": 4
     },
     {
       "type": "header",

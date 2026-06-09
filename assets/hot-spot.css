@@ -1,0 +1,74 @@
+.cms-hot-spot-row {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+}
+
+.cms-hot-spot__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.cms-hot-spot__content {
+    z-index: 2;
+    position: relative;
+}
+
+.cms-hot-spot-items {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+}
+
+.cms-hot-spot-cell {
+    position: absolute;
+    top: var(--button-position-vertical-mobile);
+    left: var(--button-position-horizontal-mobile);
+}
+
+.cms-hot-spot-cell .button {
+    border-radius: var(--radius-full);
+    padding: 0;
+    width: 4.4rem;
+    height: 4.4rem;
+    transition: all 0.25s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.cms-hot-spot-button {
+    position: relative;
+}
+
+.cms-hot-spot-body {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    border-radius: var(--media-radius);
+    background-color: var(--hot-spot-bg);
+    padding: var(--spacing-16);
+    margin: var(--spacing-10);
+    min-width: 25rem;
+}
+
+.cms-hot-spot-body >* {
+    color: var(--hot-spot-heading-color);
+}
+
+.cms-hot-spot-cell.active .cms-hot-spot-body {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+@media (min-width: 992px) {
+    .cms-hot-spot-cell {
+        position: absolute;
+        top: var(--button-position-vertical-desktop);
+        left: var(--button-position-horizontal-desktop);
+    }
+}

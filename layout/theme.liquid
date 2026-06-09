@@ -8,7 +8,10 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {% endif %}
 
-    {% unless settings.type_heading_font.system? and settings.type_subheading_font.system? and settings.type_body_font.system? %}
+    {% unless settings.type_heading_font.system?
+      and settings.type_subheading_font.system?
+      and settings.type_body_font.system?
+    %}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {% endunless %}
 
@@ -31,6 +34,19 @@
     {%- endif -%}
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
+
+    <script>
+            window.theme = window.theme || {};
+
+            window.theme.moneyFormat = {{ shop.money_format | json }};
+
+            window.theme.formatMoney = function(cents) {
+        const amount = (cents / 100).toFixed(2);
+
+        return window.theme.moneyFormat
+          .replace(/\{\{\s*amount\s*\}\}/g, amount);
+      };
+    </script>
 
     {{ content_for_header }}
   </head>

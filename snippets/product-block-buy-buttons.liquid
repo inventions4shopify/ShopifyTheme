@@ -1,13 +1,56 @@
+{% style %}
+  .product_form {
+    margin-top: 1.5rem;
+    display: block;
+  }
+  .product_form_submit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 1%;
+    flex: 1 1 auto;
+  }
+
+  .product_quantity_buy_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .product_form_submit.loading {
+    pointer-events: none;
+  }
+
+  .product_form_spinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: inherit;
+  }
+
+  .product_form_spinner.hidden {
+    display: none;
+  }
+
+  .product_form_submit.loading > svg,
+  .product_form_submit.loading > span:not(.product_form_spinner) {
+    opacity: 0;
+  }
+{% endstyle %}
+
 <product-form
   class="product_form"
+  data-product-id="{{ product.id }}"
+  data-cart-type="{{ settings.cart_type }}"
+  data-cart-drawer-section="cart-drawer"
   {{ block.shopify_attributes }}
 >
-  {% form 'product',
-    product,
-    class: 'product_form_form',
-    novalidate: 'novalidate'
-  %}
-
+  {% form 'product', product, class: 'product_form_form', novalidate: 'novalidate' %}
     <input
       type="hidden"
       name="id"
@@ -15,54 +58,33 @@
       data-variant-id
     >
 
-    {% if block.settings.show_quantity_selector %}
-      <div class="product_form_quantity">
-        <button
-          type="button"
-          data-quantity-decrease
-        >
-          -
-        </button>
+    <div class="product_quantity_buy_wrapper">
+      {% if block.settings.show_quantity_selector %}
+        {% render 'product-quantity-input' %}
+      {% endif %}
 
-        <input
-          type="number"
-          name="quantity"
-          value="1"
-          min="1"
-          data-quantity-input
-        >
+      <button
+        type="submit"
+        name="add"
+        class="product_form_submit button button--primary"
+        data-add-to-cart
+      >
+        {% render 'icon', icon: 'cart', width: 22, height: 22 %}
 
-        <button
-          type="button"
-          data-quantity-increase
-        >
-          +
-        </button>
-      </div>
-    {% endif %}
+        <span data-add-to-cart-text> Add to cart </span>
 
-    <button
-      type="submit"
-      name="add"
-      class="product_form_submit"
-      data-add-to-cart
-      {% unless product.selected_or_first_available_variant.available %}
-        disabled
-      {% endunless %}
-    >
-      <span data-add-to-cart-text>
-        {% if product.selected_or_first_available_variant.available %}
-          Add to cart
-        {% else %}
-          Sold out
-        {% endif %}
-      </span>
-    </button>
+        <span
+          class="product_form_spinner hidden"
+          data-spinner
+        >
+          {% render 'loading-spinner' %}
+        </span>
+      </button>
+    </div>
 
     {% if block.settings.show_dynamic_checkout %}
       {{ form | payment_button }}
     {% endif %}
-
   {% endform %}
 </product-form>
 
@@ -71,99 +93,58 @@
     constructor() {
       super();
 
-      this.onVariantChange =
-        this.onVariantChange.bind(this);
+      this.onVariantChange = this.onVariantChange.bind(this);
 
-      this.onQuantityDecrease =
-        this.onQuantityDecrease.bind(this);
+      this.onQuantityDecrease = this.onQuantityDecrease.bind(this);
 
-      this.onQuantityIncrease =
-        this.onQuantityIncrease.bind(this);
+      this.onQuantityIncrease = this.onQuantityIncrease.bind(this);
+      this.onSubmit = this.onSubmit.bind(this);
     }
 
     connectedCallback() {
-      this.form =
-        this.querySelector('form');
+      this.form = this.querySelector('form');
 
-      this.variantInput =
-        this.querySelector(
-          '[data-variant-id]'
-        );
+      this.variantInput = this.querySelector('[data-variant-id]');
 
-      this.addToCartButton =
-        this.querySelector(
-          '[data-add-to-cart]'
-        );
+      this.addToCartButton = this.querySelector('[data-add-to-cart]');
 
-      this.addToCartText =
-        this.querySelector(
-          '[data-add-to-cart-text]'
-        );
+      this.addToCartText = this.querySelector('[data-add-to-cart-text]');
 
-      this.quantityInput =
-        this.querySelector(
-          '[data-quantity-input]'
-        );
+      this.quantityInput = this.querySelector('[data-quantity-input]');
 
-      this.quantityDecreaseButton =
-        this.querySelector(
-          '[data-quantity-decrease]'
-        );
+      this.quantityDecreaseButton = this.querySelector('[data-quantity-decrease]');
 
-      this.quantityIncreaseButton =
-        this.querySelector(
-          '[data-quantity-increase]'
-        );
+      this.quantityIncreaseButton = this.querySelector('[data-quantity-increase]');
 
-      this.productRoot =
-        this.closest(
-          '[data-product-root]'
-        );
+      this.productRoot = this.closest('[data-product-root]');
 
-      this.productRoot?.addEventListener(
-        'product:variant-change',
-        this.onVariantChange
-      );
+      this.productRoot?.addEventListener('product:variant-change', this.onVariantChange);
 
-      this.quantityDecreaseButton?.addEventListener(
-        'click',
-        this.onQuantityDecrease
-      );
+      this.quantityDecreaseButton?.addEventListener('click', this.onQuantityDecrease);
 
-      this.quantityIncreaseButton?.addEventListener(
-        'click',
-        this.onQuantityIncrease
-      );
+      this.quantityIncreaseButton?.addEventListener('click', this.onQuantityIncrease);
+
+      this.form?.addEventListener('submit', this.onSubmit);
     }
 
     disconnectedCallback() {
-      this.productRoot?.removeEventListener(
-        'product:variant-change',
-        this.onVariantChange
-      );
+      this.productRoot?.removeEventListener('product:variant-change', this.onVariantChange);
 
-      this.quantityDecreaseButton?.removeEventListener(
-        'click',
-        this.onQuantityDecrease
-      );
+      this.quantityDecreaseButton?.removeEventListener('click', this.onQuantityDecrease);
 
-      this.quantityIncreaseButton?.removeEventListener(
-        'click',
-        this.onQuantityIncrease
-      );
+      this.quantityIncreaseButton?.removeEventListener('click', this.onQuantityIncrease);
+
+      this.form?.removeEventListener('submit', this.onSubmit);
     }
 
     onVariantChange(event) {
-      const variant =
-        event.detail.variant;
+      const variant = event.detail.variant;
 
       if (!variant) return;
 
-      this.variantInput.value =
-        variant.id;
+      this.variantInput.value = variant.id;
 
-      this.currentVariant =
-        variant;
+      this.currentVariant = variant;
 
       this.updateButton(variant);
     }
@@ -172,45 +153,56 @@
       if (!this.addToCartButton) return;
 
       if (variant.available) {
-        this.addToCartButton.disabled =
-          false;
+        this.addToCartButton.disabled = false;
 
-        this.addToCartText.textContent =
-          'Add to cart';
+        this.addToCartText.textContent = 'Add to cart';
       } else {
-        this.addToCartButton.disabled =
-          true;
+        this.addToCartButton.disabled = true;
 
-        this.addToCartText.textContent =
-          'Sold out';
+        this.addToCartText.textContent = 'Sold out';
       }
     }
 
     onQuantityDecrease() {
       if (!this.quantityInput) return;
 
-      const currentQuantity =
-        Number(this.quantityInput.value) || 1;
+      const currentQuantity = Number(this.quantityInput.value) || 1;
 
-      this.quantityInput.value =
-        Math.max(1, currentQuantity - 1);
+      this.quantityInput.value = Math.max(1, currentQuantity - 1);
     }
 
     onQuantityIncrease() {
       if (!this.quantityInput) return;
 
-      const currentQuantity =
-        Number(this.quantityInput.value) || 1;
+      const currentQuantity = Number(this.quantityInput.value) || 1;
 
-      this.quantityInput.value =
-        currentQuantity + 1;
+      this.quantityInput.value = currentQuantity + 1;
+    }
+
+    async onSubmit(event) {
+      event.preventDefault();
+
+      if (!this.form) return;
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: new FormData(this.form),
+        });
+
+        if (!response.ok) {
+          throw new Error('Unable to add this item to the cart.');
+        }
+
+        window.location.href = '/cart';
+      } catch (error) {
+        console.error(error);
+        window.alert(error.message || 'Unable to add this item to the cart.');
+      }
     }
   }
 
   if (!customElements.get('product-form')) {
-    customElements.define(
-      'product-form',
-      ProductForm
-    );
+    customElements.define('product-form', ProductForm);
   }
 </script>

@@ -4,12 +4,33 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
-{% if section.settings.collection_header == true %}
+{{ 'main-collection.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .main-page__overlay {
+    background: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity }};
+  }
+
+  {% if section.settings.show_bg_image %}
+    .main-page__section {
+      background-image: url(
+        {% if section.settings.image != blank %}
+          {{ section.settings.image | image_url: width: 2000 }}
+        {% elsif collection.featured_image %}
+          {{ collection.featured_image | image_url: width: 2000 }}
+        {% endif %}
+      );
+    }
+  {% endif %}
+</style>
+
+
+{% if section.settings.collection_header %}
   {%- liquid
     assign s = section.settings
-    assign bg_color = s.bg_color
-    assign bg_gradient = s.bg_gradient
     assign container_class = 'page-width'
+
     if s.container_width == 'full-width'
       assign container_class = 'page-width--full'
     elsif s.container_width == 'narrow'
@@ -20,172 +41,65 @@
       assign container_class = 'page-width main-page__container--custom'
     endif
 
-    assign align_value = s.content_alignment | default: 'center'
-    assign align_class = 'text-' | append: align_value
-
+    assign align_class = 'text-' | append: s.content_alignment
     assign tag = s.heading_tag | default: 'h2'
   -%}
 
-  {%- if s.container_width == 'custom' and s.custom_container_width > 0 -%}
-    <style>
-      #shopify-section-{{ section.id }} .main-page__container--custom {
-        max-width: {{ s.custom_container_width }}px;
-      }
-    </style>
-  {%- endif -%}
+  <div class="image_media--{{ section.settings.media_height }} cms-main-collection-banner">
+    <div
+      {%- render 'section-variables',
+        section: section,
+        class: 'main-page__section'
+      -%}
+    >
+      {% if section.settings.show_bg_image %}
+        <div class="main-page__overlay"></div>
+      {% endif %}
 
-  <div
-    {%- render 'section-variables', section: section, class: 'main-page__section' -%}
-  >
-    {% if section.settings.show_bg_image and section.settings.image != blank %}
-      <div class="main-page__overlay"></div>
-    {% endif %}
-
-    <div class="main-page__inner">
-      <div class="{{ container_class }}">
-        <div class="main-page__content flex ps-rte flex-col {{ align_class }}">
-          {% if section.settings.subheading != blank %}
-            <div
-              class="page-subheading subheading"
-              {% unless section.settings.subheading_color == blank
-                or section.settings.subheading_color == 'rgba(0,0,0,0)'
-              %}
-                style="color: rgb({{ section.settings.subheading_color.rgb }});"
-              {% endunless %}
-            >
-              {{ section.settings.subheading }}
-            </div>
-          {% endif %}
-
-          <{{ tag }}
-            class="page-heading {{ tag }}"
-            {% unless section.settings.heading_color == blank or section.settings.heading_color == 'rgba(0,0,0,0)' %}
-              style="color: rgb({{ section.settings.heading_color.rgb }});"
-            {% endunless %}
-          >
-            {% if section.settings.heading != blank %}
-              {{ section.settings.heading }}
-            {% else %}
-              {{ collection.title }}
+      <div class="main-page__inner">
+        <div class="{{ container_class }}">
+          <div class="main-page__content flex flex-col {{ align_class }}">
+            {% if section.settings.subheading != blank %}
+              <div class="page-subheading subheading">
+                {{ section.settings.subheading }}
+              </div>
             {% endif %}
-          </{{ tag }}>
-          {% if collection.description != blank %}
-            <div
-              class="page-description text-sm"
-              {% unless section.settings.text_color == blank or section.settings.text_color == 'rgba(0,0,0,0)' %}
-                style="color: rgb({{ section.settings.text_color.rgb }});"
-              {% endunless %}
-            >
-              {{ collection.description }}
-            </div>
-          {% endif %}
+
+            <{{ tag }} class="page-heading heading {{ tag }}">
+              {% if section.settings.heading != blank %}
+                {{ section.settings.heading }}
+              {% else %}
+                {{ collection.title }}
+              {% endif %}
+            </{{ tag }}>
+
+            {% if collection.description != blank %}
+              <div class="page-description text-sm">
+                {{ collection.description }}
+              </div>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
   </div>
 {% endif %}
+
 <div
-  {%- render 'section-variables', section: section, class: '' -%}
+   {%- render 'section-variables', section: section, class: 'cms-main-collection' -%}
 >
-  <div class="collection-products">
-    {% paginate collection.products by 20 %}
-      {% for product in collection.products %}
-        <div class="collection-product">
-          {% if product.featured_image %}
-            {% render 'image',
-              class: 'collection-product__image',
-              image: product.featured_image,
-              url: product.url,
-              width: 400,
-              height: 400,
-              crop: 'center'
-            %}
-          {% endif %}
-          <div class="collection-product__content">
-            <p>{{ product.title | escape | link_to: product.url }}</p>
-            <p>{{ product.price | money }}</p>
-          </div>
-        </div>
-      {% endfor %}
-<h1>{{ collection.title }}</h1>
-
-<div class="collection-products grid grid--2-col sm:grid--3-col lg:grid--4-col">
   {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      {%- render 'product-card', product: product -%}
-      {% comment %} <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
-        {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
-        </div>
-      </div> {% endcomment %}
-    {% endfor %}
 
-      {{ paginate | default_pagination }}
-    {% endpaginate %}
-  </div>
+    <div class="collection-products grid grid--2-col sm:grid--3-col lg:grid--4-col">
+      {% for product in collection.products %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    </div>
+
+    {% render 'pagination', paginate: paginate %}
+
+  {% endpaginate %}
 </div>
-<style>
-  .main-page__section{
-    {% if bg_gradient != blank %}
-      background: {{ bg_gradient }};
-    {% elsif bg_color != blank and bg_color != 'rgba(0,0,0,0)' %}
-      background-color: rgb({{ bg_color.rgb }});
-    {% endif %}
-
-    {% if section.settings.show_bg_image == true %}
-      {% if section.settings.image != blank %}
-      background-image: url({{ section.settings.image | image_url: width: 2000 }});
-      {% else %}
-      background-image: url({{ collection.featured_image | image_url: width: 2000 }});
-      {% endif %}
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      height: 40rem;
-      min-height: var(--section-height-{{ section.settings.slide_height }});
-      padding: 0;
-    {% endif %}
-
-    position: relative;
-    overflow: hidden;
-  }
-  .main-page__overlay {
-    position: absolute;
-    inset: 0;
-    background: {{ section.settings.overlay_color }};
-    opacity: {{ section.settings.overlay_opacity }};
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  /* content above overlay */
-  .main-page__inner {
-    position: relative;
-    z-index: 2;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-  }
-</style>
-{% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
@@ -308,7 +222,7 @@
     },
     {
       "type": "select",
-      "id": "slide_height",
+      "id": "media_height",
       "label": "Media height",
       "options": [
         {
@@ -326,13 +240,9 @@
         {
           "value": "large",
           "label": "Large"
-        },
-        {
-          "value": "fullscreen",
-          "label": "Fullscreen"
         }
       ],
-      "default": "medium",
+      "default": "small",
       "visible_if": "{{ section.settings.show_bg_image == true and section.settings.collection_header == true }}"
     },
     {

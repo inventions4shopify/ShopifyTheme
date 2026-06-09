@@ -1,0 +1,102 @@
+{{ 'breadcrumbs.css' | asset_url | stylesheet_tag }}
+
+{% assign breadcrumb_collection = collection | default: product.collections.first %}
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol class="breadcrumbs__list">
+
+    <li class="breadcrumbs__item">
+      <a href="{{ routes.root_url }}">Home</a>
+    </li>
+
+    {% if template contains 'product' %}
+
+      {% if breadcrumb_collection %}
+        <span class="breadcrumbs__separator">
+          {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
+        </span>
+
+        <li class="breadcrumbs__item">
+          <a href="{{ breadcrumb_collection.url }}">
+            {{ breadcrumb_collection.title }}
+          </a>
+        </li>
+      {% endif %}
+
+      <span class="breadcrumbs__separator">
+        {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
+      </span>
+
+      <li class="breadcrumbs__item breadcrumbs__item--current">
+        {{ product.title }}
+      </li>
+
+    {% elsif template contains 'collection' %}
+
+      <span class="breadcrumbs__separator">
+        {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
+      </span>
+
+      <li class="breadcrumbs__item breadcrumbs__item--current">
+        {{ collection.title }}
+      </li>
+
+    {% elsif template contains 'page' %}
+
+      <span class="breadcrumbs__separator">
+        {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
+      </span>
+
+      <li class="breadcrumbs__item breadcrumbs__item--current">
+        {{ page.title }}
+      </li>
+
+    {% elsif template contains 'blog' %}
+
+      <span class="breadcrumbs__separator">
+        {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
+      </span>
+
+      <li class="breadcrumbs__item breadcrumbs__item--current">
+        {{ blog.title }}
+      </li>
+
+    {% elsif template contains 'article' %}
+
+      <span class="breadcrumbs__separator">
+        {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
+      </span>
+
+      <li class="breadcrumbs__item">
+        <a href="{{ blog.url }}">
+          {{ blog.title }}
+        </a>
+      </li>
+
+      <span class="breadcrumbs__separator">
+        {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
+      </span>
+
+      <li class="breadcrumbs__item breadcrumbs__item--current">
+        {{ article.title }}
+      </li>
+
+    {% endif %}
+
+  </ol>
+</nav>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ shop.url }}"
+    }
+  ]
+}
+</script>
