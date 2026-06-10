@@ -210,7 +210,7 @@ class ProductCardForm extends HTMLElement {
   connectedCallback() {
     console.log("connected callback fired");
 
-    this.button = this.querySelector(".product_card_atc");
+    this.button = this.querySelector(".js_product_card_atc");
     this.variantId = this.querySelector("[data-variant-id]");
 
     console.log(this.button);
