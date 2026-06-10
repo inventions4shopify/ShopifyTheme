@@ -878,6 +878,32 @@
           },
         ],
         "default": "shopping_cart"
+      },
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Select cart type",
+        "options": [
+          {
+            "value": "cart_drawer",
+            "label": "Cart Drawer"
+          },
+          {
+            "value": "cart_popup",
+            "label": "Cart Notification"
+          },
+          {
+            "value": "cart_page",
+            "label": "Cart page"
+          }
+        ],
+        "default": "cart_drawer"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "drawer_heading",
+        "label": "Add heading",
+        "default": "Your cart is empty"
       }
     ]
   }

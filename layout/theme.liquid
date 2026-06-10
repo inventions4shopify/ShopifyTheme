@@ -53,6 +53,9 @@
 
   <body>
     {% sections 'header-group' %}
+    {% if settings.cart_type == 'cart_drawer' %}
+      {% render 'cart-drawer' %}
+    {% endif %}
 
     {{ content_for_layout }}
 
