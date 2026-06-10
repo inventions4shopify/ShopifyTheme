@@ -56,6 +56,11 @@
 }
 {% endstyle %}
 
+{%- liquid
+  assign price_show_save_badge = qv_show_save_badge | default: block.settings.show_save_badge
+  assign price_save_type = qv_save_type | default: block.settings.save_type
+-%}
+
 {% assign variant = product.selected_or_first_available_variant %}
 <product-price
   {{ block.shopify_attributes }}
@@ -81,7 +86,7 @@
       {{ variant.compare_at_price | money }}
     </span>
 
-    {% if block.settings.show_save_badge %}
+    {% if price_show_save_badge %}
       <span
         class="product_save_badge"
         data-save-badge
@@ -91,7 +96,7 @@
       >
         {% assign difference = variant.compare_at_price | minus: variant.price %}
 
-        {% if block.settings.save_type == 'money' %}
+        {% if price_save_type == 'money' %}
           Save {{ difference | money }}
         {% else %}
           {% assign percentage = difference | times: 100 | divided_by: variant.compare_at_price %}
@@ -107,8 +112,8 @@
     data-price-settings
   >
     {
-        "showSaveBadge": {{ block.settings.show_save_badge | json }},
-        "saveType": {{ block.settings.save_type | json }},
+        "showSaveBadge": {{ price_show_save_badge | json }},
+        "saveType": {{ price_save_type | json }},
         "moneyFormat": {{ shop.money_format | json }}
         }
   </script>

@@ -1,0 +1,32 @@
+{{ 'product-image-gallery.css' | asset_url | stylesheet_tag }}
+{{ 'quick-view.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-image-gallery.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quick-view.js' | asset_url }}" defer="defer"></script>
+
+<quick-view-modal
+  class="quick-view-modal"
+  aria-hidden="true"
+  hidden
+  data-view-details-text="{{ 'quick_view.view_details' | t }}"
+  data-section-ids="quick-view"
+>
+  <div class="quick-view-modal__overlay" data-quick-view-close></div>
+
+  <div
+    class="quick-view-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'quick_view.modal_label' | t }}"
+  >
+    <button
+      type="button"
+      class="quick-view-modal__close button button--secondary"
+      data-quick-view-close
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      {% render 'icon', icon: 'close', width: 20, height: 20 %}
+    </button>
+
+    <div class="quick-view-modal__content" data-quick-view-content></div>
+  </div>
+</quick-view-modal>
