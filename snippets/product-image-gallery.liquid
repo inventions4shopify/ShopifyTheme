@@ -34,7 +34,7 @@
       {% endif %}
     "
     id="product-gallery-{{ product.id }}"
-    data-enable-desktop-drag="{{ section.settings.enable_desktop_drag }}"
+    data-enable-desktop-drag="{{ enable_desktop_drag | default: section.settings.enable_desktop_drag, allow_false: true }}"
     data-zoom-type="{{ gallery_zoom_type }}"
     {% if gallery_zoom_type != 'none' %}
       data-hover-zoom-style="{{ hover_zoom_style }}"

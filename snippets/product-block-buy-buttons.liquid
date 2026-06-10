@@ -43,6 +43,11 @@
   }
 {% endstyle %}
 
+{%- liquid
+  assign buy_show_quantity_selector = qv_show_quantity_selector | default: block.settings.show_quantity_selector
+  assign buy_show_dynamic_checkout = qv_show_dynamic_checkout | default: block.settings.show_dynamic_checkout
+-%}
+
 <product-form
   class="product_form"
   data-product-id="{{ product.id }}"
@@ -59,7 +64,7 @@
     >
 
     <div class="product_quantity_buy_wrapper">
-      {% if block.settings.show_quantity_selector %}
+      {% if buy_show_quantity_selector %}
         {% render 'product-quantity-input' %}
       {% endif %}
 
@@ -82,7 +87,7 @@
       </button>
     </div>
 
-    {% if block.settings.show_dynamic_checkout %}
+    {% if buy_show_dynamic_checkout %}
       {{ form | payment_button }}
     {% endif %}
   {% endform %}

@@ -1,5 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".product_gallery").forEach((gallery) => {
+function initProductGalleries(root = document) {
+  root.querySelectorAll(".product_gallery:not([data-gallery-initialized])").forEach((gallery) => {
+    gallery.dataset.galleryInitialized = "true";
     const slider = gallery.querySelector(".product_gallery_main_slider");
     const track = gallery.querySelector(".product_gallery_main_track");
 
@@ -14,6 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const prevButton = gallery.querySelector(".product_gallery_arrow_prev");
     const nextButton = gallery.querySelector(".product_gallery_arrow_next");
+
+    if (!slider || !track || !slides.length) return;
 
     const isVertical = gallery.classList.contains("product_gallery--vertical");
 
@@ -324,7 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateThumbnailHeight();
   });
-});
+}
 
 // Below script block is for preview window zoom style, keep it if you support it.
 
@@ -869,3 +872,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  initProductGalleries();
+});
+
+window.theme = window.theme || {};
+window.theme.initProductGalleries = initProductGalleries;

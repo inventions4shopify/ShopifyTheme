@@ -85,6 +85,12 @@
     "reset": "Clear search term"
   },
   "card_product": {
+    "add_to_cart": {
+      "label": "Add to cart"
+    },
+    "quick_view": {
+      "label": "Quick view"
+    },
     "sold_out": {
       "label": "Sold Out"
     },
@@ -96,7 +102,19 @@
     },
     "save": {
       "label": "Save"
-    },
+    }
+  },
+  "quick_view": {
+    "modal_label": "Product quick view",
+    "view_details": "View full details"
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "add": "Add to wishlist",
+    "remove": "Remove from wishlist",
+    "empty": "Your wishlist is empty.",
+    "continue_shopping": "Continue shopping",
+    "loading": "Loading wishlist..."
   },
   "social_media": {
     "name": "Social Account",
