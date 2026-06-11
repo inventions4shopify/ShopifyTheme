@@ -197,7 +197,7 @@
     "email": "Email",
     "phone": "Phone Number",
     "comment": "Message",
-    "send": "Send Message",
+    "send": "Submit",
     "Error": "Error"
   },
 }
