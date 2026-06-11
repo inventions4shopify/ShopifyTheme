@@ -1,0 +1,47 @@
+{% assign color_option = blank %}
+
+{% for option in product.options_with_values %}
+  {% if option.name contains 'Color'
+    or option.name contains 'Colour'
+    or option.name contains 'color'
+    or option.name contains 'colour'
+  %}
+    {% assign color_option = option %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if color_option %}
+  {% case color_display_mode %}
+    {% when 'swatch' %}
+      <div class="product-card__swatches text-{{ content_alignment }}">
+        {% for value in color_option.values %}
+          <span
+            class="product-card__swatch rounded-lg"
+            style="background-color: {{ value | downcase }};"
+            title="{{ value }}"
+          ></span>
+        {% endfor %}
+      </div>
+
+    {% when 'count' %}
+      <div class="product-card__color-count">{{ color_option.values.size }} Colors</div>
+
+    {% when 'variant_image' %}
+      <div class="product-card__swatches text-{{ content_alignment }}">
+        {% for value in color_option.values %}
+          {% assign variant = product.variants | where: 'option2', value | first %}
+
+          {% if variant.image %}
+            <div
+              class="color-swatch-image"
+              data-image="{{ variant.image | image_url: width: 600 }}"
+              data-variant-id="{{ variant.id }}"
+            >
+              {{ variant.image | image_url: width: 600 | image_tag }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+  {% endcase %}
+{% endif %}

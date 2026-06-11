@@ -29,65 +29,33 @@
   assign tag = s.heading_tag | default: 'h2'
 -%}
 
-{%- if s.container_width == 'custom' and s.custom_container_width > 0 -%}
-  <style>
+{%- liquid
+  assign page_heading = section.settings.heading | default: page.title
+
+  assign subheading_style = ''
+  unless section.settings.subheading_color == blank or section.settings.subheading_color == 'rgba(0,0,0,0)'
+    assign subheading_style = 'color: rgb(' | append: section.settings.subheading_color.rgb | append: ');'
+  endunless
+
+  assign heading_style = ''
+  unless section.settings.heading_color == blank or section.settings.heading_color == 'rgba(0,0,0,0)'
+    assign heading_style = 'color: rgb(' | append: section.settings.heading_color.rgb | append: ');'
+  endunless
+
+  assign text_style = ''
+  unless section.settings.text_color == blank or section.settings.text_color == 'rgba(0,0,0,0)'
+    assign text_style = 'color: rgb(' | append: section.settings.text_color.rgb | append: ');'
+  endunless
+-%}
+
+{% style %}
+  {% if s.container_width == 'custom' and s.custom_container_width > 0 %}
     #shopify-section-{{ section.id }} .main-page__container--custom {
       max-width: {{ s.custom_container_width }}px;
     }
-  </style>
-{%- endif -%}
-
-<div
-  {%- render 'section-variables', section: section, class: 'main-page__section' -%}
->
-  {% if section.settings.image != blank %}
-    <div class="main-page__overlay"></div>
   {% endif %}
 
-  <div class="main-page__inner">
-    <div class="{{ container_class }}">
-      <div class="main-page__content flex ps-rte flex-col {{ align_class }}">
-        {% if section.settings.subheading != blank %}
-          <div
-            class="page-subheading subheading"
-            {% unless section.settings.subheading_color == blank
-              or section.settings.subheading_color == 'rgba(0,0,0,0)'
-            %}
-              style="color: rgb({{ section.settings.subheading_color.rgb }});"
-            {% endunless %}
-          >
-            {{ section.settings.subheading }}
-          </div>
-        {% endif %}
-
-        <{{ tag }}
-          class="page-heading {{ tag }}"
-          {% unless section.settings.heading_color == blank or section.settings.heading_color == 'rgba(0,0,0,0)' %}
-            style="color: rgb({{ section.settings.heading_color.rgb }});"
-          {% endunless %}
-        >
-          {% if section.settings.heading != blank %}
-            {{ section.settings.heading }}
-          {% else %}
-            {{ page.title }}
-          {% endif %}
-        </{{ tag }}>
-        {% if page.content != blank %}
-          <div
-            class="page-description text-sm"
-            {% unless section.settings.text_color == blank or section.settings.text_color == 'rgba(0,0,0,0)' %}
-              style="color: rgb({{ section.settings.text_color.rgb }});"
-            {% endunless %}
-          >
-            {{ page.content }}
-          </div>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-</div>
-<style>
-  .main-page__section{
+  #shopify-section-{{ section.id }} .main-page__section {
     {% if bg_gradient != blank %}
       background: {{ bg_gradient }};
     {% elsif bg_color != blank and bg_color != 'rgba(0,0,0,0)' %}
@@ -107,7 +75,8 @@
     position: relative;
     overflow: hidden;
   }
-  .main-page__overlay {
+
+  #shopify-section-{{ section.id }} .main-page__overlay {
     position: absolute;
     inset: 0;
     background: {{ section.settings.overlay_color }};
@@ -116,8 +85,7 @@
     pointer-events: none;
   }
 
-  /* content above overlay */
-  .main-page__inner {
+  #shopify-section-{{ section.id }} .main-page__inner {
     position: relative;
     z-index: 2;
     align-items: center;
@@ -126,7 +94,42 @@
     flex-flow: column;
     height: 100%;
   }
-</style>
+{% endstyle %}
+
+<div {%- render 'section-variables', section: section, class: 'main-page__section' -%}>
+  {% if section.settings.image != blank %}
+    <div class="main-page__overlay"></div>
+  {% endif %}
+
+  <div class="main-page__inner">
+    <div class="{{ container_class }}">
+      <div class="main-page__content flex ps-rte flex-col {{ align_class }}">
+        {% if section.settings.subheading != blank %}
+          <div class="page-subheading subheading"{% if subheading_style != blank %} style="{{ subheading_style }}"{% endif %}>
+            {{ section.settings.subheading }}
+          </div>
+        {% endif %}
+
+        {% case tag %}
+          {% when 'h1' %}
+            <h1 class="page-heading h1"{% if heading_style != blank %} style="{{ heading_style }}"{% endif %}>{{ page_heading }}</h1>
+          {% when 'h3' %}
+            <h3 class="page-heading h3"{% if heading_style != blank %} style="{{ heading_style }}"{% endif %}>{{ page_heading }}</h3>
+          {% when 'h4' %}
+            <h4 class="page-heading h4"{% if heading_style != blank %} style="{{ heading_style }}"{% endif %}>{{ page_heading }}</h4>
+          {% else %}
+            <h2 class="page-heading h2"{% if heading_style != blank %} style="{{ heading_style }}"{% endif %}>{{ page_heading }}</h2>
+        {% endcase %}
+
+        {% if page.content != blank %}
+          <div class="page-description text-sm"{% if text_style != blank %} style="{{ text_style }}"{% endif %}>
+            {{ page.content }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 {% schema %}
 {
   "name": "t:general.page",

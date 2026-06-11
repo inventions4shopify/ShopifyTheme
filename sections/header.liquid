@@ -170,10 +170,23 @@
           </localization-form>
         {%- endif -%}
 
-        {%- comment -%} Search + Cart {%- endcomment -%}
+        {%- comment -%} Search + Wishlist + Cart {%- endcomment -%}
         <a href="{{ routes.search_url }}" class="header__icon-btn" aria-label="Search">
           {% render 'icon', icon: 'search', width: 20, height: 20 %}
         </a>
+        {%- if settings.enable_wishlist -%}
+          {%- liquid
+            if settings.wishlist_page != blank
+              assign wishlist_url = settings.wishlist_page.url
+            else
+              assign wishlist_url = '/pages/wishlist'
+            endif
+          -%}
+          <a href="{{ wishlist_url }}" class="header__icon-btn" aria-label="{{ 'wishlist.title' | t }}">
+            {% render 'icon', icon: 'heart', width: 20, height: 20 %}
+            <span class="header__wishlist-count" data-wishlist-count hidden>0</span>
+          </a>
+        {%- endif -%}
         {%- if shop.customer_accounts_enabled -%}
           <a
             href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
@@ -282,11 +295,11 @@
       "type": "select",
       "id": "logo_position",
       "label": "Position",
-      "default": "left",
+      "default": "start",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ]
     },
     {
@@ -296,7 +309,7 @@
       "default": "center",
       "options": [
         { "value": "center", "label": "Center" },
-        { "value": "left", "label": "Left" }
+        { "value": "start", "label": "Left" }
       ]
     },
     {
@@ -324,11 +337,11 @@
       "type": "select",
       "id": "menu_position",
       "label": "Position",
-      "default": "left",
+      "default": "start",
       "options": [
-        { "value": "left", "label": "Left" },
+        { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "end", "label": "Right" }
       ]
     },
     {

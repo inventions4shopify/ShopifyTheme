@@ -1,0 +1,60 @@
+{{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
+<script src="{{ 'product-image-gallery.js' | asset_url }}" defer="defer"></script>
+
+<div class="page-width">
+  <div class="main-product-section">
+    <div class="product-image-gallery-wrapper cms-cell--{{ settings.qv_gallery_width }}">
+      {% render 'product-image-gallery',
+        product: product,
+        thumbnail_layout: settings.qv_thumbnail_layout,
+        gallery_arrows_visibility: settings.qv_gallery_arrows_device,
+        gallery_zoom_type: settings.qv_gallery_zoom_type,
+        hover_zoom_style: settings.qv_hover_zoom_style,
+        gallery_arrow_display: settings.qv_gallery_arrow_display,
+        enable_desktop_drag: settings.qv_enable_desktop_drag
+      %}
+    </div>
+
+    <div class="product-info-wrapper">
+      <div class="product-details" data-product-root>
+        {% render 'product-block-title', product: product, block: section %}
+        {% render 'product-block-price',
+          product: product,
+          block: section,
+          qv_show_save_badge: settings.qv_show_save_badge,
+          qv_save_type: settings.qv_save_type
+        %}
+        {% render 'product-block-variant-picker',
+          product: product,
+          block: section,
+          qv_option_1_layout: settings.qv_option_1_layout,
+          qv_option_2_layout: settings.qv_option_2_layout,
+          qv_option_3_layout: settings.qv_option_3_layout,
+          qv_swatch_source: settings.qv_swatch_source,
+          qv_swatch_size: settings.qv_swatch_size,
+          qv_swatch_shape: settings.qv_swatch_shape,
+          qv_show_color_name: settings.qv_show_color_name,
+          qv_button_shape: settings.qv_button_shape,
+          qv_show_dropdown_swatches: settings.qv_show_dropdown_swatches,
+          qv_show_option_labels: settings.qv_show_option_labels,
+          qv_show_selected_value: settings.qv_show_selected_value,
+          qv_hide_unavailable_options: settings.qv_hide_unavailable_options,
+          qv_update_url: false
+        %}
+        {% render 'product-block-buy-buttons',
+          product: product,
+          block: section,
+          qv_show_quantity_selector: settings.qv_show_quantity_selector,
+          qv_show_dynamic_checkout: settings.qv_show_dynamic_checkout
+        %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Quick view",
+  "settings": []
+}
+{% endschema %}

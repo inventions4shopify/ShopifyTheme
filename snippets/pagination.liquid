@@ -21,7 +21,7 @@
           <li>
             <a
               href="{{ paginate.previous.url }}{{ anchor }}"
-              class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce"
+              class="pagination__item pagination__item--next pagination__item-arrow link button button--secondary"
               aria-label="next page"
             >
               {% render 'icon', icon: 'chevron-left', width: 20, height: 20 %}
@@ -44,7 +44,7 @@
                 <a
                   role="link"
                   aria-disabled="true"
-                  class="pagination__item pagination__item--current light"
+                  class="pagination__item pagination__item--current light button button--primary"
                   aria-current="page"
                   aria-label="page {{ part.title }}"
                 >
@@ -61,7 +61,7 @@
           <li>
             <a
               href="{{ paginate.next.url }}{{ anchor }}"
-              class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce"
+              class="pagination__item pagination__item--prev pagination__item-arrow link button button--secondary"
               aria-label="next page"
             >
               {% render 'icon', icon: 'chevron-right', width: 20, height: 20 %}

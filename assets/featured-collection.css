@@ -1,0 +1,152 @@
+.featured-collection .fc__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-10);
+  margin-bottom: var(--spacing-48);
+  flex-wrap: wrap;
+}
+.fc__header-text .section-header{
+  margin-bottom: 0;
+}
+@media (max-width: 749px) {
+  .featured-collection .fc__header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .featured-collection .fc__header .section-header {
+    align-items: center;
+  }
+}
+/* ---------- Grid ---------- */
+.featured-collection .fc__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--fc-mobile-columns), minmax(0, 1fr));
+  gap: var(--fc-gap);
+}
+@media (min-width: 750px) {
+  .featured-collection .fc__grid {
+    grid-template-columns: repeat(var(--fc-columns), minmax(0, 1fr));
+  }
+}
+
+/* ---------- Editorial ---------- */
+.featured-collection .fc__editorial {
+  display: grid;
+  grid-template-columns: repeat(var(--fc-mobile-columns), minmax(0, 1fr));
+  gap: var(--fc-gap);
+}
+@media (min-width: 750px) {
+  .featured-collection .fc__editorial {
+    grid-template-columns: repeat(var(--fc-columns), minmax(0, 1fr));
+  }
+  .featured-collection .fc__editorial .product-card:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+}
+
+/* ---------- Carousel / Slider ---------- */
+.fc__arrows_btn{
+  width: 100%;
+  justify-content: center;
+  margin-top: var(--spacing-32);
+  gap: var(--spacing-16);
+}
+.fc__arrows_btn button {
+  cursor: pointer;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+}
+.fc__arrows_btn button svg.icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+.featured-collection .fc__slider { position: relative; }
+
+/* Base track = horizontal scroller (used by "always" sliders and mobile sliders) */
+.featured-collection .fc__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--fc-mobile-columns) - 1) * var(--fc-gap)) / var(--fc-mobile-columns));
+  gap: var(--fc-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: .25rem;
+}
+.featured-collection .fc__track::-webkit-scrollbar { display: none; }
+.featured-collection .fc__track > * { scroll-snap-align: start; }
+@media (min-width: 576px) {
+  .fc__arrows_btn button {
+    width: 4rem;
+    height: 4rem;
+  }
+  .fc__arrows_btn button svg.icon {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+}
+@media (min-width: 750px) {
+  /* "always" slider (Type = Carousel) keeps scrolling on desktop too */
+  .featured-collection .fc__slider--always .fc__track {
+    grid-auto-columns: calc((100% - (var(--fc-columns) - 1) * var(--fc-gap)) / var(--fc-columns));
+  }
+}
+
+/* ===========================================================
+   MOBILE-ONLY SLIDER
+   =========================================================== */
+@media (max-width: 749px) {
+  .featured-collection .fc__slider--mobile .fc__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: none;                 /* override grid layout cols */
+    grid-auto-columns: calc((100% - (var(--fc-mobile-columns) - 1) * var(--fc-gap)) / var(--fc-mobile-columns));
+    gap: var(--fc-gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .featured-collection .fc__slider--mobile .fc__track::-webkit-scrollbar { display: none; }
+  .featured-collection .fc__slider--mobile .fc__track > * { scroll-snap-align: start; }
+
+}
+
+@media (min-width: 750px) {
+  /* On desktop, mobile-only slider reverts to normal grid/editorial */
+  .featured-collection .fc__slider--mobile .fc__track {
+    overflow: visible;
+    scroll-snap-type: none;
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+  }
+  /* The desktop layout class on the track restores its own columns:
+     .fc__grid / .fc__editorial rules above already apply since the
+     class is present on the same element. Re-assert just in case. */
+  .featured-collection .fc__slider--mobile.fc__slider--desktop-grid .fc__track {
+    grid-template-columns: repeat(var(--fc-columns), minmax(0, 1fr));
+  }
+  .featured-collection .fc__slider--mobile.fc__slider--desktop-editorial .fc__track {
+    grid-template-columns: repeat(var(--fc-columns), minmax(0, 1fr));
+  }
+  .featured-collection .fc__slider--mobile.fc__slider--desktop-editorial .fc__track .product-card:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  /* Hide arrows when the mobile-only slider is inactive (desktop) */
+  .featured-collection .fc__slider--mobile .fc__arrows_btn {
+    display: none;
+  }
+}
+
+@media (max-width: 749px) {
+  .featured-collection .fc__arrow { display: none; }
+}
+
+
