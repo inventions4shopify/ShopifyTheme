@@ -1,0 +1,35 @@
+{%- if product != blank -%}
+  <div class="wishlist-card" data-wishlist-card="{{ product.handle }}">
+    <button
+      type="button"
+      class="wishlist-card__remove"
+      data-wishlist-remove="{{ product.handle }}"
+      aria-label="{{ 'wishlist.remove' | t }}"
+    >
+      &times;
+    </button>
+
+    {% render 'product-card',
+      product: product,
+      show_vendor: settings.show_vendor,
+      show_secondary_image: settings.show_secondary_image,
+      show_quick_buy: settings.show_quick_buy,
+      show_rating: settings.show_rating,
+      rating_display: settings.rating_display,
+      show_sold_out_badge: settings.show_sold_out_badge,
+      show_discount_badge: settings.show_discount_badge,
+      discount_type: settings.discount_type,
+      color_display_mode: settings.color_display_mode,
+      image_ratio: settings.image_ratio,
+      content_alignment: settings.content_alignment,
+      style: settings.style
+    %}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Wishlist product card",
+  "settings": []
+}
+{% endschema %}

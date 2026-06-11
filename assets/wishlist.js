@@ -13,11 +13,11 @@ class Wishlist {
     }
   }
 
-  saveItems(items) {
+  saveItems(items, meta = {}) {
     localStorage.setItem(this.storageKey, JSON.stringify(items));
     document.dispatchEvent(
       new CustomEvent('wishlist:updated', {
-        detail: { items, count: items.length },
+        detail: { items, count: items.length, ...meta },
       })
     );
   }
@@ -39,13 +39,13 @@ class Wishlist {
       addedAt: Date.now(),
     });
 
-    this.saveItems(items);
+    this.saveItems(items, { addedHandle: handle });
     return true;
   }
 
   remove(handle) {
     const items = this.getItems().filter((item) => item.handle !== handle);
-    this.saveItems(items);
+    this.saveItems(items, { removedHandle: handle });
   }
 
   toggle(product) {
@@ -61,16 +61,6 @@ class Wishlist {
   getCount() {
     return this.getItems().length;
   }
-
-  async fetchProduct(handle) {
-    const response = await fetch(`/products/${handle}.js`);
-
-    if (!response.ok) {
-      throw new Error(`Product not found: ${handle}`);
-    }
-
-    return response.json();
-  }
 }
 
 class WishlistPage extends HTMLElement {
@@ -78,8 +68,10 @@ class WishlistPage extends HTMLElement {
     this.grid = this.querySelector('[data-wishlist-grid]');
     this.emptyState = this.querySelector('[data-wishlist-empty]');
     this.wishlist = window.theme?.wishlist || new Wishlist();
-    this.moneyFormat = window.theme?.moneyFormat || '${{amount}}';
     this.labels = window.theme?.wishlistLabels || {};
+    this.sectionId = 'wishlist-product-card';
+    this.htmlCache = new Map();
+    this.isInitialRender = true;
 
     this.onWishlistUpdated = this.onWishlistUpdated.bind(this);
     document.addEventListener('wishlist:updated', this.onWishlistUpdated);
@@ -92,7 +84,19 @@ class WishlistPage extends HTMLElement {
     document.removeEventListener('wishlist:updated', this.onWishlistUpdated);
   }
 
-  onWishlistUpdated() {
+  onWishlistUpdated(event) {
+    const { removedHandle, addedHandle } = event.detail || {};
+
+    if (removedHandle) {
+      this.removeCardByHandle(removedHandle);
+      return;
+    }
+
+    if (addedHandle) {
+      this.addCardByHandle(addedHandle);
+      return;
+    }
+
     this.render();
   }
 
@@ -105,13 +109,70 @@ class WishlistPage extends HTMLElement {
     this.wishlist.remove(removeButton.dataset.wishlistRemove);
   }
 
-  formatMoney(cents) {
-    if (window.theme?.formatMoney) {
-      return window.theme.formatMoney(cents);
+  updateEmptyState() {
+    if (!this.grid || !this.emptyState) return;
+
+    const hasItems = this.wishlist.getCount() > 0;
+    this.emptyState.hidden = hasItems;
+  }
+
+  removeCardByHandle(handle) {
+    this.htmlCache.delete(handle);
+
+    const card = this.grid?.querySelector(`[data-wishlist-card="${handle}"]`);
+
+    if (!card) {
+      this.updateEmptyState();
+      return;
     }
 
-    const amount = (cents / 100).toFixed(2);
-    return this.moneyFormat.replace(/\{\{\s*amount\s*\}\}/g, amount);
+    card.classList.add('is-removing');
+
+    const removeCard = () => {
+      card.remove();
+      this.updateEmptyState();
+    };
+
+    card.addEventListener('transitionend', removeCard, { once: true });
+    setTimeout(removeCard, 300);
+  }
+
+  async addCardByHandle(handle) {
+    if (!this.grid || this.grid.querySelector(`[data-wishlist-card="${handle}"]`)) {
+      return;
+    }
+
+    try {
+      const html = await this.fetchProductCardHtml(handle);
+      this.emptyState.hidden = true;
+      this.grid.insertAdjacentHTML('afterbegin', html);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async fetchProductCardHtml(handle) {
+    if (this.htmlCache.has(handle)) {
+      return this.htmlCache.get(handle);
+    }
+
+    const response = await fetch(
+      `/products/${encodeURIComponent(handle)}?section_id=${this.sectionId}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Unable to load product card: ${handle}`);
+    }
+
+    const responseText = await response.text();
+    const doc = new DOMParser().parseFromString(responseText, 'text/html');
+    const section = doc.querySelector('.shopify-section');
+    let html = section ? section.innerHTML : responseText;
+
+    html = html.replace(/<link[^>]*card-product\.css[^>]*>/gi, '');
+
+    this.htmlCache.set(handle, html);
+    return html;
   }
 
   async render() {
@@ -122,89 +183,40 @@ class WishlistPage extends HTMLElement {
     if (!items.length) {
       this.grid.innerHTML = '';
       this.emptyState.hidden = false;
+      this.htmlCache.clear();
       return;
     }
 
     this.emptyState.hidden = true;
-    this.grid.innerHTML = `<p class="wishlist-page__loading">${this.labels.loading || 'Loading wishlist...'}</p>`;
 
-    const products = await Promise.all(
+    const showLoading = this.isInitialRender && !this.grid.children.length;
+
+    if (showLoading) {
+      this.grid.innerHTML = `<p class="wishlist-page__loading">${this.labels.loading || 'Loading wishlist...'}</p>`;
+    }
+
+    const cards = await Promise.all(
       items.map(async (item) => {
         try {
-          return await this.wishlist.fetchProduct(item.handle);
+          return await this.fetchProductCardHtml(item.handle);
         } catch (error) {
           console.error(error);
-          return null;
+          return '';
         }
       })
     );
 
-    const validProducts = products.filter(Boolean);
+    this.isInitialRender = false;
 
-    if (!validProducts.length) {
+    const validCards = cards.filter(Boolean);
+
+    if (!validCards.length) {
       this.grid.innerHTML = '';
       this.emptyState.hidden = false;
       return;
     }
 
-    this.grid.innerHTML = validProducts
-      .map((product) => this.renderCard(product))
-      .join('');
-  }
-
-  renderCard(product) {
-    const image = product.featured_image
-      ? `<img src="${product.featured_image}" alt="${this.escapeHtml(product.title)}" loading="lazy" width="400" height="400">`
-      : '';
-
-    const comparePrice =
-      product.compare_at_price > product.price
-        ? `<span class="wishlist-card__compare">${this.formatMoney(product.compare_at_price)}</span>`
-        : '';
-
-    let actionButton = '';
-
-    if (product.available) {
-      if (product.variants.length === 1) {
-        actionButton = `<button type="button" class="button wishlist-card__atc" data-product-card-atc data-variant-id="${product.variants[0].id}">${this.labels.addToCart || 'Add to cart'}</button>`;
-      } else {
-        actionButton = `<button type="button" class="button wishlist-card__quick-view" data-quick-view-trigger data-product-url="${product.url}">${this.labels.quickView || 'Quick view'}</button>`;
-      }
-    } else {
-      actionButton = `<button type="button" class="button" disabled>${this.labels.soldOut || 'Sold out'}</button>`;
-    }
-
-    return `
-      <article class="wishlist-card">
-        <button
-          type="button"
-          class="wishlist-card__remove"
-          data-wishlist-remove="${product.handle}"
-          aria-label="${this.labels.remove || 'Remove from wishlist'}"
-        >
-          &times;
-        </button>
-        <a href="${product.url}" class="wishlist-card__media">${image}</a>
-        <div class="wishlist-card__content">
-          <h3 class="wishlist-card__title">
-            <a href="${product.url}">${this.escapeHtml(product.title)}</a>
-          </h3>
-          <div class="wishlist-card__price">
-            <span class="wishlist-card__price-current">${this.formatMoney(product.price)}</span>
-            ${comparePrice}
-          </div>
-          ${actionButton}
-        </div>
-      </article>
-    `;
-  }
-
-  escapeHtml(value) {
-    return String(value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+    this.grid.innerHTML = validCards.join('');
   }
 }
 
