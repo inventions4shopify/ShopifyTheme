@@ -52,3 +52,14 @@ body.cart-drawer-open {
   top: 10px;
   right: 5px;
 }
+
+.drawer-loggin {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.cart-login-textt {
+  text-align: center;
+  font-size: 16px;
+}

@@ -1165,6 +1165,23 @@
         "id": "drawer_heading",
         "label": "Add heading",
         "default": "Your cart is empty"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "BUtton text",
+        "default": "Continue Shopping"
+      },
+      {
+        "type": "url",
+        "id": "button_url_link",
+        "label": "Select link"
+      },
+      {
+        "type": "text",
+        "id": "account_title",
+        "label": "account label",
+        "default": "Have an account?"
       }
     ]
   }
