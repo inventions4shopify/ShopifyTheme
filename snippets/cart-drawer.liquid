@@ -15,8 +15,19 @@
         <div class="drawer-heading">
           <h3 class="empty-cart-headingp">{{ settings.drawer_heading }}</h3>
           <button class="drawer-close-icon" id="drawer-close-icon">
-            {{ 'icon-close.svg' | inline_asset_content }}
+            {% render 'icon', icon: 'close', width: 24, height: 24 %}
           </button>
+        </div>
+        <div class="collection-btn">
+          <a class="button" href="{{ settings.button_url_link | routes.all_products_collection_url }}">{{ settings.button_text }}</a>
+
+          {% if settings.account_title != blank %}
+            <p class="drawer-loggin">{{ settings.account_title }}</p>
+          {% endif %}
+
+          <p class="cart-login-textt">
+            <a href="{{ routes.account_login_url }}">Login</a> to check out faster.
+          </p>
         </div>
       {% endif %}
     </div>
