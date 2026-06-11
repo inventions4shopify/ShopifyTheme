@@ -1165,6 +1165,73 @@
         "id": "drawer_heading",
         "label": "Add heading",
         "default": "Your cart is empty"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "BUtton text",
+        "default": "Continue Shopping"
+      },
+      {
+        "type": "url",
+        "id": "button_url_link",
+        "label": "Select link"
+      },
+      {
+        "type": "text",
+        "id": "account_title",
+        "label": "account label",
+        "default": "Have an account?"
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer progress bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_enable_progress",
+        "label": "Enable reward progress bar",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "cart_drawer_free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "default": 150
+      },
+      {
+        "type": "number",
+        "id": "cart_drawer_free_gift_threshold",
+        "label": "Free gift threshold",
+        "default": 250
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_enable_confetti",
+        "label": "Show confetti when all milestones are reached",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer recommendations"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_enable_recommendations",
+        "label": "Enable you might also like",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_recommendations_heading",
+        "label": "Recommendations heading",
+        "default": "You might also like"
+      },
+      {
+        "type": "product_list",
+        "id": "cart_drawer_recommendation_products",
+        "label": "Recommended products",
+        "limit": 8
       }
     ]
   }

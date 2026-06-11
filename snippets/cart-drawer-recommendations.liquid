@@ -1,0 +1,62 @@
+{%- liquid
+  assign recommendation_products = settings.cart_drawer_recommendation_products
+  assign recommendations_heading = settings.cart_drawer_recommendations_heading | default: 'You might also like'
+-%}
+
+{%- if recommendation_products != blank -%}
+  <cart-drawer-recommendations class="cart-drawer__recommendations" data-cart-recommendations>
+    <div class="cart-drawer__recommendations-header">
+      <h3 class="cart-drawer__recommendations-title">{{ recommendations_heading }}</h3>
+
+      {%- if recommendation_products.count > 1 -%}
+        <div class="cart-drawer__recommendations-dots" data-cart-rec-dots></div>
+      {%- endif -%}
+    </div>
+
+    <div class="cart-drawer__recommendations-viewport">
+      <div class="cart-drawer__recommendations-track" data-cart-rec-track>
+        {%- for recommendation_product in recommendation_products -%}
+          {%- assign rec_variant = recommendation_product.selected_or_first_available_variant -%}
+          <div class="cart-drawer__recommendations-slide" data-cart-rec-slide>
+            <a href="{{ recommendation_product.url }}" class="cart-drawer__rec-image">
+              {%- if recommendation_product.featured_image -%}
+                <img
+                  src="{{ recommendation_product.featured_image | image_url: width: 160 }}"
+                  alt="{{ recommendation_product.featured_image.alt | default: recommendation_product.title | escape }}"
+                  loading="lazy"
+                  width="80"
+                  height="80"
+                >
+              {%- endif -%}
+            </a>
+
+            <div class="cart-drawer__rec-details">
+              <a href="{{ recommendation_product.url }}" class="cart-drawer__rec-title">
+                {{ recommendation_product.title }}
+              </a>
+
+              <div class="cart-drawer__rec-price">
+                {%- if recommendation_product.compare_at_price > recommendation_product.price -%}
+                  <span class="cart-drawer__rec-price--sale">{{ recommendation_product.price | money }}</span>
+                  <span class="cart-drawer__rec-price--compare">{{ recommendation_product.compare_at_price | money }}</span>
+                {%- else -%}
+                  <span>{{ recommendation_product.price | money }}</span>
+                {%- endif -%}
+              </div>
+
+              <button
+                type="button"
+                class="cart-drawer__rec-add"
+                data-product-card-atc
+                data-variant-id="{{ rec_variant.id }}"
+                {% unless rec_variant.available %}disabled{% endunless %}
+              >
+                {{ 'cart.recommendations.add' | t }}
+              </button>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </cart-drawer-recommendations>
+{%- endif -%}

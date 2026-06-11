@@ -217,9 +217,18 @@
             </span>
           </a>
         {%- endif -%}
-        <a href="{{ routes.cart_url }}" class="header__icon-btn" aria-label="Cart">
+        <a
+          href="{{ routes.cart_url }}"
+          class="header__icon-btn"
+          aria-label="Cart"
+          {% if settings.cart_type == 'cart_drawer' %}
+            data-cart-drawer-trigger
+          {% endif %}
+        >
           {% render 'icon', icon: 'cart', width: 20, height: 20 %}
-          <span class="header__cart-count">{{ cart.item_count }}</span>
+          <span class="header__cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>
+            {{ cart.item_count }}
+          </span>
         </a>
       </div>
     </div>

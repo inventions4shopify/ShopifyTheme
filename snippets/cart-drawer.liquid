@@ -1,25 +1,24 @@
 {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
-{{ 'cart.js' | asset_url | script_tag }}
+<script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 
-{% style %}
-  .drawer {
-    visibility: hidden;
-  }
-{% endstyle %}
-
-<cart-drawer class="drawer{% if cart == empty %} cart-empty{% endif %}">
+<cart-drawer
+  class="drawer{% if cart == empty %} is-empty{% endif %}"
+  data-section-id="cart-drawer"
+  aria-hidden="true"
+>
   <div id="CartDrawer" class="cart-drawer">
-    <div id="cart-drawer-overlay" class="cart-overlay"></div>
-    <div class="drawer_inner_content">
-      {% if cart == empty %}
-        <div class="drawer-heading">
-          <h3 class="empty-cart-headingp">{{ settings.drawer_heading }}</h3>
-          <button class="drawer-close-icon" id="drawer-close-icon">
-            {{ 'icon-close.svg' | inline_asset_content }}
-          </button>
-        </div>
-      {% endif %}
+    <div class="cart-drawer__overlay" data-cart-drawer-close></div>
+
+    <div
+      class="cart-drawer__panel drawer_inner_content"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ 'cart.title' | t }}"
+    >
+      <div class="cart-drawer__celebration" data-cart-drawer-celebration aria-hidden="true"></div>
+      <div data-cart-drawer-contents>
+        {% render 'cart-drawer-content' %}
+      </div>
     </div>
   </div>
-
 </cart-drawer>

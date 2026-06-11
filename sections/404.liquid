@@ -1,23 +1,217 @@
-{% comment %}
-  This section is used in the 404 template to render page shown when customers
-  enter an invalid store URL.
+<style>
+.error-page-section .sub-title {
+  margin: var(--spacing-16) 0;
+}
+.error-page-section {
+  width: 100%;
+}
+.\34 04-main-section {
+  position: relative;
+  overflow: hidden;
+  align-items: center;
+  height: 50rem;
+  z-index: 1;
+}
+.\34 04-main-section picture {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+@media only screen and (min-width: 768px){
+  .error-page-section .sub-title {
+    margin: var(--spacing-20) 0;
+  }
+}
+</style>
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/404
-{% endcomment %}
-
-<h1>{{ '404.title' | t }}</h1>
-
-<p>
-  {{ '404.not_found' | t }}
-</p>
-
-<a href="{{ routes.all_products_collection_url }}">
-  {{ '404.back_to_shopping' | t }}
-</a>
+<div {%- render 'section-variables', section: section, class: '404__section' -%}>
+  {% if section.settings.show_media %}<div class="404-main-section flex" style="min-height: var(--section-height-{{ section.settings.height }});">{% endif %}
+    {% if section.settings.show_media %}
+      <picture>
+        <source
+          media="(max-width: 767px)"
+          srcset="{% if section.settings.image_2 %}{{ section.settings.image_2 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
+        >
+        <img
+          src="{% if section.settings.image_1 %}{{ section.settings.image_1 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
+          alt="{{ section.settings.heading | escape }}"
+          width="auto"
+          height="auto"
+        />
+      </picture>
+      <div class="media-overlay" style="background:{{ section.settings.overlay_color | default: 'rgba(0, 0, 0, 0.5)' }};"></div>
+    {% endif %}
+    <div class="error-page-section text-{{ section.settings.desktop_content_position }}">
+      {%- assign head_color = section.settings.heading_color -%}
+      {%- assign head_grad = section.settings.heading_gradient -%}
+      {%- capture heading_style -%}
+        {%- if head_grad != blank -%}
+          background: {{ head_grad }};
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
+          --color-heading: {{ head_color.rgb }};
+        {%- endif -%}
+      {%- endcapture -%}
+      <h1 class="section-header__heading h2">{{ '404.title' | t }}</h1>
+      <h2 class="h4 sub-title">{{ '404.not_found' | t }}</h2>
+      <a href="{{ routes.all_products_collection_url }}" class="button ">{{ '404.back_to_shopping' | t }}</a>
+    </div>
+  {% if section.settings.show_media %}</div>{% endif %}
+</div>
 
 {% schema %}
 {
-  "name": "t:general.404",
-  "settings": []
+  "name": "404",
+  "settings": [
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "center",
+      "label": "Content Position"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_media",
+      "label": "Show Media",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image",
+      "visible_if": "{{ section.settings.show_media }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image Mobile",
+      "visible_if": "{{ section.settings.show_media }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle_overlay",
+      "label": "Media Overlay",
+      "default": false,
+      "visible_if": "{{ section.settings.show_media }}"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "alpha": true,
+      "default": "#00000026",
+      "visible_if": "{{ section.settings.toggle_overlay }}"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Media height",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "fullscreen",
+          "label": "Fullscreen"
+        }
+      ],
+      "default": "medium",
+      "visible_if": "{{ section.settings.show_media }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    }
+  ]
 }
 {% endschema %}

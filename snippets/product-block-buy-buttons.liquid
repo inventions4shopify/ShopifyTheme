@@ -189,7 +189,15 @@
 
       if (!this.form) return;
 
+      const cartType = this.dataset.cartType || 'cart_page';
+
       try {
+        if (window.theme?.cart?.add) {
+          await window.theme.cart.add(new FormData(this.form));
+          window.theme.cart.handleAfterAdd(cartType);
+          return;
+        }
+
         const response = await fetch('/cart/add.js', {
           method: 'POST',
           body: new FormData(this.form),
