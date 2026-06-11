@@ -278,6 +278,10 @@ class QuickViewModal extends HTMLElement {
         return response.json();
       })
       .then(() => {
+        if (window.theme?.cartType === 'cart_drawer' && window.theme.openCartDrawer?.()) {
+          return;
+        }
+
         window.location.href = '/cart';
       })
       .catch((error) => {

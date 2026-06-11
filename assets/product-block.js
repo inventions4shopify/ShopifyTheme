@@ -8,9 +8,13 @@ class ProductAccordion {
       ".product_accordion_content_wrapper",
     );
 
+    this.isActive = this.details.hasAttribute("open");
+
+    this.details.classList.toggle("is-active", this.isActive);
+
     this.summary.addEventListener("click", this.onClick.bind(this));
 
-    if (this.details.hasAttribute("open")) {
+    if (this.isActive) {
       this.contentWrapper.style.height = "auto";
     }
   }
@@ -41,6 +45,8 @@ class ProductAccordion {
             .scrollHeight
         }px`;
 
+        accordion.classList.remove("is-active");
+
         requestAnimationFrame(() => {
           accordion.querySelector(
             ".product_accordion_content_wrapper",
@@ -60,6 +66,7 @@ class ProductAccordion {
   }
 
   open() {
+    this.details.classList.add("is-active");
     this.details.setAttribute("open", "");
 
     this.contentWrapper.style.height = "0px";
@@ -80,6 +87,7 @@ class ProductAccordion {
   }
 
   close() {
+    this.details.classList.remove("is-active");
     this.contentWrapper.style.height = `${this.contentWrapper.scrollHeight}px`;
 
     requestAnimationFrame(() => {
@@ -231,6 +239,7 @@ class ProductCardForm extends HTMLElement {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+            Accept: "application/json",
         },
         body: JSON.stringify({
           id: this.variantId.value,
@@ -238,11 +247,17 @@ class ProductCardForm extends HTMLElement {
         }),
       });
 
-      console.log(response);
+        if (!response.ok) {
+          throw new Error("Unable to add this item to the cart.");
+        }
 
-      const data = await response.json();
+        await response.json();
 
-      console.log(data);
+        if (window.theme?.cartType === "cart_drawer" && window.theme.openCartDrawer?.()) {
+          return;
+        }
+
+        window.location.href = "/cart";
     } catch (error) {
       console.error(error);
     }

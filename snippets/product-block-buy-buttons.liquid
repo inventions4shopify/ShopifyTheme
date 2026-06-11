@@ -199,6 +199,12 @@
           throw new Error('Unable to add this item to the cart.');
         }
 
+        await response.json();
+
+        if (window.theme?.cartType === 'cart_drawer' && window.theme.openCartDrawer?.()) {
+          return;
+        }
+
         window.location.href = '/cart';
       } catch (error) {
         console.error(error);
