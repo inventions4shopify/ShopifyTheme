@@ -5,6 +5,7 @@
 
   .prs_viewport {
     overflow: hidden;
+    padding: 20px 0;
   }
 
   .prs_track {
@@ -68,17 +69,16 @@
     .prs_prev,
     .prs_next {
       position: absolute;
-      top: 40%;
+      top: 50%;
       transform: translateY(-50%);
       z-index: 2;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       width: 40px;
       height: 40px;
       cursor: pointer;
+      padding: 0;
     }
 
     .prs_prev {
@@ -100,6 +100,62 @@
     .prs_slide {
       flex: 0 0 calc(25% - 15px);
     }
+    .product_card_button {
+      font-size: 14px;
+    }
+  }
+  
+{% endstyle %}
+
+
+
+{% style %}
+  .prs_slide {
+    flex: 0 0 100%;
+  }
+
+  .prs_slide_inner {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .prs_image {
+    flex: 0 0 120px;
+    width: 120px;
+    margin-bottom: 0;
+  }
+
+  .prs_content {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .prs_title {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .prs_price {
+    font-size: 14px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .prs_slide {
+      flex: 0 0 50%;
+    }
+
+    .prs_image {
+      flex: 0 0 140px;
+      width: 140px;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    .prs_image {
+      flex: 0 0 100px;
+      width: 160px;
+    }
   }
 {% endstyle %}
 
@@ -113,31 +169,33 @@
     <div class="prs_track">
       {% for recommendation_product in block.settings.products %}
         <div class="prs_slide">
-          <a
-            href="{{ recommendation_product.url }}"
-            class="prs_image"
-          >
-            <img
-              src="{{ recommendation_product.featured_image | image_url: width: 500 }}"
-              alt="{{ recommendation_product.title | escape }}"
-              loading="lazy"
-              width="500"
-              height="500"
+          <div class="prs_slide_inner">
+            <a
+              href="{{ recommendation_product.url }}"
+              class="prs_image"
             >
-          </a>
+              <img
+                src="{{ recommendation_product.featured_image | image_url: width: 500 }}"
+                alt="{{ recommendation_product.title | escape }}"
+                loading="lazy"
+                width="500"
+                height="500"
+              >
+            </a>
 
-          <div class="prs_content">
-            <h3 class="prs_title">
-              <a href="{{ recommendation_product.url }}">
-                {{ recommendation_product.title }}
-              </a>
-            </h3>
+            <div class="prs_content">
+              <h3 class="prs_title">
+                <a href="{{ recommendation_product.url }}">
+                  {{ recommendation_product.title }}
+                </a>
+              </h3>
 
-            <div class="prs_price">
-              {{ recommendation_product.price | money }}
+              <div class="prs_price">
+                {{ recommendation_product.price | money }}
+              </div>
+
+              {% render 'product-card-form', product: recommendation_product %}
             </div>
-
-            {% render 'product-card-form', product: recommendation_product %}
           </div>
         </div>
       {% endfor %}
