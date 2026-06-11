@@ -176,4 +176,15 @@
     "popular_countries_regions": "Popular countries/regions",
     "country_results_count": "{{ count }} countries/regions found"
   },
+  "contact_form": {
+    "title": "Contact Us",
+    "post_success": "Thank you for contacting us. We will get back to you soon.",
+    "error_heading": "There was a problem submitting your form.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "comment": "Message",
+    "send": "Send Message",
+    "Error": "Error"
+  },
 }
