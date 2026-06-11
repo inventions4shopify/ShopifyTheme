@@ -10,8 +10,97 @@
 {
   "sections": {
     "main": {
-      "type": "product",
-      "settings": {}
+      "type": "main-product",
+      "settings": {
+        "width": "medium",
+        "thumbnail_layout": "vertical",
+        "gallery_arrows_device": "both",
+        "gallery_arrow_display": "always",
+        "gallery_zoom_type": "none",
+        "hover_zoom_style": "magnifier",
+        "enable_desktop_drag": true,
+        "custom_spacing": false,
+        "section_spacing_top_desktop": 64,
+        "section_spacing_bottom_desktop": 64,
+        "section_spacing_top_mobile": 40,
+        "section_spacing_bottom_mobile": 40
+      },
+      "blocks": {
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "inventory": {
+          "type": "inventory",
+          "settings": {
+            "inventory_threshold": 10
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity_selector": true,
+            "show_dynamic_checkout": true
+          }
+        },
+        "delivery_date": {
+          "type": "delivery_date",
+          "settings": {
+            "delivery_gap_days": 5,
+            "set_time_limit": false
+          }
+        },
+        "sticky_add_to_cart": {
+          "type": "sticky_add_to_cart",
+          "settings": {}
+        },
+        "accordion_1": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Shipping"
+          }
+        },
+        "accordion_2": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Returns"
+          }
+        },
+        "recommendations": {
+          "type": "recommendations",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "description",        
+        "inventory",
+        "variant_picker",
+        "buy_buttons",
+        "delivery_date",
+        "sticky_add_to_cart",
+        "accordion_1",
+        "accordion_2",
+        "recommendations"
+      ]
     }
   },
   "order": [

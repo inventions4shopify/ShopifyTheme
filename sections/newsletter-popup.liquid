@@ -1,0 +1,642 @@
+{% liquid
+  assign popup_delay = section.settings.popup_delay
+  assign scroll_percentage = section.settings.scroll_percentage
+%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    position: relative;
+  }
+
+  .newsletter-popup-overlay-{{ section.id }} {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease;
+  }
+
+  .newsletter-popup-overlay-{{ section.id }}.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .newsletter-popup-{{ section.id }} {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 92%;
+    max-width: 900px;
+    transform: translate(-50%, -50%) scale(.9);
+    border-radius: {{ section.settings.border_radius }}px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease;
+    overflow: hidden;
+  }
+
+  .newsletter-popup-{{ section.id }}.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .newsletter-close-{{ section.id }} {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+    font-size: 28px;
+    line-height: 1;
+    background: transparent;
+  }
+
+  .newsletter-popup-inner {
+    display: flex;
+    align-items: stretch;
+    min-height: 450px;
+  }
+
+  .newsletter-popup-inner.image-right {
+    flex-direction: row-reverse;
+  }
+
+  .newsletter-popup-image {
+    width: 50%;
+  }
+
+  .newsletter-popup-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* When image is not added */
+  .newsletter-popup-inner.no-image .newsletter-popup-content {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .newsletter-popup-inner.no-image .newsletter-form {
+    width: 100%;
+  }
+
+  .newsletter-popup-inner.no-image .newsletter-form-inner {
+    justify-content: center;
+  }
+  .newsletter-popup-content {
+    width: 50%;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .newsletter-subheading {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .newsletter-form {
+    width: 100%;
+  }
+  .newsletter-input {
+    border-radius: {{ section.settings.input_radius }}px;
+    border: 1px solid {{ section.settings.input_border }};
+    background: {{ section.settings.input_bg }};
+    color: {{ section.settings.input_text }};
+  }
+  .newsletter-form-inner {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  @media screen and (max-width: 767px) {
+
+    .newsletter-popup-{{ section.id }} {
+      max-width: 95%;
+    }
+
+    .newsletter-popup-inner {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .newsletter-popup-content {
+      width: 100%;
+    }
+
+    .newsletter-popup-image {
+      display: none;
+    }
+
+    .newsletter-popup-content {
+      padding: 30px 20px;
+    }
+
+    .newsletter-form-inner {
+      flex-direction: column;
+    }
+
+    .newsletter-btn,
+    .newsletter-input {
+      width: 100%;
+    }
+  }
+</style>
+<div {% render 'section-variables' %}>
+  {% liquid
+    assign sub_color = section.settings.subheading_color
+    assign head_color = section.settings.heading_color
+    assign block_color = section.settings.text_color
+    assign tag = section.settings.heading_tag | default: 'h2'
+    if section.settings.bg_color != 'rgba(0,0,0,0)'
+      assign background_color = section.settings.bg_color
+    else
+      assign background_color = settings.background_color
+    endif
+  %}
+
+  <div class="newsletter-popup-overlay-{{ section.id }}"></div>
+
+  <div
+    class="newsletter-popup-{{ section.id }}"
+    style="background-color: {{ background_color | strip }}"
+  >
+    <button
+      type="button"
+      class="newsletter-close-{{ section.id }}"
+      aria-label="Close popup"
+    >
+      &times;
+    </button>
+
+    <div class="newsletter-popup-inner image-{{ section.settings.image_position }} {% if section.settings.popup_image == blank %}no-image{% endif %}">
+      {% if section.settings.popup_image != blank %}
+        <div class="newsletter-popup-image">
+          {{ section.settings.popup_image | image_url: width: 900 | image_tag: loading: 'lazy' }}
+        </div>
+      {% endif %}
+
+      <div class="newsletter-popup-content ps-rte">
+        {% if section.settings.subheading != blank %}
+          <p
+            class="newsletter-subheading subheading"
+            {% unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+              style="color: rgb({{ sub_color.rgb }});"
+            {% endunless %}
+          >
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <{{ tag }}
+            class="section-header__heading"
+            {% unless head_color == blank or head_color == 'rgba(0,0,0,0)' %}
+              style="color: rgb({{ head_color.rgb }});"
+            {% endunless %}
+            {{ section.shopify_attributes }}
+          >
+            {{ section.settings.heading | escape }}
+          </{{ tag }}>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div
+            class="newsletter-richtext"
+            {% unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
+              style="color: rgb({{ block_color.rgb }});"
+            {% endunless %}
+          >
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.form_type == 'shopify' %}
+          {% form 'customer', class: 'newsletter-form' %}
+            <input
+              type="hidden"
+              name="contact[tags]"
+              value="newsletter"
+            >
+
+            <div class="newsletter-form-inner">
+              <input
+                type="email"
+                name="contact[email]"
+                class="newsletter-input field__input"
+                placeholder="{{ section.settings.email_placeholder }}"
+                required
+              >
+              {%- render 'button',
+                text: section.settings.button_label,
+                type: 'submit',
+                background_color: section.settings.button_background_color,
+                text_color: section.settings.button_text_color,
+                outline_color: section.settings.button_outline_color
+              -%}
+            </div>
+
+            {% if form.posted_successfully? %}
+              <div class="newsletter-success">
+                {{ section.settings.success_message }}
+              </div>
+            {% endif %}
+
+            {% if form.errors %}
+              <div class="newsletter-success">
+                {{ form.errors | default_errors }}
+              </div>
+            {% endif %}
+          {% endform %}
+
+        {% elsif section.settings.form_type == 'klaviyo' %}
+          {{ section.settings.klaviyo_embed }}
+
+        {% elsif section.settings.form_type == 'mailchimp' %}
+          {{ section.settings.mailchimp_embed }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const popup = document.querySelector('.newsletter-popup-{{ section.id }}');
+    const overlay = document.querySelector('.newsletter-popup-overlay-{{ section.id }}');
+    const closeBtn = document.querySelector('.newsletter-close-{{ section.id }}');
+
+    const showOnce = {{ section.settings.show_once | json }};
+    const sessionKey = 'newsletter-popup-{{ section.id }}';
+
+    function shouldShow() {
+      if (!showOnce) return true;
+      return !sessionStorage.getItem(sessionKey);
+    }
+
+    function markShown() {
+      if (showOnce) {
+        sessionStorage.setItem(sessionKey, 'true');
+      }
+    }
+
+    function openPopup() {
+      if (shouldShow()) {
+        popup.classList.add('active');
+        overlay.classList.add('active');
+        markShown();
+      }
+    }
+
+    function closePopup() {
+      popup.classList.remove('active');
+      overlay.classList.remove('active');
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closePopup);
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', closePopup);
+    }
+
+    {% if section.settings.trigger_type == 'delay' %}
+
+      setTimeout(function() {
+        openPopup();
+      }, {{ popup_delay | times: 1000 }});
+
+    {% endif %}
+
+    {% if section.settings.trigger_type == 'scroll' %}
+
+      let popupOpened = false;
+
+      window.addEventListener('scroll', function() {
+
+        if (popupOpened) return;
+
+        const scrollTop = window.scrollY;
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+
+        if (scrollPercent >= {{ scroll_percentage }}) {
+          openPopup();
+          popupOpened = true;
+        }
+      });
+
+    {% endif %}
+
+    {% if section.settings.trigger_type == 'exit' %}
+
+      let exitShown = false;
+
+      document.addEventListener('mouseleave', function(e) {
+
+        if (exitShown) return;
+
+        if (e.clientY <= 0) {
+          openPopup();
+          exitShown = true;
+        }
+      });
+
+    {% endif %}
+
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Newsletter Popup",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "popup_image",
+      "label": "Popup Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "default": "start",
+      "visible_if": "{{ section.settings.popup_image != blank }}",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Subscribe To Our Emails"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag (SEO)",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Rich Text",
+      "default": "<p>Be the first to know about new collections and exclusive offers.</p>"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Thank you for subscribing!"
+    },
+    {
+      "type": "header",
+      "content": "Form Options"
+    },
+    {
+      "type": "select",
+      "id": "form_type",
+      "label": "Form Type",
+      "default": "shopify",
+      "options": [
+        {
+          "value": "shopify",
+          "label": "Shopify Newsletter"
+        },
+        {
+          "value": "klaviyo",
+          "label": "Klaviyo Embed"
+        },
+        {
+          "value": "mailchimp",
+          "label": "Mailchimp Embed"
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "id": "klaviyo_embed",
+      "label": "Klaviyo Embed Code",
+      "visible_if": "{{ section.settings.form_type == 'klaviyo' }}"
+    },
+    {
+      "type": "html",
+      "id": "mailchimp_embed",
+      "label": "Mailchimp Embed Code",
+      "visible_if": "{{ section.settings.form_type == 'mailchimp' }}"
+    },
+    {
+      "type": "header",
+      "content": "Popup Trigger Options"
+    },
+    {
+      "type": "select",
+      "id": "trigger_type",
+      "label": "Trigger Type",
+      "default": "delay",
+      "options": [
+        {
+          "value": "delay",
+          "label": "Delay Timer"
+        },
+        {
+          "value": "exit",
+          "label": "Exit Intent"
+        },
+        {
+          "value": "scroll",
+          "label": "Scroll Percentage"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "popup_delay",
+      "label": "Popup Delay",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "unit": "s",
+      "default": 5,
+      "visible_if": "{{ section.settings.trigger_type == 'delay' }}"
+    },
+    {
+      "type": "range",
+      "id": "scroll_percentage",
+      "label": "Scroll Percentage",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40,
+      "visible_if": "{{ section.settings.trigger_type == 'scroll' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_once",
+      "label": "Show Once Per Session",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "Input Background"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "Input Border"
+    },
+    {
+      "type": "color",
+      "id": "input_text",
+      "label": "Input Text"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button Background"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text"
+    },
+    {
+      "type": "color",
+      "id": "button_outline_color",
+      "label": "Button Text"
+    },
+    {
+      "type": "header",
+      "content": "Border Radius"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Popup Radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "input_radius",
+      "label": "Input Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Popup"
+    }
+  ]
+}
+{% endschema %}

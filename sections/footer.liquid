@@ -1,56 +1,580 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+{{ 'footer.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign has_social = false
+  if settings.social_facebook_link != blank or settings.social_instagram_link != blank or settings.social_twitter_link != blank or settings.social_youtube_link != blank or settings.social_tiktok_link != blank or settings.social_pinterest_link != blank or settings.social_linkedin_link != blank
+    assign has_social = true
+  endif
+-%}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+{%- style -%}
+  .footer_section {
+    background-color: {{ settings.footer_background_color }};
+    color: {{ settings.footer_text_color }};
+  }
+  .footer__mobile-toggle{
+    color: {{ settings.footer_text_color }};
+  }
+  .footer__bottom-link {  color: {{ settings.footer_text_color }}; font-size:var(--text-xss);text-decoration: underline; }
+  .footer__bottom-link:hover { opacity: 1; color: {{ settings.footer_text_color }}}
+  .footer__block-title {
+    font-size: var(--text-xs);
+    font-family:var(--font-body-family);
+    font-weight:700;
+    text-transform: uppercase;
+    margin: 0 0 1.4rem;
+    color:{{ settings.footer_text_color }};
+  }
+  .footer_section .social_link {
+    width:3.5rem;
+    height:3.5rem;
+    border-radius:  var(--radius-full);
+    color: {{ settings.footer_text_color }}; 
+    background: #ffffff36; 
+    border:0.1rem solid #ffffff54;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+  }
+  .footer__menu-link:hover { color: {{ settings.footer_text_color }}; opacity: 1; }
+  .footer_section .footer__divider { background-color: {{ settings.footer_text_color }};opacity:0.2; }
+  .footer__copyright a{ color: {{ settings.footer_text_color }};  text-decoration: none; }
+  .footer__copyright a:hover{ text-decoration: underline; }
+{%- endstyle -%}
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+
+<footer {%- render 'section-variables', section: section, class: 'footer footer_section' -%}>
+  <div class="footer__inner page-width">
+    {%- comment -%} ── BLOCKS ROW ── {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="footer__blocks-row">
+        {%- for block in section.blocks -%}
+          {%- style -%}
+            .footer__text-img {
+              max-width: {{ block.settings.logo_width_desktop }}px;
+              height: auto;
+              display: block;
+            }
+          {%- endstyle -%}
+          {%- comment -%} Column size class {%- endcomment -%}
+          {%- liquid
+            case block.settings.column_size
+              when 'small'
+                assign col_class = 'footer__block--small'
+              when 'medium'
+                assign col_class = 'footer__block--medium'
+              when 'large'
+                assign col_class = 'footer__block--large'
+              else
+                assign col_class = 'footer__block--medium'
+            endcase
+
+            
+          -%}
+
+          {%- case block.type -%}
+
+            {%- comment -%} ══ NEWSLETTER block ══ {%- endcomment -%}
+            {%- when 'newsletter' -%}
+              <div class="footer__block {{ col_class }} footer__block--newsletter" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <h3 class="footer__block-title">{{ block.settings.title }}</h3>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="footer__block-richtext rte">{{ block.settings.text }}</div>
+                {%- endif -%}
+                {%- form 'customer', id: 'footer-nl-{{ block.id }}' -%}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <div class="footer__nl-row">
+                    <input
+                      type="email"
+                      name="contact[email]"
+                      class="footer__nl-input"
+                      placeholder="{{ block.settings.placeholder | default: 'Email address' }}"
+                      required
+                      autocomplete="email"
+                      aria-label="{{ block.settings.placeholder | default: 'Email address' }}"
+                    >
+                    <button type="submit" class="footer__nl-btn">
+                      {{ block.settings.btn_label | default: 'Subscribe' }}
+                    </button>
+                  </div>
+                  {%- if form.posted_successfully? -%}
+                    <p class="footer__nl-success">{{ block.settings.success_msg | default: 'Thanks for subscribing!' }}</p>
+                  {%- endif -%}
+                {%- endform -%}
+              </div>
+
+            {%- comment -%} ══ MENU block ══ {%- endcomment -%}
+            {%- when 'link_list' -%}
+              <div class="footer__block {{ col_class }} footer__block--menu" {{ block.shopify_attributes }}>
+                {%- if block.settings.menu != blank -%}
+                  <div class="footer__menu-mobile">
+                    <button class="footer__mobile-toggle">
+                      <h3 class="footer__block-title">{{ block.settings.title }}</h3>
+                      <span class="footer__toggle-icon"></span>
+                    </button>
+
+                    <ul class="footer__menu-list" role="list">
+                      {%- for link in block.settings.menu.links -%}
+                        <li>
+                          <a href="{{ link.url }}" class="footer__menu-link">
+                            {{ link.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- comment -%} ══ TEXT block ══ {%- endcomment -%}
+            {%- when 'text' -%}
+              {%- liquid
+                assign desktop_align_class = ''
+                assign mobile_align_class = ''
+
+                case block.settings.text_alignment
+                  when 'center'
+                    assign desktop_align_class = 'footer__block--center'
+                  when 'right'
+                    assign desktop_align_class = 'footer__block--right'
+                  else
+                    assign desktop_align_class = 'footer__block--left'
+                endcase
+
+                case block.settings.mobile_text_alignment
+                  when 'center'
+                    assign mobile_align_class = 'footer__block--mobile-center'
+                  when 'right'
+                    assign mobile_align_class = 'footer__block--mobile-right'
+                  else
+                    assign mobile_align_class = 'footer__block--mobile-left'
+                endcase
+              -%}
+              <div class="footer__block {{ col_class }} footer__block--text {{ desktop_align_class }} {{ mobile_align_class }}" {{ block.shopify_attributes }}>
+
+                {%- if block.settings.title != blank -%}
+                  <h3 class="footer__block-title">{{ block.settings.title }}</h3>
+                {%- endif -%}
+
+                {%- if block.settings.image != blank -%}
+                  <div class="footer__text-img-wrap">
+                    {{
+                      block.settings.image
+                      | image_url: width: 480
+                      | image_tag:
+                        loading: 'lazy',
+                        class: 'footer__text-img',
+                        alt: block.settings.image.alt | escape
+                    }}
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.text != blank -%}
+                  <div class="footer__block-richtext rte footer__block-richtext--{{ block.settings.text_size }}">
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.button_link != blank -%}
+                  <a
+                    href="{{ block.settings.button_link | default: '#' }}"
+                    class="footer__text-btn button button--secondary"
+                  >
+                    {{ block.settings.button_label }}
+                  </a>
+                {%- endif -%}
+
+                {%- if block.settings.show_social_links and has_social -%}
+                  {%- render 'social-icons', class: 'footer__list-social' -%}
+                {%- endif -%}
+
+              </div>
+
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="footer__divider"></div>
+
+    {%- comment -%} ── BOTTOM BAR ── {%- endcomment -%}
+    <div class="footer__bottom">
+
+      <div class="footer__bottom-left">
+        <p class="footer__copyright sm:text-xs text-xss">
+          &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url -}}.
+          {%- if section.settings.copyright_text != blank -%}
+            &nbsp;{{ section.settings.copyright_text }}.
+          {%- endif -%}
+        </p>
+
+        {%- if section.settings.bottom_menu != blank -%}
+          <ul class="footer__bottom-nav" role="list">
+            {%- for link in section.settings.bottom_menu.links -%}
+              <li><a href="{{ link.url }}" class="footer__bottom-link">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div class="footer__bottom-right">
+
+        {%- comment -%} Language switcher {%- endcomment -%}
+        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+            <localization-form>
+            {%- form 'localization', id: 'FooterLanguageForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="caption-large text-body text-xss sm:text-xs" id="FooterLanguageLabel">
+                  {{ 'localization.language_label' | t }}
+                </h2>
+                 {%- render 'language-localization', localPosition: 'FooterLanguage' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {%- endif -%}
+
+        {%- comment -%} Currency switcher {%- endcomment -%}
+        {%- if section.settings.enable_currency_selector and localization.available_countries.size > 1 -%}
+          <localization-form>
+            {%- form 'localization', id: 'FooterCountryForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="caption-large text-body text-xss sm:text-xs" id="FooterCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                {%- render 'country-localization', localPosition: 'FooterCountry' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {%- endif -%}
+
+       
+
+        {%- comment -%} Payment icons {%- endcomment -%}
+        {%- if section.settings.show_payment_icons and shop.enabled_payment_types != empty -%}
+          <ul class="footer__payment-list" role="list">
+            {%- for type in shop.enabled_payment_types -%}
+              <li class="footer__payment-item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+      </div>
+    </div>
+
   </div>
 </footer>
 
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
+<script>
+  document.querySelectorAll('.footer__mobile-toggle').forEach((button) => {
+    button.addEventListener('click', () => {
+      button.parentElement.classList.toggle('active');
+    });
+  });
+</script>
 
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "Footer",
+  "enabled_on": { "groups": ["footer"] },
   "settings": [
     {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
       "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "id": "bottom_menu",
+      "label": "Bottom links menu",
+      "info": "e.g. Privacy Policy, Terms of Service"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Additional copyright text",
+      "placeholder": "All rights reserved."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "label": "Enable language switcher",
+      "default": false,
+      "info": "To add a language, go to your [language settings](/admin/settings/languages)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_currency_selector",
+      "label": "Enable currency switcher",
+      "default": false,
+      "info": "To add a country/region, go to your [payment settings](/admin/settings/payments)."
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
-      "default": true
+      "label": "Show payment icons",
+      "default": true,
+    },
+     {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [
+        {
+          "type": "select",
+          "id": "column_size",
+          "label": "Column size",
+          "options": [
+            { "value": "small",  "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large",  "label": "Large" }
+          ],
+          "default": "large"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Subscribe to our newsletter"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Sign up for our newsletter and receive 10% off your first order!</p>"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Email placeholder",
+          "default": "Email address"
+        },
+        {
+          "type": "text",
+          "id": "btn_label",
+          "label": "Button label",
+          "default": "Subscribe"
+        },
+        {
+          "type": "text",
+          "id": "success_msg",
+          "label": "Success message",
+          "default": "Thanks for subscribing!"
+        }
+      ]
+    },
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "select",
+          "id": "column_size",
+          "label": "Column size",
+          "options": [
+            { "value": "small",  "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large",  "label": "Large" }
+          ],
+          "default": "small"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Resources"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Select navigation to display"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "select",
+          "id": "column_size",
+          "label": "Column size",
+          "options": [
+            { "value": "small",  "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large",  "label": "Large" }
+          ],
+          "default": "large"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            { "value": "start",   "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "end",  "label": "Right" }
+          ],
+          "default": "start"
+        },
+         {
+          "type": "select",
+          "id": "mobile_text_alignment",
+          "label": "Mobile Text alignment",
+          "options": [
+            { "value": "start",   "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "end",  "label": "Right" }
+          ],
+          "default": "start"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Heading",
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "240 x 100 px .png recommended."
+        },
+        {
+          "type": "range",
+          "id": "logo_width_desktop",
+          "label": "t:settings_schema.logo.settings.logo_width_desktop.label",
+          "min": 50,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "default": 150
+        },
+        {
+          "type": "range",
+          "id": "logo_width_mobile",
+          "label": "t:settings_schema.logo.settings.logo_width_mobile.label",
+          "min": 30,
+          "max": 200,
+          "step": 10,
+          "unit": "px",
+          "default": 100
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "options": [
+            { "value": "small",  "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large",  "label": "Large" }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "info": "Leave the label blank to hide the button.",
+          "default": "Explore"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_links",
+          "label": "Show social links",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "column_size": "large",
+            "text": "<p>Elevate your home with smart technology.</p>",
+            "button_label": "Explore",
+            "show_social_links": true
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": { "title": "Resources", "column_size": "small" }
+        },
+        {
+          "type": "newsletter",
+          "settings": {
+            "column_size": "large",
+            "title": "Subscribe to our newsletter"
+          }
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,480 @@
+
+{{ 'multicolumn.css' | asset_url | stylesheet_tag }}
+
+<style>
+    .multicolumn__content .grid__item >* {
+      color: var(--card-text-color);
+    }
+</style>
+
+<div {%- render 'section-variables', section: section, class: 'multicolumn__section' -%}>
+  <div class="{{ section.settings.container_width }}">
+    <div class="multicolumn__content flex flex-col items-{{ section.settings.heading_alignment }}">
+        {% if section.settings.heading != blank %}
+            {%- assign head_color = section.settings.heading_color -%}
+            {%- assign head_grad = section.settings.heading_gradient -%}
+
+            {%- capture heading_style -%}
+              {%- if head_grad != blank -%}
+                background: {{ head_grad }};
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+              {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
+                --color-heading: {{ head_color.rgb }};
+              {%- endif -%}
+            {%- endcapture -%}
+
+            <h2 
+            class="heading {{ section.settings.heading_size }} text-{{ section.settings.heading_alignment }}"
+            {%- unless heading_style == blank %}
+                style="{{ heading_style | strip }}"
+            {%- endunless %}
+            >
+                {{ section.settings.heading }}
+            </h2>
+        {% endif %}
+        <div class="grid xs:grid--2-col md:grid--3-col">
+
+          {% for block in section.blocks %}
+            {%- assign text_color = section.settings.text_color -%}
+            {%- assign card_bg_color = section.settings.bg_color -%}
+            {%- assign border_color = section.settings.border_color -%}
+            {%- assign border_radius = section.settings.border_radius -%}
+
+              {%- capture card_style -%}
+                {%- if card_bg_color != blank and card_bg_color != 'rgba(0,0,0,0)' -%}
+                  --card-bg-color: {{ card_bg_color }};
+                {%- endif -%}
+                {%- if text_color != blank and text_color != 'rgba(0,0,0,0)' -%}
+                  --card-text-color: {{ text_color }};
+                {%- endif -%}
+                {%- if border_color != blank and border_color != 'rgba(0,0,0,0)' -%}
+                  --card-border-color: {{ border_color }};
+                {%- endif -%}
+                {%- if border_radius != blank -%}
+                  --card-border-radius: {{ border_radius }}px;
+                {%- endif -%}
+              {%- endcapture -%}
+
+            <div class="grid__item ps-rte" style="{{ card_style | strip }}">
+              {%- assign icon_height = block.settings.icon-height -%}
+              {%- assign svg_size = block.settings.icon-height | divided_by: 2 -%}
+              {%- assign thumb_height = block.settings.thumb-height -%}
+
+                {% if block.settings.media_type == 'icon' %}
+                  <span class="icon-wrapper-svg" style="height: {{ icon_height }}px; width: {{ icon_height }}px;">
+                      {% render 'icon', icon: block.settings.icon_name, width: svg_size, height: svg_size %}
+                  </span>
+                {% endif %}
+                {% if block.settings.media_type == 'image' %}
+                  <span class="icon-wrapper" style="height: {{ thumb_height }}px;">
+                      <img 
+                      src="{{ block.settings.icon | img_url: 'master' }}" 
+                      alt="{{ block.settings.title }}"
+                      class="icon-image"
+                      width="auto"
+                      height="auto"
+                      >
+                  </span>
+                {% endif %}
+
+            {% if block.settings.title != blank %}
+                <{{ section.settings.title_size }} class="{{ section.settings.title_size }}">
+                  {{ block.settings.title }}
+                </{{ section.settings.title_size }}>
+            {% endif %}
+
+            {% if block.settings.text != blank %}
+                <div class="icon-text">{{ block.settings.text }}</div>
+            {% endif %}
+            </div>
+          {% endfor %}
+
+        </div>
+        {%- render 'button',
+            text: section.settings.link_label,
+            href: section.settings.link,
+            style: section.settings.button_style,
+            background_color: section.settings.button_background_color,
+            text_color: section.settings.button_text_color,
+            outline_color: section.settings.button_outline_color
+        -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Multi Column Icons",
+  "tag":"section",
+  "class":"multi-column-icons",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "custom_container_width",
+      "min": 400,
+      "max": 1200,
+      "step": 10,
+      "unit": "px",
+      "label": "Custom max-width",
+      "default": 800,
+      "visible_if": "{{ section.settings.container_width == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+        "type": "header",
+        "content": "Content"
+    },
+    {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Talk about your brand"
+    },
+    {
+        "type": "select",
+        "id": "heading_size",
+        "label": "Heading size (visual)",
+        "options": [
+        { "value": "h1", "label": "H1 — Largest" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6 — Smallest" }
+        ],
+        "default": "h2"
+    },
+    {
+        "type": "select",
+        "id": "heading_alignment",
+        "label": "Alignment",
+        "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+        ],
+        "default": "center"
+    },
+    {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color"
+    },
+    {
+        "type": "color_background",
+        "id": "heading_gradient",
+        "label": "Heading gradient"
+    },
+    {
+      "type": "header",
+      "content": "Card Style"
+    },
+    {
+        "type": "select",
+        "id": "title_size",
+        "label": "Title size (visual)",
+        "options": [
+          { "value": "h3", "label": "Large" },
+          { "value": "h4", "label": "Medium" },
+          { "value": "h5", "label": "Small" }
+        ],
+        "default": "h4"
+    },
+    {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Card Background color",
+        "default": "#FDF2E7"
+    },
+    {
+        "type": "color",
+        "id": "text_color",
+        "label": "Card Text color",
+        "default": "#4A3230"
+    },
+    {
+        "type": "color",
+        "id": "border_color",
+        "label": "Card Border color",
+        "default": "#E4E2E2"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Button Content"
+    },
+    {
+        "type": "select",
+        "id": "button_alignment",
+        "label": "Button Alignment",
+        "options": [
+        { "value": "inherit", "label": "Inherit from section" },
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+        ],
+        "default": "center"
+    },
+    {
+        "type": "text",
+        "id": "link_label",
+        "label": "Button label",
+        "default": "Shop now"
+    },
+    {
+        "type": "url",
+        "id": "link",
+        "label": "Button link"
+    },
+    {
+        "type": "color",
+        "id": "button_background_color",
+        "label": "Button background"
+    },
+    {
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Button text"
+    },
+    {
+        "type": "color",
+        "id": "button_outline_color",
+        "label": "Button outline"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Select Type",
+          "options": [
+            {
+              "value": "icon",
+              "label": "SVG Icon"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            }
+          ],
+          "default": "icon"
+        },
+        {
+          "type": "select",
+          "id": "icon_name",
+          "label": "Select Icon",
+          "options": [
+            {
+              "value": "shopping_basket",
+              "label": "Shopping Basket Icon"
+            },
+            {
+              "value": "shopping_bag",
+              "label": "Shopping Bag Icon"
+            },
+            {
+              "value": "shopping_cart",
+              "label": "Shopping Cart Icon"
+            },
+            {
+              "value": "share",
+              "label": "Share Icon"
+            },
+            {
+              "value": "discount",
+              "label": "Discount Icon"
+            },
+            {
+              "value": "blog-author",
+              "label": "Blog Author Icon"
+            },
+            {
+              "value": "blog-comment",
+              "label": "Blog Comment Icon"
+            },
+            {
+              "value": "blog-date",
+              "label": "Blog Date Icon"
+            },
+            {
+              "value": "email",
+              "label": "Email Icon"
+            },
+            {
+              "value": "phone",
+              "label": "Phone Icon"
+            },
+            {
+              "value": "return",
+              "label": "Return Icon"
+            },
+            {
+              "value": "truck",
+              "label": "Truck Icon"
+            },
+            {
+              "value": "security",
+              "label": "Security Icon"
+            },
+            {
+              "value": "trust",
+              "label": "Trust Icon"
+            },
+            {
+              "value": "gift",
+              "label": "Gift Icon"
+            }
+          ],
+          "default": "truck",
+          "visible_if": "{{block.settings.media_type == 'icon'}}"
+        },
+        {
+          "type": "range",
+          "id": "icon-height",
+          "label": "Icon Size",
+          "min": 1,
+          "max": 80,
+          "step": 1,
+          "default": 60,
+          "visible_if": "{{block.settings.media_type == 'icon'}}"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "visible_if": "{{block.settings.media_type == 'image'}}"
+        },
+        {
+          "type": "range",
+          "id": "thumb-height",
+          "label": "Image Height",
+          "min": 1,
+          "max": 60,
+          "step": 1,
+          "default": 40,
+          "visible_if": "{{block.settings.media_type == 'image'}}"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Description",
+          "default": "<p>Optimized rendering and lightweight architecture for smooth and responsive user experience across all devices.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multi Column Icons",
+      "blocks": [
+        { "type": "icon" },
+        { "type": "icon" },
+        { "type": "icon" }
+      ]
+    }
+  ]
+}
+{% endschema %}

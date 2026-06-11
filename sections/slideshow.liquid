@@ -1,389 +1,381 @@
 {{ 'slideshow.css' | asset_url | stylesheet_tag }}
 
-{% style %}
-  .cms-slideshow-main {
-    height: 50rem;
-    min-height: var(--section-height-{{ section.settings.slide_height }});
-  }
-{% endstyle %}
-
-<div class="cms-slideshow-main">
-  {%- for block in section.blocks -%}
-    <div class="cms-slideshow-slide{% if forloop.first %} active{% endif %}">
-      <div class="{% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
-        <div class="media-with-content">
-          <div class="media-with-content-media">
-            {% if block.settings.media_type == 'image' %}
-              {% if block.settings.image_1 %}
+<div class="slideshow__section cms-slideshow-wrapper" data-section-id="{{ section.id }}">
+  <div class="cms-slideshow-main" style="min-height: var(--section-height-{{ section.settings.slide_height }});">
+    {%- for block in section.blocks -%}
+      <div class="cms-slideshow-slide{% if forloop.first %} active{% endif %}">
+        <div class="{% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
+          <div class="media-with-content">
+            <div class="media-with-content-media">
+              {% if block.settings.media_type == 'image' %}
                 <picture>
-                  {% if block.settings.image_2 != blank %}
-                    <source
-                      media="(max-width: 767px)"
-                      srcset="{{ block.settings.image_2 | img_url: 'master' }}">
-                  {% endif %}
-
+                  <source
+                    media="(max-width: 767px)"
+                    srcset="{% if block.settings.image_2 %}{{ block.settings.image_2 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
+                  >
                   <img
-                    src="{{ block.settings.image_1 | img_url: 'master' }}"
+                    src="{% if block.settings.image_1 %}{{ block.settings.image_1 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
                     alt="{{ block.settings.heading | escape }}"
                     width="auto"
-                    height="auto" />
+                    height="auto"
+                  />
                 </picture>
-              {% endif %}
-            {% elsif block.settings.media_type == 'video' %}
-              {% if block.settings.video_1 %}
-                {{
-                  block.settings.video_1
-                  | video_tag:
-                    autoplay: true,
-                    loop: true,
-                    muted: true,
-                    controls: false
-                }}
-              {% endif %}
-            {% endif %}
-          </div>
-
-          <div class="{% if section.settings.slide_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
-            <div
-              class="media-overlay-content media-overlay-content--{{ block.settings.content_vertical_alignment }}-{{ block.settings.content_horizontal_alignment }} media-content-width-{{ block.settings.content_width }}"
-              style="color: {{ block.settings.text_color }}; gap: {{ block.settings.gap | divided_by: 10 }}rem;"
-            >
-              {% if block.settings.subheading %}
-                <span>{{ block.settings.subheading }}</span>
-              {% endif %}
-
-              {% if block.settings.heading %}
-                <h2>{{ block.settings.heading }}</h2>
-              {% endif %}
-
-              {% if block.settings.description %}
-                {{ block.settings.description }}
-              {% endif %}
-
-              {% if block.settings.link_label != blank %}
-                {% render 'button',
-                  text: block.settings.link_label,
-                  href: block.settings.link,
-                  background_color: block.settings.button_background_color,
-                  text_color: block.settings.button_text_color,
-                  outline_color: block.settings.button_outline_color
-                %}
+              {% elsif block.settings.media_type == 'video' %}
+                {% if block.settings.video_1 %}
+                  {{
+                    block.settings.video_1
+                    | video_tag:
+                      autoplay: true,
+                      loop: true,
+                      muted: true,
+                      controls: false
+                  }}
+                {% endif %}
               {% endif %}
             </div>
-              <div class="media-overlay" style="background:{{ block.settings.overlay_color | default: 'rgba(0, 0, 0, 0.5)' }};"></div>
+
+            <div class="{% if section.settings.slide_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
+              <div
+                class="media-overlay-content ps-rte media-overlay-content--{{ block.settings.content_alignment }} media-content-width-{{ block.settings.content_width }}"
+                style="color: {{ block.settings.text_color }};"
+              >
+                {% if block.settings.subheading %}
+                  {%- assign sub_color = block.settings.subheading_color -%}
+                  <span class="subheading"
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                  >{{ block.settings.subheading }}</span>
+                {% endif %}
+
+                {% if block.settings.heading %}
+                  {%- assign head_color = block.settings.heading_color -%}
+                  {%- assign head_grad = block.settings.heading_gradient -%}
+
+                  {%- capture heading_style -%}
+                    {%- if head_grad != blank -%}
+                      background: {{ head_grad }};
+                      -webkit-background-clip: text;
+                      -webkit-text-fill-color: transparent;
+                      background-clip: text;
+                    {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
+                      --color-heading: {{ head_color.rgb }};
+                    {%- endif -%}
+                  {%- endcapture -%}
+
+                  <h2 class="heading"
+                    {%- unless heading_style == blank %}
+                      style="{{ heading_style | strip }}"
+                    {%- endunless %}
+                  >{{ block.settings.heading }}</h2>
+                {% endif %}
+
+                {% if block.settings.description %}
+                  {%- assign block_color = block.settings.text_color -%}
+                  <div class="description"
+                    {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ block_color.rgb }});"
+                    {%- endunless %}>
+                    {{ block.settings.description }}
+                  </div>
+                {% endif %}
+
+                {% if block.settings.link_label != blank %}
+                  {%- render 'button',
+                    text: block.settings.link_label,
+                    href: block.settings.link,
+                    background_color: block.settings.button_background_color,
+                    text_color: block.settings.button_text_color,
+                    outline_color: block.settings.button_outline_color
+                  -%}
+                {% endif %}
+              </div>
+                <div class="media-overlay" style="background:{{ block.settings.overlay_color | default: 'rgba(0, 0, 0, 0.5)' }};"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  {%- endfor -%}
-</div>
-<div class="cms-slideshow-controls">
-  {% if section.settings.slideshow_controls_style == 'dots' %}
-    {%if section.blocks.size > 1 %}
-      <ul class="cms-slideshow-pagination">
-        {% for block in section.blocks %}
-          <li class="cms-slideshow-dot">
-            <button
-              type="button"
-              aria-label="Go to slide {{ forloop.index }}"
-              class="{% if forloop.first %}active{% endif %}"
-              data-slide="{{ forloop.index0 }}">
-            </button>
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endif %}
-
-  {% if section.settings.slideshow_controls_style == 'counter' %}
-    {%if section.blocks.size > 1 %}
-      <div class="cms-slideshow-counter">
-        <span class="cms-current-slide">01</span>
-        /
-        <span class="cms-total-slides">
-          {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}
-        </span>
-      </div>
-    {% endif %}
-  {% endif %}
-
-  {%if section.blocks.size > 1 %}
-  <div class="cms-slideshow-arrow-group icons-style-{{ section.settings.icons_shape }}">
-    {% if section.settings.autoplay == false %}
-      {% if section.settings.icons_style != 'none' %}
-        <button class="cms-slide-button cms-slideshow-prev">
-          {% if section.settings.icons_style == 'chevron' %}
-            {% render 'icon', icon: 'chevron-left', width: '2.2rem', height: '2.2rem' %}
-            {% elsif section.settings.icons_style == 'chevron_large' %}
-              {% render 'icon', icon: 'chevron-left', width: '2.8rem', height: '2.8rem' %}
-            {% elsif section.settings.icons_style == 'arrow' %}
-              {% render 'icon', icon: 'arrow-left', width: '2.2rem', height: '2.2rem' %}
-            {% elsif section.settings.icons_style == 'arrows_large' %}
-              {% render 'icon', icon: 'arrow-left', width: '2.8rem', height: '2.8rem' %}
-          {% endif %}
-        </button>
+    {%- endfor -%}
+  </div>
+  <div class="cms-slideshow-controls">
+    {% if section.settings.slideshow_controls_style == 'dots' %}
+      {%if section.blocks.size > 1 %}
+        <ul class="cms-slideshow-pagination">
+          {% for block in section.blocks %}
+            <li class="cms-slideshow-dot">
+              <button
+                type="button"
+                aria-label="Go to slide {{ forloop.index }}"
+                class="{% if forloop.first %}active{% endif %}"
+                data-slide="{{ forloop.index0 }}">
+              </button>
+            </li>
+          {% endfor %}
+        </ul>
       {% endif %}
     {% endif %}
 
-    {% if section.settings.slideshow_controls_style == 'progress' %}
-      {% if section.blocks.size > 1 %}
-        {% if section.settings.autoplay %}
-          <div class="cms-autoplay-progress">
-            <div class="cms-autoplay-progress-bar"></div>
-          </div>
+    {% if section.settings.slideshow_controls_style == 'counter' %}
+      {%if section.blocks.size > 1 %}
+        <div class="cms-slideshow-counter">
+          <span class="cms-current-slide">01</span>
+          /
+          <span class="cms-total-slides">
+            {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}
+          </span>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {%if section.blocks.size > 1 %}
+    <div class="cms-slideshow-arrow-group icons-style-{{ section.settings.icons_shape }}">
+      {% if section.settings.autoplay == false %}
+        {% if section.settings.icons_style != 'none' %}
+          <button class="cms-slide-button cms-slideshow-prev">
+            {% if section.settings.icons_style == 'chevron' %}
+              {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
+              {% elsif section.settings.icons_style == 'chevron_large' %}
+                {% render 'icon', icon: 'chevron-left', width: 28, height: 28 %}
+              {% elsif section.settings.icons_style == 'arrow' %}
+                {% render 'icon', icon: 'arrow-left', width: 22, height: 22 %}
+              {% elsif section.settings.icons_style == 'arrows_large' %}
+                {% render 'icon', icon: 'arrow-left', width: 28, height: 28 %}
+            {% endif %}
+          </button>
         {% endif %}
       {% endif %}
-    {% endif %}
-    {% if section.settings.autoplay == false %}
-      {% if section.settings.icons_style != 'none' %}
-        <button class="cms-slide-button cms-slideshow-next">
-          {% if section.settings.icons_style == 'chevron' %}
-            {% render 'icon', icon: 'chevron-right', width: '2.2rem', height: '2.2rem' %}
-          {% elsif section.settings.icons_style == 'chevron_large' %}
-            {% render 'icon', icon: 'chevron-right', width: '2.8rem', height: '2.8rem' %}
-          {% elsif section.settings.icons_style == 'arrow' %}
-            {% render 'icon', icon: 'arrow-right', width: '2.2rem', height: '2.2rem' %}
-          {% elsif section.settings.icons_style == 'arrows_large' %}
-            {% render 'icon', icon: 'arrow-right', width: '2.8rem', height: '2.8rem' %}
+
+      {% if section.settings.slideshow_controls_style == 'progress' %}
+        {% if section.blocks.size > 1 %}
+          {% if section.settings.autoplay %}
+            <div class="cms-autoplay-progress">
+              <div class="cms-autoplay-progress-bar"></div>
+            </div>
           {% endif %}
-        </button>
+        {% endif %}
       {% endif %}
+      {% if section.settings.autoplay == false %}
+        {% if section.settings.icons_style != 'none' %}
+          <button class="cms-slide-button cms-slideshow-next">
+            {% if section.settings.icons_style == 'chevron' %}
+              {% render 'icon', icon: 'chevron-right', width: '2.2rem', height: '2.2rem' %}
+            {% elsif section.settings.icons_style == 'chevron_large' %}
+              {% render 'icon', icon: 'chevron-right', width: '2.8rem', height: '2.8rem' %}
+            {% elsif section.settings.icons_style == 'arrow' %}
+              {% render 'icon', icon: 'arrow-right', width: '2.2rem', height: '2.2rem' %}
+            {% elsif section.settings.icons_style == 'arrows_large' %}
+              {% render 'icon', icon: 'arrow-right', width: '2.8rem', height: '2.8rem' %}
+            {% endif %}
+          </button>
+        {% endif %}
+      {% endif %}
+    </div>
     {% endif %}
   </div>
-  {% endif %}
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
 
-    const slider = document.querySelector(".cms-slideshow-main"),
-          nextBtn = document.querySelector(".cms-slideshow-next"),
-          prevBtn = document.querySelector(".cms-slideshow-prev"),
-          dots = document.querySelectorAll(".cms-slideshow-dot button"),
-          slides = document.querySelectorAll(".cms-slideshow-slide"),
-          progressEl = document.querySelector(".cms-autoplay-progress"),
-          currentCounter = document.querySelector(".cms-current-slide"),
-          totalCounter = document.querySelector(".cms-total-slides");
+    document.querySelectorAll(".cms-slideshow-wrapper").forEach((section) => {
 
-    let currentSlide = 0,
-        totalSlides = slides.length;
+      const slider = section.querySelector(".cms-slideshow-main"),
+            nextBtn = section.querySelector(".cms-slideshow-next"),
+            prevBtn = section.querySelector(".cms-slideshow-prev"),
+            dots = section.querySelectorAll(".cms-slideshow-dot button"),
+            slides = section.querySelectorAll(".cms-slideshow-slide"),
+            progressEl = section.querySelector(".cms-autoplay-progress"),
+            currentCounter = section.querySelector(".cms-current-slide"),
+            totalCounter = section.querySelector(".cms-total-slides");
 
-    const autoplayEnabled = {{ section.settings.autoplay | json }};
-    const autoplayTime = {{ section.settings.autoplay_speed }} * 1000;
+      let currentSlide = 0;
+      let totalSlides = slides.length;
 
-    let autoplayTimeout;
+      const autoplayEnabled = {{ section.settings.autoplay | json }};
+      const autoplayTime = {{ section.settings.autoplay_speed }} * 1000;
 
-    // =========================
-    // INIT TOTAL COUNTER
-    // =========================
-    if (totalCounter) {
-      totalCounter.textContent = String(totalSlides).padStart(2, "0");
-    }
+      let autoplayTimeout;
+      let progressAnimation;
 
-    // =========================
-    // PROGRESS (CIRCULAR)
-    // =========================
-    function setProgress(deg) {
-      if (!progressEl) return;
-      progressEl.style.setProperty("--progress", deg + "deg");
-    }
-
-    function startProgressBar() {
-      if (!progressEl) return;
-
-      let start = performance.now();
-
-      function animate(now) {
-        let elapsed = now - start;
-        let percent = Math.min(elapsed / autoplayTime, 1);
-        let deg = percent * 360;
-
-        setProgress(deg);
-
-        if (percent < 1) {
-          requestAnimationFrame(animate);
-        }
+      if (totalCounter) {
+        totalCounter.textContent = String(totalSlides).padStart(2, "0");
       }
 
-      requestAnimationFrame(animate);
-    }
-
-    function resetProgress() {
-      setProgress(0);
-    }
-
-    // =========================
-    // COUNTER
-    // =========================
-    function updateCounter() {
-      if (currentCounter) {
-        currentCounter.textContent = String(currentSlide + 1).padStart(2, "0");
+      function setProgress(deg) {
+        if (!progressEl) return;
+        progressEl.style.setProperty("--progress", deg + "deg");
       }
-    }
 
-    // =========================
-    // SLIDES
-    // =========================
-    function updateSlides(direction = "next") {
+      function startProgressBar() {
+        if (!progressEl) return;
 
-      slides.forEach((slide, index) => {
+        let start = performance.now();
 
-        slide.classList.remove(
-          "active",
-          "slide-out-left",
-          "slide-out-right",
-          "slide-in-right",
-          "slide-in-left"
-        );
+        function animate(now) {
+          let elapsed = now - start;
+          let percent = Math.min(elapsed / autoplayTime, 1);
 
-        if (index === currentSlide) {
+          setProgress(percent * 360);
 
-          slide.classList.add("active");
-
-          if (direction === "next") {
-            slide.classList.add("slide-in-right");
-          } else {
-            slide.classList.add("slide-in-left");
-          }
-
-        } else {
-
-          if (direction === "next") {
-            slide.classList.add("slide-out-left");
-          } else {
-            slide.classList.add("slide-out-right");
+          if (percent < 1) {
+            progressAnimation = requestAnimationFrame(animate);
           }
         }
-      });
 
-      dots.forEach(dot => dot.classList.remove("active"));
-
-      if (dots[currentSlide]) {
-        dots[currentSlide].classList.add("active");
+        progressAnimation = requestAnimationFrame(animate);
       }
 
-      if (prevBtn) {
-        prevBtn.disabled = currentSlide === 0;
-        prevBtn.classList.toggle("disabled", currentSlide === 0);
+      function resetProgress() {
+        cancelAnimationFrame(progressAnimation);
+        setProgress(0);
       }
 
-      if (nextBtn) {
-        nextBtn.disabled = currentSlide === totalSlides - 1;
-        nextBtn.classList.toggle("disabled", currentSlide === totalSlides - 1);
+      function updateCounter() {
+        if (currentCounter) {
+          currentCounter.textContent = String(currentSlide + 1).padStart(2, "0");
+        }
       }
-    }
 
-    // =========================
-    // AUTOPLAY
-    // =========================
-    function startAutoplay() {
+      function updateSlides(direction = "next") {
 
-      clearTimeout(autoplayTimeout);
+        slides.forEach((slide, index) => {
 
-      resetProgress();
-      startProgressBar();
+          slide.classList.remove(
+            "active",
+            "slide-out-left",
+            "slide-out-right",
+            "slide-in-right",
+            "slide-in-left"
+          );
 
-      autoplayTimeout = setTimeout(() => {
+          if (index === currentSlide) {
 
-        nextSlide();
+            slide.classList.add("active");
 
-        if (autoplayEnabled && currentSlide < totalSlides - 1) {
-          startAutoplay();
+            slide.classList.add(
+              direction === "next"
+                ? "slide-in-right"
+                : "slide-in-left"
+            );
+
+          } else {
+
+            slide.classList.add(
+              direction === "next"
+                ? "slide-out-left"
+                : "slide-out-right"
+            );
+          }
+        });
+
+        dots.forEach(dot => dot.classList.remove("active"));
+
+        if (dots[currentSlide]) {
+          dots[currentSlide].classList.add("active");
         }
 
-      }, autoplayTime);
-    }
+        if (prevBtn) {
+          prevBtn.disabled = currentSlide === 0;
+          prevBtn.classList.toggle("disabled", currentSlide === 0);
+        }
 
-    // =========================
-    // NEXT SLIDE (STOP AT LAST)
-    // =========================
-    function nextSlide() {
+        if (nextBtn) {
+          nextBtn.disabled = currentSlide === totalSlides - 1;
+          nextBtn.classList.toggle("disabled", currentSlide === totalSlides - 1);
+        }
+      }
 
-      if (currentSlide >= totalSlides - 1) return;
+      function startAutoplay() {
 
-      resetProgress();
+        clearTimeout(autoplayTimeout);
 
-      currentSlide++;
+        resetProgress();
+        startProgressBar();
 
-      updateSlides("next");
-      updateCounter();
+        autoplayTimeout = setTimeout(() => {
 
-      if (autoplayEnabled) startAutoplay();
-    }
+          if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            updateSlides("next");
+            updateCounter();
 
-    // =========================
-    // PREV SLIDE (STOP AT FIRST)
-    // =========================
-    function prevSlide() {
+            if (autoplayEnabled) {
+              startAutoplay();
+            }
+          }
 
-      if (currentSlide <= 0) return;
+        }, autoplayTime);
+      }
 
-      resetProgress();
+      function nextSlide() {
 
-      currentSlide--;
+        if (currentSlide >= totalSlides - 1) return;
 
-      updateSlides("prev");
-      updateCounter();
+        currentSlide++;
 
-      if (autoplayEnabled) startAutoplay();
-    }
-
-    // =========================
-    // BUTTONS
-    // =========================
-    if (nextBtn) nextBtn.addEventListener("click", nextSlide);
-    if (prevBtn) prevBtn.addEventListener("click", prevSlide);
-
-    // =========================
-    // DOTS
-    // =========================
-    dots.forEach((dot, index) => {
-
-      dot.addEventListener("click", () => {
-
-        const direction = index > currentSlide ? "next" : "prev";
-
-        currentSlide = index;
-
-        updateSlides(direction);
+        updateSlides("next");
         updateCounter();
 
         if (autoplayEnabled) startAutoplay();
+      }
+
+      function prevSlide() {
+
+        if (currentSlide <= 0) return;
+
+        currentSlide--;
+
+        updateSlides("prev");
+        updateCounter();
+
+        if (autoplayEnabled) startAutoplay();
+      }
+
+      nextBtn?.addEventListener("click", nextSlide);
+      prevBtn?.addEventListener("click", prevSlide);
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+
+          const direction = index > currentSlide ? "next" : "prev";
+
+          currentSlide = index;
+
+          updateSlides(direction);
+          updateCounter();
+
+          if (autoplayEnabled) startAutoplay();
+        });
       });
-    });
 
-    // =========================
-    // TOUCH / DRAG
-    // =========================
-    let startX = 0, endX = 0;
+      let startX = 0;
+      let endX = 0;
 
-    if (slider) {
-      slider.addEventListener("touchstart", (e) => {
+      slider?.addEventListener("touchstart", (e) => {
         startX = e.touches[0].clientX;
+        endX = startX;
       });
 
-      slider.addEventListener("touchmove", (e) => {
+      slider?.addEventListener("touchmove", (e) => {
         endX = e.touches[0].clientX;
       });
 
-      slider.addEventListener("touchend", () => {
+      slider?.addEventListener("touchend", () => {
 
-        let diff = startX - endX;
+        const diff = startX - endX;
 
         if (diff > 50) nextSlide();
         if (diff < -50) prevSlide();
       });
-    }
 
-    // =========================
-    // INIT
-    // =========================
-    updateSlides();
-    updateCounter();
+      updateSlides();
+      updateCounter();
 
-    if (autoplayEnabled) {
-      startAutoplay();
-    }
+      if (autoplayEnabled) {
+        startAutoplay();
+      }
+
+    });
 
   });
 </script>
@@ -594,7 +586,8 @@
         {
           "type": "checkbox",
           "id": "toggle_overlay",
-          "label": "Media Overlay"
+          "label": "Media Overlay",
+          "default": true
         },
         {
           "type": "color",
@@ -630,53 +623,47 @@
         },
         {
           "type": "select",
-          "id": "content_horizontal_alignment",
-          "label": "Horizontal Position",
+          "id": "content_alignment",
+          "label": "Content Alignment",
           "options": [
             {
-              "value": "top",
-              "label": "Left"
+              "label": "Left Top",
+              "value": "left-top"
             },
             {
-              "value": "center",
-              "label": "Center"
+              "label": "Center Top",
+              "value": "center-top"
             },
             {
-              "value": "bottom",
-              "label": "Right"
+              "label": "Right Top",
+              "value": "right-top"
+            },
+            {
+              "label": "Left Center",
+              "value": "left-center"
+            },
+            {
+              "label": "Center Center",
+              "value": "center-center"
+            },
+            {
+              "label": "Right Center",
+              "value": "right-center"
+            },
+            {
+              "label": "Left Bottom",
+              "value": "left-bottom"
+            },
+            {
+              "label": "Center Bottom",
+              "value": "center-bottom"
+            },
+            {
+              "label": "Right Bottom",
+              "value": "right-bottom"
             }
           ],
-          "default": "center"
-        },
-        {
-          "type": "select",
-          "id": "content_vertical_alignment",
-          "label": "Vertical Position",
-          "options": [
-            {
-              "value": "left",
-              "label": "Top"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "right",
-              "label": "Bottom"
-            }
-          ],
-          "default": "center"
-        },
-        {
-          "type": "range",
-          "id": "gap",
-          "label": "Gap",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "default": 12
+          "default": "center-center"
         },
         {
           "type": "header",
@@ -684,23 +671,41 @@
         },
         {
           "type": "color",
-          "id": "text_color",
-          "label": "Text Color"
+          "id": "subheading_color",
+          "label": "Subheading color"
         },
         {
           "type": "text",
           "id": "subheading",
-          "label": "Sub heading"
+          "label": "Sub heading",
+          "default": "Experience innovation that makes every day easier."
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading color"
+        },
+        {
+          "type": "color_background",
+          "id": "heading_gradient",
+          "label": "Heading gradient"
         },
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading"
+          "label": "Heading",
+          "default": "Smart Technology For Modern Life"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color"
         },
         {
           "type": "richtext",
           "id": "description",
-          "label": "Description"
+          "label": "Description",
+          "default": "<p>Upgrade your setup with high-performance products designed for speed, productivity, and style.</p>"
         },
         {
           "type": "url",
@@ -710,7 +715,8 @@
         {
           "type": "text",
           "id": "link_label",
-          "label": "Link Label"
+          "label": "Link Label",
+          "default": "Explore More"
         },
         {
           "type": "color",
@@ -734,6 +740,9 @@
     {
       "name": "Slideshow",
       "blocks": [
+        {
+          "type": "slide"
+        },
         {
           "type": "slide"
         }

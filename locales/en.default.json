@@ -55,7 +55,11 @@
       "password": "Password",
       "submit": "Sign in",
       "title": "Login"
-    }
+    },
+    "account": {
+      "title": "Account",
+    },
+    "log_in": "Log in",
   },
   "collections": {
     "title": "Collections"
@@ -77,7 +81,40 @@
     "placeholder": "Search articles, pages, or products",
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
-    "results_for_html": "{{ count }} results found for {{ terms }}"
+    "results_for_html": "{{ count }} results found for {{ terms }}",
+    "reset": "Clear search term"
+  },
+  "card_product": {
+    "add_to_cart": {
+      "label": "Add to cart"
+    },
+    "quick_view": {
+      "label": "Quick view"
+    },
+    "sold_out": {
+      "label": "Sold Out"
+    },
+    "sale": {
+      "label": " Sale"
+    },
+    "off": {
+      "label": "% OFF"
+    },
+    "save": {
+      "label": "Save"
+    }
+  },
+  "quick_view": {
+    "modal_label": "Product quick view",
+    "view_details": "View full details"
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "add": "Add to wishlist",
+    "remove": "Remove from wishlist",
+    "empty": "Your wishlist is empty.",
+    "continue_shopping": "Continue shopping",
+    "loading": "Loading wishlist..."
   },
   "social_media": {
     "name": "Social Account",
@@ -126,5 +163,17 @@
     "social_spotify_link": {
       "label": "Spotify"
     }
-  }
+  },
+  "accessibility": {
+    "close": "Close",
+  },
+  "localization": {
+    "country_label": "Country/region",
+    "language_label": "Language",
+    "update_language": "Update language",
+    "update_country": "Update country/region",
+    "search": "Search",
+    "popular_countries_regions": "Popular countries/regions",
+    "country_results_count": "{{ count }} countries/regions found"
+  },
 }

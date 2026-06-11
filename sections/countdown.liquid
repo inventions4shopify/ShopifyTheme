@@ -2,8 +2,8 @@
 
 {% if section.settings.image_show == false %}
   <style>
-    .cms-cell--{{ section.settings.width }} >* {
-      border-radius: var(--spacing-20);
+    .cms-countdown-main .cms-cell--{{ section.settings.width }} >* {
+      border-radius: var(--media-radius);
       position: relative;
       overflow: hidden;
     }
@@ -13,7 +13,7 @@
     <style>
         .cms-countdown-main {
             position: relative;
-            background-image: url({{ section.settings.desktop_image | image_url }});
+            background-image: url({% if section.settings.desktop_image != blank %}{{ section.settings.desktop_image | image_url }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %});
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -32,7 +32,7 @@
 
         @media (max-width: 767px) {
             .cms-countdown-main {
-                background-image: url({{ section.settings.mb_image | image_url }});
+                background-image: url({% if section.settings.mb_image != blank %}{{ section.settings.mb_image | image_url }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %});
             }
         }
 
@@ -41,60 +41,107 @@
             z-index: 2;
             justify-content: center;
         }
+
+        .cms-countdown-wrapper {
+          width: 100%;
+          max-width: 65rem;
+          margin: 0 auto;
+        }
     </style>
 {% endif %}
 
-<div class="cms-countdown-main">
+<div {%- render 'section-variables', section: section, class: 'cms-countdown-main' -%}>
   <div class="{{ section.settings.section_width }}">
     <div class="cms-row flex-{{ section.settings.image_position }}">
         {% if section.settings.image_show == false %}
-            <div class="cms-cell--{{ section.settings.width }}">
-                <picture>
-                    {% if section.settings.mb_image != blank %}
-                        <source
-                        media="(max-width: 767px)"
-                        srcset="{{ section.settings.mb_image | image_url }}"
-                        >
-                    {% endif %}
-                    {% if section.settings.desktop_image != blank %}
-                        <img
-                            src="{{ section.settings.desktop_image | image_url }}"
-                            alt="{{ section.settings.desktop_image.alt | escape }}"
-                            loading="lazy"
-                            width="auto"
-                            height="auto"
-                        >
-                    {% endif %}
+            <div class="cms-cell--{{ section.settings.width }} aspect-portrait">
+                <picture> 
+                  <source
+                  media="(max-width: 767px)"
+                  srcset="{% if section.settings.mb_image != blank %}{{ section.settings.mb_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
+                  >
+              
+                  <img
+                      src="{% if section.settings.desktop_image != blank %}{{ section.settings.desktop_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
+                      alt="{{ section.settings.desktop_image.alt | escape }}"
+                      loading="lazy"
+                      width="auto"
+                      height="auto"
+                  >
                 </picture>
             </div>
         {% endif %}
         <div class="cms-cell justify-{{ section.settings.content_alignment }}">
             <div class="cms-countdown-wrapper text-{{ section.settings.text_alignment }}">
+              {%- assign sub_color = section.settings.subheading_color -%}
             {% if section.settings.subheading != blank %}
-                <span class="countdown-subheading">{{ section.settings.subheading }}</span>
+                <span class="subheading"
+                  {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                    style="color: rgb({{ sub_color.rgb }});"
+                  {%- endunless %}
+                >{{ section.settings.subheading }}</span>
             {% endif %}
+
             {% if section.settings.heading != blank %}
-                <h2 class="h2">{{ section.settings.heading }}</h2>
+              {%- assign head_color = section.settings.heading_color -%}
+              {%- assign head_grad = section.settings.heading_gradient -%}
+              {%- capture heading_style -%}
+                {%- if head_grad != blank -%}
+                  background: {{ head_grad }};
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  background-clip: text;
+                {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
+                  --color-heading: {{ head_color.rgb }};
+                {%- endif -%}
+              {%- endcapture -%}
+                <h2 class="h2"
+                {%- unless heading_style == blank %}
+                    style="{{ heading_style | strip }}"
+                  {%- endunless %}
+                >{{ section.settings.heading }}</h2>
             {% endif %}
-            <div class="h1 countdown-timer justify-{{ section.settings.text_alignment }}" data-countdown="{{ section.settings.countdown_date }}">
+
+            {%- assign date_color = section.settings.date_color -%}
+            <div class="h1 countdown-timer justify-{{ section.settings.text_alignment }}" data-countdown="{{ section.settings.countdown_date }}"
+              {%- unless date_color == blank or date_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ date_color.rgb }});"
+              {%- endunless %}
+            >
                 <div class="countdown-day">
                     <span class="countdown-number h1">00</span>
-                    <span class="sub-heading">Days</span>
+                    <span class="sub-heading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >Days</span>
                 </div>
                 <span class="countdown-separator">:</span>
                 <div class="countdown-hour">
                     <span class="countdown-number h1">00</span>
-                    <span class="sub-heading">Hours</span>
+                    <span class="sub-heading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >Hours</span>
                 </div>
                 <span class="countdown-separator">:</span>
                 <div class="countdown-minute">
                     <span class="countdown-number h1">00</span>
-                    <span class="sub-heading">Minutes</span>
+                    <span class="sub-heading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >Minutes</span>
                 </div>
                 <span class="countdown-separator">:</span>
                 <div class="countdown-second">
                     <span class="countdown-number h1">00</span>
-                    <span class="sub-heading">Seconds</span>
+                    <span class="sub-heading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                      style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >Seconds</span>
                 </div>
             </div>
             </div>
@@ -178,12 +225,17 @@
 {% schema %}
 {
   "name": "Countdown",
-  "class": "section cms-countdown",
+  "class": "cms-countdown",
   "tag": "section",
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+
     {
       "type": "select",
       "id": "section_width",
@@ -218,7 +270,21 @@
         }
       ],
       "default": "medium",
-      "label": "Width"
+      "label": "Image Width"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
     },
     {
         "type": "header",
@@ -244,7 +310,7 @@
         "type": "checkbox",
         "id": "image_show",
         "label": "Show Image In Background",
-        "default": false
+        "default": true
     },
     {
         "type": "image_picker",
@@ -262,7 +328,7 @@
       "label": "Text Alignment",
       "options": [
         {
-          "value": "left",
+          "value": "start",
           "label": "Start"
         },
         {
@@ -270,7 +336,7 @@
           "label": "Center"
         },
         {
-          "value": "right",
+          "value": "end",
           "label": "End"
         }
       ],
@@ -282,7 +348,7 @@
       "label": "Content Alignment",
       "options": [
         {
-          "value": "left",
+          "value": "start",
           "label": "Start"
         },
         {
@@ -290,7 +356,7 @@
           "label": "Center"
         },
         {
-          "value": "right",
+          "value": "end",
           "label": "End"
         }
       ],
@@ -304,14 +370,90 @@
         "default": "12-31-2028 23:59:59"
     },
     {
+      "type": "color",
+      "id": "date_color",
+      "label": "Date color"
+    },
+    {
       "type": "text",
       "id": "subheading",
-      "label": "Sub heading"
+      "label": "Sub heading",
+      "default": "Limited Time Offer"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading"
+      "label": "Heading",
+      "default": "Hurry Up! Don't Miss Out On This Exclusive Deal."
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
     }
   ],
   "presets": [

@@ -21,7 +21,7 @@ Supported variables
 * heading_color     {Color}   — Optional per-call heading color (applied inline)
 * heading_gradient  {String}  — Optional CSS gradient for heading text (takes priority over heading_color)
 * content           {HTML}    — Optional prose / richtext below the heading
-* text_alignment    {String}  — "left" | "center" | "right" (default: "center")
+* text_alignment    {String}  — "start" | "center" | "end" (default: "center")
 * link_text         {String}  — Optional "see all" link label
 * link_url          {URL}     — URL for the link
 
@@ -36,12 +36,12 @@ Usage examples
   assign alignment = text_alignment | default: 'center'
 
   case alignment
-    when 'left'
+    when 'start'
       assign align_flex = 'items-start'
-      assign align_text = 'text-left'
-    when 'right'
+      assign align_text = 'text-start'
+    when 'end'
       assign align_flex = 'items-end'
-      assign align_text = 'text-right'
+      assign align_text = 'text-end'
     else
       assign align_flex = 'items-center'
       assign align_text = 'text-center'

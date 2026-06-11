@@ -1,12 +1,37 @@
-{% style %}
-  .product-info-wrapper {
-    width: 50%;
-  }
-{% endstyle %}
-
-<div>
-  <h2>{{ product.title }}</h2>
-
+<div class="product-details" data-product-root>
   {% for block in blocks %}
+    {% case block.type %}
+      {% when 'vendor' %}
+        {% render 'product-block-vendor', product: product, block: block %}
+
+      {% when 'title' %}
+        {% render 'product-block-title', product: product, block: block %}
+      {% when 'description' %}
+        {% render 'product-block-description', product: product, block: block %}
+
+      {% when 'price' %}
+        {% render 'product-block-price', product: product, block: block %}
+
+      {% when 'inventory' %}
+        {% render 'product-block-inventory', product: product, block: block %}
+
+      {% when 'variant_picker' %}
+        {% render 'product-block-variant-picker', product: product, block: block %}
+
+      {% when 'delivery_date' %}
+        {% render 'product-block-delivery-date', product: product, block: block %}
+
+      {% when 'sticky_add_to_cart' %}
+        {% render 'product-block-sticky-buy-button', product: product, block: block %}
+
+      {% when 'buy_buttons' %}
+        {% render 'product-block-buy-buttons', product: product, block: block %}
+
+      {% when 'accordion' %}
+        {% render 'product-block-accordion', product: product, block: block %}
+
+      {% when 'recommendations' %}
+        {% render 'product-block-recommendations', product: product, block: block %}
+    {% endcase %}
   {% endfor %}
 </div>

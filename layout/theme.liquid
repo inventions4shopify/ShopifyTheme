@@ -8,7 +8,10 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {% endif %}
 
-    {% unless settings.type_heading_font.system? and settings.type_subheading_font.system? and settings.type_body_font.system? %}
+    {% unless settings.type_heading_font.system?
+      and settings.type_subheading_font.system?
+      and settings.type_body_font.system?
+    %}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {% endunless %}
 
@@ -25,18 +28,61 @@
     {% # Load theme stylesheet %}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'comman-section.css' | asset_url | stylesheet_tag: preload: true }}
-
+    {%- if settings.enable_wishlist -%}
+      {{ 'wishlist.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+      {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
+      <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
+
+    <script>
+            window.theme = window.theme || {};
+
+            window.theme.moneyFormat = {{ shop.money_format | json }};
+
+            window.theme.formatMoney = function(cents) {
+        const amount = (cents / 100).toFixed(2);
+
+        return window.theme.moneyFormat
+          .replace(/\{\{\s*amount\s*\}\}/g, amount);
+      };
+
+      {%- if settings.enable_wishlist -%}
+        {%- liquid
+          if settings.wishlist_page != blank
+            assign wishlist_url = settings.wishlist_page.url
+          else
+            assign wishlist_url = '/pages/wishlist'
+          endif
+        -%}
+        window.theme.wishlistLabels = {
+          loading: {{ 'wishlist.loading' | t | json }},
+          addToCart: {{ 'card_product.add_to_cart.label' | t | json }},
+          quickView: {{ 'card_product.quick_view.label' | t | json }},
+          soldOut: {{ 'card_product.sold_out.label' | t | json }},
+          remove: {{ 'wishlist.remove' | t | json }}
+        };
+        window.theme.wishlistPageUrl = {{ wishlist_url | json }};
+      {%- endif -%}
+    </script>
 
     {{ content_for_header }}
   </head>
 
   <body>
     {% sections 'header-group' %}
+    {% if settings.cart_type == 'cart_drawer' %}
+      {% render 'cart-drawer' %}
+    {% endif %}
 
     {{ content_for_layout }}
 
     {% sections 'footer-group' %}
+
+    {% render 'quick-view-modal' %}
   </body>
 </html>

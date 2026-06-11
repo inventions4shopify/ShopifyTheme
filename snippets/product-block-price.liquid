@@ -1,0 +1,197 @@
+{% style %}
+.product_price_block {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+/* Main price */
+.product_price {
+  font-size: 2rem;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+  line-height: 1.2;
+}
+
+/* Compare at price */
+.product_compare_price {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.6);
+  text-decoration: line-through;
+  font-weight: 400;
+}
+
+/* Save badge */
+.product_save_badge {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #0a7a2f;
+  background: rgba(10, 122, 47, 0.08);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Hover polish (optional) */
+.product_price_block:hover .product_save_badge {
+  background: rgba(10, 122, 47, 0.12);
+}
+
+/* Desktop scaling */
+@media screen and (min-width: 750px) {
+  .product_price {
+    font-size: 2.4rem;
+  }
+
+  .product_compare_price {
+    font-size: 1.5rem;
+  }
+
+  .product_save_badge {
+    font-size: 1.3rem;
+  }
+}
+{% endstyle %}
+
+{%- liquid
+  assign price_show_save_badge = qv_show_save_badge | default: block.settings.show_save_badge
+  assign price_save_type = qv_save_type | default: block.settings.save_type
+-%}
+
+{% assign variant = product.selected_or_first_available_variant %}
+<product-price
+  {{ block.shopify_attributes }}
+>
+  <div
+    class="product_price_block"
+    data-price-block
+  >
+    <span
+      class="product_price"
+      data-price
+    >
+      {{ variant.price | money }}
+    </span>
+
+    <span
+      class="product_compare_price"
+      data-compare-price
+      {% unless variant.compare_at_price > variant.price %}
+        hidden
+      {% endunless %}
+    >
+      {{ variant.compare_at_price | money }}
+    </span>
+
+    {% if price_show_save_badge %}
+      <span
+        class="product_save_badge"
+        data-save-badge
+        {% unless variant.compare_at_price > variant.price %}
+          hidden
+        {% endunless %}
+      >
+        {% assign difference = variant.compare_at_price | minus: variant.price %}
+
+        {% if price_save_type == 'money' %}
+          Save {{ difference | money }}
+        {% else %}
+          {% assign percentage = difference | times: 100 | divided_by: variant.compare_at_price %}
+
+          Save {{ percentage }}%
+        {% endif %}
+      </span>
+    {% endif %}
+  </div>
+
+  <script
+    type="application/json"
+    data-price-settings
+  >
+    {
+        "showSaveBadge": {{ price_show_save_badge | json }},
+        "saveType": {{ price_save_type | json }},
+        "moneyFormat": {{ shop.money_format | json }}
+        }
+  </script>
+</product-price>
+
+<script>
+  class ProductPrice extends HTMLElement {
+    connectedCallback() {
+      this.price = this.querySelector('[data-price]');
+
+      this.comparePrice = this.querySelector('[data-compare-price]');
+
+      this.saveBadge = this.querySelector('[data-save-badge]');
+
+      this.settings = JSON.parse(this.querySelector('[data-price-settings]').textContent);
+
+      this.productRoot = this.closest('[data-product-root]');
+
+      this.onVariantChange = this.onVariantChange.bind(this);
+
+      this.productRoot?.addEventListener('product:variant-change', this.onVariantChange);
+    }
+
+    disconnectedCallback() {
+      this.productRoot?.removeEventListener('product:variant-change', this.onVariantChange);
+    }
+
+    formatMoney(cents) {
+      return new Intl.NumberFormat(document.documentElement.lang || 'en', {
+        style: 'currency',
+        currency: Shopify.currency.active,
+      }).format(cents / 100);
+    }
+
+    onVariantChange(event) {
+      const variant = event.detail.variant;
+
+      if (!variant) return;
+
+      this.price.textContent = this.formatMoney(variant.price);
+
+      const onSale = variant.compare_at_price > variant.price;
+
+      if (!onSale) {
+        this.comparePrice?.setAttribute('hidden', '');
+
+        this.saveBadge?.setAttribute('hidden', '');
+
+        return;
+      }
+
+      if (this.comparePrice) {
+        this.comparePrice.textContent = this.formatMoney(variant.compare_at_price);
+
+        this.comparePrice.removeAttribute('hidden');
+      }
+
+      if (this.saveBadge && this.settings.showSaveBadge) {
+        const difference = variant.compare_at_price - variant.price;
+
+        let saveText = '';
+
+        if (this.settings.saveType === 'money') {
+          saveText = 'Save ' + this.formatMoney(difference);
+        } else {
+          const percentage = Math.round((difference * 100) / variant.compare_at_price);
+
+          saveText = 'Save ' + percentage + '%';
+        }
+
+        this.saveBadge.textContent = saveText;
+
+        this.saveBadge.removeAttribute('hidden');
+      }
+    }
+  }
+
+  if (!customElements.get('product-price')) {
+    customElements.define('product-price', ProductPrice);
+  }
+</script>
