@@ -1,0 +1,71 @@
+{%- liquid
+  assign shipping_threshold = settings.cart_drawer_free_shipping_threshold | default: 150 | times: 100
+  assign gift_threshold = settings.cart_drawer_free_gift_threshold | default: 250 | times: 100
+
+  if gift_threshold <= shipping_threshold
+    assign gift_threshold = shipping_threshold | plus: 10000
+  endif
+
+  assign cart_total = cart.total_price
+  assign shipping_reached = false
+  assign gift_reached = false
+
+  if cart_total >= shipping_threshold
+    assign shipping_reached = true
+  endif
+
+  if cart_total >= gift_threshold
+    assign gift_reached = true
+  endif
+
+  assign progress_percent = cart_total | times: 100 | divided_by: gift_threshold
+  if progress_percent > 100
+    assign progress_percent = 100
+  endif
+
+  assign shipping_position = shipping_threshold | times: 100 | divided_by: gift_threshold
+  if shipping_position > 100
+    assign shipping_position = 100
+  endif
+
+  if gift_reached
+    assign progress_message = 'cart.progress.all_reached' | t
+  elsif shipping_reached
+    assign amount_away = gift_threshold | minus: cart_total | money
+    assign progress_message = 'cart.progress.away_from_gift' | t: amount: amount_away
+  else
+    assign amount_away = shipping_threshold | minus: cart_total | money
+    assign progress_message = 'cart.progress.away_from_shipping' | t: amount: amount_away
+  endif
+-%}
+
+<div
+  class="cart-drawer__progress{% if gift_reached %} is-complete{% endif %}"
+  data-cart-progress
+  data-cart-progress-complete="{% if gift_reached %}true{% else %}false{% endif %}"
+  style="--cart-progress: {{ progress_percent }}%; --cart-shipping-position: {{ shipping_position }}%;"
+>
+  <p class="cart-drawer__progress-message">{{ progress_message }}</p>
+
+  <div class="cart-drawer__progress-track">
+    <div class="cart-drawer__progress-fill"></div>
+
+    <div
+      class="cart-drawer__progress-milestone{% if shipping_reached or gift_reached %} is-reached{% endif %}"
+      style="left: var(--cart-shipping-position);"
+    >
+      <span class="cart-drawer__progress-icon">
+        {% render 'icon', icon: 'truck', width: 18, height: 18 %}
+      </span>
+      <span class="cart-drawer__progress-label">{{ 'cart.progress.free_shipping' | t }}</span>
+    </div>
+
+    <div class="cart-drawer__progress-milestone cart-drawer__progress-milestone--gift{% if gift_reached %} is-reached{% endif %}">
+      <span class="cart-drawer__progress-icon">
+        {% render 'icon', icon: 'gift', width: 18, height: 18 %}
+      </span>
+      <span class="cart-drawer__progress-label">{{ 'cart.progress.free_gift' | t }}</span>
+    </div>
+  </div>
+
+</div>

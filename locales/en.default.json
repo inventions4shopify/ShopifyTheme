@@ -47,7 +47,20 @@
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "view_cart": "View cart",
+    "taxes_and_shipping_at_checkout": "Taxes and shipping calculated at checkout",
+    "progress": {
+      "away_from_shipping": "You are {{ amount }} away from getting Free shipping",
+      "away_from_gift": "You are {{ amount }} away from getting a Free Gift",
+      "all_reached": "Congratulations! You've reached all reward milestones!",
+      "free_shipping": "Free shipping",
+      "free_gift": "Free Gift"
+    },
+    "recommendations": {
+      "add": "Add"
+    }
   },
   "customers": {
     "login": {
