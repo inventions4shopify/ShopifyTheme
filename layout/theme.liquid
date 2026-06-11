@@ -51,6 +51,9 @@
           .replace(/\{\{\s*amount\s*\}\}/g, amount);
       };
 
+      window.theme.cartType = {{ settings.cart_type | json }};
+      window.theme.cartDrawerConfetti = {{ settings.cart_drawer_enable_confetti | default: true }};
+
       {%- if settings.enable_wishlist -%}
         {%- liquid
           if settings.wishlist_page != blank

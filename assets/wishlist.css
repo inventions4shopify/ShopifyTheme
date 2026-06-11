@@ -127,6 +127,10 @@
   line-height: 0;
 }
 
+.quick-view-modal__content .wishlist-button {
+  display: none;
+}
+
 @media screen and (min-width: 750px) {
   .wishlist-page__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));

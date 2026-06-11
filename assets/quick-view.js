@@ -43,14 +43,6 @@ class QuickViewModal extends HTMLElement {
       return;
     }
 
-    const addToCartTrigger = event.target.closest('[data-product-card-atc]');
-
-    if (addToCartTrigger) {
-      event.preventDefault();
-      this.addSingleVariantToCart(addToCartTrigger);
-      return;
-    }
-
     if (event.target.closest('[data-quick-view-close]') && this.isOpen()) {
       event.preventDefault();
       this.close();
@@ -252,42 +244,6 @@ class QuickViewModal extends HTMLElement {
     infoWrapper.appendChild(link);
   }
 
-  addSingleVariantToCart(button) {
-    const variantId = button.dataset.variantId;
-
-    if (!variantId || button.disabled) return;
-
-    button.disabled = true;
-
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        id: Number(variantId),
-        quantity: 1,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Unable to add this item to the cart.');
-        }
-
-        return response.json();
-      })
-      .then(() => {
-        window.location.href = '/cart';
-      })
-      .catch((error) => {
-        console.error(error);
-        window.alert(error.message || 'Unable to add this item to the cart.');
-      })
-      .finally(() => {
-        button.disabled = false;
-      });
-  }
 }
 
 if (!customElements.get('quick-view-modal')) {

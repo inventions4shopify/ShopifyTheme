@@ -3,7 +3,10 @@
     {{ product.title }}
   </h1>
 
-  {% if settings.enable_wishlist and settings.show_wishlist_on_product_page %}
+  {% liquid
+    assign show_wishlist_button = show_wishlist | default: true
+  %}
+  {% if show_wishlist_button and settings.enable_wishlist and settings.show_wishlist_on_product_page %}
     {% render 'wishlist-button', product: product, class: 'wishlist-button--product' %}
   {% endif %}
 </div>

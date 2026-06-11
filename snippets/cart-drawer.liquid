@@ -1,36 +1,24 @@
 {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
-{{ 'cart.js' | asset_url | script_tag }}
+<script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 
-{% style %}
-  .drawer {
-    visibility: hidden;
-  }
-{% endstyle %}
-
-<cart-drawer class="drawer{% if cart == empty %} cart-empty{% endif %}">
+<cart-drawer
+  class="drawer{% if cart == empty %} is-empty{% endif %}"
+  data-section-id="cart-drawer"
+  aria-hidden="true"
+>
   <div id="CartDrawer" class="cart-drawer">
-    <div id="cart-drawer-overlay" class="cart-overlay"></div>
-    <div class="drawer_inner_content">
-      {% if cart == empty %}
-        <div class="drawer-heading">
-          <h3 class="empty-cart-headingp">{{ settings.drawer_heading }}</h3>
-          <button class="drawer-close-icon" id="drawer-close-icon">
-            {% render 'icon', icon: 'close', width: 24, height: 24 %}
-          </button>
-        </div>
-        <div class="collection-btn">
-          <a class="button" href="{{ settings.button_url_link | routes.all_products_collection_url }}">{{ settings.button_text }}</a>
+    <div class="cart-drawer__overlay" data-cart-drawer-close></div>
 
-          {% if settings.account_title != blank %}
-            <p class="drawer-loggin">{{ settings.account_title }}</p>
-          {% endif %}
-
-          <p class="cart-login-textt">
-            <a href="{{ routes.account_login_url }}">Login</a> to check out faster.
-          </p>
-        </div>
-      {% endif %}
+    <div
+      class="cart-drawer__panel drawer_inner_content"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ 'cart.title' | t }}"
+    >
+      <div class="cart-drawer__celebration" data-cart-drawer-celebration aria-hidden="true"></div>
+      <div data-cart-drawer-contents>
+        {% render 'cart-drawer-content' %}
+      </div>
     </div>
   </div>
-
 </cart-drawer>
