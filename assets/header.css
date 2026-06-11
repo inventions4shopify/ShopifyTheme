@@ -141,7 +141,8 @@
 
 .header__icon-btn { background: none; border: 0; color: inherit; cursor: pointer; padding: var(--spacing-6);  position: relative; }
 .header__icon-btn:hover { color: inherit; transform: scale(1.07);}
-.header__cart-count {
+.header__cart-count,
+.header__wishlist-count {
   background: rgb(var(--color-header-text));
   width: 1.8rem;
   height: 1.8rem;
@@ -155,6 +156,10 @@
   font-size: var(--text-xss);
   align-items: center;
   padding: var(--spacing-4);
+}
+
+.header__wishlist-count[hidden] {
+  display: none;
 }
 /* ----- Drawer / mobile toggle ----- */
 .header__burger { display: none; background: none; border: 0; cursor: pointer; color: inherit; padding: var(--spacing-6); }

@@ -1,3 +1,19 @@
+{%- liquid
+  assign picker_swatch_size = qv_swatch_size | default: block.settings.swatch_size
+  assign picker_update_url = qv_update_url | default: block.settings.update_url
+  assign picker_hide_unavailable_options = qv_hide_unavailable_options | default: block.settings.hide_unavailable_options
+  assign picker_show_selected_value = qv_show_selected_value | default: block.settings.show_selected_value
+  assign picker_show_option_labels = qv_show_option_labels | default: block.settings.show_option_labels
+  assign picker_show_color_name = qv_show_color_name | default: block.settings.show_color_name
+  assign picker_show_dropdown_swatches = qv_show_dropdown_swatches | default: block.settings.show_dropdown_swatches
+  assign picker_swatch_source = qv_swatch_source | default: block.settings.swatch_source
+  assign picker_swatch_shape = qv_swatch_shape | default: block.settings.swatch_shape
+  assign picker_button_shape = qv_button_shape | default: block.settings.button_shape
+  assign picker_option_1_layout = qv_option_1_layout | default: block.settings.option_1_layout
+  assign picker_option_2_layout = qv_option_2_layout | default: block.settings.option_2_layout
+  assign picker_option_3_layout = qv_option_3_layout | default: block.settings.option_3_layout
+-%}
+
 {% style %}
   .variant_picker {
     display: flex;
@@ -242,18 +258,18 @@
 
 <variant-picker
   class="variant_picker"
-  style="--swatch-size: {{ block.settings.swatch_size }};"
+  style="--swatch-size: {{ picker_swatch_size }};"
   data-product-id="{{ product.id }}"
-  data-update-url="{{ block.settings.update_url }}"
-  data-hide-unavailable-options="{{ block.settings.hide_unavailable_options }}"
-  data-show-selected-value="{{ block.settings.show_selected_value }}"
-  data-show-option-labels="{{ block.settings.show_option_labels }}"
-  data-show-color-name="{{ block.settings.show_color_name }}"
-  data-show-dropdown-swatches="{{ block.settings.show_dropdown_swatches }}"
-  data-swatch-source="{{ block.settings.swatch_source }}"
-  data-swatch-size="{{ block.settings.swatch_size }}"
-  data-swatch-shape="{{ block.settings.swatch_shape }}"
-  data-button-shape="{{ block.settings.button_shape }}"
+  data-update-url="{{ picker_update_url }}"
+  data-hide-unavailable-options="{{ picker_hide_unavailable_options }}"
+  data-show-selected-value="{{ picker_show_selected_value }}"
+  data-show-option-labels="{{ picker_show_option_labels }}"
+  data-show-color-name="{{ picker_show_color_name }}"
+  data-show-dropdown-swatches="{{ picker_show_dropdown_swatches }}"
+  data-swatch-source="{{ picker_swatch_source }}"
+  data-swatch-size="{{ picker_swatch_size }}"
+  data-swatch-shape="{{ picker_swatch_shape }}"
+  data-button-shape="{{ picker_button_shape }}"
   {{ block.shopify_attributes }}
 >
   {% for option in product.options_with_values %}
@@ -262,11 +278,11 @@
 
       case option_position
         when 1
-          assign option_layout = block.settings.option_1_layout
+          assign option_layout = picker_option_1_layout
         when 2
-          assign option_layout = block.settings.option_2_layout
+          assign option_layout = picker_option_2_layout
         when 3
-          assign option_layout = block.settings.option_3_layout
+          assign option_layout = picker_option_3_layout
       endcase
     %}
 
@@ -284,13 +300,13 @@
       data-option-name="{{ option.name | escape }}"
       data-option-layout="{{ option_layout }}"
     >
-      {% if block.settings.show_option_labels %}
+      {% if picker_show_option_labels %}
         <div class="variant_picker_option_header">
           <span class="variant_picker_option_name">
             {{ option.name }}
           </span>
 
-          {% if block.settings.show_selected_value %}
+          {% if picker_show_selected_value %}
             <span
               class="variant_picker_selected_value"
               data-selected-value
@@ -322,7 +338,7 @@
                 <span
                   class="
                     variant_picker_swatch
-                    variant_picker_swatch--{{ block.settings.swatch_shape }}
+                    variant_picker_swatch--{{ picker_swatch_shape }}
                   "
                   {% if value.swatch.color %}
                     style="background-color: {{ value.swatch.color }};"
@@ -333,7 +349,7 @@
                   {% endif %}
                 ></span>
 
-                {% if block.settings.show_color_name %}
+                {% if picker_show_color_name %}
                   <span class="variant_picker_value_text">
                     {{ value }}
                   </span>
@@ -360,7 +376,7 @@
                 <span
                   class="
                     variant_picker_button
-                    variant_picker_button--{{ block.settings.button_shape }}
+                    variant_picker_button--{{ picker_button_shape }}
                   "
                 >
                   {{ value }}
@@ -397,7 +413,7 @@
                     class="variant_picker_dropdown_option"
                     data-option-value="{{ value | escape }}"
                   >
-                    {% if block.settings.show_dropdown_swatches and is_color_option %}
+                    {% if picker_show_dropdown_swatches and is_color_option %}
                       <span
                         class="variant_picker_dropdown_swatch"
                         {% if value.swatch.color %}

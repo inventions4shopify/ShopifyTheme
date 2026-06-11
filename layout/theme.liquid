@@ -28,6 +28,10 @@
     {% # Load theme stylesheet %}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'comman-section.css' | asset_url | stylesheet_tag: preload: true }}
+    {%- if settings.enable_wishlist -%}
+      {{ 'wishlist.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
      {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
       <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
@@ -46,6 +50,24 @@
         return window.theme.moneyFormat
           .replace(/\{\{\s*amount\s*\}\}/g, amount);
       };
+
+      {%- if settings.enable_wishlist -%}
+        {%- liquid
+          if settings.wishlist_page != blank
+            assign wishlist_url = settings.wishlist_page.url
+          else
+            assign wishlist_url = '/pages/wishlist'
+          endif
+        -%}
+        window.theme.wishlistLabels = {
+          loading: {{ 'wishlist.loading' | t | json }},
+          addToCart: {{ 'card_product.add_to_cart.label' | t | json }},
+          quickView: {{ 'card_product.quick_view.label' | t | json }},
+          soldOut: {{ 'card_product.sold_out.label' | t | json }},
+          remove: {{ 'wishlist.remove' | t | json }}
+        };
+        window.theme.wishlistPageUrl = {{ wishlist_url | json }};
+      {%- endif -%}
     </script>
 
     {{ content_for_header }}
@@ -60,5 +82,7 @@
     {{ content_for_layout }}
 
     {% sections 'footer-group' %}
+
+    {% render 'quick-view-modal' %}
   </body>
 </html>

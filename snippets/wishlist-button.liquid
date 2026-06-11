@@ -1,0 +1,31 @@
+{%- if settings.enable_wishlist -%}
+  {%- liquid
+    assign button_class = 'wishlist-button'
+
+    if class != blank
+      assign button_class = button_class | append: ' ' | append: class
+    endif
+
+    assign label_add = 'wishlist.add' | t
+    assign label_remove = 'wishlist.remove' | t
+  -%}
+
+  <button
+    type="button"
+    class="{{ button_class }}"
+    data-wishlist-toggle
+    data-product-handle="{{ product.handle }}"
+    data-product-id="{{ product.id }}"
+    aria-label="{{ label_add }}"
+    aria-pressed="false"
+  >
+    <span class="wishlist-button__icon wishlist-button__icon--outline" aria-hidden="true">
+      {% render 'icon', icon: 'heart', width: 20, height: 20 %}
+    </span>
+    <span class="wishlist-button__icon wishlist-button__icon--filled" aria-hidden="true">
+      {% render 'icon', icon: 'heart-filled', width: 20, height: 20 %}
+    </span>
+    <span class="visually-hidden" data-wishlist-label-add>{{ label_add }}</span>
+    <span class="visually-hidden" data-wishlist-label-remove>{{ label_remove }}</span>
+  </button>
+{%- endif -%}

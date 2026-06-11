@@ -26,6 +26,10 @@
       </span>
     {% endif %}
 
+    {% if settings.enable_wishlist and settings.show_wishlist_on_product_card %}
+      {% render 'wishlist-button', product: product, class: 'wishlist-button--card' %}
+    {% endif %}
+
     <a href="{{ product.url }}" class="product-card__image-link">
       {% if product.featured_image %}
         <img
@@ -86,27 +90,24 @@
   </div>
   {% if show_quick_buy %}
     {% if product.available %}
-      {% if product.variants.size == 1 %}
-        <form method="post" action="{{ routes.cart_add_url }}">
-          <input
-            type="hidden"
-            name="id"
-            value="{{ first_variant.id }}"
-          >
-
-          <button
-            type="submit"
-            class="product-card__quick-add button"
-          >
-            Add to Cart
-          </button>
-        </form>
+      {% if product.has_only_default_variant %}
+        <button
+          type="button"
+          class="product-card__quick-add button"
+          data-product-card-atc
+          data-variant-id="{{ first_variant.id }}"
+        >
+          {{ 'card_product.add_to_cart.label' | t }}
+        </button>
       {% else %}
         <button
           type="button"
           class="product-card__quick-add button"
+          data-quick-view-trigger
+          data-product-url="{{ product.url }}"
+          aria-haspopup="dialog"
         >
-          Choose Options
+          {{ 'card_product.quick_view.label' | t }}
         </button>
       {% endif %}
     {% else %}
@@ -115,7 +116,7 @@
         class="product-card__quick-add button"
         disabled
       >
-        Sold Out
+        {{ 'card_product.sold_out.label' | t }}
       </button>
     {% endif %}
   {% endif %}
