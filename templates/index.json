@@ -11,7 +11,52 @@
   "sections": {
     "main": {
       "type": "slideshow",
-      "settings": {}
+      "settings": {
+        "section_width": "full-width",
+        "slide_width": "page-width",
+        "slide_height": "medium",
+        "icons_style": "chevron",
+        "icons_shape": "none",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4
+      },
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "toggle_overlay": true,
+            "overlay_color": "#00000026",
+            "content_width": "medium",
+            "content_alignment": "center-center",
+            "subheading": "Experience innovation that makes every day easier.",
+            "heading": "Smart Technology For Modern Life",
+            "description": "<p>Upgrade your setup with high-performance products designed for speed, productivity, and style.</p>",
+            "link": "",
+            "link_label": "Explore More"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "toggle_overlay": true,
+            "overlay_color": "#00000026",
+            "content_width": "medium",
+            "content_alignment": "center-center",
+            "subheading": "Discover New Possibilities",
+            "heading": "Designed For Everyday Performance",
+            "description": "<p>Find products that combine innovation, quality, and style to elevate your experience.</p>",
+            "link": "",
+            "link_label": "Learn More"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ]
     },
     "rich_text_Q7BM9K": {
       "type": "rich-text",

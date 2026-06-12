@@ -84,17 +84,19 @@
                 text_alignment: 'start'
               -%}
             </div>
-            <div class="fc__view-all">
-              {% if section.settings.link_text != blank %}
-                {%- render 'button',
-                  text: section.settings.link_text,
-                  href: link_url,
-                  background_color: section.settings.button_background_color,
-                  text_color: section.settings.button_text_color,
-                  outline_color: section.settings.button_outline_color
-                -%}
-              {% endif %}
-            </div>
+            {%- if collection_products.size > 4 -%}
+              <div class="fc__view-all">
+                {% if section.settings.link_text != blank %}
+                  {%- render 'button',
+                    text: section.settings.link_text,
+                    href: link_url,
+                    background_color: section.settings.button_background_color,
+                    text_color: section.settings.button_text_color,
+                    outline_color: section.settings.button_outline_color
+                  -%}
+                {% endif %}
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
 
@@ -143,11 +145,13 @@
               {%- endif -%}
             </div>
 
-            <div class="fc__arrows_btn flex" data-fc-arrows>
-              <button class="collection-grid-prev button" data-fc-prev aria-label="Previous">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
-              <button class="collection-grid-next button"  data-fc-next aria-label="Next">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
-            </div>
-          </div>
+            {%- if collection != blank -%}
+              <div class="fc__arrows_btn flex" data-fc-arrows>
+                <button class="collection-grid-prev button" data-fc-prev aria-label="Previous">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
+                <button class="collection-grid-next button"  data-fc-next aria-label="Next">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
+              </div>
+              {%- endif -%}
+              </div>
         {%- else -%}
           <div class="{{ wrapper_class }}">
             {%- if collection != blank and collection_products.size > 0 -%}
