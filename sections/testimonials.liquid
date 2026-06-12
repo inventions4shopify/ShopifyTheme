@@ -24,7 +24,11 @@
       -%}
     </div>
 
-    <div class="testimonial-wrapper-main">
+    <testimonials-section
+      class="testimonial-wrapper-main"
+      data-autoplay="{{ section.settings.autoplay }}"
+      data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+    >
       <div class="testimonial-wrapper {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} testimonial-grid-{{ section.settings.columns }}">
         {% for block in section.blocks %}
           <div class="testimonial-card" {{ block.shopify_attributes }}>
@@ -71,96 +75,13 @@
           </div>
         {% endif %}
       {% endif %}
-    </div>
+    </testimonials-section>
   </div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const slider = document.querySelector('.testimonial-wrapper.is-slider');
-  const nextBtn = document.querySelector('.testimonial-next');
-  const prevBtn = document.querySelector('.testimonial-prev');
 
-  if (!slider) return;
-
-  const autoplayEnabled = {{ section.settings.autoplay | json }};
-  const autoplaySpeed = {{ section.settings.autoplay_speed }} * 1000;
-
-  // Clone first and last slides
-  const slides = [...slider.querySelectorAll('.testimonial-card')];
-
-  slides.forEach(slide => {
-    const clone = slide.cloneNode(true);
-    clone.classList.add('clone');
-    slider.appendChild(clone);
-  });
-
-  const getScrollAmount = () => {
-    const card = slider.querySelector('.testimonial-card');
-    return card ? card.offsetWidth + 20 : 300;
-  };
-
-  let currentIndex = 0;
-  const originalCount = slides.length;
-
-  function goToSlide(index, smooth = true) {
-    slider.scrollTo({
-      left: index * getScrollAmount(),
-      behavior: smooth ? 'smooth' : 'auto'
-    });
-  }
-
-  nextBtn?.addEventListener('click', () => {
-    currentIndex++;
-    goToSlide(currentIndex);
-  });
-
-  prevBtn?.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      goToSlide(currentIndex);
-    }
-  });
-
-  slider.addEventListener('scroll', () => {
-    if (
-      currentIndex >= originalCount &&
-      slider.scrollLeft >= originalCount * getScrollAmount() - 5
-    ) {
-      setTimeout(() => {
-        currentIndex = 0;
-        goToSlide(0, false);
-      }, 400);
-    }
-  });
-
-  let autoSlide;
-
-  function startAutoplay() {
-    if (!autoplayEnabled) return;
-
-    stopAutoplay();
-
-    autoSlide = setInterval(() => {
-      currentIndex++;
-      goToSlide(currentIndex);
-    }, autoplaySpeed);
-  }
-
-  function stopAutoplay() {
-    clearInterval(autoSlide);
-  }
-
-  if (autoplayEnabled) {
-    startAutoplay();
-
-    slider.addEventListener('mouseenter', stopAutoplay);
-    slider.addEventListener('mouseleave', startAutoplay);
-
-    slider.addEventListener('touchstart', stopAutoplay, { passive: true });
-    slider.addEventListener('touchend', startAutoplay, { passive: true });
-  }
-});
-</script>
+{%- if section.settings.layout == 'slider' -%}
+  <script src="{{ 'testimonials.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {% schema %}
 {

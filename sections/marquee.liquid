@@ -29,7 +29,7 @@
     >
     <div class="{{ section.settings.container_width }}">
 
-        <div class="marquee-wrapper {% if section.settings.pause_hover %}pause-hover{% endif %}">
+        <marquee-section class="marquee-wrapper {% if section.settings.pause_hover %}pause-hover{% endif %}">
         
         <div class="marquee-track flex items-center {{ gap_class }} {% if section.settings.direction == 'right' %}reverse{% endif %}">
             
@@ -76,48 +76,12 @@
             {% endfor %}
 
         </div>
-        </div>
+        </marquee-section>
     </div>
     </div>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const marquee = document.querySelector(".marquee-track");
-
-    if (!marquee) return;
-    const items = [...marquee.children];
-
-    items.forEach((item) => {
-      const clone = item.cloneNode(true);
-      marquee.appendChild(clone);
-    });
-
-    let animationFrame;
-    let position = 0;
-    const speed = 1; // increase for faster
-
-    function animate() {
-      position -= speed;
-      if (Math.abs(position) >= marquee.scrollWidth / 2) {
-        position = 0;
-      }
-      marquee.style.transform = `translateX(${position}px)`;
-      animationFrame = requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    // Pause on hover
-    marquee.addEventListener("mouseenter", () => {
-      cancelAnimationFrame(animationFrame);
-    });
-
-    marquee.addEventListener("mouseleave", () => {
-      animate();
-    });
-  });
-</script>
+<script src="{{ 'marquee.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

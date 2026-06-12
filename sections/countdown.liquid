@@ -103,7 +103,7 @@
             {% endif %}
 
             {%- assign date_color = section.settings.date_color -%}
-            <div class="h1 countdown-timer justify-{{ section.settings.text_alignment }}" data-countdown="{{ section.settings.countdown_date }}"
+            <countdown-timer class="h1 countdown-timer justify-{{ section.settings.text_alignment }}" data-countdown="{{ section.settings.countdown_date }}"
               {%- unless date_color == blank or date_color == 'rgba(0,0,0,0)' %}
                 style="color: rgb({{ date_color.rgb }});"
               {%- endunless %}
@@ -143,84 +143,14 @@
                     {%- endunless %}
                     >Seconds</span>
                 </div>
-            </div>
+            </countdown-timer>
             </div>
         </div>
     </div>
   </div>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-
-    const countdownElements = document.querySelectorAll('.countdown-timer');
-
-    countdownElements.forEach(function (element) {
-
-      // Example format:
-      // data-countdown="2026-12-31T23:59:59"
-      const countdownDate = new Date(
-        element.getAttribute('data-countdown')
-      ).getTime();
-
-      // Get individual fields
-      const dayEl = element.querySelector('.countdown-day .countdown-number');
-      const hourEl = element.querySelector('.countdown-hour .countdown-number');
-      const minuteEl = element.querySelector('.countdown-minute .countdown-number');
-      const secondEl = element.querySelector('.countdown-second .countdown-number');
-
-      function updateCountdown() {
-
-        const now = new Date().getTime();
-        const distance = countdownDate - now;
-
-        // Expired
-        if (distance <= 0) {
-
-          clearInterval(interval);
-
-          if (dayEl) dayEl.textContent = '00';
-          if (hourEl) hourEl.textContent = '00';
-          if (minuteEl) minuteEl.textContent = '00';
-          if (secondEl) secondEl.textContent = '00';
-
-          return;
-        }
-
-        // Time calculations
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) /
-          (1000 * 60 * 60)
-        );
-
-        const minutes = Math.floor(
-          (distance % (1000 * 60 * 60)) /
-          (1000 * 60)
-        );
-
-        const seconds = Math.floor(
-          (distance % (1000 * 60)) / 1000
-        );
-
-        // Add leading zero
-        if (dayEl) dayEl.textContent = String(days).padStart(2, '0');
-        if (hourEl) hourEl.textContent = String(hours).padStart(2, '0');
-        if (minuteEl) minuteEl.textContent = String(minutes).padStart(2, '0');
-        if (secondEl) secondEl.textContent = String(seconds).padStart(2, '0');
-      }
-
-      // Initial call
-      updateCountdown();
-
-      // Update every second
-      const interval = setInterval(updateCountdown, 1000);
-
-    });
-
-  });
-</script>
+<script src="{{ 'countdown.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

@@ -45,7 +45,7 @@
         {% endif %}
       </div>
     </div>
-    <div class="cms-product-bottom">
+    <product-tab-section class="cms-product-bottom">
       <div class="product-tab__tabs">
         {% for block in section.blocks %}
           <button class="product-tab__tab button button--secondary" data-tab="{{ forloop.index0 }}">
@@ -103,125 +103,11 @@
           </div>
         {% endfor %}
       </div>
-    </div>
+    </product-tab-section>
   </div>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const tabs = document.querySelectorAll('.product-tab__tab');
-    const panes = document.querySelectorAll('.product-tab__pane');
-
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', function () {
-        const target = this.getAttribute('data-tab');
-
-        // Remove active class from all tabs and panes
-        tabs.forEach((t) => t.classList.remove('active'));
-        panes.forEach((p) => p.classList.remove('active'));
-
-        // Add active class to clicked tab and corresponding pane
-        this.classList.add('active');
-        document.querySelector(`.product-tab__pane[data-tab="${target}"]`).classList.add('active');
-      });
-    });
-
-    // Activate the first tab by default
-    if (tabs.length > 0) {
-      tabs[0].click();
-    }
-  });
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const prevBtn = document.querySelector('.js-slider-prev');
-    const nextBtn = document.querySelector('.js-slider-next');
-
-    function getActiveSlider() {
-      return document.querySelector('.product-tab__pane.active .js-product-slider');
-    }
-
-    function getSlideWidth(slider) {
-      const slide = slider.querySelector('.js-product-slide');
-      if (!slide) return 300;
-
-      const gap = parseInt(window.getComputedStyle(slider).gap || 0);
-      return slide.offsetWidth + gap;
-    }
-
-    /* ---------------- BUTTON ---------------- */
-
-    nextBtn?.addEventListener('click', function () {
-      const slider = getActiveSlider();
-      if (!slider) return;
-
-      slider.scrollBy({
-        left: getSlideWidth(slider),
-        behavior: 'smooth',
-      });
-    });
-
-    prevBtn?.addEventListener('click', function () {
-      const slider = getActiveSlider();
-      if (!slider) return;
-
-      slider.scrollBy({
-        left: -getSlideWidth(slider),
-        behavior: 'smooth',
-      });
-    });
-
-    /* ---------------- DRAG SNAP ---------------- */
-
-    let isDown = false;
-    let startX = 0;
-    let slider = null;
-    let moved = 0;
-
-    document.addEventListener('mousedown', (e) => {
-      slider = getActiveSlider();
-      if (!slider) return;
-
-      isDown = true;
-      startX = e.pageX;
-      moved = 0;
-
-      slider.style.scrollBehavior = 'auto';
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (!isDown || !slider) return;
-
-      moved = e.pageX - startX;
-    });
-
-    document.addEventListener('mouseup', () => {
-      if (!isDown || !slider) return;
-
-      isDown = false;
-
-      const slideWidth = getSlideWidth(slider);
-
-      if (Math.abs(moved) > 50) {
-        if (moved < 0) {
-          // drag left → next slide
-          slider.scrollBy({
-            left: slideWidth,
-            behavior: 'smooth',
-          });
-        } else {
-          // drag right → prev slide
-          slider.scrollBy({
-            left: -slideWidth,
-            behavior: 'smooth',
-          });
-        }
-      }
-
-      slider.style.scrollBehavior = 'smooth';
-      slider = null;
-    });
-  });
-</script>
+<script src="{{ 'product-tab.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

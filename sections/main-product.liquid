@@ -1,28 +1,36 @@
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'product-image-gallery.js' | asset_url | script_tag }}
 
+{%- liquid
+  assign current_product = product
+  if current_product == blank and section.settings.product != blank
+    assign current_product = section.settings.product
+  endif
+-%}
 
 <div {%- render 'section-variables', section: section, class: 'slideshow__section' -%}>
   <div class="page-width">
-    <div class="main-product-section">
-      <div class="product-image-gallery-wrapper cms-cell--{{ section.settings.width }}">
+    {%- if current_product != blank -%}
+      <div class="main-product-section">
+        <div class="product-image-gallery-wrapper cms-cell--{{ section.settings.width }}">
 
-        {% render 'breadcrumbs' %}
-        
-        {% render 'product-image-gallery',
-          product: product,
-          thumbnail_layout: section.settings.thumbnail_layout,
-          gallery_arrows_visibility: section.settings.gallery_arrows_device,
-          gallery_zoom_type: section.settings.gallery_zoom_type,
-          hover_zoom_style: section.settings.hover_zoom_style,
-          gallery_arrow_display: section.settings.gallery_arrow_display
-        %}
-      </div>
+          {% render 'breadcrumbs' %}
 
-      <div class="product-info-wrapper">
-        {% render 'product-details', product: product, blocks: section.blocks %}
-      </div>
-    </div>
+          {% render 'product-image-gallery',
+            product: current_product,
+            thumbnail_layout: section.settings.thumbnail_layout,
+            gallery_arrows_visibility: section.settings.gallery_arrows_device,
+            gallery_zoom_type: section.settings.gallery_zoom_type,
+            hover_zoom_style: section.settings.hover_zoom_style,
+            gallery_arrow_display: section.settings.gallery_arrow_display
+          %}
+        </div>
+
+        <div class="product-info-wrapper">
+          {% render 'product-details', product: current_product, blocks: section.blocks %}
+        </div>
+      </div>   
+    {%- endif -%}
   </div>
 </div>
 
@@ -30,6 +38,12 @@
 {
   "name": "Product Section",
   "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Used when this section is added outside of a product page."
+    },
     {
       "type": "select",
       "id": "width",

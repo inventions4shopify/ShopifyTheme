@@ -47,8 +47,12 @@
         text_alignment: 'center'
       -%}
     </div>
-    <div class="collection-wrapper-main section-{{ section.id }}">
-      <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} grid--{{ section.settings.mobile_column_count }}-col md:grid--3-col lg:grid--4-col" data-autoplay="{{ section.settings.autoplay }}" data-autoplay-speed="{{ section.settings.autoplay_speed }}">
+    <collection-list-section
+      class="collection-wrapper-main section-{{ section.id }}"
+      data-autoplay="{{ section.settings.autoplay }}"
+      data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+    >
+      <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} grid--{{ section.settings.mobile_column_count }}-col md:grid--3-col lg:grid--4-col">
         {% for block in section.blocks %}
           {% assign collection = block.settings.collection %}
             {% assign collection_image = collection.featured_image %}
@@ -115,104 +119,11 @@
           </div>
         {% endif %}
       {% endif %}
-    </div>
+    </collection-list-section>
   </div>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-
-    document.querySelectorAll('.collection-grid.is-slider').forEach((slider) => {
-
-      const section = slider.closest('.shopify-section');
-
-      const nextBtn = section?.querySelector('.collection-grid-next');
-      const prevBtn = section?.querySelector('.collection-grid-prev');
-
-      const autoplayEnabled = slider.dataset.autoplay === 'true';
-      const autoplaySpeed = (parseInt(slider.dataset.autoplaySpeed) || 5) * 1000;
-
-      const slides = [...slider.querySelectorAll('.collection-card')];
-
-      if (!slides.length) return;
-
-      // Clone slides
-      slides.forEach(slide => {
-        const clone = slide.cloneNode(true);
-        clone.classList.add('clone');
-        slider.appendChild(clone);
-      });
-
-      let currentIndex = 0;
-      const originalCount = slides.length;
-
-      const getScrollAmount = () => {
-        const card = slider.querySelector('.collection-card');
-        return card ? card.offsetWidth + 20 : 300;
-      };
-
-      function goToSlide(index, smooth = true) {
-        slider.scrollTo({
-          left: index * getScrollAmount(),
-          behavior: smooth ? 'smooth' : 'auto'
-        });
-      }
-
-      nextBtn?.addEventListener('click', () => {
-        currentIndex++;
-        goToSlide(currentIndex);
-      });
-
-      prevBtn?.addEventListener('click', () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          goToSlide(currentIndex);
-        }
-      });
-
-      slider.addEventListener('scroll', () => {
-        if (
-          currentIndex >= originalCount &&
-          slider.scrollLeft >= originalCount * getScrollAmount() - 5
-        ) {
-          setTimeout(() => {
-            currentIndex = 0;
-            goToSlide(0, false);
-          }, 400);
-        }
-      });
-
-      let autoSlide;
-
-      function startAutoplay() {
-        if (!autoplayEnabled) return;
-
-        stopAutoplay();
-
-        autoSlide = setInterval(() => {
-          currentIndex++;
-          goToSlide(currentIndex);
-        }, autoplaySpeed);
-      }
-
-      function stopAutoplay() {
-        clearInterval(autoSlide);
-      }
-
-      if (autoplayEnabled) {
-        startAutoplay();
-
-        slider.addEventListener('mouseenter', stopAutoplay);
-        slider.addEventListener('mouseleave', startAutoplay);
-
-        slider.addEventListener('touchstart', stopAutoplay, { passive: true });
-        slider.addEventListener('touchend', startAutoplay, { passive: true });
-      }
-
-    });
-
-  });
-</script>
+<script src="{{ 'collection-list.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

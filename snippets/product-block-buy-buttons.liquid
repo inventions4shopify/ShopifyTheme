@@ -48,6 +48,7 @@
   assign buy_show_dynamic_checkout = qv_show_dynamic_checkout | default: block.settings.show_dynamic_checkout
 -%}
 
+{%- if product != blank -%}
 <product-form
   class="product_form"
   data-product-id="{{ product.id }}"
@@ -92,6 +93,7 @@
     {% endif %}
   {% endform %}
 </product-form>
+{%- endif -%}
 
 <script>
   class ProductForm extends HTMLElement {
