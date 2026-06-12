@@ -8,7 +8,7 @@
 <div {%- render 'section-variables', section: section, class: 'search__section' -%}>
   {% paginate search.results by 24 %}
       {% capture collection_filters %}
-        <form id="CollectionFiltersForm" {% if section.settings.filter_position == 'sidebar' %}data-auto-filter class="cms-filter-sidebar"{% endif %}>
+        <form id="CollectionFiltersForm" class="cms-collection-sidebar {% if section.settings.filter_position == 'sidebar' %}data-auto-filter cms-filter-sidebar{% endif %}">
 
           {% for filter in search.filters %}
             <div class="cms-filter-group">
@@ -144,101 +144,101 @@
                 </div>
               {%- else -%}
               <!-- FILTER + SORT ROW -->
-      <div class="cms-main-collection-filter-row">
-        {% if section.settings.show_filter and section.settings.filter_position == 'drawer' %}
-          <div class="cms-main-collection-filter-left">
+              <div class="cms-main-collection-filter-row">
+                {% if section.settings.show_filter and section.settings.filter_position == 'drawer' %}
+                  <div class="cms-main-collection-filter-left">
 
-            <details class="collection-filter-dropdown">
+                    <details class="collection-filter-dropdown">
 
-              <summary>
-                {% render 'icon', icon: 'sort', width: 20, height: 20 %}
-                <span>Filter & Sort</span>
-              </summary>
+                      <summary>
+                        {% render 'icon', icon: 'sort', width: 20, height: 20 %}
+                        <span>Filter & Sort</span>
+                      </summary>
 
-              <div class="collection-filter-drawer">
-                {{ collection_filters }}
-              </div>
+                      <div class="collection-filter-drawer">
+                        {{ collection_filters }}
+                      </div>
 
-            </details>
+                    </details>
 
-          </div>
-        {% endif %}
-
-
-        <div class="cms-main-collection-filter-right">
-           {% if section.settings.show_total_product %}
-            <span class="cms-main-collection-total-product">
-              {{ collection.products_count }} Products
-            </span>
-          {% endif %}
-
-
-          {% if section.settings.show_sort %}
-            <div class="cms-main-collection-sort">
-
-              <form id="SortByForm" method="get">
-
-                <input
-                  type="hidden"
-                  name="sort_by"
-                  id="SortByInput"
-                  value="{{ collection.sort_by | default: collection.default_sort_by }}"
-                >
-
-                <div class="cms-sort-dropdown js-sort-dropdown">
-
-                  <div class="cms-sort-selected js-sort-selected">
-                    <span class="cms-sort-label js-sort-label">
-                      Sort By
-                    </span>
-
-                    <span class="cms-sort-icon">
-                      {% render 'icon', icon: 'chevron-bottom', width: 20, height: 20 %}
-                    </span>
                   </div>
+                {% endif %}
 
-                  <ul class="cms-sort-options">
-                    {% for option in collection.sort_options %}
-                      <li
-                        class="cms-sort-option js-sort-option {% if option.value == collection.sort_by %}active{% endif %}"
-                        data-value="{{ option.value }}"
-                      >
-                        {{ option.name }}
-                      </li>
-                    {% endfor %}
-                  </ul>
+
+                <div class="cms-main-collection-filter-right">
+                  {% if section.settings.show_total_product %}
+                    <span class="cms-main-collection-total-product">
+                      {{ collection.products_count }} Products
+                    </span>
+                  {% endif %}
+
+
+                  {% if section.settings.show_sort %}
+                    <div class="cms-main-collection-sort">
+
+                      <form id="SortByForm" method="get">
+
+                        <input
+                          type="hidden"
+                          name="sort_by"
+                          id="SortByInput"
+                          value="{{ collection.sort_by | default: collection.default_sort_by }}"
+                        >
+
+                        <div class="cms-sort-dropdown js-sort-dropdown">
+
+                          <div class="cms-sort-selected js-sort-selected">
+                            <span class="cms-sort-label js-sort-label">
+                              Sort By
+                            </span>
+
+                            <span class="cms-sort-icon">
+                              {% render 'icon', icon: 'chevron-bottom', width: 20, height: 20 %}
+                            </span>
+                          </div>
+
+                          <ul class="cms-sort-options">
+                            {% for option in collection.sort_options %}
+                              <li
+                                class="cms-sort-option js-sort-option {% if option.value == collection.sort_by %}active{% endif %}"
+                                data-value="{{ option.value }}"
+                              >
+                                {{ option.name }}
+                              </li>
+                            {% endfor %}
+                          </ul>
+
+                        </div>
+
+                      </form>
+
+                    </div>
+                  {% endif %}
+
+
+                  {% if section.settings.show_layout %}
+                    <div class="cms-main-collection-view">
+
+                      <button type="button" data-grid="3">
+                        {% render 'icon', icon: 'three-grid', width: 20, height: 20 %}
+                      </button>
+
+                      <button type="button" data-grid="4">
+                        {% render 'icon', icon: 'four-grid', width: 20, height: 20 %}
+                      </button>
+
+                    </div>
+                  {% endif %}
 
                 </div>
 
-              </form>
-
-            </div>
-          {% endif %}
-
-
-          {% if section.settings.show_layout %}
-            <div class="cms-main-collection-view">
-
-              <button type="button" data-grid="3">
-                {% render 'icon', icon: 'three-grid', width: 20, height: 20 %}
-              </button>
-
-              <button type="button" data-grid="4">
-                {% render 'icon', icon: 'four-grid', width: 20, height: 20 %}
-              </button>
-
-            </div>
-          {% endif %}
-
-        </div>
-
-      </div>
+              </div>
       
-                <div class="template-search__results collection" id="product-grid" data-id="{{ section.id }}" >
+                <div class="template-search__results collection cms-main-collection-grid" id="product-grid" data-id="{{ section.id }}" >
                   {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                     {{ collection_filters }}
                   {% endif %}
-                  <ul class="grid product-grid grid--2-col sm:grid--3-col lg:grid--4-col">
+                  <ul class="grid product-grid grid--2-col sm:grid--3-col lg:grid--4-col collection-products">
                     {%- for item in search.results -%}
                       <li class="grid__item" >
                         {%- case item.object_type -%}
