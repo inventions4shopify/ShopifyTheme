@@ -52,6 +52,19 @@
     }
 </style>
 
+{%- liquid
+  assign s = section.settings
+
+  # ── Gap class ─────────────────────────────────────────────────────────────
+  assign gap_value = s.gap | default: '24'
+  assign gap_class = ''
+  if gap_value != 'default'
+    assign gap_class = 'gap-' | append: gap_value
+  else
+    assign gap_class = 'gap-24'
+  endif
+-%}
+
 
 <div {%- render 'section-variables', section: section, class: 'image-with-text__section' -%}>
   <div class="{% if section.settings.image_show != true %} {{ section.settings.section_width }} {% endif %}">
@@ -123,12 +136,12 @@
                   {% endif %}
               </div>
           </div>
-          <div class="cms-image-with-text__content ps-rte items-{{ section.settings.text_alignment }} text-{{ section.settings.text_alignment }} justify-{{ section.settings.content_alignment }}">
+          <div class="cms-image-with-text__content {{ gap_class }} items-{{ section.settings.text_alignment }} text-{{ section.settings.text_alignment }} justify-{{ section.settings.content_alignment }}">
               {% for block in section.blocks %}
                   {% case block.type %}
                   {% when 'subheading' %}
                     {%- assign sub_color = block.settings.subheading_color -%}
-                      <span class="subheading" 
+                      <span class="section-header__subheading subheading" 
                       {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
                         style="color: rgb({{ sub_color.rgb }});"
                       {%- endunless %}
@@ -148,14 +161,14 @@
                       {%- endif -%}
                     {%- endcapture -%}
                     
-                      <h2 class="cms-image-with-text__heading {{ block.settings.heading_size }}"
+                      <h2 class="section-header__heading {{ block.settings.heading_size }}"
                       {%- unless heading_style == blank %}
                         style="{{ heading_style | strip }}"
                       {%- endunless %}
                       >{{ block.settings.heading }}</h2>
                   {% when 'description' %}
                     {%- assign block_color = block.settings.text_color -%}
-                    <div class="cms-image-with-text__description"
+                    <div class="image-with__text ps-rte"
                       {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
                         style="color: rgb({{ block_color.rgb }});"
                       {%- endunless %}
@@ -347,6 +360,21 @@
         }
       ],
       "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "gap",
+      "label": "Block gap",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "8", "label": "Extra small" },
+        { "value": "12", "label": "Small" },
+        { "value": "16", "label": "Medium" },
+        { "value": "24", "label": "Large" },
+        { "value": "32", "label": "Extra large" },
+        { "value": "48", "label": "2× large" }
+      ],
+      "default": "12"
     },
     {
       "type": "select",
