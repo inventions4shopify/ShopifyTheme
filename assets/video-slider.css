@@ -2,6 +2,7 @@
     margin-top: var(--spacing-40);
     position: relative;
     overflow: hidden;
+    display: block;
 }
 
 .video-slider__slider {

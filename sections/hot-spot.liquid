@@ -114,7 +114,7 @@
                 outline_color: section.settings.button_outline_color
             -%}
         </div>
-        <div class="cms-hot-spot-items">
+        <hot-spot-section class="cms-hot-spot-items">
             {%  for block in section.blocks  %}
                 <div class="cms-hot-spot-cell" 
                 style="
@@ -134,55 +134,12 @@
                     </div>
                 </div>
             {% endfor %}
-        </div>
+        </hot-spot-section>
     </div>
   </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-
-    const hotspots = document.querySelectorAll('.cms-hot-spot-cell');
-
-    hotspots.forEach((spot) => {
-
-        const btn = spot.querySelector('button');
-
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-
-            hotspots.forEach(item => {
-                if (item !== spot) {
-                    item.classList.remove('active', 'open-left');
-                }
-            });
-
-            spot.classList.toggle('active');
-
-            if (!spot.classList.contains('active')) return;
-
-            const popup = spot.querySelector('.cms-hot-spot-body');
-            const spotRect = spot.getBoundingClientRect();
-
-            // popup width
-            const popupWidth = popup.offsetWidth || 250;
-
-            // available space
-            const rightSpace = window.innerWidth - spotRect.right;
-            const leftSpace = spotRect.left;
-
-            spot.classList.remove('open-left');
-
-            // agar right side me popup fit nahi hota
-            // aur left side me jagah hai to left open karo
-            if (rightSpace < popupWidth + 20 && leftSpace > popupWidth) {
-                spot.classList.add('open-left');
-            }
-        });
-    });
-
-});
-</script>
+<script src="{{ 'hot-spot.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

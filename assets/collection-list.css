@@ -1,3 +1,7 @@
+collection-list-section {
+  display: block;
+}
+
 .collection-grid.is-slider {
   overflow:hidden;
   gap: var(--spacing-20);
