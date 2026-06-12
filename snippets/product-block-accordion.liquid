@@ -21,11 +21,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.35s ease;
+    transition: transform 0.15s ease-out;
+    will-change: transform;
     flex-shrink: 0;
   }
 
-  .product_accordion[open] .product_accordion_icon {
+  .product_accordion.is-active .product_accordion_icon {
     transform: rotate(-180deg);
   }
 

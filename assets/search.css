@@ -1,0 +1,14 @@
+.product-grid {
+    padding: var(--spacing-40) 0 0 0;
+    margin: 0;
+}
+
+.product-grid li {
+    list-style: none;
+}
+
+.template-search__search {
+    width: 100%;
+    max-width: 55rem;
+    margin: 0 auto;
+}
