@@ -4,6 +4,7 @@
 }
 
 .cms-product-bottom {
+	display: block;
 	margin-top: var(--spacing-40);
 }
 

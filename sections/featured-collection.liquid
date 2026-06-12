@@ -84,17 +84,19 @@
                 text_alignment: 'start'
               -%}
             </div>
-            <div class="fc__view-all">
-              {% if section.settings.link_text != blank %}
-                {%- render 'button',
-                  text: section.settings.link_text,
-                  href: link_url,
-                  background_color: section.settings.button_background_color,
-                  text_color: section.settings.button_text_color,
-                  outline_color: section.settings.button_outline_color
-                -%}
-              {% endif %}
-            </div>
+            {%- if collection_products.size > 4 -%}
+              <div class="fc__view-all">
+                {% if section.settings.link_text != blank %}
+                  {%- render 'button',
+                    text: section.settings.link_text,
+                    href: link_url,
+                    background_color: section.settings.button_background_color,
+                    text_color: section.settings.button_text_color,
+                    outline_color: section.settings.button_outline_color
+                  -%}
+                {% endif %}
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
 
