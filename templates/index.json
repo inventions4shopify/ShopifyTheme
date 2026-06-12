@@ -170,7 +170,7 @@
         "media_type": "image",
         "media_height": "medium",
         "text_alignment": "center",
-        "gap": 12,
+        "gap": "12",
         "content_alignment": "center"
       }
     }
