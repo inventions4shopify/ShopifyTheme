@@ -121,10 +121,63 @@
         "section_spacing_top_mobile": 40,
         "section_spacing_bottom_mobile": 40
       }
+    },
+    "image_with_text": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_1": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Upgrade Your Style Today",
+            "subheading_color": "rgba(0,0,0,0)"
+          }
+        },
+        "heading_1": {
+          "type": "heading",
+          "settings": {
+            "heading": "Discover Our Latest Collection",
+            "heading_size": "h2",
+            "heading_color": "rgba(0,0,0,0)",
+            "heading_gradient": ""
+          }
+        },
+        "description_1": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Explore our latest collection of fashion-forward apparel and accessories.</p>",
+            "text_color": "rgba(0,0,0,0)"
+          }
+        },
+        "button_1": {
+          "type": "buttons",
+          "settings": {
+            "link": "/collections/all",
+            "link_label": "Shop Now"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_1",
+        "heading_1",
+        "description_1",
+        "button_1"
+      ],
+      "settings": {
+        "section_width": "page-width",
+        "width": "medium",
+        "image_show": false,
+        "image_position": "row",
+        "media_type": "image",
+        "media_height": "medium",
+        "text_alignment": "center",
+        "gap": "12",
+        "content_alignment": "center"
+      }
     }
   },
   "order": [
     "main",
-    "rich_text_Q7BM9K"
+    "rich_text_Q7BM9K",
+    "image_with_text"
   ]
 }

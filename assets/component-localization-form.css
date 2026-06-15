@@ -92,6 +92,7 @@ localization-form h2{
   right: calc(var(--input-border-width) + 1.5rem);
   top: 50%;
   transform: translateY(-50%);
+  transition: all 0.25s ease;
 }
 
 .localization-selector.link {
@@ -187,14 +188,14 @@ localization-form h2{
 
 .country-filter__input {
   min-width: 20.0rem;
-    padding: var(--spacing-10);
-    width: 100%;
+  padding: var(--spacing-10);
+  width: 100%;
 }
 
 .country-filter__reset-button,
 .country-filter__search-icon {
   right: calc(var(--input-border-width));
-  top: var(--input-border-width);
+  top: calc(50% - var(--input-border-width));
 }
 .country-filter .field__label{
   display: none;
@@ -363,10 +364,6 @@ localization-form h2{
 .header-localization .disclosure .localization-form__select {
   font-size: 1.4rem;
   min-height: initial;
-}
-
-.header-localization .disclosure .localization-form__select:hover {
-  text-decoration: underline;
 }
 
 .header-localization .localization-form__select.link:after,

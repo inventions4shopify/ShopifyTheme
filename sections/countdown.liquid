@@ -54,22 +54,40 @@
   <div class="{{ section.settings.section_width }}">
     <div class="cms-row flex-{{ section.settings.image_position }}">
         {% if section.settings.image_show == false %}
-            <div class="cms-cell--{{ section.settings.width }} aspect-portrait">
-                <picture> 
-                  <source
+          <div class="cms-cell--{{ section.settings.width }} aspect-square">
+            <picture>
+              {% if section.settings.mb_image != blank %}
+                <source
                   media="(max-width: 767px)"
-                  srcset="{% if section.settings.mb_image != blank %}{{ section.settings.mb_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
-                  >
-              
-                  <img
-                      src="{% if section.settings.desktop_image != blank %}{{ section.settings.desktop_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
-                      alt="{{ section.settings.desktop_image.alt | escape }}"
-                      loading="lazy"
-                      width="auto"
-                      height="auto"
-                  >
-                </picture>
-            </div>
+                  srcset="{{ section.settings.mb_image | image_url: width: 767 }}"
+                >
+              {% endif %}
+
+              {% if section.settings.desktop_image != blank %}
+                <img
+                  src="{{ section.settings.desktop_image | image_url: width: 1440 }}"
+                  srcset="
+                    {{ section.settings.desktop_image | image_url: width: 550 }} 550w,
+                    {{ section.settings.desktop_image | image_url: width: 750 }} 750w,
+                    {{ section.settings.desktop_image | image_url: width: 1440 }} 1200w
+                  "
+                  sizes="100vw"
+                  alt="{{ section.settings.desktop_image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ section.settings.desktop_image.width }}"
+                  height="{{ section.settings.desktop_image.height }}"
+                >
+              {% else %}
+                <img
+                  src="{{ 'img-with-text.svg' | asset_url }}"
+                  alt="Placeholder image"
+                  loading="lazy"
+                  width="719"
+                  height="719"
+                >
+              {% endif %}
+            </picture>
+          </div>
         {% endif %}
         <div class="cms-cell justify-{{ section.settings.content_alignment }}">
             <div class="cms-countdown-wrapper text-{{ section.settings.text_alignment }}">

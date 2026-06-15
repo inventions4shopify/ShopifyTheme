@@ -182,6 +182,8 @@ ol {
 }
 
 .section {
+  position: relative;
+  overflow: hidden;
   background: var(--section-background, transparent);
 }
 

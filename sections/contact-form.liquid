@@ -77,9 +77,22 @@
               id="ContactForm-name"
               name="contact[Name]"
               value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-              placeholder="{{ 'contact_form.name' | t }}"
+              placeholder="{{ 'contact_form.first_name' | t }}"
             >
-            <label class="field__label" for="ContactForm-name">{{ 'contact_form.name' | t }}</label>
+            <label class="field__label" for="ContactForm-name">{{ 'contact_form.first_name' | t }}</label>
+          </div>
+
+          <div class="field">
+            <input
+              class="field__input text-lg"
+              autocomplete="family-name"
+              type="text"
+              id="ContactForm-last-name"
+              name="contact[Last Name]"
+              value=""
+              placeholder="{{ 'contact_form.last_name' | t }}"
+            >
+            <label class="field__label" for="ContactForm-last-name">{{ 'contact_form.last_name' | t }}</label>
           </div>
 
           <div class="field field--with-error">
@@ -111,20 +124,19 @@
               </small>
             {%- endif -%}
           </div>
-        </div>
-
-        <div class="field">
-          <input
-            type="tel"
-            id="ContactForm-phone"
-            class="field__input text-lg"
-            autocomplete="tel"
-            name="contact[Phone]"
-            pattern="[0-9\-]*"
-            value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-            placeholder="{{ 'contact_form.phone' | t }}"
-          >
-          <label class="field__label" for="ContactForm-phone">{{ 'contact_form.phone' | t }}</label>
+          <div class="field">
+            <input
+              type="tel"
+              id="ContactForm-phone"
+              class="field__input text-lg"
+              autocomplete="tel"
+              name="contact[Phone]"
+              pattern="[0-9\-]*"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              placeholder="{{ 'contact_form.phone' | t }}"
+            >
+            <label class="field__label" for="ContactForm-phone">{{ 'contact_form.phone' | t }}</label>
+          </div>
         </div>
 
         <div class="field">

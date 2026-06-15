@@ -52,7 +52,7 @@
       data-autoplay="{{ section.settings.autoplay }}"
       data-autoplay-speed="{{ section.settings.autoplay_speed }}"
     >
-      <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} grid--{{ section.settings.mobile_column_count }}-col md:grid--3-col lg:grid--4-col">
+      <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid grid--{{ section.settings.mobile_column_count }}-col md:grid--3-col lg:grid--4-col{% endif %}">
         {% for block in section.blocks %}
           {% assign collection = block.settings.collection %}
             {% assign collection_image = collection.featured_image %}

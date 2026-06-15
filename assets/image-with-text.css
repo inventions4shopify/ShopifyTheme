@@ -1,3 +1,8 @@
 .cms-image-with-text__media >* {
   object-fit: var(--media-fit);
 }
+
+.cms-image-with-text__content {
+  display: flex;
+  flex-direction: column;
+}
