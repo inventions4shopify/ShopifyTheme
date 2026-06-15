@@ -20,7 +20,7 @@
   }
 </style>
 
-<div {%- render 'section-variables', section: section, class: 'custom-video-section' -%}>
+<video-section {%- render 'section-variables', section: section, class: 'custom-video-section' -%}>
   <div class="custom-video-wrapper {% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
     <div class="custom-video-media">
       {% if section.settings.source == 'uploaded' %}
@@ -205,46 +205,10 @@
       </div>
     {% endif %}
   </div>
-</div>
+</video-section>
+
 {% if section.settings.autoplay == false %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const sectionEl = document.querySelector('#shopify-section-{{ section.id }}');
-      if (!sectionEl) return;
-
-      const video = sectionEl.querySelector('.custom-video-element');
-      const playBtn = sectionEl.querySelector('.custom-video-play-btn');
-      if (!video || !playBtn) return;
-
-      function syncPlayButton() {
-        playBtn.classList.toggle('hidden', !video.paused && !video.ended);
-      }
-
-      if (video.autoplay) {
-        playBtn.classList.add('hidden');
-      } else {
-        playBtn.classList.remove('hidden');
-      }
-
-      playBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        video.play().catch(function () {});
-      });
-
-      video.addEventListener('click', function () {
-        if (video.paused || video.ended) {
-          video.play().catch(function () {});
-        } else {
-          video.pause();
-        }
-      });
-
-      video.addEventListener('play', syncPlayButton);
-      video.addEventListener('pause', syncPlayButton);
-      video.addEventListener('ended', syncPlayButton);
-    });
-  </script>
+  <script src="{{ 'video.js' | asset_url }}" defer="defer"></script>
 {% endif %}
 {% schema %}
 {

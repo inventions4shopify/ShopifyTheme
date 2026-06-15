@@ -16,6 +16,9 @@
         width: 100%;
         height: 100%;
     }
+    .product-delivery-date {
+        display: block;
+    }
     .product-delivery-date .csm_date_delivery {
         font-weight: 500;
         line-height: 1.3;
@@ -46,7 +49,13 @@
     }
 {% endstyle %}
 
-<div class="product-delivery-date">
+<product-delivery-date
+  class="product-delivery-date"
+  {% if block.settings.set_time_limit %}
+    data-storage-key="delivery-countdown-{{ block.id }}"
+    data-default-seconds="13500"
+  {% endif %}
+>
     {% assign delivery_days = block.settings.delivery_gap_days %}
     {% assign delivery_seconds = delivery_days | times: 86400 %}
     {% assign delivery_timestamp = 'now' | date: '%s' | plus: delivery_seconds %}
@@ -72,50 +81,9 @@
         </span>
         
         <span class="get_it_by">Get It By {{ delivery_date }}
-        {% if block.settings.set_time_limit %}, <span>If you Order within next <strong><span id="countdown"></strong></span></span>
-        {% endif %}
+        {% if block.settings.set_time_limit %}, <span>If you Order within next <strong><span data-delivery-countdown></span></strong></span>{% endif %}
         </span>
     </div>
-</div>
+</product-delivery-date>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const display = document.getElementById('countdown');
-        if (!display) return;
-
-        const STORAGE_KEY = 'offer_countdown_3h45m';
-
-        // 3 hours 45 minutes in seconds
-        const DEFAULT_TIME = 3 * 60 * 60 + 45 * 60;
-
-        let remainingTime = localStorage.getItem(STORAGE_KEY);
-
-        if (!remainingTime) {
-            remainingTime = DEFAULT_TIME;
-            localStorage.setItem(STORAGE_KEY, remainingTime);
-        } else {
-            remainingTime = parseInt(remainingTime, 10);
-        }
-
-        function updateTimer() {
-            if (remainingTime <= 0) {
-            display.textContent = 'Expired';
-            localStorage.removeItem(STORAGE_KEY);
-            return;
-        }
-
-        const hours = Math.floor(remainingTime / 3600);
-        const minutes = Math.floor((remainingTime % 3600) / 60);
-        const seconds = remainingTime % 60;
-
-        display.textContent = `${hours}h ${minutes}m ${seconds}s`;
-
-        remainingTime--;
-        localStorage.setItem(STORAGE_KEY, remainingTime);
-        }
-
-        updateTimer();
-        setInterval(updateTimer, 1000);
-    });
-</script>
-              
+<script src="{{ 'product-block-delivery-date.js' | asset_url }}" defer="defer"></script>

@@ -3,6 +3,10 @@
     gap: 24px;
 }
 
+.cms-main-collection {
+    display: block;
+}
+
 .main-page__section {
     position: relative;
     overflow: hidden;

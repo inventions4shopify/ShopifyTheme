@@ -5,7 +5,7 @@
     <div class="cms-row flex-{{ section.settings.image_position }} items-{{ section.settings.desktop_content_position }}">
       <div class="cms-cell--{{ section.settings.width }}">
         <div class="before-after-wrapper">
-          <div class="before-after-container-inner aspect-square" id="before-after-{{ section.id }}">
+          <after-before-section class="before-after-container-inner aspect-square">
             <div class="after-img">
               {% if section.settings.after_image != blank %}
                 <img
@@ -94,7 +94,7 @@
               value="50"
               class="slider-range"
             >
-          </div>
+          </after-before-section>
         </div>
       </div>
       <div class="cms-cell ps-rte">
@@ -169,32 +169,7 @@
   </div>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-
-    const container = document.querySelector("#before-after-{{ section.id }}");
-
-    if (!container) return;
-
-    const slider = container.querySelector(".slider-range");
-    const beforeWrapper = container.querySelector(".before-image-wrapper");
-    const dividerLine = container.querySelector(".divider-line");
-    const handle = container.querySelector(".divider-handle");
-
-    function updateSlider(value) {
-      beforeWrapper.style.width = value + "%";
-      dividerLine.style.left = value + "%";
-      handle.style.left = value + "%";
-    }
-
-    updateSlider(slider.value);
-
-    slider.addEventListener("input", function () {
-      updateSlider(this.value);
-    });
-
-  });
-</script>
+<script src="{{ 'after-before-section.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
