@@ -1,55 +1,52 @@
 {{ 'image-with-text.css' | asset_url | stylesheet_tag }}
 
 <style>
+  {% if section.settings.image_show != true %}
+    .cms-image-with-text__media {
+      border-radius: var(--media-radius);
+      position: relative;
+      overflow: hidden;
+    }
+  {% endif %}
 
-    {% if section.settings.image_show != true %}
-      .cms-image-with-text__media {
-        border-radius: var(--media-radius);
-        position: relative;
-        overflow: hidden;
+  {% if section.settings.image_show == true %}
+      .cms-image-with-text__content {
+          padding-left: 2rem;
+          padding-right: 2rem;
+          padding-top: var(--section-spacing-top);
+          padding-bottom: var(--section-spacing-bottom);
       }
-    {% endif %}
+  {% endif %}
 
-    {% if section.settings.image_show == true %}
-        .cms-image-with-text__content {
-            padding-left: 2rem;
-            padding-right: 2rem;
-            padding-top: var(--section-spacing-top);
-            padding-bottom: var(--section-spacing-bottom);
-        }
-    {% endif %}
+  .cms-image-with-text-row {
+      display: flex;
+      flex-wrap: wrap;
+      {% if section.settings.image_show != true %}
+          margin: 0 -15px;
+      {% endif %}
+  }
 
-    .cms-image-with-text-row {
-        display: flex;
-        flex-wrap: wrap;
-        {% if section.settings.image_show != true %}
-            margin: 0 -15px;
-        {% endif %}
-    }
+  {% if section.settings.image_show != true %}
+  .cms-image-with-text-row >* {
+      padding: 1.5rem;
+  }
+  {% endif %}
 
-    {% if section.settings.image_show != true %}
-    .cms-image-with-text-row >* {
-        padding: 1.5rem;
-    }
-    {% endif %}
+  @media (min-width: 768px) {
+      .cms-cell--{{ section.settings.width }} {
+          width: {% case section.settings.width %}
+              {% when 'small' %} 33.3333%
+              {% when 'medium' %} 50%
+              {% when 'large' %} 66.6666%
+          {% endcase %};
+      }
 
-    @media (min-width: 768px) {
-        .cms-cell--{{ section.settings.width }} {
-            width: {% case section.settings.width %}
-                {% when 'small' %} 33.3333%
-                {% when 'medium' %} 50%
-                {% when 'large' %} 66.6666%
-            {% endcase %};
-        }
-
-        .cms-image-with-text__content {
-            display: flex;
-            flex-direction: column;
-            width: {% if section.settings.image_show == true %} 50% {% else %} 1% {% endif %};
-            flex: {% if section.settings.image_show != true %} 1 1 auto {% endif %};
-            max-width: 64rem;
-        }
-    }
+      .cms-image-with-text__content {
+          width: {% if section.settings.image_show == true %} 50% {% else %} 1% {% endif %};
+          flex: {% if section.settings.image_show != true %} 1 1 auto {% endif %};
+          max-width: 64rem;
+      }
+  }
 </style>
 
 {%- liquid
@@ -65,92 +62,74 @@
   endif
 -%}
 
-
 <div {%- render 'section-variables', section: section, class: 'image-with-text__section' -%}>
   <div class="{% if section.settings.image_show != true %} {{ section.settings.section_width }} {% endif %}">
-      <div class="cms-image-with-text-row flex-{{ section.settings.image_position }}">
-          <div class="cms-cell--{{ section.settings.width }}">
-              <div class="cms-image-with-text__media image_media--{{ section.settings.media_height }}">
-                  {% if section.settings.media_type == 'image' %}
-                    <picture>
-                      <source
-                        media="(max-width: 767px)"
-                        srcset="{% if section.settings.mb_image != blank %}{{ section.settings.mb_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
-                      >
+    <div class="cms-image-with-text-row flex-{{ section.settings.image_position }}">
+      <div class="cms-cell--{{ section.settings.width }}">
+        <div class="cms-image-with-text__media image_media--{{ section.settings.media_height }}">
+            {% if section.settings.media_type == 'image' %}
+                <picture>
+                {% if section.settings.mb_image != blank %}
+                    <source
+                    media="(max-width: 767px)"
+                    srcset="{{ section.settings.mb_image | image_url: width: 767 }}"
+                    >
+                {% endif %}
 
-                      <img
-                        src="{% if section.settings.desktop_image != blank %}{{ section.settings.desktop_image | image_url }}{% else %}{{ 'img-with-text.svg' | asset_url }}{% endif %}"
-                        alt="{{ section.settings.desktop_image.alt | escape }}"
-                        loading="lazy"
-                        width="auto"
-                        height="auto"
-                      >
-                    </picture>
-                  {% elsif section.settings.media_type == 'video' %}
-                      {% if section.settings.desktop_video != blank %}
-                          <video
-                              autoplay
-                              loop
-                              muted
-                              playsinline
-                              preload="metadata"
-                              class="hero-media"
-                          >
-                              {%- if section.settings.desktop_video != blank -%}
-                              {% for source in section.settings.desktop_video.sources %}
-                                  {% if source.format == 'mp4' %}
-                                      <source
-                                          src="{{ source.url }}"
-                                          type="video/mp4"
-                                          media="(max-width: 989px)"
-                                      >
-                                      {% break %}
-                                  {% endif %}
-                              {% endfor %}
-                              {%- elsif section.settings.desktop_video != blank -%}
-                                  {% for source in section.settings.desktop_video.sources %}
-                                      {% if source.format == 'mp4' %}
-                                      <source
-                                          src="{{ source.url }}"
-                                          type="video/mp4"
-                                          media="(max-width: 989px)"
-                                      >
-                                      {% break %}
-                                      {% endif %}
-                                  {% endfor %}
-                              {%- endif -%}
-                              {%- if section.settings.desktop_video != blank -%}
-                                  {% for source in section.settings.desktop_video.sources %}
-                                      {% if source.format == 'mp4' %}
-                                      <source
-                                          src="{{ source.url }}"
-                                          type="video/mp4"
-                                          media="(min-width: 990px)"
-                                      >
-                                      {% break %}
-                                      {% endif %}
-                                  {% endfor %}
-                              {%- endif -%}
-                          </video>
-                      {% endif %}
-                  {% endif %}
-              </div>
-          </div>
-          <div class="cms-image-with-text__content {{ gap_class }} items-{{ section.settings.text_alignment }} text-{{ section.settings.text_alignment }} justify-{{ section.settings.content_alignment }}">
-              {% for block in section.blocks %}
-                  {% case block.type %}
-                  {% when 'subheading' %}
-                    {%- assign sub_color = block.settings.subheading_color -%}
-                      <span class="section-header__subheading subheading" 
-                      {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
-                        style="color: rgb({{ sub_color.rgb }});"
-                      {%- endunless %}
-                      >{{ block.settings.subheading }}</span>
-                  {% when 'heading' %}
-                    {%- assign head_grad = block.settings.heading_gradient -%}
-                    {%- assign head_color = block.settings.heading_color -%}
+                {% if section.settings.desktop_image != blank %}
+                    <img
+                    src="{{ section.settings.desktop_image | image_url: width: 719 }}"
+                    alt="{{ section.settings.desktop_image.alt | escape }}"
+                    loading="lazy"
+                    width="{{ section.settings.desktop_image.width }}"
+                    height="{{ section.settings.desktop_image.height }}"
+                    >
+                {% else %}
+                    <img
+                    src="{{ 'img-with-text.svg' | asset_url }}"
+                    alt="Placeholder image"
+                    loading="lazy"
+                    width="719"
+                    height="460"
+                    >
+                {% endif %}
+                </picture>
 
-                    {%- capture heading_style -%}
+            {% elsif section.settings.media_type == 'video' %}
+                {% if section.settings.desktop_video != blank %}
+                {{
+                    section.settings.desktop_video
+                    | video_tag:
+                    autoplay: true,
+                    loop: true,
+                    muted: true,
+                    controls: false,
+                    playsinline: true,
+                    preload: 'metadata',
+                    class: 'hero-media'
+                }}
+                {% endif %}
+            {% endif %}
+        </div>
+      </div>
+      <div class="cms-image-with-text__content {{ gap_class }} items-{{ section.settings.text_alignment }} text-{{ section.settings.text_alignment }} justify-{{ section.settings.content_alignment }}">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'subheading' %}
+              {%- assign sub_color = block.settings.subheading_color -%}
+              <span
+                class="section-header__subheading subheading"
+                {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                  style="color: rgb({{ sub_color.rgb }});"
+                {%- endunless %}
+              >
+                {{- block.settings.subheading -}}
+              </span>
+            {% when 'heading' %}
+              {%- assign head_grad = block.settings.heading_gradient -%}
+              {%- assign head_color = block.settings.heading_color -%}
+
+              {%- capture heading_style -%}
                       {%- if head_grad != blank -%}
                         background: {{ head_grad }};
                         -webkit-background-clip: text;
@@ -160,33 +139,37 @@
                         --color-heading: {{ head_color.rgb }};
                       {%- endif -%}
                     {%- endcapture -%}
-                    
-                      <h2 class="section-header__heading {{ block.settings.heading_size }}"
-                      {%- unless heading_style == blank %}
-                        style="{{ heading_style | strip }}"
-                      {%- endunless %}
-                      >{{ block.settings.heading }}</h2>
-                  {% when 'description' %}
-                    {%- assign block_color = block.settings.text_color -%}
-                    <div class="image-with__text ps-rte"
-                      {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
-                        style="color: rgb({{ block_color.rgb }});"
-                      {%- endunless %}
-                    >
-                      {{ block.settings.description }}
-                    </div>
-                  {% when 'buttons' %}
-                      {%- render 'button',
-                        text: block.settings.link_label,
-                        href: block.settings.link,
-                        background_color: block.settings.button_background_color,
-                        text_color: block.settings.button_text_color,
-                        outline_color: block.settings.button_outline_color
-                      -%}
-                  {% endcase %}
-              {% endfor %}
-          </div>
+
+              <h2
+                class="section-header__heading {{ block.settings.heading_size }}"
+                {%- unless heading_style == blank %}
+                  style="{{ heading_style | strip }}"
+                {%- endunless %}
+              >
+                {{ block.settings.heading }}
+              </h2>
+            {% when 'description' %}
+              {%- assign block_color = block.settings.text_color -%}
+              <div
+                class="image-with__text ps-rte"
+                {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
+                  style="color: rgb({{ block_color.rgb }});"
+                {%- endunless %}
+              >
+                {{ block.settings.description }}
+              </div>
+            {% when 'buttons' %}
+              {%- render 'button',
+                text: block.settings.link_label,
+                href: block.settings.link,
+                background_color: block.settings.button_background_color,
+                text_color: block.settings.button_text_color,
+                outline_color: block.settings.button_outline_color
+              -%}
+          {% endcase %}
+        {% endfor %}
       </div>
+    </div>
   </div>
 </div>
 
@@ -234,8 +217,8 @@
       "label": "Background gradient"
     },
     {
-        "type": "header",
-        "content": "Content"
+      "type": "header",
+      "content": "Content"
     },
     {
       "type": "select",
@@ -258,10 +241,10 @@
       "label": "Media Width"
     },
     {
-        "type": "checkbox",
-        "id": "image_show",
-        "default": false,
-        "label": "Show image In Half Screen"
+      "type": "checkbox",
+      "id": "image_show",
+      "default": false,
+      "label": "Show image In Half Screen"
     },
     {
       "type": "select",
@@ -280,38 +263,38 @@
       "label": "Image Position"
     },
     {
-        "type": "select",
-        "id": "media_type",
-        "label": "Type",
-        "options": [
+      "type": "select",
+      "id": "media_type",
+      "label": "Type",
+      "options": [
         {
-            "value": "image",
-            "label": "Image"
+          "value": "image",
+          "label": "Image"
         },
         {
-            "value": "video",
-            "label": "Video"
+          "value": "video",
+          "label": "Video"
         }
-        ],
-        "default": "image"
+      ],
+      "default": "image"
     },
     {
-        "type": "video",
-        "id": "desktop_video",
-        "visible_if": "{{ section.settings.media_type == 'video' }}",
-        "label": "Video"
+      "type": "video",
+      "id": "desktop_video",
+      "visible_if": "{{ section.settings.media_type == 'video' }}",
+      "label": "Video"
     },
     {
-        "type": "image_picker",
-        "id": "mb_image",
-        "visible_if": "{{ section.settings.media_type == 'image' }}",
-        "label": "Mobile Image"
+      "type": "image_picker",
+      "id": "mb_image",
+      "visible_if": "{{ section.settings.media_type == 'image' }}",
+      "label": "Mobile Image"
     },
     {
-        "type": "image_picker",
-        "id": "desktop_image",
-        "visible_if": "{{ section.settings.media_type == 'image' }}",
-        "label": "Desktop Image"
+      "type": "image_picker",
+      "id": "desktop_image",
+      "visible_if": "{{ section.settings.media_type == 'image' }}",
+      "label": "Desktop Image"
     },
     {
       "type": "select",
@@ -338,8 +321,8 @@
       "default": "medium"
     },
     {
-        "type": "header",
-        "content": "Content Alignment"
+      "type": "header",
+      "content": "Content Alignment"
     },
     {
       "type": "select",

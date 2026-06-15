@@ -14,16 +14,30 @@
             <div class="media-with-content-media">
               {% if block.settings.media_type == 'image' %}
                 <picture>
-                  <source
-                    media="(max-width: 767px)"
-                    srcset="{% if block.settings.image_2 %}{{ block.settings.image_2 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
-                  >
-                  <img
-                    src="{% if block.settings.image_1 %}{{ block.settings.image_1 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
-                    alt="{{ block.settings.heading | escape }}"
-                    width="auto"
-                    height="auto"
-                  />
+                  {% if block.settings.image_2 %}
+                    <source
+                      media="(max-width: 767px)"
+                      srcset="{{ block.settings.image_2 | image_url: width: 767 }}"
+                    >
+                  {% endif %}
+
+                  {% if block.settings.image_1 %}
+                    <img
+                      src="{{ block.settings.image_1 | image_url: width: 1440 }}"
+                      alt="{{ block.settings.heading | escape }}"
+                      loading="lazy"
+                      width="{{ block.settings.image_1.width }}"
+                      height="{{ block.settings.image_1.height }}"
+                    >
+                  {% else %}
+                    <img
+                      src="{{ 'thumbnail.svg' | asset_url }}"
+                      alt="{{ block.settings.heading | escape }}"
+                      loading="lazy"
+                      width="1440"
+                      height="600"
+                    >
+                  {% endif %}
                 </picture>
               {% elsif block.settings.media_type == 'video' %}
                 {% if block.settings.video_1 %}
@@ -33,7 +47,8 @@
                       autoplay: true,
                       loop: true,
                       muted: true,
-                      controls: false
+                      controls: false,
+                      playsinline: true
                   }}
                 {% endif %}
               {% endif %}
