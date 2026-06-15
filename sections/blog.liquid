@@ -58,12 +58,8 @@
   </div>
 {% endpaginate %}
 <style>
-  .custom-articles-section{
+  .custom-articles-section {
     background: {{ background_color }};
-  }
-
-  #shopify-section-{{ section.id }} {
-    padding: 60px 0;
   }
 
   {% if section.settings.zoom_effect %}
@@ -75,7 +71,7 @@
 
   {% if section.settings.card_style == true %}
     .card__content {
-      padding: 16px;
+      padding: var(--spacing-16);
     }
 
     .article-card__image-wrapper,
@@ -91,11 +87,11 @@
     }
   {% else %}
     .card__content {
-      padding-top: 16px;
+      padding: var(--spacing-16);
     }
 
     .blog-card--featured .card__content{
-      padding: 16px;
+      padding: var(--spacing-16);
     }
 
     .blog-card--featured .article-card__image-wrapper,
@@ -105,7 +101,7 @@
 
     @media screen and (max-width: 768px) {
       .blog-card--featured .card__content{
-        padding: 16px 0 0 0;
+        padding: var(--spacing-16) 0 0 0;
       }
     }
   {% endif %}
@@ -297,6 +293,60 @@
       "id": "card_text",
       "label": "Card Text",
       "visible_if": "{{ section.settings.card_style == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
     }
   ]
 }
