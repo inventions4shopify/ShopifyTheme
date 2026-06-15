@@ -28,6 +28,8 @@
     {% # Load theme stylesheet %}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'comman-section.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- if settings.enable_wishlist -%}
       {{ 'wishlist.css' | asset_url | stylesheet_tag }}
       <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
@@ -41,6 +43,9 @@
 
     <script>
             window.theme = window.theme || {};
+            window.routes = window.routes || {};
+            window.routes.predictive_search_url = {{ routes.predictive_search_url | json }};
+            window.theme.predictiveSearchEnabled = {{ settings.predictive_search_enabled | json }};
 
             window.theme.moneyFormat = {{ shop.money_format | json }};
           window.theme.cartType = {{ settings.cart_type | json }};
