@@ -127,7 +127,7 @@ predictive-search {
   top: calc(100% + 0.4rem);
   left: 0;
   right: 0;
-  z-index: 3;
+  z-index: 9999;
   border: var(--input-border-width) solid var(--input-border-color);
   background: rgb(var(--color-background));
   border-radius: var(--input-radius);

@@ -11,7 +11,31 @@
   "sections": {
     "main": {
       "type": "collection",
-      "settings": {}
+      "settings": {
+        "collection_header": true,
+        "card_per_page": 16,
+        "container_width": "small",
+        "custom_container_width": 800,
+        "content_alignment": "center",
+        "gap": "24",
+        "subheading": "",
+        "heading": "",
+        "heading_tag": "h2",
+        "show_filter": true,
+        "filter_position": "sidebar",
+        "show_total_product": true,
+        "show_sort": true,
+        "show_layout": true,
+        "show_bg_image": true,
+        "media_height": "small",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0.4,
+        "bg_color": "#000000",
+        "bg_gradient": "",
+        "subheading_color": "#FFFFFF",
+        "heading_color": "#FFFFFF",
+        "text_color": "#FFFFFF"
+      }
     }
   },
   "order": [
