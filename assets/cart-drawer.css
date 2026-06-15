@@ -335,7 +335,7 @@ body.cart-drawer-open {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background: #fff;
+  background: #fee7d5;
   border: 0.2rem solid rgba(0, 0, 0, 0.15);
   color: rgba(0, 0, 0, 0.4);
   transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;

@@ -5,6 +5,7 @@
 
 
 .main-header-wrapper{
+    display: block;
     background: rgb(var(--color-header-background));
     color: rgb(var(--color-header-text));
 }

@@ -55,7 +55,7 @@
   endif
 -%}
 
-<div
+<site-header
   class="main-header-wrapper header--sticky-{{ sticky }}"
   data-sticky="{{ sticky }}"
 >
@@ -233,64 +233,9 @@
       </div>
     </div>
   </header>
-</div>
+</site-header>
 
-<script>
-  (function () {
-    /* ----- Drawer ----- */
-    var drawer = document.querySelector('.header__drawer');
-    var overlay = document.querySelector('.header__overlay');
-    function open() {
-      drawer.classList.add('is-open');
-      overlay.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    }
-    function close() {
-      drawer.classList.remove('is-open');
-      overlay.classList.remove('is-open');
-      document.body.style.overflow = '';
-    }
-    document.querySelectorAll('[data-drawer-open]').forEach(function (b) {
-      b.addEventListener('click', open);
-    });
-    document.querySelectorAll('[data-drawer-close]').forEach(function (b) {
-      b.addEventListener('click', close);
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') close();
-    });
-
-    /* ----- Sticky header behavior ----- */
-    var wrapper = document.querySelector('.main-header-wrapper');
-    if (wrapper) {
-      var mode = wrapper.getAttribute('data-sticky'); // none | scroll-up | always | reduce
-      var host = wrapper.closest('.shopify-section') || wrapper;
-
-      if (mode !== 'none') {
-        host.classList.add('header-sticky-host');
-      }
-
-      var lastY = window.pageYOffset;
-      function onScroll() {
-        var y = window.pageYOffset;
-        if (mode === 'reduce') {
-          wrapper.classList.toggle('is-scrolled', y > 50);
-        }
-        if (mode === 'scroll-up') {
-          if (y > lastY && y > 100) {
-            wrapper.classList.add('is-hidden'); // scrolling down -> hide
-          } else {
-            wrapper.classList.remove('is-hidden'); // scrolling up -> show
-          }
-        }
-        lastY = y;
-      }
-      if (mode === 'reduce' || mode === 'scroll-up') {
-        window.addEventListener('scroll', onScroll, { passive: true });
-      }
-    }
-  })();
-</script>
+<script src="{{ 'header.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

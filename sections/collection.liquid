@@ -85,7 +85,7 @@
   </div>
 {% endif %}
 
-<div
+<main-collection-section
    {%- render 'section-variables', section: section, class: 'cms-main-collection' -%}
 >
   
@@ -325,119 +325,9 @@
 
   </div>
 
-</div>
+</main-collection-section>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-
-  /* =========================
-     SORT DROPDOWN LOGIC
-  ========================= */
-
-  const dropdown = document.querySelector('.js-sort-dropdown');
-  const selected = document.querySelector('.js-sort-selected');
-  const label = document.querySelector('.js-sort-label');
-  const options = document.querySelectorAll('.js-sort-option');
-  const input = document.getElementById('SortByInput');
-  const form = document.getElementById('SortByForm');
-
-  if (dropdown && selected && label && input && form) {
-
-    selected.addEventListener('click', () => {
-      dropdown.classList.toggle('open');
-    });
-
-    options.forEach(option => {
-
-      // Set initial selected label
-      if (option.classList.contains('active')) {
-        label.textContent = option.textContent.trim();
-      }
-
-      option.addEventListener('click', () => {
-        label.textContent = option.textContent.trim();
-        input.value = option.dataset.value;
-
-        dropdown.classList.remove('open');
-        form.submit();
-      });
-
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target)) {
-        dropdown.classList.remove('open');
-      }
-    });
-
-  }
-
-
-  /* =========================
-     SIDEBAR AUTO FILTER LOGIC
-  ========================= */
-
-  const filterForm = document.getElementById('CollectionFiltersForm');
-
-  if (filterForm && filterForm.hasAttribute('data-auto-filter')) {
-
-    const inputs = filterForm.querySelectorAll('input, select');
-
-    inputs.forEach(input => {
-      input.addEventListener('change', () => {
-        filterForm.submit();
-      });
-    });
-
-  }
-
-
-  /* =========================
-     SMOOTH FILTER ACCORDION
-  ========================= */
-
-  document.querySelectorAll('.cms-filter-accordion').forEach((accordion) => {
-
-    const content = accordion.querySelector('.cms-filter-accordion-content');
-    const summary = accordion.querySelector('.cms-filter-accordion-title');
-
-    // All closed by default
-    if (!accordion.open) {
-      content.style.maxHeight = '0px';
-    }
-
-    summary.addEventListener('click', (e) => {
-
-      e.preventDefault();
-
-      if (accordion.open) {
-
-        content.style.maxHeight = content.scrollHeight + 'px';
-
-        requestAnimationFrame(() => {
-          content.style.maxHeight = '0px';
-        });
-
-        setTimeout(() => {
-          accordion.removeAttribute('open');
-        }, 300);
-
-      } else {
-
-        accordion.setAttribute('open', '');
-
-        requestAnimationFrame(() => {
-          content.style.maxHeight = content.scrollHeight + 'px';
-        });
-
-      }
-
-    });
-
-  });
-
-});
-</script>
+<script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

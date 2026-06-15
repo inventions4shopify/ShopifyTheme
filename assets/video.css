@@ -60,6 +60,7 @@
 }
 
 .custom-video-section {
+  display: block;
   height: 50rem;
   padding: 0;
 }
