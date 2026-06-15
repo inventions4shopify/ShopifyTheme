@@ -85,7 +85,11 @@
              {{- 'search.title' | t -}}
           </h1> 
           <div class="template-search__search">
-            <main-search>
+            {%- if settings.predictive_search_enabled -%}
+              <predictive-search data-loading-text="{{ 'search.loading' | t }}">
+            {%- else -%}
+              <main-search>
+            {%- endif -%}
               <form action="{{ routes.search_url }}" method="get" role="search" class="search">
                 <div class="field with-icon-right">
                   <input
@@ -94,15 +98,21 @@
                     type="search"
                     name="q"
                     value="{{ search.terms | escape }}"
+                    {%- if settings.predictive_search_enabled %}
+                      role="combobox"
+                      aria-expanded="false"
+                      aria-owns="predictive-search-results"
+                      aria-controls="predictive-search-results"
+                      aria-haspopup="listbox"
+                      aria-autocomplete="list"
+                      autocorrect="off"
+                      autocomplete="off"
+                      autocapitalize="off"
+                      spellcheck="false"
+                    {%- endif %}
                   >
                   <label class="field__label" for="Search-In-Template">{{ 'search.placeholder' | t }}</label>
                   <input name="options[prefix]" type="hidden" value="last">
-
-                  {%- if settings.predictive_search_enabled -%}
-                    <div class="predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
-                      {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
-                    </div>
-                  {%- endif -%}
 
                   <button
                     type="reset"
@@ -110,7 +120,7 @@
                     aria-label="{{ 'search.reset' | t }}"
                   >
                     <span class="svg-wrapper">
-                      {{- 'icon-reset.svg' | inline_asset_content -}}
+                      {% render 'icon', icon: 'close', width: 18, height: 18 %}
                     </span>
                   </button>
                   <button type="submit" class="search__button field__button" aria-label="{{ 'search.title' | t }}">
@@ -119,8 +129,21 @@
                     </span>
                   </button>
                 </div>
+
+                {%- if settings.predictive_search_enabled -%}
+                  <div class="predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
+                    <div class="predictive-search__loading-state">
+                      {%- render 'loading-spinner' -%}
+                    </div>
+                  </div>
+                  <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+                {%- endif -%}
               </form>
-            </main-search>
+            {%- if settings.predictive_search_enabled -%}
+              </predictive-search>
+            {%- else -%}
+              </main-search>
+            {%- endif -%}
           </div>
         </div>
         {%- if search.performed -%}
