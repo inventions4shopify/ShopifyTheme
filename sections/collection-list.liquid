@@ -39,12 +39,12 @@
 
 <div {%- render 'section-variables', section: section, class: 'collection-list__section' -%}>
   <div class="{{ container_class }}">
-    <div class="collection-list-header {{ align_class }}">
+    <div class="collection-list-header 123 {{ align_class }}">
       {%- render 'section-header',
         subheading:    section.settings.subheading,
         heading:       section.settings.heading,
         content:       section.settings.description,
-        text_alignment: 'center'
+        text_alignment: align_value
       -%}
     </div>
     <collection-list-section
