@@ -1,0 +1,11 @@
+{%- comment -%}
+  Rendered over AJAX by assets/predictive-search.js.
+  Requested as: {{ routes.predictive_search_url }}?q=TERM&section_id=predictive-search
+{%- endcomment -%}
+{% render 'predictive-search' %}
+{% schema %}
+{
+  "name": "Predictive Search",
+  "settings": []
+}
+{% endschema %}
