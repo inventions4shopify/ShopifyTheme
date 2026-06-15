@@ -8,7 +8,6 @@
 }
 
 .contact .field {
-  margin-bottom: 1.5rem;
   flex-flow: column;
 }
 
@@ -36,6 +35,11 @@
   margin-top: 0.2rem;
 }
 
+.text-area.field__input {
+  min-height: 120px;
+  resize: none;
+}
+
 .contact .field__input {
   width: 100%;
   padding: 15px;
@@ -46,21 +50,6 @@
   display: none;
 }
 
-@media screen and (min-width: 750px) {
-  .contact__fields {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .contact .field {
-    margin-bottom: 2rem;
-  }
-
-  .contact__button {
-    margin-top: 3rem;
-  }
-}
-
 @media screen and (max-width: 749px) {
   .contact {
     padding: 1.5rem;
@@ -69,5 +58,24 @@
 
   .contact .title {
     margin-bottom: 1.5rem;
+  }
+
+  .contact .field {
+    margin: 15px 0;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .contact__fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact__button {
+    margin-top: 3rem;
+  }
+
+  .field:has(textarea) {
+    margin: var(--spacing-24) 0 0;
   }
 }
