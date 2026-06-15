@@ -28,6 +28,11 @@ body {
   background-color: rgb(var(--color-background));
 }
 
+.header {
+  position: relative;
+  z-index: 30;
+}
+
 *,
 ::after,
 ::before {

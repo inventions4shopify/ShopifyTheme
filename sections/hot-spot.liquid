@@ -126,7 +126,19 @@
                     --hot-spot-heading-color: {{ block.settings.hot_spot_head_color }};
                 ">
                     <button class="button button--secondary">
-                        {% render 'icon', icon: 'plus', width: 20, height: 20 %}
+                        {% assign icon = block.settings.hot-spot-icon %}
+
+                        {% if icon != blank %}
+                            <img
+                                src="{{ icon | image_url: width: 40 }}"
+                                alt="{{ block.settings.hot-spot-heading | escape }}"
+                                loading="lazy"
+                                width="40"
+                                height="40"
+                            >
+                        {% else %}
+                            {% render 'icon', icon: 'plus', width: 20, height: 20 %}
+                        {% endif %}
                     </button>
                     <div class="cms-hot-spot-body ps-rte">
                         <h3 class="h5">{{ block.settings.hot-spot-heading }}</h3>

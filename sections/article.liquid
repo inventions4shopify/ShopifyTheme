@@ -5,6 +5,10 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/article
 {% endcomment %}
+
+{{ 'article.css' | asset_url | stylesheet_tag }}
+
+
 <div {%- render 'section-variables', section: section, class: 'article-section' -%}>
   {% liquid
     assign background_color = section.settings.bg_color | default: settings.background_color
@@ -132,162 +136,19 @@
     </div>
   </div>
 </div>
+
 <style>
-  .article-template {
-    padding: 60px 0;
-  }
-  .article-header {
-    display: flex;
-    flex-direction: column;
-    padding: 24px 0;
-  }
-
-  /* Back button alignment */
-  .article-back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-  }
-
-  .article-meta {
-    display: flex;
-    opacity: 0.7;
-  }
-
-  .article-content,
-  .article-content p,
-  .article-content span,
-  .article-content ul,
-  .article-content ol,
-  .article-content li,
-  .article-content table,
-  .article-content td,
-  .article-content th,
-  .article-content tr {
-    font-size: var(--text-sm);
-  }
-  .article-back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .article-back-btn__icon {
-    width: 38px;
-    height: 38px;
-    border: 1px solid;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .article-category {
-    text-transform: uppercase;
-    opacity: 0.7;
-    margin-bottom: 10px;
-  }
-
-  .article-meta {
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-  }
-
-  .article-featured-image {
-    margin-bottom: 50px;
-  }
-
   .article-featured-image img,
   .article-content img {
-    width: 100%;
-    display: block;
     min-height: var(--section-height-{{section.settings.slide_height}});
-    height: 50rem;
-  }
-
-  .article-content img {
-    width: 100%;
-    display: block;
-    margin: 40px 0;
   }
 
   .article-content a {
     color: rgb({{accent_color.rgb}});
-    text-decoration-thickness: 2px;
-    text-underline-offset: 4px;
-  }
-
-  .article-content ul,
-  .article-content ol {
-    padding-left: 25px;
-    margin: 25px 0;
   }
 
   .article-content blockquote {
-    border-left: 4px solid rgb({{accent_color.rgb}});
-    padding: 20px 30px;
-    margin: 40px 0;
-    background: rgba(0, 0, 0, 0.03);
-  }
-
-  .article-content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 40px 0;
-  }
-
-  .article-content th,
-  .article-content td {
-    padding: 16px;
-    border: 1px solid;
-    text-align: center;
-  }
-
-  .article-comments {
-    margin-top: 60px;
-  }
-
-  .article-comment {
-    padding: 20px 0;
-    border-bottom: 1px solid;
-  }
-
-  .article-comments input,
-  .article-comments textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-  }
-
-  .article-comments button {
-    padding: 12px 24px;
-    cursor: pointer;
-  }
-
-  @media screen and (max-width: 768px) {
-    .article-template {
-      padding: 40px 0;
-    }
-
-    .article-back-btn {
-      margin-bottom: 30px;
-    }
-
-    .article-meta {
-      gap: 15px;
-    }
-
-    .article-featured-image {
-      margin-bottom: 30px;
-    }
-    .article-header {
-      padding: 12px 0 24px;
-    }
+    border-left: 0.4rem solid rgb({{accent_color.rgb}});
   }
 </style>
 
@@ -415,7 +276,60 @@
       "id": "accent_color",
       "label": "Accent Color"
     },
-
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
     {
       "type": "header",
       "content": "Typography Settings"

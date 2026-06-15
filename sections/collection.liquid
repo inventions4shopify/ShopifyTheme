@@ -87,10 +87,8 @@
 
 <main-collection-section
    {%- render 'section-variables', section: section, class: 'cms-main-collection' -%}
->
-  
+>  
   <div class="page-width">
-
     {% paginate collection.products by section.settings.card_per_page %}
 
       {% capture collection_filters %}

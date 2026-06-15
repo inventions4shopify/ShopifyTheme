@@ -36,6 +36,7 @@
     height: 4.4rem;
     transition: all 0.25s ease;
     position: relative;
+    overflow: hidden;
     z-index: 2;
 }
 

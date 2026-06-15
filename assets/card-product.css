@@ -116,6 +116,7 @@
 
 .product-card__title {
   margin: 0;
+  color: rgb(var(--color-product-card-text));
 }
 
 .product-card__title a {
