@@ -30,7 +30,7 @@
     border-radius:  var(--radius-full);
     color: {{ settings.footer_text_color }}; 
     background: #ffffff36; 
-    border:0.1rem solid #ffffff54;
+    border: 0.1rem solid rgb(var(--color-border));
     display: flex;
     align-items: center;
     justify-content: center; 
@@ -152,11 +152,6 @@
                 endcase
               -%}
               <div class="footer__block {{ col_class }} footer__block--text {{ desktop_align_class }} {{ mobile_align_class }}" {{ block.shopify_attributes }}>
-
-                {%- if block.settings.title != blank -%}
-                  <h3 class="footer__block-title">{{ block.settings.title }}</h3>
-                {%- endif -%}
-
                 {%- if block.settings.image != blank -%}
                   <div class="footer__text-img-wrap">
                     {{
@@ -168,6 +163,10 @@
                         alt: block.settings.image.alt | escape
                     }}
                   </div>
+                {%- endif -%}
+
+                {%- if block.settings.title != blank -%}
+                  <h3 class="footer__block-title">{{ block.settings.title }}</h3>
                 {%- endif -%}
 
                 {%- if block.settings.text != blank -%}

@@ -139,14 +139,7 @@ footer .social_list {
   gap: var(--spacing-6);
   flex-wrap: wrap;
 }
-.social_list-item .icon{
-  width: 1.8rem;
-  height: auto;
-}
-.social_list-item .svg-wrapper{
-  width: 1.8rem;
-  height: 1.8rem;
-}
+
 /* ── Mobile ── */
 @media (max-width: 991px) {
   .footer__bottom {
