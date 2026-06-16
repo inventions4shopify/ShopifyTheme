@@ -6,7 +6,7 @@
   assign search_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
 -%}
 <div {%- render 'section-variables', section: section, class: 'search__section' -%}>
-  {% paginate search.results by 24 %}
+  {% paginate search.results by section.settings.card_per_page %}
       {% capture collection_filters %}
         <form id="CollectionFiltersForm" class="cms-collection-sidebar {% if section.settings.filter_position == 'sidebar' %}data-auto-filter cms-filter-sidebar{% endif %}">
 
@@ -261,58 +261,60 @@
                   {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                     {{ collection_filters }}
                   {% endif %}
-                  <ul class="grid grid--2-col sm:grid--3-col lg:grid--4-col collection-products">
-                    {%- for item in search.results -%}
-                      <li class="grid__item" >
-                        {%- case item.object_type -%}
-                          {%- when 'product' -%}
-                            {% render 'product-card',
-                              product: item,
-                              show_vendor: settings.show_vendor,
-                              show_secondary_image: settings.show_secondary_image,
-                              show_quick_buy: settings.show_quick_buy,
-                              show_rating: settings.show_rating,
-                              rating_display: settings.rating_display,
-                              show_sold_out_badge: settings.show_sold_out_badge,
-                              show_discount_badge: settings.show_discount_badge,
-                              discount_type: settings.discount_type,
-                              color_display_mode: settings.color_display_mode,
-                              image_ratio: settings.image_ratio,
-                              content_alignment: settings.content_alignment,
-                              style: settings.style
-                            %}
-                          {%- when 'article' -%}
-                              {%- render 'article-card',
-                                  article: item,
-                                  media_height: section.settings.image_ratio,
-                                  show_image: section.settings.show_image,
-                                  show_date: section.settings.show_date,
-                                  show_author: section.settings.show_author,
-                                  show_excerpt: section.settings.show_excerpt,
-                                  read_more_label: section.settings.read_more_label,
-                                  settings: settings
-                                -%}
-                          {%- when 'page' -%}
-                            <div class="article-card-wrapper card-wrapper underline-links-hover">
-                              <div class="card">
-                                <div class="card__content">
-                                  <div class="card__information">
-                                    <h3 class="card__heading">
-                                      <a href="{{ item.url }}" class="full-unstyled-link">
-                                        {{ item.title | truncate: 50 | escape }}
-                                      </a>
-                                    </h3>
+                  <div class="collection-products">
+                    <ul class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
+                      {%- for item in search.results -%}
+                        <li class="grid__item" >
+                          {%- case item.object_type -%}
+                            {%- when 'product' -%}
+                              {% render 'product-card',
+                                product: item,
+                                show_vendor: settings.show_vendor,
+                                show_secondary_image: settings.show_secondary_image,
+                                show_quick_buy: settings.show_quick_buy,
+                                show_rating: settings.show_rating,
+                                rating_display: settings.rating_display,
+                                show_sold_out_badge: settings.show_sold_out_badge,
+                                show_discount_badge: settings.show_discount_badge,
+                                discount_type: settings.discount_type,
+                                color_display_mode: settings.color_display_mode,
+                                image_ratio: settings.image_ratio,
+                                content_alignment: settings.content_alignment,
+                                style: settings.style
+                              %}
+                            {%- when 'article' -%}
+                                {%- render 'article-card',
+                                    article: item,
+                                    media_height: section.settings.image_ratio,
+                                    show_image: section.settings.show_image,
+                                    show_date: section.settings.show_date,
+                                    show_author: section.settings.show_author,
+                                    show_excerpt: section.settings.show_excerpt,
+                                    read_more_label: section.settings.read_more_label,
+                                    settings: settings
+                                  -%}
+                            {%- when 'page' -%}
+                              <div class="article-card-wrapper card-wrapper underline-links-hover">
+                                <div class="card">
+                                  <div class="card__content">
+                                    <div class="card__information">
+                                      <h3 class="card__heading">
+                                        <a href="{{ item.url }}" class="full-unstyled-link">
+                                          {{ item.title | truncate: 50 | escape }}
+                                        </a>
+                                      </h3>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                        {%- endcase -%}
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                  {%- if paginate.pages > 1 -%}
-                    {% render 'pagination', paginate: paginate %}
-                  {%- endif -%}
+                          {%- endcase -%}
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                    {%- if paginate.pages > 1 -%}
+                      {% render 'pagination', paginate: paginate %}
+                    {%- endif -%}
+                  </div>
                 </div>
               {%- endif -%}
             </div>
@@ -332,7 +334,29 @@
     "groups": ["header", "footer"]
   },
   "settings": [
-     {
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_per_page",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "label": "Card Per Page",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_per_row",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Card Per Page",
+      "default": 3
+    },
+    {
       "type": "header",
       "content": "Article Image Settings"
     },

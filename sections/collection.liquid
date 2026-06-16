@@ -177,6 +177,19 @@
               </summary>
 
               <div class="collection-filter-drawer">
+                <div class="collection-filter-header">
+                  <div class="collection-filter-header-left">
+                    <h2 class="h5">
+                      {% render 'icon', icon: 'sort', width: 20, height: 20 %}
+                      <span>Filter & Sort</span>
+                    </h2>
+                    {{ collection.products_count }} Products
+                  </div>
+                  <button type="button" class="collection-filter-drawer-close" aria-label="Close menu">
+                    {% render 'icon' , icon: 'close' , width: 20, height: 20 %}
+                  </button>
+                </div>
+
                 {{ collection_filters }}
               </div>
 
@@ -267,7 +280,7 @@
           </aside>
 
           <div class="collection-products">
-            <div class="grid grid--2-col md:grid--3-col lg:grid--4-col">
+            <div class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
               {% for product in collection.products %}
                 {% render 'product-card',
                   product: product,
@@ -349,6 +362,15 @@
       "step": 1,
       "label": "Card Per Page",
       "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_per_row",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Card Per Page",
+      "default": 3
     },
     {
       "type": "header",

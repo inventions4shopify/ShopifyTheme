@@ -11,6 +11,11 @@
     gap: 24px;
 }
 
+.collection-products ul {
+    margin: 0;
+    padding: 0;
+}
+
 .collection-products li {
     list-style: none;
 }
@@ -50,6 +55,7 @@
 .cms-main-collection-filter-row {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--spacing-8);
     margin-bottom: var(--spacing-20);
@@ -118,15 +124,15 @@
 
 @media (min-width: 992px) {
     .cms-main-collection-grid .cms-collection-sidebar {
-        width: calc(20% - var(--grid-spacing));
-        max-width: calc(20% - var(--grid-spacing));
-        flex: 0 0 calc(20% - var(--grid-spacing));
+        width: calc(25% - var(--grid-spacing));
+        max-width: calc(25% - var(--grid-spacing));
+        flex: 0 0 calc(25% - var(--grid-spacing));
     }
 
     .cms-main-collection-grid .collection-products {
-        width: 80%;
-        max-width: 80%;
-        flex: 0 0 80%;
+        width: 75%;
+        max-width: 75%;
+        flex: 0 0 75%;
     }
 }
 
@@ -180,8 +186,8 @@
 }
 
 .cms-filter-accordion {
-  border-bottom: 1px solid #e5e5e5;
-  padding: 12px 0;
+  border-bottom: 0.1rem solid rgb(var(--color-border));
+  padding: var(--spacing-12) 0;
 }
 
 .cms-filter-accordion-title::-webkit-details-marker {
@@ -226,6 +232,12 @@
     background: rgb(var(--color-header-background));
     color: rgb(var(--color-header-text));
     padding: var(--spacing-20);
+    transition: all 0.25s ease;
+    transform: translate(-100%);
+}
+
+.collection-filter-dropdown[open] .collection-filter-drawer {
+    transform: translateX(0);
 }
 
 .collection-filter-drawer > form {
@@ -236,4 +248,39 @@
 
 .collection-filter-drawer > form > button {
     margin-top: auto;
+}
+
+.collection-filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+    border-bottom: 0.1rem solid rgb(var(--color-border));
+    margin-bottom: var(--spacing-16);
+    padding-bottom: var(--spacing-16);
+}
+
+.collection-filter-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+}
+
+.collection-filter-header .h5 {
+    color: inherit;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+}
+
+.collection-filter-drawer-close {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: inherit;
+    padding: var(--spacing-4);
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
 }
