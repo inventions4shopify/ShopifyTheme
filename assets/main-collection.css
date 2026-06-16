@@ -87,6 +87,12 @@
     border: 0;
     background-color: transparent;
     cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.2s ease;
+}
+
+.cms-main-collection-view button.is-active {
+    opacity: 1;
 }
 
 .cms-main-collection-grid {
@@ -97,6 +103,7 @@
 }
 
 .cms-main-collection-grid .cms-collection-sidebar,
+.cms-main-collection-grid .cms-filter-sidebar,
 .cms-main-collection-grid .collection-products {
     width: 100%;
     max-width: 100%;
@@ -109,13 +116,14 @@
         margin: 0;
     }
 
-    .cms-main-collection-grid .cms-collection-sidebar {
+    .cms-main-collection-grid:has(> .cms-collection-sidebar, > .cms-filter-sidebar) .cms-collection-sidebar,
+    .cms-main-collection-grid:has(> .cms-collection-sidebar, > .cms-filter-sidebar) .cms-filter-sidebar {
         width: calc(35% - var(--grid-spacing));
         max-width: calc(35% - var(--grid-spacing));
         flex: 0 0 calc(35% - var(--grid-spacing));
     }
 
-    .cms-main-collection-grid .collection-products {
+    .cms-main-collection-grid:has(> .cms-collection-sidebar, > .cms-filter-sidebar) .collection-products {
         width: 65%;
         max-width: 65%;
         flex: 0 0 65%;
@@ -123,13 +131,14 @@
 }
 
 @media (min-width: 992px) {
-    .cms-main-collection-grid .cms-collection-sidebar {
+    .cms-main-collection-grid:has(> .cms-collection-sidebar, > .cms-filter-sidebar) .cms-collection-sidebar,
+    .cms-main-collection-grid:has(> .cms-collection-sidebar, > .cms-filter-sidebar) .cms-filter-sidebar {
         width: calc(25% - var(--grid-spacing));
         max-width: calc(25% - var(--grid-spacing));
         flex: 0 0 calc(25% - var(--grid-spacing));
     }
 
-    .cms-main-collection-grid .collection-products {
+    .cms-main-collection-grid:has(> .cms-collection-sidebar, > .cms-filter-sidebar) .collection-products {
         width: 75%;
         max-width: 75%;
         flex: 0 0 75%;
