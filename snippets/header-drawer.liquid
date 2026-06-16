@@ -133,6 +133,8 @@
   }
 {% endstyle %}
 
+<script src="{{ 'header-drawer.js' | asset_url }}" defer="defer"></script>
+
 <header-drawer class="drawer-nav">
   {%- comment -%} burger / open button {%- endcomment -%}
   <button type="button" class="header__burger drawer-nav__burger" data-dm-open aria-label="Open menu" aria-expanded="false">
@@ -323,57 +325,3 @@
     {%- endfor -%}
   </div>
 </header-drawer>
-
-<script>
-  (function () {
-    if (customElements.get('header-drawer')) return;
-    customElements.define('header-drawer', class extends HTMLElement {
-      connectedCallback() {
-        this.openBtn = this.querySelector('[data-dm-open]');
-        this.panels = this.querySelectorAll('[data-dm-panel]');
-
-        if (this.openBtn) this.openBtn.addEventListener('click', () => this.open());
-        this.querySelectorAll('[data-dm-close]').forEach(function (b) {
-          b.addEventListener('click', this.close.bind(this));
-        }, this);
-        this.querySelectorAll('[data-dm-to]').forEach(function (b) {
-          b.addEventListener('click', function () { this.goTo(b.getAttribute('data-dm-to')); }.bind(this));
-        }, this);
-        this.querySelectorAll('[data-dm-back]').forEach(function (b) {
-          b.addEventListener('click', function () { this.goTo(b.getAttribute('data-dm-back')); }.bind(this));
-        }, this);
-
-        this._onKey = function (e) { if (e.key === 'Escape') this.close(); }.bind(this);
-        document.addEventListener('keydown', this._onKey);
-      }
-
-      open() {
-        this.classList.add('is-open');
-        document.body.style.overflow = 'hidden';
-        if (this.openBtn) this.openBtn.setAttribute('aria-expanded', 'true');
-      }
-
-      close() {
-        this.classList.remove('is-open');
-        document.body.style.overflow = '';
-        if (this.openBtn) this.openBtn.setAttribute('aria-expanded', 'false');
-        var self = this;
-        setTimeout(function () { self.reset(); }, 280);
-      }
-
-      reset() {
-        this.panels.forEach(function (p) {
-          if (p.getAttribute('data-dm-panel') !== 'root') p.classList.remove('is-active');
-        });
-      }
-
-      goTo(id) {
-        this.panels.forEach(function (p) {
-          var name = p.getAttribute('data-dm-panel');
-          if (name === 'root') return;
-          p.classList.toggle('is-active', name === id);
-        });
-      }
-    });
-  })();
-</script>
