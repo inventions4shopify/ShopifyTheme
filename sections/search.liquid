@@ -179,6 +179,19 @@
                       </summary>
 
                       <div class="collection-filter-drawer">
+                        <div class="collection-filter-header">
+                          <div class="collection-filter-header-left">
+                            <h2 class="h5">
+                              {% render 'icon', icon: 'sort', width: 20, height: 20 %}
+                              <span>Filter & Sort</span>
+                            </h2>
+                            {{ collection.products_count }} Products
+                          </div>
+                          <button type="button" class="collection-filter-drawer-close" aria-label="Close menu">
+                            {% render 'icon' , icon: 'close' , width: 20, height: 20 %}
+                          </button>
+                        </div>
+                        
                         {{ collection_filters }}
                       </div>
 
