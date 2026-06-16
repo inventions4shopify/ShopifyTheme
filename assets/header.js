@@ -46,3 +46,54 @@ class SiteHeader extends HTMLElement {
 if (!customElements.get('site-header')) {
   customElements.define('site-header', SiteHeader);
 }
+
+class HeaderSearch extends HTMLElement {
+  connectedCallback() {
+    if (this._initialized) return;
+    this._initialized = true;
+
+    this.modal = this.querySelector('[data-search-modal]');
+    this.openBtn = this.querySelector('[data-search-open]');
+    this.input = this.querySelector('input[type="search"]');
+
+    if (this.openBtn) {
+      this.openBtn.addEventListener('click', () => this.open());
+    }
+
+    this.querySelectorAll('[data-search-close]').forEach((btn) => {
+      btn.addEventListener('click', () => this.close());
+    });
+
+    this._onKey = (event) => {
+      if (event.key === 'Escape') this.close();
+    };
+  }
+
+  open() {
+    if (!this.modal) return;
+    this.modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    if (this.openBtn) this.openBtn.setAttribute('aria-expanded', 'true');
+    document.addEventListener('keydown', this._onKey);
+    setTimeout(() => {
+      if (this.input) this.input.focus();
+    }, 120);
+  }
+
+  close() {
+    if (!this.modal) return;
+    this.modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+    if (this.openBtn) this.openBtn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('keydown', this._onKey);
+  }
+
+  disconnectedCallback() {
+    this._initialized = false;
+    document.removeEventListener('keydown', this._onKey);
+  }
+}
+
+if (!customElements.get('header-search')) {
+  customElements.define('header-search', HeaderSearch);
+}
