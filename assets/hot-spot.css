@@ -15,6 +15,7 @@
 .cms-hot-spot__content {
     z-index: 2;
     position: relative;
+    height: 100%;
 }
 
 .cms-hot-spot-items {

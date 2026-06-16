@@ -69,50 +69,52 @@
                 {% endif %}
             {% endif %}
         </div>
-        <div class="cms-hot-spot__content flex ps-rte media-overlay-content--{{ section.settings.content_alignment }} cms-cell--{{ section.settings.width }} flex-col">
-            {%- assign sub_color = section.settings.subheading_color -%}
-                <span class="subheading" 
-                {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
-                style="color: rgb({{ sub_color.rgb }});"
-                {%- endunless %}
-                >{{ section.settings.subheading }}</span>
-            
-            {%- assign head_grad = section.settings.heading_gradient -%}
-            {%- assign head_color = section.settings.heading_color -%}
+        <div class="page-width">
+            <div class="cms-hot-spot__content flex ps-rte media-overlay-content--{{ section.settings.content_alignment }} cms-cell--{{ section.settings.width }} flex-col">
+                {%- assign sub_color = section.settings.subheading_color -%}
+                    <span class="subheading" 
+                    {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                    style="color: rgb({{ sub_color.rgb }});"
+                    {%- endunless %}
+                    >{{ section.settings.subheading }}</span>
+                
+                {%- assign head_grad = section.settings.heading_gradient -%}
+                {%- assign head_color = section.settings.heading_color -%}
 
-            {%- capture heading_style -%}
-                {%- if head_grad != blank -%}
-                background: {{ head_grad }};
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-                --color-heading: {{ head_color.rgb }};
-                {%- endif -%}
-            {%- endcapture -%}
-            
-                <h2 class="cms-hot-spot__heading {{ section.settings.heading_size }}"
-                {%- unless heading_style == blank %}
-                style="{{ heading_style | strip }}"
-                {%- endunless %}
-                >{{ section.settings.heading }}</h2>
-            
-            {%- assign block_color = section.settings.text_color -%}
-            <div class="cms-hot-spot__description"
-                {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
-                style="color: rgb({{ block_color.rgb }});"
-                {%- endunless %}
-            >
-                {{ section.settings.description }}
+                {%- capture heading_style -%}
+                    {%- if head_grad != blank -%}
+                    background: {{ head_grad }};
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
+                    --color-heading: {{ head_color.rgb }};
+                    {%- endif -%}
+                {%- endcapture -%}
+                
+                    <h2 class="cms-hot-spot__heading {{ section.settings.heading_size }}"
+                    {%- unless heading_style == blank %}
+                    style="{{ heading_style | strip }}"
+                    {%- endunless %}
+                    >{{ section.settings.heading }}</h2>
+                
+                {%- assign block_color = section.settings.text_color -%}
+                <div class="cms-hot-spot__description"
+                    {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
+                    style="color: rgb({{ block_color.rgb }});"
+                    {%- endunless %}
+                >
+                    {{ section.settings.description }}
+                </div>
+                
+                {%- render 'button',
+                    text: section.settings.link_label,
+                    href: section.settings.link,
+                    background_color: section.settings.button_background_color,
+                    text_color: section.settings.button_text_color,
+                    outline_color: section.settings.button_outline_color
+                -%}
             </div>
-            
-            {%- render 'button',
-                text: section.settings.link_label,
-                href: section.settings.link,
-                background_color: section.settings.button_background_color,
-                text_color: section.settings.button_text_color,
-                outline_color: section.settings.button_outline_color
-            -%}
         </div>
         <hot-spot-section class="cms-hot-spot-items">
             {%  for block in section.blocks  %}

@@ -6,11 +6,6 @@
 }
 
 .header-search__toggle {
-  background: none;
-  border: 0;
-  cursor: pointer;
-  color: inherit;
-  padding: var(--spacing-6);
   display: inline-flex;
   align-items: center;
   line-height: 0;
