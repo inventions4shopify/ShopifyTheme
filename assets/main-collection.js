@@ -9,11 +9,14 @@ class MainCollectionSection extends HTMLElement {
     this.initSortDropdown(signal);
     this.initAutoFilter(signal);
     this.initFilterAccordions(signal);
+    this.initFilterDrawer(signal);
+    this.initLayoutToggle(signal);
   }
 
   disconnectedCallback() {
     this._initialized = false;
     this.abortController?.abort();
+    document.body.classList.remove('open-filter-drawer');
   }
 
   initSortDropdown(signal) {
@@ -95,6 +98,97 @@ class MainCollectionSection extends HTMLElement {
             content.style.maxHeight = content.scrollHeight + 'px';
           });
         }
+      }, { signal });
+    });
+  }
+
+  initFilterDrawer(signal) {
+    const drawerDetails = this.querySelector('.collection-filter-dropdown');
+    if (!drawerDetails) return;
+
+    const drawer = drawerDetails.querySelector('.collection-filter-drawer');
+    const summary = drawerDetails.querySelector('summary');
+    const closeBtn = drawerDetails.querySelector('.collection-filter-drawer-close');
+
+    const closeDrawer = () => {
+      drawerDetails.removeAttribute('open');
+    };
+
+    const syncBodyClass = () => {
+      document.body.classList.toggle('open-filter-drawer', drawerDetails.open);
+    };
+
+    drawerDetails.addEventListener('toggle', syncBodyClass, { signal });
+
+    closeBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeDrawer();
+    }, { signal });
+
+    document.addEventListener('click', (e) => {
+      if (!drawerDetails.open) return;
+      if (drawer?.contains(e.target) || summary?.contains(e.target)) return;
+
+      closeDrawer();
+    }, { signal });
+  }
+
+  initLayoutToggle(signal) {
+    const viewToggle = this.querySelector('.cms-main-collection-view');
+    const grid = this.querySelector('.collection-products.grid, .collection-products .grid');
+
+    if (!viewToggle || !grid) return;
+
+    const buttons = viewToggle.querySelectorAll('[data-grid]');
+    const storageKey = 'collection-grid-cols';
+    const usesMdBreakpoint = [...grid.classList].some((cls) => cls.startsWith('md:grid--'));
+    const gridColPattern = /^(xs:|sm:|md:|lg:)?grid--\d+-col$/;
+
+    const getCurrentCols = () => {
+      const desktopClass = [...grid.classList].find((cls) => {
+        if (usesMdBreakpoint) return cls.startsWith('md:grid--');
+        return cls.startsWith('lg:grid--');
+      });
+
+      return desktopClass?.includes('4-col') ? '4' : '3';
+    };
+
+    const applyGrid = (cols) => {
+      [...grid.classList].forEach((cls) => {
+        if (gridColPattern.test(cls)) {
+          grid.classList.remove(cls);
+        }
+      });
+
+      grid.classList.add('grid', 'grid--2-col');
+
+      if (cols === '4') {
+        if (usesMdBreakpoint) {
+          grid.classList.add('md:grid--4-col');
+        } else {
+          grid.classList.add('sm:grid--3-col', 'lg:grid--4-col');
+        }
+      } else if (usesMdBreakpoint) {
+        grid.classList.add('md:grid--3-col');
+      } else {
+        grid.classList.add('sm:grid--3-col', 'lg:grid--3-col');
+      }
+
+      buttons.forEach((button) => {
+        const isActive = button.dataset.grid === cols;
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      localStorage.setItem(storageKey, cols);
+    };
+
+    const savedCols = localStorage.getItem(storageKey);
+    applyGrid(savedCols === '3' || savedCols === '4' ? savedCols : getCurrentCols());
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        applyGrid(button.dataset.grid);
       }, { signal });
     });
   }

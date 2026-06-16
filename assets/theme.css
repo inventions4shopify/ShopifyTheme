@@ -1472,4 +1472,6 @@ canvas {
   left: 0;
   background: #0000008c;
   z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
 }

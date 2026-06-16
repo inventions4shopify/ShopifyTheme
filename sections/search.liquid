@@ -8,7 +8,10 @@
 <div {%- render 'section-variables', section: section, class: 'search__section' -%}>
   {% paginate search.results by section.settings.card_per_page %}
       {% capture collection_filters %}
-        <form id="CollectionFiltersForm" class="cms-collection-sidebar {% if section.settings.filter_position == 'sidebar' %}data-auto-filter cms-filter-sidebar{% endif %}">
+        <form id="CollectionFiltersForm" action="{{ routes.search_url }}" method="get" {% if section.settings.filter_position == 'sidebar' %}data-auto-filter class="cms-filter-sidebar"{% endif %}>
+
+          <input type="hidden" name="q" value="{{ search.terms | escape }}">
+          <input type="hidden" name="options[prefix]" value="last">
 
           {% for filter in search.filters %}
             <div class="cms-filter-group">
@@ -166,6 +169,8 @@
                   </div>
                 </div>
               {%- else -%}
+              <main-collection-section class="cms-main-collection">
+              <div class="page-width">
               <!-- FILTER + SORT ROW -->
               <div class="cms-main-collection-filter-row">
                 {% if section.settings.show_filter and section.settings.filter_position == 'drawer' %}
@@ -212,13 +217,16 @@
                   {% if section.settings.show_sort %}
                     <div class="cms-main-collection-sort">
 
-                      <form id="SortByForm" method="get">
+                      <form id="SortByForm" method="get" action="{{ routes.search_url }}">
+
+                        <input type="hidden" name="q" value="{{ search.terms | escape }}">
+                        <input type="hidden" name="options[prefix]" value="last">
 
                         <input
                           type="hidden"
                           name="sort_by"
                           id="SortByInput"
-                          value="{{ collection.sort_by | default: collection.default_sort_by }}"
+                          value="{{ search.sort_by | default: search.default_sort_by }}"
                         >
 
                         <div class="cms-sort-dropdown js-sort-dropdown">
@@ -234,9 +242,9 @@
                           </div>
 
                           <ul class="cms-sort-options">
-                            {% for option in collection.sort_options %}
+                            {% for option in search.sort_options %}
                               <li
-                                class="cms-sort-option js-sort-option {% if option.value == collection.sort_by %}active{% endif %}"
+                                class="cms-sort-option js-sort-option {% if option.value == search.sort_by %}active{% endif %}"
                                 data-value="{{ option.value }}"
                               >
                                 {{ option.name }}
@@ -270,7 +278,7 @@
 
               </div>
       
-                <div class="template-search__results collection cms-main-collection-grid" id="product-grid" data-id="{{ section.id }}" >
+                <div class="template-search__results collection{% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %} cms-main-collection-grid{% endif %}" id="product-grid" data-id="{{ section.id }}" >
                   {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                     {{ collection_filters }}
                   {% endif %}
@@ -327,6 +335,8 @@
                       {% render 'pagination', paginate: paginate %}
                     {%- endif -%}
                 </div>
+              </div>
+              </main-collection-section>
               {%- endif -%}
             </div>
           </div>
@@ -335,6 +345,8 @@
     </div>
   {% endpaginate %}
 </div>
+
+<script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
