@@ -934,7 +934,7 @@
       "name": "Product Tab",
       "settings": {
         "section_width": "page-width",
-        "background_color": "#FFFFFF",
+        "background_color": "#ffffff",
         "background_gradient": "",
         "gap": "24",
         "content_alignment": "start",
@@ -1023,35 +1023,6 @@
             "delivery_gap_days": 5,
             "set_time_limit": false
           }
-        },
-        "sticky_add_to_cart_kBmdYE": {
-          "type": "sticky_add_to_cart",
-          "settings": {}
-        },
-        "accordion_G7Xy6M": {
-          "type": "accordion",
-          "settings": {
-            "open_by_default": false,
-            "heading": "",
-            "content": ""
-          }
-        },
-        "accordion_EfL7TJ": {
-          "type": "accordion",
-          "settings": {
-            "open_by_default": false,
-            "heading": "",
-            "content": ""
-          }
-        },
-        "recommendations_p9zdcw": {
-          "type": "recommendations",
-          "settings": {
-            "products": [],
-            "show_price": true,
-            "show_vendor": false,
-            "show_add_to_cart": true
-          }
         }
       },
       "block_order": [
@@ -1062,11 +1033,7 @@
         "inventory_dCEf6t",
         "variant_picker_74xmRi",
         "buy_buttons_4yC6dk",
-        "delivery_date_UdXHq6",
-        "sticky_add_to_cart_kBmdYE",
-        "accordion_G7Xy6M",
-        "accordion_EfL7TJ",
-        "recommendations_p9zdcw"
+        "delivery_date_UdXHq6"
       ],
       "name": "Product Section",
       "settings": {
@@ -1164,7 +1131,7 @@
         "button_background_color": "",
         "button_text_color": "",
         "button_outline_color": "",
-        "background_color": "#FFFFFF",
+        "background_color": "#ffffff",
         "background_gradient": "",
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
@@ -1180,10 +1147,15 @@
         "container_width": "small",
         "heading": "Talk about your brand",
         "heading_tag": "h2",
-        "heading_size": "h2",
         "heading_alignment": "inherit",
         "heading_color": "",
         "content_alignment": "center",
+        "text": "",
+        "text_color": "",
+        "phone_number": "",
+        "email_address": "",
+        "icon_background_color": "",
+        "icon_text_color": "",
         "background_color": "",
         "background_gradient": "",
         "custom_spacing": false,
@@ -1261,7 +1233,7 @@
         "show_arrow": true,
         "autoplay": true,
         "autoplay_speed": 5,
-        "background_color": "#FFFFFF",
+        "background_color": "#ffffff",
         "background_gradient": "",
         "subheading_color": "",
         "heading_color": "",

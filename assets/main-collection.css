@@ -11,12 +11,12 @@
     gap: 24px;
 }
 
-.collection-products ul {
+.cms-main-collection-grid ul {
     margin: 0;
     padding: 0;
 }
 
-.collection-products li {
+.cms-main-collection-grid li {
     list-style: none;
 }
 

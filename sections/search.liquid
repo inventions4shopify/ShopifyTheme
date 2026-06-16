@@ -185,13 +185,13 @@
                               {% render 'icon', icon: 'sort', width: 20, height: 20 %}
                               <span>Filter & Sort</span>
                             </h2>
-                            {{ collection.products_count }} Products
+                            {{ search.results_count }} Products
                           </div>
                           <button type="button" class="collection-filter-drawer-close" aria-label="Close menu">
                             {% render 'icon' , icon: 'close' , width: 20, height: 20 %}
                           </button>
                         </div>
-                        
+
                         {{ collection_filters }}
                       </div>
 
@@ -204,7 +204,7 @@
                 <div class="cms-main-collection-filter-right">
                   {% if section.settings.show_total_product %}
                     <span class="cms-main-collection-total-product">
-                      {{ collection.products_count }} Products
+                      {{ search.results_count }} Products
                     </span>
                   {% endif %}
 
@@ -274,8 +274,7 @@
                   {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                     {{ collection_filters }}
                   {% endif %}
-                  <div class="collection-products">
-                    <ul class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
+                    <ul class="{% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}collection-products {% endif %}grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
                       {%- for item in search.results -%}
                         <li class="grid__item" >
                           {%- case item.object_type -%}
@@ -327,7 +326,6 @@
                     {%- if paginate.pages > 1 -%}
                       {% render 'pagination', paginate: paginate %}
                     {%- endif -%}
-                  </div>
                 </div>
               {%- endif -%}
             </div>
