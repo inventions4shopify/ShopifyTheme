@@ -55,6 +55,10 @@
     margin-bottom: var(--spacing-20);
 }
 
+.template-search .cms-main-collection-filter-row {
+    margin-top: var(--spacing-40);
+}
+
 .collection-filter-dropdown summary,
 .cms-main-collection-filter-right,
 .cms-main-collection-view {
