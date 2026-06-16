@@ -101,9 +101,21 @@
         "accordion_2",
         "recommendations"
       ]
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "text_alignment": "start",
+        "products_count": 4,
+        "columns": 4,
+        "container_width": "page-width"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "related-products"
   ]
 }
