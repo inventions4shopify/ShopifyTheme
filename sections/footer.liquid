@@ -264,11 +264,14 @@
 </footer>
 
 <script>
-  document.querySelectorAll('.footer__mobile-toggle').forEach((button) => {
-    button.addEventListener('click', () => {
-      button.parentElement.classList.toggle('active');
+  const footerMobile = document.querySelectorAll('.footer__mobile-toggle');
+  if(footerMobile){  
+    footerMobile.forEach((button) => {
+      button.addEventListener('click', () => {
+        button.parentElement.classList.toggle('active');
+      });
     });
-  });
+  }
 </script>
 
 {% schema %}

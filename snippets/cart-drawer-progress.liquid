@@ -62,7 +62,11 @@
 
     <div class="cart-drawer__progress-milestone cart-drawer__progress-milestone--gift{% if gift_reached %} is-reached{% endif %}">
       <span class="cart-drawer__progress-icon">
-        {% render 'icon', icon: 'gift', width: 18, height: 18 %}
+        {% if gift_reached %}
+          {% render 'icon', icon: 'gift-open', width: 18, height: 18 %}
+        {% else %}
+          {% render 'icon', icon: 'gift', width: 18, height: 18 %}
+        {% endif %}
       </span>
       <span class="cart-drawer__progress-label">{{ 'cart.progress.free_gift' | t }}</span>
     </div>

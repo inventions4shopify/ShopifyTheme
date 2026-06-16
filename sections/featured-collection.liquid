@@ -84,17 +84,19 @@
                 text_alignment: 'start'
               -%}
             </div>
-            <div class="fc__view-all">
-              {% if section.settings.link_text != blank %}
-                {%- render 'button',
-                  text: section.settings.link_text,
-                  href: link_url,
-                  background_color: section.settings.button_background_color,
-                  text_color: section.settings.button_text_color,
-                  outline_color: section.settings.button_outline_color
-                -%}
-              {% endif %}
-            </div>
+            {%- if collection_products.size > 4 -%}
+              <div class="fc__view-all">
+                {% if section.settings.link_text != blank %}
+                  {%- render 'button',
+                    text: section.settings.link_text,
+                    href: link_url,
+                    background_color: section.settings.button_background_color,
+                    text_color: section.settings.button_text_color,
+                    outline_color: section.settings.button_outline_color
+                  -%}
+                {% endif %}
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
 
@@ -118,9 +120,8 @@
             The desktop layout class (fc__grid / fc__editorial) is added so that at
             >=750px the track reverts to that layout. CSS handles the switch.
           {%- endcomment -%}
-          <div
+          <featured-collection-slider
             class="fc__slider fc__slider--{{ slider_mode }} {% if slider_mode == 'mobile' %}fc__slider--desktop-{{ layout }}{% endif %}"
-            data-fc-slider
             data-fc-mode="{{ slider_mode }}"
           >
             <div class="fc__track {% if slider_mode == 'mobile' %}{{ wrapper_class }}{% endif %}" data-fc-track>
@@ -147,7 +148,7 @@
               <button class="collection-grid-prev button" data-fc-prev aria-label="Previous">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
               <button class="collection-grid-next button"  data-fc-next aria-label="Next">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
             </div>
-          </div>
+          </featured-collection-slider>
         {%- else -%}
           <div class="{{ wrapper_class }}">
             {%- if collection != blank and collection_products.size > 0 -%}
@@ -172,100 +173,9 @@
   </div>
 </div>
 
-<script>
-  (function () {
-    var MOBILE_MQ = window.matchMedia('(max-width: 749px)');
-
-    function initSlider(slider) {
-      if (slider.dataset.fcInit) return;
-      slider.dataset.fcInit = 'true';
-
-      var track = slider.querySelector('[data-fc-track]');
-      var prev = slider.querySelector('[data-fc-prev]');
-      var next = slider.querySelector('[data-fc-next]');
-      var arrows = slider.querySelector('[data-fc-arrows]');
-      var mode = slider.dataset.fcMode || 'always'; // 'always' | 'mobile'
-      if (!track) return;
-
-      // Is the slider behavior active right now?
-      function isActive() {
-        if (mode === 'always') return true;
-        return MOBILE_MQ.matches; // mobile-only slider
-      }
-
-      function page() { return track.clientWidth; }
-
-      function updateArrows() {
-        if (!isActive()) {
-          if (arrows) arrows.style.display = 'none';
-          return;
-        }
-        if (arrows) arrows.style.display = '';
-        var max = track.scrollWidth - track.clientWidth - 1;
-        if (prev) prev.disabled = track.scrollLeft <= 1;
-        if (next) next.disabled = track.scrollLeft >= max;
-      }
-
-      if (prev) prev.addEventListener('click', function () {
-        track.scrollBy({ left: -page(), behavior: 'smooth' });
-      });
-      if (next) next.addEventListener('click', function () {
-        track.scrollBy({ left: page(), behavior: 'smooth' });
-      });
-
-      var ticking = false;
-      track.addEventListener('scroll', function () {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(function () { updateArrows(); ticking = false; });
-      });
-
-      // drag to scroll (only meaningful while active)
-      var isDown = false, startX = 0, startScroll = 0;
-      track.addEventListener('mousedown', function (e) {
-        if (!isActive()) return;
-        isDown = true; startX = e.pageX; startScroll = track.scrollLeft;
-        track.style.cursor = 'grabbing';
-      });
-      window.addEventListener('mouseup', function () { isDown = false; track.style.cursor = ''; });
-      track.addEventListener('mousemove', function (e) {
-        if (!isDown) return;
-        e.preventDefault();
-        track.scrollLeft = startScroll - (e.pageX - startX);
-      });
-
-      var rt;
-      window.addEventListener('resize', function () {
-        clearTimeout(rt);
-        rt = setTimeout(function () {
-          // reset scroll when leaving slider mode so grid isn't offset
-          if (!isActive()) track.scrollLeft = 0;
-          updateArrows();
-        }, 150);
-      });
-
-      // React to breakpoint changes for mobile-only sliders
-      if (mode === 'mobile') {
-        var onChange = function () {
-          if (!isActive()) track.scrollLeft = 0;
-          updateArrows();
-        };
-        if (MOBILE_MQ.addEventListener) MOBILE_MQ.addEventListener('change', onChange);
-        else if (MOBILE_MQ.addListener) MOBILE_MQ.addListener(onChange);
-      }
-
-      updateArrows();
-    }
-
-    function initAll() {
-      document.querySelectorAll('[data-fc-slider]').forEach(initSlider);
-    }
-
-    if (document.readyState !== 'loading') initAll();
-    else document.addEventListener('DOMContentLoaded', initAll);
-    document.addEventListener('shopify:section:load', initAll);
-  })();
-</script>
+{%- if use_slider_markup -%}
+  <script src="{{ 'featured-collection.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {% schema %}
 {

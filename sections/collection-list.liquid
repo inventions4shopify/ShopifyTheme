@@ -1,29 +1,6 @@
 {{ 'collection-list.css' | asset_url | stylesheet_tag }}
 
 <style>
-  .collection-grid.columns-4.is-slider.collection-mobile-grid-2 .collection-card,
-  .collection-grid.columns-3.is-slider.collection-mobile-grid-2 .collection-card,
-  .collection-grid.columns-2.is-slider.collection-mobile-grid-2 .collection-card,
-  .collection-grid.columns-1.is-slider.collection-mobile-grid-2 .collection-card {
-    flex: 0 0 calc((100% - 2rem) / {{ section.settings.mobile_column_count }});
-    flex-shrink:0;
-  }
-
-  .collection-grid.columns-4.is-slider .collection-card,
-  .collection-grid.columns-3.is-slider .collection-card,
-  .collection-grid.columns-2.is-slider .collection-card,
-  .collection-grid.columns-1.is-slider .collection-card {
-    flex: 0 0 calc((100% - 0rem) / {{ section.settings.mobile_column_count }});
-    flex-shrink:0;
-  }
-  
-  .collection-grid.is-grid.columns-4,
-  .collection-grid.is-grid.columns-3,
-  .collection-grid.is-grid.columns-2,
-  .collection-grid.is-grid.columns-1 {
-    grid-template-columns: repeat({{ section.settings.mobile_column_count }}, 1fr);
-  }
-
   .section-{{ section.id }} .collection-card {
     background-color:
       {% if section.settings.card_bg_color != blank or section.settings.card_bg_color != 'rgba(0,0,0,0)' %}
@@ -62,16 +39,20 @@
 
 <div {%- render 'section-variables', section: section, class: 'collection-list__section' -%}>
   <div class="{{ container_class }}">
-    <div class="collection-list-header {{ align_class }}">
+    <div class="collection-list-header 123 {{ align_class }}">
       {%- render 'section-header',
         subheading:    section.settings.subheading,
         heading:       section.settings.heading,
         content:       section.settings.description,
-        text_alignment: 'center'
+        text_alignment: align_value
       -%}
     </div>
-    <div class="collection-wrapper-main section-{{ section.id }}">
-      <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid{% endif %} collection-mobile-grid-{{ section.settings.mobile_column_count }}" data-autoplay="{{ section.settings.autoplay }}" data-autoplay-speed="{{ section.settings.autoplay_speed }}">
+    <collection-list-section
+      class="collection-wrapper-main section-{{ section.id }}"
+      data-autoplay="{{ section.settings.autoplay }}"
+      data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+    >
+      <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid grid--{{ section.settings.mobile_column_count }}-col md:grid--3-col lg:grid--4-col{% endif %}">
         {% for block in section.blocks %}
           {% assign collection = block.settings.collection %}
             {% assign collection_image = collection.featured_image %}
@@ -116,9 +97,11 @@
               {%- assign align_value = s.collection_heading_alignment | default: 'center' -%}
               {%- assign align_class = 'text-' | append: align_value -%}
               <div class="collection-card__content {{ align_class }} justify-{{align_value}}">
-                <h3 class="collection__heading h5">
-                  {{ collection.title | escape }}
-                </h3>
+                {%- if collection.title -%}
+                  <h3 class="collection__heading h5">
+                    {{ collection.title | escape }}
+                  </h3>
+                {%- endif -%}
                 {%if s.collection_heading_alignment == 'start' %}
                   <span>
                     {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
@@ -136,104 +119,11 @@
           </div>
         {% endif %}
       {% endif %}
-    </div>
+    </collection-list-section>
   </div>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-
-    document.querySelectorAll('.collection-grid.is-slider').forEach((slider) => {
-
-      const section = slider.closest('.shopify-section');
-
-      const nextBtn = section?.querySelector('.collection-grid-next');
-      const prevBtn = section?.querySelector('.collection-grid-prev');
-
-      const autoplayEnabled = slider.dataset.autoplay === 'true';
-      const autoplaySpeed = (parseInt(slider.dataset.autoplaySpeed) || 5) * 1000;
-
-      const slides = [...slider.querySelectorAll('.collection-card')];
-
-      if (!slides.length) return;
-
-      // Clone slides
-      slides.forEach(slide => {
-        const clone = slide.cloneNode(true);
-        clone.classList.add('clone');
-        slider.appendChild(clone);
-      });
-
-      let currentIndex = 0;
-      const originalCount = slides.length;
-
-      const getScrollAmount = () => {
-        const card = slider.querySelector('.collection-card');
-        return card ? card.offsetWidth + 20 : 300;
-      };
-
-      function goToSlide(index, smooth = true) {
-        slider.scrollTo({
-          left: index * getScrollAmount(),
-          behavior: smooth ? 'smooth' : 'auto'
-        });
-      }
-
-      nextBtn?.addEventListener('click', () => {
-        currentIndex++;
-        goToSlide(currentIndex);
-      });
-
-      prevBtn?.addEventListener('click', () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          goToSlide(currentIndex);
-        }
-      });
-
-      slider.addEventListener('scroll', () => {
-        if (
-          currentIndex >= originalCount &&
-          slider.scrollLeft >= originalCount * getScrollAmount() - 5
-        ) {
-          setTimeout(() => {
-            currentIndex = 0;
-            goToSlide(0, false);
-          }, 400);
-        }
-      });
-
-      let autoSlide;
-
-      function startAutoplay() {
-        if (!autoplayEnabled) return;
-
-        stopAutoplay();
-
-        autoSlide = setInterval(() => {
-          currentIndex++;
-          goToSlide(currentIndex);
-        }, autoplaySpeed);
-      }
-
-      function stopAutoplay() {
-        clearInterval(autoSlide);
-      }
-
-      if (autoplayEnabled) {
-        startAutoplay();
-
-        slider.addEventListener('mouseenter', stopAutoplay);
-        slider.addEventListener('mouseleave', startAutoplay);
-
-        slider.addEventListener('touchstart', stopAutoplay, { passive: true });
-        slider.addEventListener('touchend', startAutoplay, { passive: true });
-      }
-
-    });
-
-  });
-</script>
+<script src="{{ 'collection-list.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

@@ -1,0 +1,150 @@
+.article-header {
+    display: flex;
+    flex-direction: column;
+    padding: 2.4rem 0;
+}
+
+/* Back button alignment */
+.article-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+}
+
+.article-meta {
+    display: flex;
+    opacity: 0.7;
+}
+
+.article-content,
+.article-content p,
+.article-content span,
+.article-content ul,
+.article-content ol,
+.article-content li,
+.article-content table,
+.article-content td,
+.article-content th,
+.article-content tr {
+    font-size: var(--text-sm);
+}
+.article-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.article-back-btn__icon {
+    width: 3.8rem;
+    height: 3.8rem;
+    border: 0.1rem solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.article-category {
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: var(--spacing-10);
+}
+
+.article-meta {
+    display: flex;
+    gap: var(--spacing-32);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-40);
+}
+
+.article-featured-image {
+    margin-bottom: 5rem;
+}
+
+.article-featured-image img,
+.article-content img {
+    width: 100%;
+    display: block;
+    height: 50rem;
+}
+
+.article-content img {
+    width: 100%;
+    display: block;
+    margin: var(--spacing-40) 0;
+}
+
+.article-content a {
+    text-decoration-thickness: var(--spacing-2);
+    text-underline-offset: var(--spacing-4);
+}
+
+.article-content ul,
+.article-content ol {
+    padding-left: 2.5rem;
+    margin: 2.5rem 0;
+}
+
+.article-content blockquote {
+    padding: var(--spacing-20) 3rem;
+    margin: var(--spacing-40) 0;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-40) 0;
+}
+
+.article-content th,
+.article-content td {
+    padding: var(--spacing-16);
+    border: 0.1rem solid;
+    text-align: center;
+}
+
+.article-comments {
+    margin-top: var(--spacing-60);
+}
+
+.article-comment {
+    padding: var(--spacing-20) 0;
+    border-bottom: 0.1rem solid;
+}
+
+.article-comments input,
+.article-comments textarea {
+    width: 100%;
+    padding: var(--spacing-12);
+    margin-bottom: 1.5rem;
+}
+
+.article-comments button {
+    padding: var(--spacing-12) var(--spacing-24);
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+.article-template {
+    padding: var(--spacing-40) 0;
+}
+
+.article-back-btn {
+    margin-bottom: 3rem;
+}
+
+.article-meta {
+    gap: var(--spacing-16);
+}
+
+.article-featured-image {
+    margin-bottom: 3rem;
+}
+.article-header {
+    padding: var(--spacing-12) 0 var(--spacing-24);
+}
+}

@@ -4,6 +4,8 @@
 }
 .error-page-section {
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 .\34 04-main-section {
   position: relative;
@@ -29,16 +31,37 @@
   {% if section.settings.show_media %}<div class="404-main-section flex" style="min-height: var(--section-height-{{ section.settings.height }});">{% endif %}
     {% if section.settings.show_media %}
       <picture>
-        <source
-          media="(max-width: 767px)"
-          srcset="{% if section.settings.image_2 %}{{ section.settings.image_2 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
-        >
-        <img
-          src="{% if section.settings.image_1 %}{{ section.settings.image_1 | img_url: 'master' }}{% else %}{{ 'thumbnail.svg' | asset_url }}{% endif %}"
-          alt="{{ section.settings.heading | escape }}"
-          width="auto"
-          height="auto"
-        />
+        {% if section.settings.image_2 %}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ section.settings.image_2 | image_url: width: 767 }}"
+          >
+        {% endif %}
+
+        {% if section.settings.image_1 %}
+          <img
+            src="{{ section.settings.image_1 | image_url: width: 1440 }}"
+            srcset="
+              {{ section.settings.image_1 | image_url: width: 550 }} 550w,
+              {{ section.settings.image_1 | image_url: width: 750 }} 750w,
+              {{ section.settings.image_1 | image_url: width: 1100 }} 1100w,
+              {{ section.settings.image_1 | image_url: width: 1440 }} 1440w
+            "
+            sizes="100vw"
+            alt="{{ section.settings.heading | escape }}"
+            loading="lazy"
+            width="{{ section.settings.image_1.width }}"
+            height="{{ section.settings.image_1.height }}"
+          >
+        {% else %}
+          <img
+            src="{{ 'thumbnail.svg' | asset_url }}"
+            alt="{{ section.settings.heading | escape }}"
+            loading="lazy"
+            width="1440"
+            height="600"
+          >
+        {% endif %}
       </picture>
       <div class="media-overlay" style="background:{{ section.settings.overlay_color | default: 'rgba(0, 0, 0, 0.5)' }};"></div>
     {% endif %}

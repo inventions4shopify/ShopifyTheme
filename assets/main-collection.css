@@ -3,6 +3,10 @@
     gap: 24px;
 }
 
+.cms-main-collection {
+    display: block;
+}
+
 .main-page__section {
     position: relative;
     overflow: hidden;
@@ -71,21 +75,27 @@
 }
 
 .cms-main-collection-grid .cms-collection-sidebar {
-    width: calc(25% - var(--grid-spacing));
-    max-width: calc(25% - var(--grid-spacing));
-    flex: 0 0 calc(25% - var(--grid-spacing));
+    width: calc(20% - var(--grid-spacing));
+    max-width: calc(20% - var(--grid-spacing));
+    flex: 0 0 calc(20% - var(--grid-spacing));
 }
 
 .cms-main-collection-grid .collection-products {
-    width: 75%;
-    max-width: 75%;
-    flex: 0 0 75%;
+    width: 80%;
+    max-width: 80%;
+    flex: 0 0 80%;
 }
 
 .cms-filter-sidebar {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-10);
+}
+
+.price-range {
+    display: flex;
+    gap: var(--spacing-10);
+    margin: var(--spacing-10) 0 0 0;
 }
 
 .cms-filter-accordion-title {
@@ -141,9 +151,19 @@
 }
 
 .cms-filter-option {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-10);
     margin: var(--spacing-10) 0;
 }
+
+.cms-filter-option input {
+    width: var(--spacing-20);
+    height: var(--spacing-20);
+    min-width: var(--spacing-20);
+    min-height: var(--spacing-20);
+}
+
 .cms-filter-option:last-child {
     margin-bottom: 0;
 }

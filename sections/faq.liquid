@@ -119,7 +119,7 @@
                 </div>
             {% endif %}
             <div class="cms-cell justify-{{ section.settings.faq_alignment }}">
-                <div class="cms-faq-wrapper">
+                <faq-section class="cms-faq-wrapper">
                     {% for block in section.blocks %}
                       {% if block.settings.heading != blank %}
                         <div class="cms-faq-item" {{ block.shopify_attributes }}>
@@ -137,58 +137,14 @@
                         </div>
                       {% endif %}
                     {% endfor %}
-                </div>
+                </faq-section>
             </div>
         </div>
     </div>
   </div>
 </div>
 
-<script>
-  function initFaq(container = document) {
-
-    const faqItems = container.querySelectorAll('.cms-faq-item');
-
-    faqItems.forEach((item) => {
-
-      // Duplicate event binding અટકાવવા
-      if (item.dataset.faqInitialized) return;
-
-      item.dataset.faqInitialized = "true";
-
-      const question = item.querySelector('.cms-faq-question');
-
-      if (!question) return;
-
-      question.addEventListener('click', () => {
-
-        const wrapper = item.closest('.cms-faq-wrapper');
-        const wrapperFaqs = wrapper.querySelectorAll('.cms-faq-item');
-
-        const isActive = item.classList.contains('active');
-
-        wrapperFaqs.forEach((faq) => {
-          faq.classList.remove('active');
-        });
-
-        if (!isActive) {
-          item.classList.add('active');
-        }
-
-      });
-
-    });
-
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    initFaq();
-  });
-
-  document.addEventListener('shopify:section:load', (event) => {
-    initFaq(event.target);
-  });
-</script>
+<script src="{{ 'faq.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

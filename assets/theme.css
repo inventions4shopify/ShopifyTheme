@@ -28,6 +28,11 @@ body {
   background-color: rgb(var(--color-background));
 }
 
+.header {
+  position: relative;
+  z-index: 30;
+}
+
 *,
 ::after,
 ::before {
@@ -182,6 +187,8 @@ ol {
 }
 
 .section {
+  position: relative;
+  overflow: hidden;
   background: var(--section-background, transparent);
 }
 
@@ -343,7 +350,36 @@ select {
   border-color: var(--input-border-color);
   background: var(--input-background);
   color: var(--input-text-color);
-  padding: var(--spacing-4) var(--spacing-6);
+  padding: var(--spacing-6);
+  width: 100%;
+  height: 4.5rem;
+  min-height: calc(var(--input-border-width) * 2);
+  min-width: calc(7rem + (var(--input-border-width) * 2));
+}
+
+.field__label, .customer .field label {
+  font-size: var(--text-base);
+  left: calc(var(--input-border-width) + var(--spacing-20));
+  top: calc(var(--spacing-10) + var(--input-border-width));
+  margin-bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: all 0.25s ease;
+}
+
+.with-icon-right .field__input {
+  padding-right: 5rem;
+}
+
+.with-icon-left .field__input {
+  padding-left: 5rem;
+}
+
+.field__input:focus ~ .field__label, .field__input:-webkit-autofill ~ .field__label, .customer .field input:focus ~ label, .customer .field input:-webkit-autofill ~ label {
+  font-size: 1rem;
+  top: calc(var(--input-border-width) + 0.5rem);
+  left: calc(var(--input-border-width) + var(--spacing-20));
+  letter-spacing: 0;
 }
 
 input:disabled {
@@ -1312,22 +1348,26 @@ canvas {
   width: 100%;
   display: flex;
   transition: box-shadow var(--duration-short) ease;
+  flex-direction: column;
+  gap: var(--grid-spacing-mobile);
 }
 .field__button {
-  align-items: center;
   background-color: transparent;
   border: 0;
   color: currentColor;
   cursor: pointer;
   display: flex;
-  height: 3.6rem;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  height: 3.6rem;
   overflow: hidden;
   padding: 0;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 1rem;
+  top: 50%;
   width: 3.6rem;
+  transform: translateY(-50%);
 }
 
 @keyframes ping {

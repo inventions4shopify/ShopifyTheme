@@ -4,6 +4,11 @@
 %}
 
 <style>
+  #shopify-section-{{ section.id }} newsletter-popup-section {
+    display: block;
+    position: relative;
+  }
+
   #shopify-section-{{ section.id }} {
     position: relative;
   }
@@ -155,7 +160,14 @@
     }
   }
 </style>
-<div {% render 'section-variables' %}>
+<newsletter-popup-section
+  {% render 'section-variables' %}
+  data-section-id="{{ section.id }}"
+  data-show-once="{{ section.settings.show_once }}"
+  data-trigger-type="{{ section.settings.trigger_type }}"
+  data-delay="{{ popup_delay | times: 1000 }}"
+  data-scroll-percentage="{{ scroll_percentage }}"
+>
   {% liquid
     assign sub_color = section.settings.subheading_color
     assign head_color = section.settings.heading_color
@@ -168,15 +180,17 @@
     endif
   %}
 
-  <div class="newsletter-popup-overlay-{{ section.id }}"></div>
+  <div class="newsletter-popup-overlay-{{ section.id }}" data-newsletter-overlay></div>
 
   <div
     class="newsletter-popup-{{ section.id }}"
+    data-newsletter-popup
     style="background-color: {{ background_color | strip }}"
   >
     <button
       type="button"
       class="newsletter-close-{{ section.id }}"
+      data-newsletter-close
       aria-label="Close popup"
     >
       &times;
@@ -271,96 +285,9 @@
       </div>
     </div>
   </div>
-</div>
+</newsletter-popup-section>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-
-    const popup = document.querySelector('.newsletter-popup-{{ section.id }}');
-    const overlay = document.querySelector('.newsletter-popup-overlay-{{ section.id }}');
-    const closeBtn = document.querySelector('.newsletter-close-{{ section.id }}');
-
-    const showOnce = {{ section.settings.show_once | json }};
-    const sessionKey = 'newsletter-popup-{{ section.id }}';
-
-    function shouldShow() {
-      if (!showOnce) return true;
-      return !sessionStorage.getItem(sessionKey);
-    }
-
-    function markShown() {
-      if (showOnce) {
-        sessionStorage.setItem(sessionKey, 'true');
-      }
-    }
-
-    function openPopup() {
-      if (shouldShow()) {
-        popup.classList.add('active');
-        overlay.classList.add('active');
-        markShown();
-      }
-    }
-
-    function closePopup() {
-      popup.classList.remove('active');
-      overlay.classList.remove('active');
-    }
-
-    if (closeBtn) {
-      closeBtn.addEventListener('click', closePopup);
-    }
-
-    if (overlay) {
-      overlay.addEventListener('click', closePopup);
-    }
-
-    {% if section.settings.trigger_type == 'delay' %}
-
-      setTimeout(function() {
-        openPopup();
-      }, {{ popup_delay | times: 1000 }});
-
-    {% endif %}
-
-    {% if section.settings.trigger_type == 'scroll' %}
-
-      let popupOpened = false;
-
-      window.addEventListener('scroll', function() {
-
-        if (popupOpened) return;
-
-        const scrollTop = window.scrollY;
-        const docHeight = document.body.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-
-        if (scrollPercent >= {{ scroll_percentage }}) {
-          openPopup();
-          popupOpened = true;
-        }
-      });
-
-    {% endif %}
-
-    {% if section.settings.trigger_type == 'exit' %}
-
-      let exitShown = false;
-
-      document.addEventListener('mouseleave', function(e) {
-
-        if (exitShown) return;
-
-        if (e.clientY <= 0) {
-          openPopup();
-          exitShown = true;
-        }
-      });
-
-    {% endif %}
-
-  });
-</script>
+<script src="{{ 'newsletter-popup.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

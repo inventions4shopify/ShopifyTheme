@@ -2,6 +2,7 @@
 <style>
   .announcement-bar {
     background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
     padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px 0;
   }
 
@@ -18,11 +19,19 @@
 
 {% render 'variables', section: section %}
 {% if section.blocks.size > 0 %}
-  <announcement-bar class="announcement-bar bg-custom text-large" id="announcementBar">
+  <announcement-bar
+    class="announcement-bar bg-custom text-large"
+    {% if section.settings.type == 'arrows' %}
+      data-auto-rotate="{{ section.settings.auto_rotated }}"
+      data-timing="{{ section.settings.timing }}"
+    {% endif %}
+  >
     <div class="page-width rte">
       {% if section.settings.type == 'arrows' %}
         <div class="announcement-slider">
-          <button class="announcement-arrow prev">&#10094;</button>
+          <button class="announcement-arrow prev">
+            {% render 'icon', icon: 'chevron-left', width: '2rem', height: '2rem' %}
+          </button>
 
           <div class="announcement-slides">
             {% for block in section.blocks %}
@@ -38,7 +47,9 @@
             {% endfor %}
           </div>
 
-          <button class="announcement-arrow next">&#10095;</button>
+          <button class="announcement-arrow next">
+            {% render 'icon', icon: 'chevron-right', width: '2rem', height: '2rem' %}
+          </button>
         </div>
 
       {% else %}
@@ -73,186 +84,7 @@
   </announcement-bar>
 {% endif %}
 {% if section.settings.type == 'arrows' %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-      const slider = document.querySelector('#announcementBar .announcement-slides');
-      let slides = document.querySelectorAll('#announcementBar .announcement-slide');
-      const nextBtn = document.querySelector('#announcementBar .announcement-arrow.next');
-      const prevBtn = document.querySelector('#announcementBar .announcement-arrow.prev');
-
-      if (!slider || slides.length === 0) return;
-
-      /* Infinite Clone */
-      const firstClone = slides[0].cloneNode(true);
-      const lastClone = slides[slides.length - 1].cloneNode(true);
-
-      slider.appendChild(firstClone);
-      slider.insertBefore(lastClone, slides[0]);
-
-      slides = document.querySelectorAll('#announcementBar .announcement-slide');
-
-      let currentSlide = 1;
-      const totalSlides = slides.length;
-
-      let isAnimating = false;
-
-      slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-
-      /* Update Slider */
-      function updateSlider(withTransition = true) {
-
-        if (withTransition) {
-          isAnimating = true;
-        }
-
-        slider.style.transition = withTransition
-          ? 'transform 0.5s ease'
-          : 'none';
-
-        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-      }
-
-      /* Arrow Navigation */
-      nextBtn.addEventListener('click', function () {
-
-        if (isAnimating) return;
-
-        currentSlide++;
-        updateSlider();
-
-      });
-
-      prevBtn.addEventListener('click', function () {
-
-        if (isAnimating) return;
-
-        currentSlide--;
-        updateSlider();
-
-      });
-
-      /* Infinite Loop Fix */
-      slider.addEventListener('transitionend', function () {
-
-        if (slides[currentSlide] === firstClone) {
-
-          currentSlide = 1;
-          updateSlider(false);
-
-        }
-
-        if (slides[currentSlide] === lastClone) {
-
-          currentSlide = totalSlides - 2;
-          updateSlider(false);
-
-        }
-
-        isAnimating = false;
-
-      });
-
-      /* =========================
-         TOUCH & DRAG SUPPORT
-      ========================== */
-
-      let startX = 0;
-      let currentTranslate = 0;
-      let isDragging = false;
-
-      function getPositionX(event) {
-
-        if (event.type.includes('mouse')) {
-          return event.pageX;
-        }
-
-        if (event.touches && event.touches.length > 0) {
-          return event.touches[0].clientX;
-        }
-
-        if (event.changedTouches && event.changedTouches.length > 0) {
-          return event.changedTouches[0].clientX;
-        }
-
-        return 0;
-      }
-
-      function dragStart(event) {
-
-        if (isAnimating) return;
-
-        isDragging = true;
-
-        startX = getPositionX(event);
-
-        slider.classList.add('dragging');
-
-        currentTranslate = -currentSlide * slider.offsetWidth;
-      }
-
-      function dragMove(event) {
-
-        if (!isDragging) return;
-
-        const currentPosition = getPositionX(event);
-        const diff = currentPosition - startX;
-
-        slider.style.transition = 'none';
-
-        slider.style.transform =
-          `translateX(${currentTranslate + diff}px)`;
-      }
-
-      function dragEnd(event) {
-
-        if (!isDragging) return;
-
-        isDragging = false;
-
-        slider.classList.remove('dragging');
-
-        const endPosition = getPositionX(event);
-        const diff = endPosition - startX;
-
-        if (Math.abs(diff) > 50) {
-
-          if (diff < 0) {
-            currentSlide++;
-          } else {
-            currentSlide--;
-          }
-
-        }
-
-        updateSlider();
-      }
-
-      /* Touch Events */
-      slider.addEventListener('touchstart', dragStart, { passive: true });
-      slider.addEventListener('touchmove', dragMove, { passive: true });
-      slider.addEventListener('touchend', dragEnd);
-
-      /* Mouse Events */
-      slider.addEventListener('mousedown', dragStart);
-      slider.addEventListener('mousemove', dragMove);
-      slider.addEventListener('mouseup', dragEnd);
-      slider.addEventListener('mouseleave', dragEnd);
-
-      /* Auto Rotate */
-      {% if section.settings.auto_rotated %}
-        setInterval(function () {
-
-          if (isAnimating || isDragging) return;
-
-          currentSlide++;
-          updateSlider();
-
-        }, {{ section.settings.timing }}000);
-      {% endif %}
-
-    });
-  </script>
+  <script src="{{ 'announcement-bar.js' | asset_url }}" defer="defer"></script>
 {% endif %}
 
 {% schema %}

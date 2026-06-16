@@ -1,3 +1,7 @@
+featured-collection-slider {
+  display: block;
+}
+
 .featured-collection .fc__header {
   display: flex;
   align-items: flex-end;

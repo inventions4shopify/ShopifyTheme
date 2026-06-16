@@ -7,11 +7,26 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "main": {
       "type": "404",
-      "settings": {}
+      "settings": {
+        "desktop_content_position": "center",
+        "heading_color": "#FFFFFF",
+        "heading_gradient": "",
+        "show_media": true,
+        "image_1": "shopify://shop_images/cloudy-sky-from-above.jpg",
+        "image_2": "shopify://shop_images/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
+        "toggle_overlay": true,
+        "overlay_color": "#00000038",
+        "height": "large",
+        "custom_spacing": true,
+        "section_spacing_top_desktop": 0,
+        "section_spacing_bottom_desktop": 0,
+        "section_spacing_top_mobile": 0,
+        "section_spacing_bottom_mobile": 0
+      }
     }
   },
   "order": [

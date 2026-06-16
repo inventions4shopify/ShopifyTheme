@@ -6,6 +6,7 @@
 }
 
 .before-after-container-inner {
+  display: block;
   position: relative;
 }
 
@@ -57,6 +58,10 @@
   justify-content: center;
   box-shadow: 0 0.5rem 2rem rgba(0,0,0,.15);
   pointer-events: none;
+}
+
+.divider-handle img {
+  border-radius: var(--radius-full);
 }
 
 .divider-handle span {
