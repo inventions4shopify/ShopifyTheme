@@ -261,7 +261,7 @@
                   {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                     {{ collection_filters }}
                   {% endif %}
-                  <ul class="grid product-grid grid--2-col sm:grid--3-col lg:grid--4-col collection-products">
+                  <ul class="grid grid--2-col sm:grid--3-col lg:grid--4-col collection-products">
                     {%- for item in search.results -%}
                       <li class="grid__item" >
                         {%- case item.object_type -%}
