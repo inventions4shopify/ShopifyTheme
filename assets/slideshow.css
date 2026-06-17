@@ -205,7 +205,7 @@ slideshow-section {
   content: "";
   width: calc(100% - 8px);
   height: calc(100% - 8px);
-  background: #000;
+  background: var(--black);
   border-radius: 50%;
   position: absolute;
 }

@@ -111,7 +111,7 @@ localization-form h2{
 }
 
 .localization-selector option {
-  color: #000000;
+  color: var(--black);
 }
 
 .localization-selector + .disclosure__list-wrapper {
