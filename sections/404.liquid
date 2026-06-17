@@ -68,6 +68,7 @@
     <div class="error-page-section text-{{ section.settings.desktop_content_position }}">
       {%- assign head_color = section.settings.heading_color -%}
       {%- assign head_grad = section.settings.heading_gradient -%}
+
       {%- capture heading_style -%}
         {%- if head_grad != blank -%}
           background: {{ head_grad }};
@@ -78,8 +79,23 @@
           --color-heading: {{ head_color.rgb }};
         {%- endif -%}
       {%- endcapture -%}
-      <h1 class="section-header__heading h2">{{ '404.title' | t }}</h1>
-      <h2 class="h4 sub-title">{{ '404.not_found' | t }}</h2>
+
+      <h1 
+        class="section-header__heading h2"
+        {%- unless heading_style == blank %}
+          style="{{ heading_style | strip }}"
+        {%- endunless %}
+      >
+        {{ '404.title' | t }}
+      </h1>
+      <h2
+        class="h4 sub-title"
+        {%- unless heading_style == blank %}
+          style="{{ heading_style | strip }}"
+        {%- endunless %}
+      >
+        {{ '404.not_found' | t }}
+      </h2>
       <a href="{{ routes.all_products_collection_url }}" class="button ">{{ '404.back_to_shopping' | t }}</a>
     </div>
   {% if section.settings.show_media %}</div>{% endif %}

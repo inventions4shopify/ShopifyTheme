@@ -69,13 +69,14 @@
                 {% endif %}
                 {% if block.settings.media_type == 'image' %}
                   <span class="icon-wrapper" style="height: {{ thumb_height }}px;">
-                      <img 
-                      src="{{ block.settings.icon | img_url: 'master' }}" 
-                      alt="{{ block.settings.title }}"
-                      class="icon-image"
-                      width="auto"
-                      height="auto"
-                      >
+                      {{
+                        block.settings.icon
+                        | image_url: width: 500
+                        | image_tag:
+                          alt: block.settings.title,
+                          class: 'icon-image',
+                          loading: 'lazy'
+                      }}
                   </span>
                 {% endif %}
 

@@ -82,12 +82,14 @@
   <div class="sticky_add_to_cart_inner">
     <div class="sticky_add_to_cart_product">
       <div class="sticky_add_to_cart_image">
-        <img
-          src="{{ product.featured_image | image_url: width: 120 }}"
-          alt="{{ product.title }}"
-          loading="lazy"
-          data-sticky-image
-        >
+        {{
+          product.featured_image
+          | image_url: width: 120
+          | image_tag:
+            alt: product.title,
+            loading: 'lazy',
+            widths: '120'
+        }}
       </div>
 
       <div class="sticky_add_to_cart_content">

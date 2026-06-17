@@ -70,14 +70,16 @@
     {% assign delivery_date = delivery_timestamp | date: '%A, %d %b %Y' %}
     <div class="csm_date_delivery">
         <span class="delivery_date_icon">
-        {%- if block.settings.image != blank %}
-        <img
-        src="{{ block.settings.image | img_url: "" }}"
-        alt="{{ block.settings.image.alt }}"
-        loading="lazy"
-        class=""
-        >
-        {% endif -%}
+        {%- if block.settings.image != blank -%}
+            {{
+                block.settings.image
+                | image_url: width: 40
+                | image_tag:
+                alt: block.settings.image.alt,
+                loading: 'lazy',
+                class: ''
+            }}
+        {%- endif -%}
         </span>
         
         <span class="get_it_by">Get It By {{ delivery_date }}
