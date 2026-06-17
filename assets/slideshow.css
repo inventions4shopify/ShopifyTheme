@@ -164,6 +164,7 @@ slideshow-section {
 
 .cms-slideshow-pagination li {
     list-style: none;
+    padding: 1rem;
 }
 
 .cms-slideshow-pagination button {

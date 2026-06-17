@@ -112,9 +112,9 @@
   flex-wrap: wrap;
   flex-direction: column; }
 .footer__bottom-right { display: flex; align-items: center; gap: var(--spacing-16); flex-wrap: wrap; }
-.footer__copyright {opacity: 0.5; margin: 0; }
+.footer__copyright { margin: 0; }
 .footer__bottom-nav { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--spacing-16); flex-wrap: wrap; }
-.footer__bottom-link {text-decoration: none; opacity: 0.55; transition: opacity 0.15s; }
+.footer__bottom-link {text-decoration: none; transition: opacity 0.15s; }
 
 
 /* Localization selects */

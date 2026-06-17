@@ -1,6 +1,6 @@
 {{ 'main-product.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
-{{ 'product-image-gallery.js' | asset_url | script_tag }}
+<script src="{{ 'product-image-gallery.js' | asset_url }}" defer></script>
 
 {%- liquid
   assign current_product = product
@@ -660,5 +660,4 @@
 }
 {% endschema %}
 
-
-{{ 'product-block.js' | asset_url | script_tag }}
+<script src="{{ 'product-block.js' | asset_url }}" async></script>
