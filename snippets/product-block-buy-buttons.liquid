@@ -1,5 +1,3 @@
-{{ 'product-block-buy-buttons.css' | asset_url | stylesheet_tag }}
-
 {%- liquid
   assign buy_show_quantity_selector = qv_show_quantity_selector | default: block.settings.show_quantity_selector
   assign buy_show_dynamic_checkout = qv_show_dynamic_checkout | default: block.settings.show_dynamic_checkout
