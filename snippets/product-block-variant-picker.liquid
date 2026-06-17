@@ -145,55 +145,55 @@
 
         {% when 'dropdown' %}
           <div class="variant_picker_dropdown">
-            <div class="variant_picker_dropdown">
-              <button
-                type="button"
-                class="variant_picker_dropdown_trigger"
-                data-dropdown-trigger
+            <button
+              type="button"
+              class="variant_picker_dropdown_trigger"
+              data-dropdown-trigger
+            >
+              <span
+                class="variant_picker_dropdown_selected"
+                data-dropdown-selected
               >
-                <span
-                  class="variant_picker_dropdown_selected"
-                  data-dropdown-selected
+                {{ option.selected_value }}
+              </span>
+
+              <span class="variant_picker_dropdown_icon">
+                {% render 'icon', icon: 'chevron-bottom', width: 16, height: 16 %}
+              </span>
+            </button>
+
+            <div
+              class="variant_picker_dropdown_list"
+              data-dropdown-list
+            >
+              {% for value in option.values %}
+                <button
+                  type="button"
+                  class="variant_picker_dropdown_option"
+                  data-option-value="{{ value | escape }}"
                 >
-                  {{ option.selected_value }}
-                </span>
+                  {% if picker_show_dropdown_swatches and is_color_option %}
+                    <span
+                      class="variant_picker_dropdown_swatch"
+                      {% if value.swatch.color %}
+                        style="background-color: {{ value.swatch.color }};"
+                      {% endif %}
+                    ></span>
+                  {% endif %}
 
-                {% render 'icon', icon: 'chevron-down', width: 16, height: 16 %}
-              </button>
-
-              <div
-                class="variant_picker_dropdown_list"
-                data-dropdown-list
-              >
-                {% for value in option.values %}
-                  <button
-                    type="button"
-                    class="variant_picker_dropdown_option"
-                    data-option-value="{{ value | escape }}"
-                  >
-                    {% if picker_show_dropdown_swatches and is_color_option %}
-                      <span
-                        class="variant_picker_dropdown_swatch"
-                        {% if value.swatch.color %}
-                          style="background-color: {{ value.swatch.color }};"
-                        {% endif %}
-                      ></span>
-                    {% endif %}
-
-                    <span>
-                      {{ value }}
-                    </span>
-                  </button>
-                {% endfor %}
-              </div>
-
-              <input
-                type="hidden"
-                name="option-{{ option.position }}"
-                value="{{ option.selected_value | escape }}"
-                data-dropdown-input
-              >
+                  <span>
+                    {{ value }}
+                  </span>
+                </button>
+              {% endfor %}
             </div>
+
+            <input
+              type="hidden"
+              name="option-{{ option.position }}"
+              value="{{ option.selected_value | escape }}"
+              data-dropdown-input
+            >
           </div>
       {% endcase %}
     </div>

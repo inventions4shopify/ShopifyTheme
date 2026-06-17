@@ -23,9 +23,15 @@ body {
   font-weight: var(--font-body-weight);
   font-size: var(--text-base);
   letter-spacing: var(--body-letter-spacing);
-  line-height: normal;
+  line-height: 1.5;
   color: rgb(var(--color-body-text));
   background-color: rgb(var(--color-background));
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 1.6rem;
+  }
 }
 
 .header {

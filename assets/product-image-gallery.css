@@ -29,6 +29,7 @@
 @media (min-width: 768px) {
     .product-info-wrapper {
         width: 1%;
+        margin-top: 4rem;
     }
 }
 
