@@ -63,3 +63,8 @@
 .cms-faq-item.active .cms-faq-icon {
   transform:rotate(180deg);
 }
+
+.cms-faq-item {
+    position: relative;
+    overflow: hidden;
+}

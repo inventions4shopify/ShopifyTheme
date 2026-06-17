@@ -36,6 +36,11 @@
     "secondary_button_outline_color": "#4a3230",
     "product_card_background_color": "#fee7d5",
     "product_card_text_color": "#4a3230",
+    "social_facebook_link": "#",
+    "social_instagram_link": "#",
+    "social_whatsapp_link": "#",
+    "social_youtube_link": "#",
+    "social_linkedln_link": "#",
     "content_for_index": []
   }
 }

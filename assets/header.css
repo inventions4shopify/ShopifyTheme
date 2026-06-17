@@ -40,6 +40,7 @@
   margin: 0 auto;
   grid-template-columns: auto 1fr auto;
   grid-template-areas: "logo nav utils";
+  padding: var(--header-padding) 0;
 }
 
 
@@ -94,6 +95,7 @@
     "nav   nav nav";
 }
 .header--row-bottom .header__nav {
+  margin: 0;
   justify-self: stretch;        /* nav fills the full-width row */
   border-top: 0.1rem solid var(--header-separator, #e5e5e5);
   padding-top: var(--spacing-8);

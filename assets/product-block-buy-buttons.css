@@ -1,0 +1,42 @@
+.product_form {
+    margin-top: 1.5rem;
+    display: block;
+  }
+  .product_form_submit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-10);
+    width: 1%;
+    flex: 1 1 auto;
+  }
+
+  .product_quantity_buy_wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    margin-bottom: var(--spacing-16);
+  }
+
+  .product_form_submit.loading {
+    pointer-events: none;
+  }
+
+  .product_form_spinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: inherit;
+  }
+
+  .product_form_spinner.hidden {
+    display: none;
+  }
+
+  .product_form_submit.loading > svg,
+  .product_form_submit.loading > span:not(.product_form_spinner) {
+    opacity: 0;
+  }

@@ -7,8 +7,6 @@
     border-radius: {%if section.settings.faq_button_br != blank %}{{ section.settings.faq_button_br }}{% else %}0{% endif %}px;
     background-color: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
     color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
-    position: relative;
-    overflow: hidden;
   }
 
   .cms-faq-question {{ section.settings.faq_heading_size }} {
