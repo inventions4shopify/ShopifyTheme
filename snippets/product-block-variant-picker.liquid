@@ -303,7 +303,7 @@
       {% if picker_show_option_labels %}
         <div class="variant_picker_option_header">
           <span class="variant_picker_option_name">
-            {{ option.name }}
+            {{ option.name | append:':' }} 
           </span>
 
           {% if picker_show_selected_value %}
