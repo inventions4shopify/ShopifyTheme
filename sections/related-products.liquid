@@ -1,0 +1,240 @@
+{%- liquid
+  assign products_to_show = section.settings.products_count
+  assign columns = section.settings.columns
+
+  assign container_class = 'page-width'
+  if section.settings.container_width == 'full-width'
+    assign container_class = 'page-width--full'
+  endif
+-%}
+
+{%- style -%}
+  .related-products .related-products__grid {
+    --grid-desktop-columns: {{ columns }};
+  }
+{%- endstyle -%}
+
+<div {%- render 'section-variables', section: section, class: 'related-products' -%}>
+  <div class="{{ container_class }}">
+    {%- capture recommendations_url -%}
+      {{- routes.product_recommendations_url -}}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ products_to_show }}&intent=related
+    {%- endcapture -%}
+
+    <product-recommendations
+      class="related-products__inner"
+      data-url="{{ recommendations_url | strip }}"
+      data-product-id="{{ product.id }}"
+    >
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        {%- if section.settings.heading != blank or section.settings.subheading != blank or section.settings.description != blank -%}
+          <div class="related-products__header">
+            {%- render 'section-header',
+              subheading: section.settings.subheading,
+              heading: section.settings.heading,
+              content: section.settings.description,
+              heading_size: section.settings.heading_size,
+              text_alignment: section.settings.text_alignment
+            -%}
+          </div>
+        {%- endif -%}
+
+        <div class="related-products__grid collection-products grid grid--2-col sm:grid--3-col lg:grid--{{ columns }}-col">
+          {%- for product in recommendations.products -%}
+            {% render 'product-card',
+              product: product,
+              show_vendor: settings.show_vendor,
+              show_secondary_image: settings.show_secondary_image,
+              show_quick_buy: settings.show_quick_buy,
+              show_rating: settings.show_rating,
+              rating_display: settings.rating_display,
+              show_sold_out_badge: settings.show_sold_out_badge,
+              show_discount_badge: settings.show_discount_badge,
+              discount_type: settings.discount_type,
+              color_display_mode: settings.color_display_mode,
+              image_ratio: settings.image_ratio,
+              content_alignment: settings.content_alignment,
+              style: settings.style
+            %}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </product-recommendations>
+  </div>
+</div>
+
+<script src="{{ 'product-recommendations.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Related products",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Dynamic recommendations use product info such as descriptions and tags. To learn more, visit the Shopify Help Center."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h4", "label": "Small" },
+        { "value": "h3", "label": "Medium" },
+        { "value": "h2", "label": "Large" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Maximum products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Number of columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related products"
+    }
+  ]
+}
+{% endschema %}

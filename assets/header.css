@@ -121,6 +121,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.header__nav-link:hover .header__nav-icon {
+  transform: rotate(180deg);
 }
 
 
@@ -140,7 +145,7 @@
 /* ----- Utilities ----- */
 .header__utils { display: flex; align-items: center; gap: var(--spacing-12); }
 
-.header__icon-btn { background: none; border: 0; color: inherit; cursor: pointer; padding: var(--spacing-6);  position: relative; }
+.header__icon-btn { display: inline-flex; background: none; border: 0; color: inherit; cursor: pointer; padding: var(--spacing-6);  position: relative; }
 .header__icon-btn:hover { color: inherit; transform: scale(1.07);}
 .header__cart-count,
 .header__wishlist-count {

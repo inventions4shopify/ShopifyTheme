@@ -1457,3 +1457,21 @@ canvas {
 .cms-sort-dropdown.open .cms-sort-icon {
   transform: rotate(180deg);
 }
+
+.open-filter-drawer {
+  position: relative;
+  overflow: hidden;
+}
+
+.open-filter-drawer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #0000008c;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+}

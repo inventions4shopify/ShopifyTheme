@@ -1,4 +1,4 @@
-{{ 'search.css' | asset_url | stylesheet_tag }}
+{{ 'main-collection.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign sort_by = search.sort_by | default: search.default_sort_by
@@ -6,77 +6,86 @@
   assign search_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
 -%}
 <div {%- render 'section-variables', section: section, class: 'search__section' -%}>
-  {% paginate search.results by 24 %}
+  {% paginate search.results by section.settings.card_per_page %}
       {% capture collection_filters %}
-        <form id="CollectionFiltersForm" class="cms-collection-sidebar {% if section.settings.filter_position == 'sidebar' %}data-auto-filter cms-filter-sidebar{% endif %}">
+        {% if section.settings.filter_position == 'sidebar' %}
+        <div class="cms-filter-sidebar">
+        {% endif %}
+          <form id="CollectionFiltersForm" action="{{ routes.search_url }}" method="get" {% if section.settings.filter_position == 'sidebar' %}data-auto-filter{% endif %}>
 
-          {% for filter in search.filters %}
-            <div class="cms-filter-group">
+            <input type="hidden" name="q" value="{{ search.terms | escape }}">
+            <input type="hidden" name="options[prefix]" value="last">
 
-              <!-- CLOSED BY DEFAULT -->
-              <details class="cms-filter-accordion">
+            {% for filter in search.filters %}
+              <div class="cms-filter-group">
 
-                <summary class="cms-filter-accordion-title">
-                  <span class="cms-filter-label">{{ filter.label }}</span>
-                  <span class="cms-filter-icon">
-                    {% render 'icon', icon: 'chevron-bottom', width: 18, height: 18 %}
-                  </span>
-                </summary>
+                <!-- CLOSED BY DEFAULT -->
+                <details class="cms-filter-accordion">
 
-                <div class="cms-filter-accordion-content">
+                  <summary class="cms-filter-accordion-title">
+                    <span class="cms-filter-label">{{ filter.label }}</span>
+                    <span class="cms-filter-icon">
+                      {% render 'icon', icon: 'chevron-bottom', width: 18, height: 18 %}
+                    </span>
+                  </summary>
 
-                  {% case filter.type %}
+                  <div class="cms-filter-accordion-content">
 
-                    {% when 'list', 'boolean' %}
-                      {% for value in filter.values %}
-                        <label class="cms-filter-option">
+                    {% case filter.type %}
+
+                      {% when 'list', 'boolean' %}
+                        {% for value in filter.values %}
+                          <label class="cms-filter-option">
+                            <input
+                              type="checkbox"
+                              name="{{ value.param_name }}"
+                              value="{{ value.value }}"
+                              {% if value.active %}checked{% endif %}
+                            >
+                            <span>
+                              {{ value.label }} <strong>({{ value.count }})</strong>
+                            </span>
+                          </label>
+                        {% endfor %}
+
+                      {% when 'price_range' %}
+                        <div class="price-range">
                           <input
-                            type="checkbox"
-                            name="{{ value.param_name }}"
-                            value="{{ value.value }}"
-                            {% if value.active %}checked{% endif %}
+                            type="number"
+                            name="{{ filter.min_value.param_name }}"
+                            placeholder="Min"
+                            value="{{ filter.min_value.value }}"
                           >
-                          <span>
-                            {{ value.label }} <strong>({{ value.count }})</strong>
-                          </span>
-                        </label>
-                      {% endfor %}
 
-                    {% when 'price_range' %}
-                      <div class="price-range">
-                        <input
-                          type="number"
-                          name="{{ filter.min_value.param_name }}"
-                          placeholder="Min"
-                          value="{{ filter.min_value.value }}"
-                        >
+                          <input
+                            type="number"
+                            name="{{ filter.max_value.param_name }}"
+                            placeholder="Max"
+                            value="{{ filter.max_value.value }}"
+                          >
+                        </div>
 
-                        <input
-                          type="number"
-                          name="{{ filter.max_value.param_name }}"
-                          placeholder="Max"
-                          value="{{ filter.max_value.value }}"
-                        >
-                      </div>
+                    {% endcase %}
 
-                  {% endcase %}
+                  </div>
 
-                </div>
+                </details>
 
-              </details>
+              </div>
+            {% endfor %}
 
-            </div>
-          {% endfor %}
+            <!-- APPLY BUTTON ONLY FOR DRAWER -->
+            
+            {% if section.settings.filter_position == 'drawer' %}
+              <button type="submit" class="button">
+                Apply Filters
+              </button>
+            {% endif %}
 
-          <!-- APPLY BUTTON ONLY FOR DRAWER -->
-          
-          {% if section.settings.filter_position == 'drawer' %}
-            <button type="submit" class="button">
-              Apply Filters
-            </button>
-          {% endif %}
-
-        </form>
+          </form>
+        {% if section.settings.filter_position == 'sidebar' %}
+          </div>
+        {% endif %}
       {% endcapture %}
     <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %}">
       <div class="template-search__header page-width">
@@ -166,6 +175,8 @@
                   </div>
                 </div>
               {%- else -%}
+              <main-collection-section class="cms-main-collection">
+              <div class="page-width">
               <!-- FILTER + SORT ROW -->
               <div class="cms-main-collection-filter-row">
                 {% if section.settings.show_filter and section.settings.filter_position == 'drawer' %}
@@ -179,6 +190,19 @@
                       </summary>
 
                       <div class="collection-filter-drawer">
+                        <div class="collection-filter-header">
+                          <div class="collection-filter-header-left">
+                            <h2 class="h5">
+                              {% render 'icon', icon: 'sort', width: 20, height: 20 %}
+                              <span>Filter & Sort</span>
+                            </h2>
+                            {{ search.results_count }} Products
+                          </div>
+                          <button type="button" class="collection-filter-drawer-close" aria-label="Close menu">
+                            {% render 'icon' , icon: 'close' , width: 20, height: 20 %}
+                          </button>
+                        </div>
+
                         {{ collection_filters }}
                       </div>
 
@@ -191,7 +215,7 @@
                 <div class="cms-main-collection-filter-right">
                   {% if section.settings.show_total_product %}
                     <span class="cms-main-collection-total-product">
-                      {{ collection.products_count }} Products
+                      {{ search.results_count }} Products
                     </span>
                   {% endif %}
 
@@ -199,13 +223,16 @@
                   {% if section.settings.show_sort %}
                     <div class="cms-main-collection-sort">
 
-                      <form id="SortByForm" method="get">
+                      <form id="SortByForm" method="get" action="{{ routes.search_url }}">
+
+                        <input type="hidden" name="q" value="{{ search.terms | escape }}">
+                        <input type="hidden" name="options[prefix]" value="last">
 
                         <input
                           type="hidden"
                           name="sort_by"
                           id="SortByInput"
-                          value="{{ collection.sort_by | default: collection.default_sort_by }}"
+                          value="{{ search.sort_by | default: search.default_sort_by }}"
                         >
 
                         <div class="cms-sort-dropdown js-sort-dropdown">
@@ -221,9 +248,9 @@
                           </div>
 
                           <ul class="cms-sort-options">
-                            {% for option in collection.sort_options %}
+                            {% for option in search.sort_options %}
                               <li
-                                class="cms-sort-option js-sort-option {% if option.value == collection.sort_by %}active{% endif %}"
+                                class="cms-sort-option js-sort-option {% if option.value == search.sort_by %}active{% endif %}"
                                 data-value="{{ option.value }}"
                               >
                                 {{ option.name }}
@@ -257,63 +284,65 @@
 
               </div>
       
-                <div class="template-search__results collection cms-main-collection-grid" id="product-grid" data-id="{{ section.id }}" >
+                <div class="template-search__results collection{% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %} cms-main-collection-grid{% endif %}" id="product-grid" data-id="{{ section.id }}" >
                   {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                     {{ collection_filters }}
                   {% endif %}
-                  <ul class="grid product-grid grid--2-col sm:grid--3-col lg:grid--4-col collection-products">
-                    {%- for item in search.results -%}
-                      <li class="grid__item" >
-                        {%- case item.object_type -%}
-                          {%- when 'product' -%}
-                            {% render 'product-card',
-                              product: item,
-                              show_vendor: settings.show_vendor,
-                              show_secondary_image: settings.show_secondary_image,
-                              show_quick_buy: settings.show_quick_buy,
-                              show_rating: settings.show_rating,
-                              rating_display: settings.rating_display,
-                              show_sold_out_badge: settings.show_sold_out_badge,
-                              show_discount_badge: settings.show_discount_badge,
-                              discount_type: settings.discount_type,
-                              color_display_mode: settings.color_display_mode,
-                              image_ratio: settings.image_ratio,
-                              content_alignment: settings.content_alignment,
-                              style: settings.style
-                            %}
-                          {%- when 'article' -%}
-                              {%- render 'article-card',
-                                  article: item,
-                                  media_height: section.settings.image_ratio,
-                                  show_image: section.settings.show_image,
-                                  show_date: section.settings.show_date,
-                                  show_author: section.settings.show_author,
-                                  show_excerpt: section.settings.show_excerpt,
-                                  read_more_label: section.settings.read_more_label,
-                                  settings: settings
-                                -%}
-                          {%- when 'page' -%}
-                            <div class="article-card-wrapper card-wrapper underline-links-hover">
-                              <div class="card">
-                                <div class="card__content">
-                                  <div class="card__information">
-                                    <h3 class="card__heading">
-                                      <a href="{{ item.url }}" class="full-unstyled-link">
-                                        {{ item.title | truncate: 50 | escape }}
-                                      </a>
-                                    </h3>
+                    <div class="{% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}collection-products {% endif %}grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
+                      {%- for item in search.results -%}
+                        <div class="grid__item" >
+                          {%- case item.object_type -%}
+                            {%- when 'product' -%}
+                              {% render 'product-card',
+                                product: item,
+                                show_vendor: settings.show_vendor,
+                                show_secondary_image: settings.show_secondary_image,
+                                show_quick_buy: settings.show_quick_buy,
+                                show_rating: settings.show_rating,
+                                rating_display: settings.rating_display,
+                                show_sold_out_badge: settings.show_sold_out_badge,
+                                show_discount_badge: settings.show_discount_badge,
+                                discount_type: settings.discount_type,
+                                color_display_mode: settings.color_display_mode,
+                                image_ratio: settings.image_ratio,
+                                content_alignment: settings.content_alignment,
+                                style: settings.style
+                              %}
+                            {%- when 'article' -%}
+                                {%- render 'article-card',
+                                    article: item,
+                                    media_height: section.settings.image_ratio,
+                                    show_image: section.settings.show_image,
+                                    show_date: section.settings.show_date,
+                                    show_author: section.settings.show_author,
+                                    show_excerpt: section.settings.show_excerpt,
+                                    read_more_label: section.settings.read_more_label,
+                                    settings: settings
+                                  -%}
+                            {%- when 'page' -%}
+                              <div class="article-card-wrapper card-wrapper underline-links-hover">
+                                <div class="card">
+                                  <div class="card__content">
+                                    <div class="card__information">
+                                      <h3 class="card__heading">
+                                        <a href="{{ item.url }}" class="full-unstyled-link">
+                                          {{ item.title | truncate: 50 | escape }}
+                                        </a>
+                                      </h3>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                        {%- endcase -%}
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                  {%- if paginate.pages > 1 -%}
-                    {% render 'pagination', paginate: paginate %}
-                  {%- endif -%}
+                          {%- endcase -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                    {%- if paginate.pages > 1 -%}
+                      {% render 'pagination', paginate: paginate %}
+                    {%- endif -%}
                 </div>
+              </div>
+              </main-collection-section>
               {%- endif -%}
             </div>
           </div>
@@ -322,6 +351,8 @@
     </div>
   {% endpaginate %}
 </div>
+
+<script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
@@ -332,7 +363,29 @@
     "groups": ["header", "footer"]
   },
   "settings": [
-     {
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_per_page",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "label": "Card Per Page",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_per_row",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Card Per Page",
+      "default": 3
+    },
+    {
       "type": "header",
       "content": "Article Image Settings"
     },

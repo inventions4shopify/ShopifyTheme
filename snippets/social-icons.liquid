@@ -2,9 +2,7 @@
   {%- if settings.social_facebook_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_facebook_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-          {{- 'icon-facebook.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'facebook', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_facebook_link.label' | t }}</span>
       </a>
     </li>
@@ -12,9 +10,7 @@
   {%- if settings.social_x_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_x_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-          {{- 'icon-x.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'twitter', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_x_link.label' | t }}</span>
       </a>
     </li>
@@ -22,9 +18,7 @@
   {%- if settings.social_threads_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_threads_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-            {{- 'icon-threads.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'threads', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_threads_link.label' | t }}</span>
       </a>
     </li>
@@ -32,9 +26,7 @@
   {%- if settings.social_pinterest_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_pinterest_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-            {{- 'icon-pinterest.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'pinterest', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_pinterest_link.label' | t }}</span>
       </a>
     </li>
@@ -42,9 +34,7 @@
   {%- if settings.social_instagram_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_instagram_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-          {{- 'icon-instagram.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'instagram', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_instagram_link.label' | t }}</span>
       </a>
     </li>
@@ -52,9 +42,7 @@
   {%- if settings.social_vimeo_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_vimeo_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-            {{- 'icon-vimeo.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'vimeo', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_vimeo_link.label' | t }}</span>
       </a>
     </li>
@@ -62,9 +50,7 @@
   {%- if settings.social_whatsapp_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_whatsapp_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-           {{- 'icon-whatsapp.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'whatsapp', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_whatsapp_link.label' | t }}</span>
       </a>
     </li>
@@ -72,9 +58,7 @@
   {%- if settings.social_tumblr_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_tumblr_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-          {{- 'icon-tumblr.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'tumblr', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_tumblr_link.label' | t }}</span>
       </a>
     </li>
@@ -82,9 +66,7 @@
   {%- if settings.social_youtube_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_youtube_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-            {{- 'icon-youtube.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'youtube', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_youtube_link.label' | t }}</span>
       </a>
     </li>
@@ -92,9 +74,7 @@
   {%- if settings.social_tiktok_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_tiktok_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-          {{- 'icon-tiktok.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'tiktok', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_tiktok_link.label' | t }}</span>
       </a>
     </li>
@@ -102,9 +82,7 @@
   {%- if settings.social_linkedln_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_linkedln_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-          {{- 'icon-linkedin.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'linkedln', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_linkedln_link.label' | t }}</span>
       </a>
     </li>
@@ -112,9 +90,7 @@
   {%- if settings.social_snapchat_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_snapchat_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-            {{- 'icon-snapchat.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'snapchat', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_snapchat_link.label' | t }}</span>
       </a>
     </li>
@@ -122,9 +98,7 @@
   {%- if settings.social_wechat_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_wechat_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-           {{- 'icon-wechat.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'snapchat', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_wechat_link.label' | t }}</span>
       </a>
     </li>
@@ -132,9 +106,7 @@
   {%- if settings.social_spotify_link != blank -%}
     <li class="social_list-item">
       <a href="{{ settings.social_spotify_link }}" target="_blank" class="social_link">
-        <span class="svg-wrapper">
-            {{- 'icon-spotify.svg' | inline_asset_content -}}
-        </span>
+        {% render 'icon', icon: 'spotify', width: '1.8rem', height: '1.8rem' %}
         <span class="hidden">{{ 'social_media.social_spotify_link.label' | t }}</span>
       </a>
     </li>
