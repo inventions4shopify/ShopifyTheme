@@ -149,9 +149,15 @@ read-more-description {
 }
 
 .product_description_content {
-    overflow: hidden;
-    transition: max-height 0.4s ease;
     color: rgba(var(--color-foreground), 0.75);
+}
+
+.product_description_content.is-clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: var(--read-more-lines, 4);
+    line-clamp: var(--read-more-lines, 4);
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* Optional spacing wrapper */
@@ -181,11 +187,6 @@ read-more-description {
 /* Hidden state */
 .product_description_toggle.hidden {
     display: none;
-}
-
-/* Optional: nicer spacing when expanded */
-read-more-description[expanded] .product_description_content {
-    transition: max-height 0.35s ease;
 }
 
 @media screen and (min-width: 768px) {
