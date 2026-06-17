@@ -3,6 +3,7 @@
     type="button"
     class="product_quantity_button"
     data-quantity-decrease
+    aria-label="minus"
   >
     {% render 'icon', icon: 'minus', width: 22, height: 22 %}
   </button>
@@ -15,12 +16,14 @@
     step="1"
     class="product_quantity_input"
     data-quantity-input
+    aria-label="Quantity"
   >
 
   <button
     type="button"
     class="product_quantity_button"
     data-quantity-increase
+    aria-label="plus"
   >
     {% render 'icon', icon: 'plus', width: 22, height: 22 %}
   </button>
