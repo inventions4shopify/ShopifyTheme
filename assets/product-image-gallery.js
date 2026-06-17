@@ -49,7 +49,7 @@ function initProductGalleries(root = document) {
       thumbnails.forEach((thumb) => thumb.classList.remove("active"));
 
       const activeThumb = thumbnails[index];
-
+ 
       if (!activeThumb) return;
 
       activeThumb.classList.add("active");
