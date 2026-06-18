@@ -14,7 +14,6 @@
     {%- if current_product != blank -%}
       <div class="main-product-section">
         <div class="product-image-gallery-wrapper cms-cell--{{ section.settings.width }}">
-
           {% render 'breadcrumbs' %}
 
           {% render 'product-image-gallery',
@@ -30,7 +29,7 @@
         <div class="product-info-wrapper">
           {% render 'product-details', product: current_product, blocks: section.blocks %}
         </div>
-      </div>   
+      </div>
     {%- endif -%}
   </div>
 </div>
