@@ -374,8 +374,6 @@
 .header__mega-banner-btn {
   margin-top: var(--spacing-6); 
   align-self: flex-start;
-  border: 0.1rem solid currentColor;
-  border-radius: var(--radius-sm);
   padding: var(--spacing-6) var(--spacing-12);
   font-size: var(--text-sm);
   transition: background .15s ease, color .15s ease;
