@@ -361,7 +361,7 @@ cart-drawer.is-updating .cart-drawer__loading {
 .cart-drawer__progress.is-complete .cart-drawer__progress-milestone .cart-drawer__progress-icon {
   border-color: var(--cart-progress-color);
   background: var(--cart-progress-color);
-  color: #fff;
+  color: var(--white);
 }
 
 .cart-drawer__progress.is-complete .cart-drawer__progress-icon {

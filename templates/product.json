@@ -11,20 +11,6 @@
   "sections": {
     "main": {
       "type": "main-product",
-      "settings": {
-        "width": "medium",
-        "thumbnail_layout": "vertical",
-        "gallery_arrows_device": "both",
-        "gallery_arrow_display": "always",
-        "gallery_zoom_type": "none",
-        "hover_zoom_style": "magnifier",
-        "enable_desktop_drag": true,
-        "custom_spacing": false,
-        "section_spacing_top_desktop": 64,
-        "section_spacing_bottom_desktop": 64,
-        "section_spacing_top_mobile": 40,
-        "section_spacing_bottom_mobile": 40
-      },
       "blocks": {
         "vendor": {
           "type": "vendor",
@@ -36,11 +22,20 @@
         },
         "price": {
           "type": "price",
-          "settings": {}
+          "settings": {
+            "show_save_badge": true,
+            "save_type": "percentage"
+          }
         },
         "description": {
           "type": "description",
-          "settings": {}
+          "settings": {
+            "description_content": "{{ section.settings.product.description }}",
+            "enable_read_more": false,
+            "lines_to_show": 10,
+            "read_more_text": "Read more",
+            "read_less_text": "Read less"
+          }
         },
         "inventory": {
           "type": "inventory",
@@ -50,7 +45,21 @@
         },
         "variant_picker": {
           "type": "variant_picker",
-          "settings": {}
+          "settings": {
+            "option_1_layout": "swatch",
+            "option_2_layout": "button",
+            "option_3_layout": "dropdown",
+            "swatch_source": "color",
+            "swatch_size": 40,
+            "swatch_shape": "circle",
+            "show_color_name": false,
+            "button_shape": "rounded",
+            "show_dropdown_swatches": true,
+            "show_option_labels": true,
+            "show_selected_value": true,
+            "hide_unavailable_options": false,
+            "update_url": true
+          }
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -73,25 +82,42 @@
         "accordion_1": {
           "type": "accordion",
           "settings": {
-            "heading": "Shipping"
+            "open_by_default": false,
+            "heading": "Shipping",
+            "content": ""
           }
         },
         "accordion_2": {
           "type": "accordion",
           "settings": {
-            "heading": "Returns"
+            "open_by_default": false,
+            "heading": "Returns",
+            "content": ""
           }
         },
         "recommendations": {
           "type": "recommendations",
-          "settings": {}
+          "settings": {
+            "products": [
+              "dreaming-in-the-clouds-moon-star-necklace",
+              "falling-for-you-reversible-heart-necklace",
+              "for-the-dreamer-moon-pearl-earrings",
+              "fragile-love-rose-necklace",
+              "free-as-a-bird-charm",
+              "god-of-the-waves-pendant-necklace",
+              "hug-me-forever-18k-gold-ring"
+            ],
+            "show_price": true,
+            "show_vendor": false,
+            "show_add_to_cart": true
+          }
         }
       },
       "block_order": [
         "vendor",
         "title",
         "price",
-        "description",        
+        "description",
         "inventory",
         "variant_picker",
         "buy_buttons",
@@ -100,17 +126,44 @@
         "accordion_1",
         "accordion_2",
         "recommendations"
-      ]
+      ],
+      "settings": {
+        "product": "",
+        "width": "medium",
+        "thumbnail_layout": "vertical",
+        "gallery_arrows_device": "both",
+        "gallery_arrow_display": "always",
+        "gallery_zoom_type": "none",
+        "hover_zoom_style": "magnifier",
+        "enable_desktop_drag": true,
+        "custom_spacing": false,
+        "section_spacing_top_desktop": 64,
+        "section_spacing_bottom_desktop": 64,
+        "section_spacing_top_mobile": 40,
+        "section_spacing_bottom_mobile": 40
+      }
     },
     "related-products": {
       "type": "related-products",
       "settings": {
         "heading": "You may also like",
+        "subheading": "",
+        "description": "",
         "heading_size": "h2",
         "text_alignment": "start",
         "products_count": 4,
         "columns": 4,
-        "container_width": "page-width"
+        "container_width": "page-width",
+        "background_color": "",
+        "background_gradient": "",
+        "heading_color": "",
+        "subheading_color": "",
+        "text_color": "",
+        "custom_spacing": false,
+        "section_spacing_top_desktop": 64,
+        "section_spacing_bottom_desktop": 64,
+        "section_spacing_top_mobile": 40,
+        "section_spacing_bottom_mobile": 40
       }
     }
   },

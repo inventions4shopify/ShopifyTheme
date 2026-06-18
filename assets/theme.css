@@ -23,9 +23,15 @@ body {
   font-weight: var(--font-body-weight);
   font-size: var(--text-base);
   letter-spacing: var(--body-letter-spacing);
-  line-height: normal;
+  line-height: 1.5;
   color: rgb(var(--color-body-text));
   background-color: rgb(var(--color-background));
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 1.6rem;
+  }
 }
 
 .header {
@@ -335,6 +341,22 @@ input[type="submit"] {
   --button-outline: rgb(var(--color-button-secondary-outline));
 }
 
+body .shopify-payment-button__button--unbranded {
+  background: rgb(var(--color-button-secondary-background));
+  color: rgb(var(--color-button-secondary-text));
+  box-shadow: 2px 2px rgb(var(--color-button-primary-outline));
+  padding: 1rem 1.8rem;
+  border: 0.2rem solid rgb(var(--color-button-primary-outline));
+  text-decoration: none;
+  border-radius: var(--button-radius);
+  font: inherit;
+  text-transform: uppercase;
+}
+
+body .shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  background: rgb(var(--color-button-secondary-background));
+}
+
 .button:disabled,
 button:disabled {
   opacity: 0.5;
@@ -568,21 +590,6 @@ canvas {
 .ps-rte ol {
   list-style: decimal;
   padding-left: 2rem;
-}
-
-.ps-rte a {
-  color: rgb(var(--color-heading));
-  text-decoration: underline;
-}
-
-.ps-rte a:hover {
-  color: rgb(var(--color-body-text));
-}
-
-.ps-rte img {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--media-radius);
 }
 
 .ps-rte blockquote {

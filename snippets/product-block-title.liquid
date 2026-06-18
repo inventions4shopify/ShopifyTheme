@@ -10,20 +10,3 @@
     {% render 'wishlist-button', product: product, class: 'wishlist-button--product' %}
   {% endif %}
 </div>
-
-{% style %}
-.product_title_block_wrapper {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.2rem;
-  margin-bottom: 1.2rem;
-}
-
-/* Desktop */
-@media screen and (min-width: 750px) {
-  .product_title_block_wrapper {
-    margin-bottom: 1.5rem;
-  }
-}
-{% endstyle %}
