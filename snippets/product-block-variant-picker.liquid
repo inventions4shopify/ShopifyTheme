@@ -86,6 +86,7 @@
                   type="radio"
                   name="option-{{ option.position }}"
                   value="{{ value | escape }}"
+                  aria-label="{{ value }}"
                   {% if option.selected_value == value %}
                     checked
                   {% endif %}
@@ -126,6 +127,7 @@
                   type="radio"
                   name="option-{{ option.position }}"
                   value="{{ value | escape }}"
+                  aria-label="{{ value }}"
                   {% if option.selected_value == value %}
                     checked
                   {% endif %}

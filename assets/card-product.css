@@ -145,7 +145,7 @@
 
 .product-card__price--compare {
   color: rgb(var(--color-product-card-text));
-  opacity: 0.55;
+  opacity: 0.8;
   text-decoration: line-through;
 }
 
