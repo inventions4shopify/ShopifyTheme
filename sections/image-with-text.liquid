@@ -27,25 +27,25 @@
   }
 
   {% if section.settings.image_show != true %}
-  .cms-image-with-text-row >* {
+    .cms-image-with-text-row >* {
       padding: 1.5rem;
-  }
+    }
   {% endif %}
 
   @media (min-width: 768px) {
-      .cms-cell--{{ section.settings.width }} {
-          width: {% case section.settings.width %}
-              {% when 'small' %} 33.3333%
-              {% when 'medium' %} 50%
-              {% when 'large' %} 66.6666%
-          {% endcase %};
-      }
+    .cms-cell--{{ section.settings.width }} {
+        width: {% case section.settings.width %}
+            {% when 'small' %} 33.3333%
+            {% when 'medium' %} 50%
+            {% when 'large' %} 66.6666%
+        {% endcase %};
+    }
 
-      .cms-image-with-text__content {
-          width: {% if section.settings.image_show == true %} 50% {% else %} 1% {% endif %};
-          flex: {% if section.settings.image_show != true %} 1 1 auto {% endif %};
-          max-width: 64rem;
-      }
+    .cms-image-with-text__content {
+        width: {% if section.settings.image_show == true %} 50% {% else %} 1% {% endif %};
+        flex: {% if section.settings.image_show != true %} 1 1 auto {% endif %};
+        max-width: 64rem;
+    }
   }
 </style>
 

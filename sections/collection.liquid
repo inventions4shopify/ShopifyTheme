@@ -92,7 +92,7 @@
     {% paginate collection.products by section.settings.card_per_page %}
 
       {% capture collection_filters %}
-        <form id="CollectionFiltersForm" {% if section.settings.filter_position == 'sidebar' %}data-auto-filter class="cms-filter-sidebar"{% endif %}>
+        <form id="CollectionFiltersForm" {% if section.settings.filter_position == 'sidebar' %}data-auto-filter{% endif %}>
 
           {% for filter in collection.filters %}
             <div class="cms-filter-group">
@@ -299,7 +299,6 @@
                 %}
               {% endfor %}
             </div>
-
             {% render 'pagination', paginate: paginate %}
           </div>
 

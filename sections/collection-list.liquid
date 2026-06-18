@@ -73,7 +73,7 @@
                       loading: 'lazy',
                       widths: '320,480,640,800',
                       sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                      alt: collection.title
+                      alt: 'collection thumb'
                   }}
                 {% elsif collection_image %}
                   {{
@@ -83,12 +83,12 @@
                       loading: 'lazy',
                       widths: '320,480,640,800',
                       sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                      alt: collection.title
+                      alt: 'collection thumb'
                   }}
                 {% else %}
                   <img
                     src="{{ 'thumbnail.svg' | asset_url }}"
-                    alt="{{ collection.title | escape }}"
+                    alt="collection thumb"
                     loading="lazy"
                     width="auto"
                     height="auto">
@@ -114,8 +114,8 @@
       {% if s.layout == 'slider' %}
         {% if s.show_arrow %}
           <div class="collection-grid-slider-arrow-btn flex">
-            <button class="collection-grid-prev button">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
-            <button class="collection-grid-next button">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
+            <button class="collection-grid-prev button" aria-label="previous slide">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
+            <button class="collection-grid-next button" aria-label="next slide">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
           </div>
         {% endif %}
       {% endif %}

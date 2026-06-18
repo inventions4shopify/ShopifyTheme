@@ -26,13 +26,22 @@
     "header_background_color": "#fee7d5",
     "header_text_color": "#4a3230",
     "header_hover_text_color": "#4a3230",
+    "footer_background_color": "#FEE7D5",
+    "footer_text_color": "#4A3230",
+    "footer_hover_text_color": "#443231",
     "primary_button_background_color": "#ff5c00",
+    "primary_button_text_color": "#2a1c1a",
     "primary_button_outline_color": "#4a3230",
     "secondary_button_background_color": "#ffffff",
     "secondary_button_text_color": "#4a3230",
     "secondary_button_outline_color": "#4a3230",
     "product_card_background_color": "#fee7d5",
     "product_card_text_color": "#4a3230",
+    "social_facebook_link": "#",
+    "social_instagram_link": "#",
+    "social_whatsapp_link": "#",
+    "social_youtube_link": "#",
+    "social_linkedln_link": "#",
     "content_for_index": []
   }
 }

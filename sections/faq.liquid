@@ -6,13 +6,11 @@
     border: 0.1rem solid {%if section.settings.faq_button_border_color != blank %}{{ section.settings.faq_button_border_color }}{% else %}#ccc{% endif %};
     border-radius: {%if section.settings.faq_button_br != blank %}{{ section.settings.faq_button_br }}{% else %}0{% endif %}px;
     background-color: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
-    color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
-    position: relative;
-    overflow: hidden;
+    color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}var(--black){% endif %};
   }
 
   .cms-faq-question {{ section.settings.faq_heading_size }} {
-      color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}#000{% endif %};
+      color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}var(--black){% endif %};
   }
 
   .cms-faq-content .cms-cell--{{ section.settings.width }} >* {
@@ -124,7 +122,7 @@
                       {% if block.settings.heading != blank %}
                         <div class="cms-faq-item" {{ block.shopify_attributes }}>
                               <button class="cms-faq-question button" type="button">
-                                  <{{ section.settings.faq_heading_size }} class="faq-title {{ section.settings.faq_heading_size }}">{{ block.settings.heading }}</{{ section.settings.faq_heading_size }}>
+                                  <h3 class="faq-title {{ section.settings.faq_heading_size }}">{{ block.settings.heading }}</h3>
                                   <span class="cms-faq-icon">
                                     {% render 'icon', icon: 'chevron-bottom', width: '2rem', height: '2rem' %}
                                   </span>

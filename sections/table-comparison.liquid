@@ -38,16 +38,17 @@
 
               <th class="cms-comparison-table__cell cms-comparison-table__cell--images">
                 <span class="table-thumb aspect-square">
-                    {% if image != blank %}
-                      <img
-                        src="{{ image | img_url: 'master' }}"
-                        alt="logo"
-                        width="auto"
-                        height="auto"
-                      >
-                    {% endif %}
-                  </span>
-                </th>
+                  {% if image != blank %}
+                    {{
+                      image
+                      | image_url: width: 500
+                      | image_tag:
+                        alt: 'logo',
+                        loading: 'lazy'
+                    }}
+                  {% endif %}
+                </span>
+              </th>
             {% endfor %}
           </tr>
         </thead>

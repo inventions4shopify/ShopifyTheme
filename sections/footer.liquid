@@ -14,31 +14,17 @@
   .footer__mobile-toggle{
     color: {{ settings.footer_text_color }};
   }
-  .footer__bottom-link {  color: {{ settings.footer_text_color }}; font-size:var(--text-xss);text-decoration: underline; }
-  .footer__bottom-link:hover { opacity: 1; color: {{ settings.footer_text_color }}}
+  .footer__bottom-link {  color: {{ settings.footer_text_color }}; }
+  .footer__bottom-link:hover { color: {{ settings.footer_text_color }}}
   .footer__block-title {
-    font-size: var(--text-xs);
-    font-family:var(--font-body-family);
-    font-weight:700;
-    text-transform: uppercase;
-    margin: 0 0 1.4rem;
     color:{{ settings.footer_text_color }};
   }
   .footer_section .social_link {
-    width:3.5rem;
-    height:3.5rem;
-    border-radius:  var(--radius-full);
-    color: {{ settings.footer_text_color }}; 
-    background: #ffffff36; 
-    border:0.1rem solid #ffffff54;
-    display: flex;
-    align-items: center;
-    justify-content: center; 
+    color: {{ settings.footer_text_color }};
   }
-  .footer__menu-link:hover { color: {{ settings.footer_text_color }}; opacity: 1; }
-  .footer_section .footer__divider { background-color: {{ settings.footer_text_color }};opacity:0.2; }
-  .footer__copyright a{ color: {{ settings.footer_text_color }};  text-decoration: none; }
-  .footer__copyright a:hover{ text-decoration: underline; }
+  .footer__menu-link:hover { color: {{ settings.footer_text_color }}; }
+  .footer_section .footer__divider { background-color: {{ settings.footer_text_color }}; }
+  .footer__copyright a{ color: {{ settings.footer_text_color }}; }
 {%- endstyle -%}
 
 
@@ -152,11 +138,6 @@
                 endcase
               -%}
               <div class="footer__block {{ col_class }} footer__block--text {{ desktop_align_class }} {{ mobile_align_class }}" {{ block.shopify_attributes }}>
-
-                {%- if block.settings.title != blank -%}
-                  <h3 class="footer__block-title">{{ block.settings.title }}</h3>
-                {%- endif -%}
-
                 {%- if block.settings.image != blank -%}
                   <div class="footer__text-img-wrap">
                     {{
@@ -165,9 +146,13 @@
                       | image_tag:
                         loading: 'lazy',
                         class: 'footer__text-img',
-                        alt: block.settings.image.alt | escape
+                        alt: 'logo'
                     }}
                   </div>
+                {%- endif -%}
+
+                {%- if block.settings.title != blank -%}
+                  <h3 class="footer__block-title">{{ block.settings.title }}</h3>
                 {%- endif -%}
 
                 {%- if block.settings.text != blank -%}

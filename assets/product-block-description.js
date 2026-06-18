@@ -3,6 +3,9 @@ class ReadMoreDescription extends HTMLElement {
     super();
 
     this.onToggle = this.onToggle.bind(this);
+    this.setup = this.setup.bind(this);
+
+    this.listenerAttached = false;
   }
 
   connectedCallback() {
@@ -12,39 +15,45 @@ class ReadMoreDescription extends HTMLElement {
 
     if (!this.content || !this.button) return;
 
-    this.lines = parseInt(this.dataset.lines || 4, 10);
+    this.lines = parseInt(this.dataset.lines, 10) || 4;
 
     this.readMoreText = this.dataset.readMore || 'Read more';
 
     this.readLessText = this.dataset.readLess || 'Read less';
 
-    requestAnimationFrame(() => {
-      this.initialize();
-    });
+    this.content.style.setProperty('--read-more-lines', this.lines);
+
+    this.content.classList.add('is-clamped');
+
+    this.button.textContent = this.readMoreText;
+
+    requestAnimationFrame(this.setup);
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(this.setup);
+    }
   }
 
-  initialize() {
-    const computedStyle = window.getComputedStyle(this.content);
+  setup() {
+    if (this.hasAttribute('expanded')) return;
 
-    let lineHeight = parseFloat(computedStyle.lineHeight);
+    const overflowing = this.content.scrollHeight - this.content.clientHeight > 1;
 
-    if (isNaN(lineHeight)) {
-      const fontSize = parseFloat(computedStyle.fontSize);
-
-      lineHeight = fontSize * 1.2;
-    }
-
-    this.collapsedHeight = lineHeight * this.lines;
-
-    if (this.content.scrollHeight <= this.collapsedHeight + 5) {
+    if (!overflowing) {
       this.button.classList.add('hidden');
-      this.content.style.maxHeight = 'none';
+
+      this.content.classList.remove('is-clamped');
+
       return;
     }
 
-    this.content.style.maxHeight = `${this.collapsedHeight}px`;
+    this.button.classList.remove('hidden');
 
-    this.button.addEventListener('click', this.onToggle);
+    if (!this.listenerAttached) {
+      this.button.addEventListener('click', this.onToggle);
+
+      this.listenerAttached = true;
+    }
   }
 
   onToggle() {
@@ -53,20 +62,20 @@ class ReadMoreDescription extends HTMLElement {
     if (expanded) {
       this.removeAttribute('expanded');
 
-      this.content.style.maxHeight = `${this.collapsedHeight}px`;
+      this.content.classList.add('is-clamped');
 
       this.button.textContent = this.readMoreText;
     } else {
       this.setAttribute('expanded', '');
 
-      this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+      this.content.classList.remove('is-clamped');
 
       this.button.textContent = this.readLessText;
     }
   }
 
   disconnectedCallback() {
-    if (this.button) {
+    if (this.button && this.listenerAttached) {
       this.button.removeEventListener('click', this.onToggle);
     }
   }

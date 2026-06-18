@@ -12,9 +12,9 @@
     {% if template contains 'product' %}
 
       {% if breadcrumb_collection %}
-        <span class="breadcrumbs__separator">
+        <li class="breadcrumbs__separator">
           {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
-        </span>
+        </li>
 
         <li class="breadcrumbs__item">
           <a href="{{ breadcrumb_collection.url }}">
@@ -23,9 +23,9 @@
         </li>
       {% endif %}
 
-      <span class="breadcrumbs__separator">
+      <li class="breadcrumbs__separator">
         {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
-      </span>
+      </li>
 
       <li class="breadcrumbs__item breadcrumbs__item--current">
         {{ product.title }}
@@ -33,9 +33,9 @@
 
     {% elsif template contains 'collection' %}
 
-      <span class="breadcrumbs__separator">
+      <li class="breadcrumbs__separator">
         {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
-      </span>
+      </li>
 
       <li class="breadcrumbs__item breadcrumbs__item--current">
         {{ collection.title }}
@@ -43,9 +43,9 @@
 
     {% elsif template contains 'page' %}
 
-      <span class="breadcrumbs__separator">
+      <li class="breadcrumbs__separator">
         {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
-      </span>
+      </li>
 
       <li class="breadcrumbs__item breadcrumbs__item--current">
         {{ page.title }}
@@ -53,9 +53,9 @@
 
     {% elsif template contains 'blog' %}
 
-      <span class="breadcrumbs__separator">
+      <li class="breadcrumbs__separator">
         {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
-      </span>
+      </li>
 
       <li class="breadcrumbs__item breadcrumbs__item--current">
         {{ blog.title }}
@@ -63,9 +63,9 @@
 
     {% elsif template contains 'article' %}
 
-      <span class="breadcrumbs__separator">
+      <li class="breadcrumbs__separator">
         {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
-      </span>
+      </li>
 
       <li class="breadcrumbs__item">
         <a href="{{ blog.url }}">
@@ -73,9 +73,9 @@
         </a>
       </li>
 
-      <span class="breadcrumbs__separator">
+      <li class="breadcrumbs__separator">
         {% render 'icon', icon: 'chevron-right', width: 14, height: 14 %}
-      </span>
+      </li>
 
       <li class="breadcrumbs__item breadcrumbs__item--current">
         {{ article.title }}

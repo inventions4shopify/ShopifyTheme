@@ -26,7 +26,7 @@
 .header__heading-logo { transition: transform .25s ease; }
 .main-header-wrapper.is-scrolled .header__inner { padding-top: 0.6rem; padding-bottom: 0.6rem; }
 .main-header-wrapper.is-scrolled .header__logo img,
-.main-header-wrapper.is-scrolled .header__heading-logo { transform: scale(.8); }
+.main-header-wrapper.is-scrolled .header__heading-logo { transform: scale(0.8); }
 .header--logo-left  .header__logo { transform-origin: left center; }
 .header--logo-right .header__logo { transform-origin: right center; }
 
@@ -40,6 +40,7 @@
   margin: 0 auto;
   grid-template-columns: auto 1fr auto;
   grid-template-areas: "logo nav utils";
+  padding: var(--header-padding) 0;
 }
 
 
@@ -94,6 +95,7 @@
     "nav   nav nav";
 }
 .header--row-bottom .header__nav {
+  margin: 0;
   justify-self: stretch;        /* nav fills the full-width row */
   border-top: 0.1rem solid var(--header-separator, #e5e5e5);
   padding-top: var(--spacing-8);
@@ -104,12 +106,12 @@
 .header--row-bottom.header--menu-right  .header__nav { justify-content: flex-end; }
 
 /* ----- Logo ----- */
-.header__logo img { display: block; max-width: 100%; height: auto; }
+.header__logo img {  height: auto; object-fit: contain; }
 .header__logo-text { font-size: var(--text-lg); font-weight: 700; text-decoration: none; color: rgb(var(--color-header-text)); }
 
 /* ----- Nav ----- */
 .header__nav { display: flex; align-items: center; gap: var(--spacing-8); }
-.header__nav-list { display: flex; list-style: none; margin: 0; padding: 0; gap: var(--spacing-4); }
+.header__nav-list { display: flex; list-style: none; margin: 0; padding: 0; }
 .header__nav-item { position: relative; }
 .header__nav-link {
   padding: 0.8rem 1.4rem; text-decoration: none;
@@ -143,7 +145,7 @@
 .header--mega .header__nav-item:hover > .header__submenu { transform: translate(-50%, 0); }
 
 /* ----- Utilities ----- */
-.header__utils { display: flex; align-items: center; gap: var(--spacing-12); }
+.header__utils { display: flex; align-items: center; gap: var(--spacing-8); }
 
 .header__icon-btn { display: inline-flex; background: none; border: 0; color: inherit; cursor: pointer; padding: var(--spacing-6);  position: relative; }
 .header__icon-btn:hover { color: inherit; transform: scale(1.07);}

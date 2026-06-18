@@ -11,12 +11,11 @@
     gap: 24px;
 }
 
-.collection-products ul {
+.cms-main-collection-grid ul {
     margin: 0;
-    padding: 0;
 }
 
-.collection-products li {
+.cms-main-collection-grid li {
     list-style: none;
 }
 
@@ -66,11 +65,14 @@
 }
 
 .collection-filter-dropdown summary,
-.cms-main-collection-filter-right,
-.cms-main-collection-view {
+.cms-main-collection-filter-right {
     display: flex;
     align-items: center;
     gap: var(--spacing-10);
+}
+
+.cms-main-collection-view {
+    display: none;
 }
 
 .cms-main-collection-filter-right {
@@ -127,6 +129,12 @@
         width: 65%;
         max-width: 65%;
         flex: 0 0 65%;
+    }
+
+    .cms-main-collection-view {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-10);
     }
 }
 

@@ -211,6 +211,26 @@ body.cart-drawer-open {
   overflow: hidden;
 }
 
+.cart-drawer__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--color-background), 0.6);
+  backdrop-filter: blur(1px);
+}
+
+.cart-drawer__loading .loading-spinner {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+cart-drawer.is-updating .cart-drawer__loading {
+  display: flex;
+}
+
 .cart-drawer__quantity-button {
   width: 3.2rem;
   height: 3.2rem;
@@ -341,7 +361,7 @@ body.cart-drawer-open {
 .cart-drawer__progress.is-complete .cart-drawer__progress-milestone .cart-drawer__progress-icon {
   border-color: var(--cart-progress-color);
   background: var(--cart-progress-color);
-  color: #fff;
+  color: var(--white);
 }
 
 .cart-drawer__progress.is-complete .cart-drawer__progress-icon {

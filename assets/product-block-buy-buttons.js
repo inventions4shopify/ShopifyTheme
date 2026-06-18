@@ -3,8 +3,6 @@ class ProductForm extends HTMLElement {
     super();
 
     this.onVariantChange = this.onVariantChange.bind(this);
-    this.onQuantityDecrease = this.onQuantityDecrease.bind(this);
-    this.onQuantityIncrease = this.onQuantityIncrease.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -13,21 +11,14 @@ class ProductForm extends HTMLElement {
     this.variantInput = this.querySelector('[data-variant-id]');
     this.addToCartButton = this.querySelector('[data-add-to-cart]');
     this.addToCartText = this.querySelector('[data-add-to-cart-text]');
-    this.quantityInput = this.querySelector('[data-quantity-input]');
-    this.quantityDecreaseButton = this.querySelector('[data-quantity-decrease]');
-    this.quantityIncreaseButton = this.querySelector('[data-quantity-increase]');
     this.productRoot = this.closest('[data-product-root]');
 
     this.productRoot?.addEventListener('product:variant-change', this.onVariantChange);
-    this.quantityDecreaseButton?.addEventListener('click', this.onQuantityDecrease);
-    this.quantityIncreaseButton?.addEventListener('click', this.onQuantityIncrease);
     this.form?.addEventListener('submit', this.onSubmit);
   }
 
   disconnectedCallback() {
     this.productRoot?.removeEventListener('product:variant-change', this.onVariantChange);
-    this.quantityDecreaseButton?.removeEventListener('click', this.onQuantityDecrease);
-    this.quantityIncreaseButton?.removeEventListener('click', this.onQuantityIncrease);
     this.form?.removeEventListener('submit', this.onSubmit);
   }
 
@@ -53,18 +44,25 @@ class ProductForm extends HTMLElement {
     }
   }
 
-  onQuantityDecrease() {
-    if (!this.quantityInput) return;
+  setLoading(isLoading) {
+    const button = this.querySelector('[data-add-to-cart]');
+    const spinner = this.querySelector('[data-spinner]');
 
-    const currentQuantity = Number(this.quantityInput.value) || 1;
-    this.quantityInput.value = Math.max(1, currentQuantity - 1);
+    if (button) {
+      button.classList.toggle('loading', isLoading);
+      button.disabled = isLoading;
+    }
+
+    if (spinner) {
+      spinner.classList.toggle('hidden', !isLoading);
+    }
   }
 
-  onQuantityIncrease() {
-    if (!this.quantityInput) return;
-
-    const currentQuantity = Number(this.quantityInput.value) || 1;
-    this.quantityInput.value = currentQuantity + 1;
+  ensureMinLoading(startTime, min = 500) {
+    const elapsed = Date.now() - startTime;
+    return elapsed < min
+      ? new Promise((resolve) => setTimeout(resolve, min - elapsed))
+      : Promise.resolve();
   }
 
   async onSubmit(event) {
@@ -74,32 +72,42 @@ class ProductForm extends HTMLElement {
 
     const cartType = this.dataset.cartType || 'cart_page';
 
+    this.setLoading(true);
+    const startTime = Date.now();
+    let afterAdd = null;
+
     try {
       if (window.theme?.cart?.add) {
         await window.theme.cart.add(new FormData(this.form));
-        window.theme.cart.handleAfterAdd(cartType);
-        return;
+        afterAdd = () => window.theme.cart.handleAfterAdd(cartType);
+      } else {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: new FormData(this.form),
+        });
+
+        if (!response.ok) {
+          throw new Error('Unable to add this item to the cart.');
+        }
+
+        await response.json();
+
+        afterAdd = () => {
+          if (window.theme?.cartType === 'cart_drawer' && window.theme.openCartDrawer?.()) {
+            return;
+          }
+          window.location.href = '/cart';
+        };
       }
-
-      const response = await fetch('/cart/add.js', {
-        method: 'POST',
-        body: new FormData(this.form),
-      });
-
-      if (!response.ok) {
-        throw new Error('Unable to add this item to the cart.');
-      }
-
-      await response.json();
-
-      if (window.theme?.cartType === 'cart_drawer' && window.theme.openCartDrawer?.()) {
-        return;
-      }
-
-      window.location.href = '/cart';
     } catch (error) {
       console.error(error);
       window.alert(error.message || 'Unable to add this item to the cart.');
+    } finally {
+      // Keep the loader visible for the whole request (and a minimum time),
+      // then hide it and run the post-add behavior (open drawer / redirect).
+      await this.ensureMinLoading(startTime);
+      this.setLoading(false);
+      if (afterAdd) afterAdd();
     }
   }
 }
