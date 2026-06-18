@@ -563,7 +563,8 @@ read-more-description {
     display: block;
     border: 0.1rem solid rgba(0, 0, 0, 0.15);
     transition: all 0.2s ease;
-    background-image: var(--swatch-image);
+    background: var(--swatch--background, rgba(0, 0, 0, 0.06)) no-repeat var(--swatch-focal-point, center center);
+    background-size: cover;
 }
 
 .variant_picker_swatch--circle {
