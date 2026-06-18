@@ -4,10 +4,6 @@ slideshow-section {
     position: relative;
 }
 
-.cms-slideshow {
-    position: relative;
-}
-
 .cms-slideshow .page-width,
 .cms-slideshow .full-width {
     height: 100%;

@@ -127,9 +127,9 @@ localization-form h2{
   align-items: center;
   cursor: pointer;
   display: flex;
-  height: 4rem;
+  height: 3.2rem;
   padding: 0 var(--spacing-16) 0 var(--spacing-16);
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   background-color: transparent;
 }
 
@@ -362,7 +362,6 @@ localization-form h2{
 }
 
 .header-localization .disclosure .localization-form__select {
-  font-size: 1.4rem;
   min-height: initial;
 }
 
