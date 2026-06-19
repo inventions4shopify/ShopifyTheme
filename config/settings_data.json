@@ -30,6 +30,7 @@
     "footer_text_color": "#4A3230",
     "footer_hover_text_color": "#443231",
     "primary_button_background_color": "#ff5c00",
+    "primary_button_text_color": "#2a1c1a",
     "primary_button_outline_color": "#4a3230",
     "secondary_button_background_color": "#ffffff",
     "secondary_button_text_color": "#4a3230",
