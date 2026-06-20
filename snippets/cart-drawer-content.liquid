@@ -127,11 +127,11 @@
           </div>
         {% endfor %}
       </div>
-
-      {% if settings.cart_drawer_enable_recommendations %}
-        {% render 'cart-drawer-recommendations' %}
-      {% endif %}
     </div>
+
+    {% if settings.cart_drawer_enable_recommendations %}
+      {% render 'cart-drawer-recommendations' %}
+    {% endif %}
 
     <div class="cart-drawer__footer">
       <div class="cart-drawer__subtotal">

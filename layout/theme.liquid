@@ -83,7 +83,7 @@
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body class="{{ template.name }}">
     {% sections 'header-group' %}
     {% if settings.cart_type == 'cart_drawer' %}
       {% render 'cart-drawer' %}

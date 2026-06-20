@@ -5,6 +5,7 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/blog
 {% endcomment %}
 {{ 'blog-template.css' | asset_url | stylesheet_tag }}
+
 {% paginate blog.articles by section.settings.posts_per_page %}
   <div {%- render 'section-variables', section: section, class: 'custom-articles-section' -%}>
     {% liquid
@@ -108,7 +109,7 @@
 </style>
 {% schema %}
 {
-  "name": "Blog Template",
+  "name": "Blogs",
   "settings": [
     {
       "type": "header",
@@ -347,6 +348,11 @@
       "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
       "default": 40,
       "visible_if": "{{ section.settings.custom_spacing }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blogs"
     }
   ]
 }

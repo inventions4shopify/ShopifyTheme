@@ -21,7 +21,8 @@ localization-form h2{
 
 .localization-form:only-child .button,
 .localization-form:only-child .localization-form__select {
-  margin: var(--spacing-10) var(--spacing-10) var(--spacing-6);
+  /* margin: var(--spacing-10) var(--spacing-10) var(--spacing-6); */
+  margin: 0;
   flex-grow: 1;
 }
 
@@ -38,11 +39,6 @@ localization-form h2{
     justify-content: start;
     width: auto;
     /* margin: 0 1rem 0 0; */
-  }
-
-  .localization-form:only-child .button,
-  .localization-form:only-child .localization-form__select {
-    margin: var(--spacing-10) 0;
   }
 }
 

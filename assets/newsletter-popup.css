@@ -56,6 +56,10 @@
     align-items: center;
   }
 
+  .newsletter-form-inner .button {
+    padding: 0.8rem;
+  }
+
 @media screen and (max-width: 767px) {
     .newsletter-popup-inner {
         flex-direction: column;
