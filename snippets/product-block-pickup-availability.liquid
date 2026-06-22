@@ -1,0 +1,17 @@
+<pickup-availability
+  class="product_pickup_availability"
+  data-root-url="{{ routes.root_url }}"
+  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+  data-product-title="{{ product.title | escape }}"
+  data-has-only-default-variant="{{ product.has_only_default_variant }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="product_pickup_availability_container" data-pickup-availability-container>
+    {% render 'pickup-availability-content',
+      variant: product.selected_or_first_available_variant,
+      modal_id: block.id
+    %}
+  </div>
+</pickup-availability>
+
+<script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>

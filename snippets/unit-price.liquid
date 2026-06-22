@@ -1,0 +1,11 @@
+{%- liquid
+  assign unit_price = price
+  assign unit_measurement = measurement
+-%}
+
+<span class="unit_price">
+  {%- unless hide_accessibility_label -%}
+    <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+  {%- endunless -%}
+  <span aria-hidden="true">{{ unit_price | unit_price_with_measurement: unit_measurement }}</span>
+</span>

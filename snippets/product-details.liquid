@@ -12,11 +12,23 @@
       {% when 'price' %}
         {% render 'product-block-price', product: product, block: block %}
 
+      {% when 'sku' %}
+        {% render 'product-block-sku', product: product, block: block %}
+
+      {% when 'share' %}
+        {% render 'product-block-share', product: product, block: block %}
+
+      {% when 'richtext' %}
+        {% render 'product-block-richtext', product: product, block: block %}
+
       {% when 'inventory' %}
         {% render 'product-block-inventory', product: product, block: block %}
 
       {% when 'variant_picker' %}
         {% render 'product-block-variant-picker', product: product, block: block %}
+
+      {% when 'selling_plans' %}
+        {% render 'product-block-selling-plans', product: product, block: block %}
 
       {% when 'delivery_date' %}
         {% render 'product-block-delivery-date', product: product, block: block %}
@@ -26,6 +38,9 @@
 
       {% when 'buy_buttons' %}
         {% render 'product-block-buy-buttons', product: product, block: block %}
+
+      {% when 'pickup_availability' %}
+        {% render 'product-block-pickup-availability', product: product, block: block %}
 
       {% when 'accordion' %}
         {% render 'product-block-accordion', product: product, block: block %}
