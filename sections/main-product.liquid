@@ -313,6 +313,55 @@
       ]
     },
     {
+      "type": "sku",
+      "name": "SKU",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_label",
+          "label": "Show label",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "SKU"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_when_empty",
+          "label": "Hide when SKU is empty",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "share",
+      "name": "Share",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Share"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
       "type": "inventory",
       "name": "Low Inventory",
       "settings": [
@@ -534,6 +583,25 @@
       ]
     },
     {
+      "type": "selling_plans",
+      "name": "Selling plans",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Purchase options"
+        }
+      ]
+    },
+    {
+      "type": "pickup_availability",
+      "name": "Pickup Availability",
+      "limit": 1,
+      "settings": []
+    },
+    {
       "type": "buy_buttons",
       "name": "Buy Buttons",
       "settings": [
@@ -645,10 +713,19 @@
           "type": "title"
         },
         {
+          "type": "share"
+        },
+        {
           "type": "description"
         },
         {
           "type": "price"
+        },
+        {
+          "type": "sku"
+        },
+        {
+          "type": "richtext"
         },
         {
           "type": "inventory"
@@ -657,7 +734,13 @@
           "type": "variant_picker"
         },
         {
+          "type": "selling_plans"
+        },
+        {
           "type": "buy_buttons"
+        },
+        {
+          "type": "pickup_availability"
         },
         {
           "type": "delivery_date"

@@ -1,0 +1,175 @@
+{%- liquid
+  assign current_variant = variant | default: product_variant
+  assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true
+-%}
+
+{%- if pick_up_availabilities.size > 0 -%}
+  {%- assign closest_location = pick_up_availabilities.first -%}
+
+  <div class="pickup-availability-preview">
+    <div class="pickup-availability-preview__header">
+      <span
+        class="pickup-availability-preview__icon pickup-availability-preview__icon--{% if closest_location.available %}available{% else %}unavailable{% endif %}"
+        aria-hidden="true"
+      >
+        {%- if closest_location.available -%}
+          {% render 'icon', icon: 'check-mark', width: 14, height: 14 %}
+        {%- else -%}
+          {% render 'icon', icon: 'close', width: 14, height: 14 %}
+        {%- endif -%}
+      </span>
+
+      <div class="pickup-availability-preview__summary">
+        {%- if closest_location.available -%}
+          <p class="pickup-availability-preview__status">
+            {{
+              'products.product.pickup_availability.pick_up_available_at_html'
+              | t: location_name: closest_location.location.name
+            }}
+          </p>
+
+          {%- if closest_location.pick_up_time != blank -%}
+            <p class="pickup-availability-preview__time">{{ closest_location.pick_up_time }}</p>
+          {%- endif -%}
+        {%- else -%}
+          <p class="pickup-availability-preview__status pickup-availability-preview__status--unavailable">
+            {{
+              'products.product.pickup_availability.pick_up_unavailable_at_html'
+              | t: location_name: closest_location.location.name
+            }}
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <span class="pickup-availability-preview__variant-title" data-current-variant-title hidden>
+      {{- current_variant.title | escape -}}
+    </span>
+
+    {%- if pick_up_availabilities.size == 1 -%}
+      <button
+        type="button"
+        class="pickup-availability-preview__button link"
+        data-pickup-availability-open
+      >
+        {{ 'products.product.pickup_availability.view_store_info' | t }}
+      </button>
+    {%- else -%}
+      <button
+        type="button"
+        class="pickup-availability-preview__button link"
+        data-pickup-availability-open
+      >
+        {{ 'products.product.pickup_availability.check_other_stores' | t }}
+      </button>
+    {%- endif -%}
+  </div>
+
+  <div
+    class="pickup-availability-modal"
+    data-pickup-availability-modal
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="PickupAvailabilityModalTitle-{{ modal_id | default: section.id }}"
+  >
+    <div class="pickup-availability-modal__overlay" data-pickup-availability-overlay></div>
+
+    <div class="pickup-availability-modal__content">
+      <div class="pickup-availability-modal__header">
+        <h2
+          class="pickup-availability-modal__title h5"
+          id="PickupAvailabilityModalTitle-{{ modal_id | default: section.id }}"
+        >
+          {{ 'products.product.pickup_availability.modal_title' | t }}
+        </h2>
+
+        <button
+          type="button"
+          class="pickup-availability-modal__close"
+          data-pickup-availability-close
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'icon', icon: 'close', width: 18, height: 18 %}
+        </button>
+      </div>
+
+      <div class="pickup-availability-modal__product">
+        <p class="pickup-availability-modal__product-title" data-pickup-product-title></p>
+        <p class="pickup-availability-modal__variant-title" data-pickup-variant-title>
+          {{- current_variant.title | escape -}}
+        </p>
+      </div>
+
+      <ul class="pickup-availability-modal__list" role="list">
+        {%- for availability in pick_up_availabilities -%}
+          <li class="pickup-availability-modal__item">
+            <div class="pickup-availability-modal__item-header">
+              <span
+                class="pickup-availability-modal__status-icon pickup-availability-modal__status-icon--{% if availability.available %}available{% else %}unavailable{% endif %}"
+                aria-hidden="true"
+              >
+                {%- if availability.available -%}
+                  {% render 'icon', icon: 'check-mark', width: 14, height: 14 %}
+                {%- else -%}
+                  {% render 'icon', icon: 'close', width: 14, height: 14 %}
+                {%- endif -%}
+              </span>
+
+              <div class="pickup-availability-modal__item-content">
+                <p class="pickup-availability-modal__location-name">
+                  {{ availability.location.name | escape }}
+                </p>
+
+                {%- if availability.available -%}
+                  <p class="pickup-availability-modal__availability">
+                    {{ 'products.product.pickup_availability.available' | t }}
+                  </p>
+
+                  {%- if availability.pick_up_time != blank -%}
+                    <p class="pickup-availability-modal__time">{{ availability.pick_up_time }}</p>
+                  {%- endif -%}
+                {%- else -%}
+                  <p class="pickup-availability-modal__availability pickup-availability-modal__availability--unavailable">
+                    {{ 'products.product.pickup_availability.unavailable' | t }}
+                  </p>
+                {%- endif -%}
+
+                {%- assign address = availability.location.address -%}
+                {%- if address -%}
+                  <address class="pickup-availability-modal__address">
+                    {%- if address.address1 != blank -%}
+                      {{ address.address1 -}}
+                      <br>
+                    {%- endif -%}
+                    {%- if address.address2 != blank -%}
+                      {{ address.address2 -}}
+                      <br>
+                    {%- endif -%}
+                    {%- if address.city != blank -%}
+                      {{ address.city -}}
+                      {%- if address.province != blank -%}
+                        , {{ address.province -}}
+                      {%- endif -%}
+                      {%- if address.zip != blank -%}
+                        {{ address.zip -}}
+                      {%- endif -%}
+                      <br>
+                    {%- endif -%}
+                    {%- if address.country != blank -%}
+                      {{ address.country -}}
+                      <br>
+                    {%- endif -%}
+                    {%- if address.phone != blank -%}
+                      {{ address.phone }}
+                    {%- endif -%}
+                  </address>
+                {%- endif -%}
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+{%- endif -%}

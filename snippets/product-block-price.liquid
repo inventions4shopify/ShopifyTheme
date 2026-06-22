@@ -7,6 +7,7 @@
 <product-price
   {{ block.shopify_attributes }}
 >
+  <div class="product_price_wrapper">
   <div
     class="product_price_block"
     data-price-block
@@ -49,6 +50,19 @@
     {% endif %}
   </div>
 
+  <div
+    class="product_unit_price"
+    data-unit-price
+    {% unless variant.unit_price_measurement %}
+      hidden
+    {% endunless %}
+  >
+    {% if variant.unit_price_measurement %}
+      {% render 'unit-price', price: variant.unit_price, measurement: variant.unit_price_measurement %}
+    {% endif %}
+  </div>
+  </div>
+
   <script
     type="application/json"
     data-price-settings
@@ -56,8 +70,22 @@
     {
         "showSaveBadge": {{ price_show_save_badge | json }},
         "saveType": {{ price_save_type | json }},
-        "moneyFormat": {{ shop.money_format | json }}
+        "moneyFormat": {{ shop.money_format | json }},
+        "unitPriceLabel": {{ 'products.product.price.unit_price' | t | json }}
         }
+  </script>
+  <script type="application/json" data-variant-unit-prices>
+    {
+      {%- for v in product.variants -%}
+        "{{ v.id }}": {
+          {%- if v.unit_price_measurement -%}
+            "formatted": {{ v.unit_price | unit_price_with_measurement: v.unit_price_measurement | json }}
+          {%- else -%}
+            "formatted": null
+          {%- endif -%}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    }
   </script>
 </product-price>
 <script>
@@ -69,17 +97,52 @@
 
       this.saveBadge = this.querySelector('[data-save-badge]');
 
+      this.unitPrice = this.querySelector('[data-unit-price]');
+
       this.settings = JSON.parse(this.querySelector('[data-price-settings]').textContent);
+
+      const unitPricesEl = this.querySelector('[data-variant-unit-prices]');
+      this.variantUnitPrices = unitPricesEl ? JSON.parse(unitPricesEl.textContent) : {};
 
       this.productRoot = this.closest('[data-product-root]');
 
       this.onVariantChange = this.onVariantChange.bind(this);
+      this.onSellingPlanChange = this.onSellingPlanChange.bind(this);
 
       this.productRoot?.addEventListener('product:variant-change', this.onVariantChange);
+      this.productRoot?.addEventListener('product:selling-plan-change', this.onSellingPlanChange);
+
+      this.syncCurrentVariant();
+    }
+
+    syncCurrentVariant() {
+      const variantInput = this.productRoot?.querySelector('[data-variant-id]');
+      if (!variantInput?.value) return;
+
+      const variantData = this.productRoot?.querySelector('.variant_picker_data');
+
+      if (variantData) {
+        try {
+          const variants = JSON.parse(variantData.textContent);
+          this.currentVariant = variants.find((v) => String(v.id) === String(variantInput.value));
+          return;
+        } catch (error) {
+          console.error('Variant data is invalid', error);
+        }
+      }
+
+      const unitData = this.variantUnitPrices[String(variantInput.value)];
+
+      if (unitData?.formatted) {
+        this.currentVariant = {
+          id: Number(variantInput.value),
+        };
+      }
     }
 
     disconnectedCallback() {
       this.productRoot?.removeEventListener('product:variant-change', this.onVariantChange);
+      this.productRoot?.removeEventListener('product:selling-plan-change', this.onSellingPlanChange);
     }
 
     formatMoney(cents) {
@@ -89,14 +152,64 @@
       }).format(cents / 100);
     }
 
+    updateUnitPrice(variant) {
+      if (!this.unitPrice || !variant) return;
+
+      const formatted = this.variantUnitPrices[String(variant.id)]?.formatted;
+
+      if (!formatted) {
+        this.unitPrice.setAttribute('hidden', '');
+        this.unitPrice.innerHTML = '';
+        return;
+      }
+
+      this.unitPrice.innerHTML =
+        '<span class="unit_price"><span class="visually-hidden">' +
+        this.settings.unitPriceLabel +
+        '</span><span aria-hidden="true">' +
+        formatted +
+        '</span></span>';
+
+      this.unitPrice.removeAttribute('hidden');
+    }
+
     onVariantChange(event) {
       const variant = event.detail.variant;
 
       if (!variant) return;
 
-      this.price.textContent = this.formatMoney(variant.price);
+      this.currentVariant = variant;
+      this.updateUnitPrice(variant);
 
-      const onSale = variant.compare_at_price > variant.price;
+      if (!this.productRoot?.querySelector('selling-plans-picker')) {
+        this.updatePrice(variant.price, variant.compare_at_price);
+      }
+    }
+
+    onSellingPlanChange(event) {
+      const { price, compareAtPrice, isSubscription } = event.detail;
+
+      if (price == null) return;
+
+      this.updatePrice(price, compareAtPrice);
+
+      if (isSubscription) {
+        if (this.unitPrice) {
+          this.unitPrice.setAttribute('hidden', '');
+          this.unitPrice.innerHTML = '';
+        }
+        return;
+      }
+
+      if (this.currentVariant) {
+        this.updateUnitPrice(this.currentVariant);
+      }
+    }
+
+    updatePrice(price, compareAtPrice) {
+      this.price.textContent = this.formatMoney(price);
+
+      const onSale = compareAtPrice > price;
 
       if (!onSale) {
         this.comparePrice?.setAttribute('hidden', '');
@@ -107,20 +220,20 @@
       }
 
       if (this.comparePrice) {
-        this.comparePrice.textContent = this.formatMoney(variant.compare_at_price);
+        this.comparePrice.textContent = this.formatMoney(compareAtPrice);
 
         this.comparePrice.removeAttribute('hidden');
       }
 
       if (this.saveBadge && this.settings.showSaveBadge) {
-        const difference = variant.compare_at_price - variant.price;
+        const difference = compareAtPrice - price;
 
         let saveText = '';
 
         if (this.settings.saveType === 'money') {
           saveText = 'Save ' + this.formatMoney(difference);
         } else {
-          const percentage = Math.round((difference * 100) / variant.compare_at_price);
+          const percentage = Math.round((difference * 100) / compareAtPrice);
 
           saveText = 'Save ' + percentage + '%';
         }
