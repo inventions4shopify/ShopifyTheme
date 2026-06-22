@@ -7,11 +7,16 @@
 .announcement-slider {
   position: relative;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .announcement-wrap {
   text-align: center;
   text-transform: uppercase;
+  flex: 0 0 auto;
+  padding: 0 4rem;
+  white-space: nowrap;
+  width: auto;
 }
 
 .announcement-bar-text p,
@@ -27,6 +32,7 @@
   display: flex;
   transition: transform 0.5s ease;
   width: 100%;
+  cursor: grab;
 }
 
 .announcement-slide {
@@ -72,26 +78,11 @@
   flex-shrink: 0;
 }
 
-.announcement-wrap {
-  flex: 0 0 auto;
-  padding: 0 4rem;
-  white-space: nowrap;
-  width: auto;
-}
-
 .page-width:has(.announcement-marquee-wrapper) {
   max-width: 100%;
   width: 100%;
   overflow: hidden;
   padding: 0;
-}
-
-.announcement-slider {
-  touch-action: pan-y;
-}
-
-.announcement-slides {
-  cursor: grab;
 }
 
 @keyframes marqueeScroll {

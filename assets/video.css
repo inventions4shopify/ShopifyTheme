@@ -32,14 +32,6 @@
   overflow: hidden;
 }
 
-.custom-video-media video,
-.custom-video-media iframe {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
 .custom-video-play-btn {
   position: absolute;
   top: 50%;
