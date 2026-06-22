@@ -45,8 +45,8 @@ function initProductGalleries(root = document) {
       gallery.style.setProperty("--thumbnail-height", `${heightRem}`);
     }
 
-    function updateActiveThumbnail(index) {
-      thumbnails.forEach((thumb) => thumb.classList.remove("active"));
+    function scrollThumbnailIntoView(thumb, behavior = "smooth") {
+      if (!thumb || !thumbnailTrack) return;
 
       const activeThumb = thumbnails[index];
  
@@ -75,7 +75,19 @@ function initProductGalleries(root = document) {
       }
     }
 
-    function updateSlider(index) {
+    function updateActiveThumbnail(index, shouldScroll = true) {
+      thumbnails.forEach((thumb) => thumb.classList.remove("active"));
+
+      const thumb = thumbnails[index];
+
+      thumb?.classList.add("active");
+
+      if (shouldScroll) {
+        scrollThumbnailIntoView(thumb);
+      }
+    }
+
+    function updateSlider(index, shouldScrollThumb = true) {
       if (!slides.length) return;
 
       if (index < 0) {
@@ -90,7 +102,7 @@ function initProductGalleries(root = document) {
 
       track.style.transform = `translate3d(-${index * getSlideWidth()}px,0,0)`;
 
-      updateActiveThumbnail(index);
+      updateActiveThumbnail(index, shouldScrollThumb);
 
       currentIndex = index;
     }
@@ -100,7 +112,7 @@ function initProductGalleries(root = document) {
     --------------------------------- */
 
     window.addEventListener("resize", () => {
-      updateSlider(currentIndex);
+      updateSlider(currentIndex, false);
     });
 
     // ---------------------------------
@@ -341,7 +353,7 @@ function initProductGalleries(root = document) {
       });
     }
 
-    updateSlider(0);
+    updateSlider(0, false);
 
     updateThumbnailHeight();
   });
