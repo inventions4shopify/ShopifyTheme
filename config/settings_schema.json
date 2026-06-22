@@ -1182,15 +1182,15 @@
         "options": [
           {
             "value": "cart_drawer",
-            "label": "Cart Drawer"
+            "label": "Drawer"
           },
           {
             "value": "cart_popup",
-            "label": "Cart Notification"
+            "label": "Pop Up"
           },
           {
             "value": "cart_page",
-            "label": "Cart page"
+            "label": "page"
           }
         ],
         "default": "cart_drawer"

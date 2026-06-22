@@ -57,18 +57,17 @@ collection-list-section {
   z-index: 0;
 }
 
-.collection-card__content.text-start span {
+.collection-card__content.text-start svg {
   margin-left: auto;
 }
 
-.collection-card__content.text-end span {
+.collection-card__content.text-end svg {
   margin-right: auto;
 }
 
 .collection-card .collection-card__image {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1 / 1;
 }
 
 .collection-card .collection-card__image img {

@@ -64,7 +64,7 @@
               class="collection-card"
               {{ block.shopify_attributes }}
             >
-              <div class="collection-card__image">
+              <div class="collection-card__image aspect-{{ section.settings.image_ratio }}">
                 {% if block.settings.custom_image %}
                   {{
                     block.settings.custom_image
@@ -96,6 +96,7 @@
               </div>
               {%- assign align_value = s.collection_heading_alignment | default: 'center' -%}
               {%- assign align_class = 'text-' | append: align_value -%}
+              {%- if collection.title -%}
               <div class="collection-card__content {{ align_class }} justify-{{align_value}}">
                 {%- if collection.title -%}
                   <h3 class="collection__heading h5">
@@ -103,11 +104,10 @@
                   </h3>
                 {%- endif -%}
                 {%if s.collection_heading_alignment == 'start' %}
-                  <span>
-                    {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
-                  </span>
+                  {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
                 {% endif %}
               </div>
+              {%- endif -%}
             </a>
         {% endfor %}
       </div>
@@ -127,7 +127,7 @@
 
 {% schema %}
 {
-  "name": "Collection List",
+  "name": "Collections",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -257,6 +257,26 @@
     },
     {
       "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "default": "square",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        }
+      ]
+    },
+    {
+      "type": "select",
       "id": "mobile_column_count",
       "label": "Mobile Columns",
       "options": [
@@ -376,7 +396,7 @@
   ],
   "presets": [
     {
-      "name": "Collection List",
+      "name": "Collections",
       "blocks": [
         {
           "type": "collection"

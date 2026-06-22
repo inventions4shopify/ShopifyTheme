@@ -15,7 +15,7 @@
   {%- if section.settings.menu_type == 'drawer' -%}
     header-drawer { display: contents; }
   {%- else -%}
-    @media (max-width: 989px) { header-drawer { display: contents; } }
+    @media (max-width: 992px) { header-drawer { display: contents; } }
   {%- endif -%}
 
   .drawer-nav__burger {
@@ -189,6 +189,36 @@
 
       {%- if show_loc -%}
         <div class="drawer-nav__footer">
+          {%- if shop.customer_accounts_enabled -%}
+          <a
+            href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+            class="header__icon-btn header__icon--account {% if section.settings.menu != blank %} small-hide{% endif %}"
+            rel="nofollow"
+          >
+            {%- if section.settings.enable_customer_avatar -%}
+              <account-icon>
+                {%- if customer and customer.has_avatar? -%}
+                  {{ customer | avatar }}
+                {%- else -%}
+                  <span class="svg-wrapper">
+                    {% render 'icon', icon: 'account', width: 20, height: 20 %}
+                  </span>
+                {%- endif -%}
+              </account-icon>
+            {%- else -%}
+              <span class="svg-wrapper"> {% render 'icon', icon: 'account', width: 20, height: 20 %}</span>
+            {%- endif -%}
+            <span class="visually-hidden">
+              {%- liquid
+                if customer
+                  echo 'Account'
+                else
+                  echo 'Log in'
+                endif
+              -%}
+            </span>
+          </a>
+        {%- endif -%}
           {%- if section.settings.show_country and localization.available_countries.size > 1 -%}
             <localization-form>
               {%- form 'localization', id: 'DrawerCountryForm', class: 'localization-form' -%}
