@@ -140,7 +140,12 @@ body.cart-drawer-open {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+}
+
+.cart-drawer__body::-webkit-scrollbar {
+  display: none;
 }
 
 .cart-drawer__items {

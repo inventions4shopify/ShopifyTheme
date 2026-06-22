@@ -26,6 +26,10 @@ body {
   line-height: 1.5;
   color: rgb(var(--color-body-text));
   background-color: rgb(var(--color-background));
+  min-width: 320px;
+  overflow-x: hidden;
+  min-height: 100%;
+  font-optical-sizing: none;
 }
 
 @media (min-width: 768px) {
@@ -1347,9 +1351,6 @@ canvas {
   margin-top: var(--spacing-4);
 }
 
-.visibility-hidden {
-  visibility: hidden;
-}
 .field {
   position: relative;
   width: 100%;
@@ -1576,4 +1577,55 @@ canvas {
 
 .custom-section__content > * {
   grid-column: 2;
+}
+
+.template-password,
+.template-password .section-password,
+.template-password main {
+  height: 100vh;
+}
+
+.template-password .password__section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.section-password-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  padding: var(--spacing-20);
+  display: flex;
+  gap: var(--spacing-10);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.template-password .password__section .page-width {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+body.search {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.search main,
+.search__section,
+.template-search,
+.search-section {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.search__section {
+  overflow: visible;
 }

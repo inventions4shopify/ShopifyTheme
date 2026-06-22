@@ -1,3 +1,5 @@
+{% unless product.has_only_default_variant %}
+
 {%- liquid
   assign picker_swatch_size = qv_swatch_size | default: block.settings.swatch_size
   assign picker_update_url = qv_update_url | default: block.settings.update_url
@@ -217,3 +219,4 @@
 
 <script src="{{ 'product-block-variant-picker.js' | asset_url }}" defer="defer"></script>
 
+{% endunless %}
