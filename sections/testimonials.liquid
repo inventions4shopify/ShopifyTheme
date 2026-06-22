@@ -70,8 +70,8 @@
       {% if section.settings.layout == 'slider' %}
         {% if section.settings.show_arrow %}
           <div class="testimonial-slider-arrow-btn flex">
-            <button class="testimonial-prev button">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
-            <button class="testimonial-next button">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
+            <button class="testimonial-prev button" aria-label="previous slide">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
+            <button class="testimonial-next button" aria-label="next slide">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
           </div>
         {% endif %}
       {% endif %}

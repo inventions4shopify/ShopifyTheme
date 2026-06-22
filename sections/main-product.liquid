@@ -1,5 +1,6 @@
+{{ 'main-product.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
-{{ 'product-image-gallery.js' | asset_url | script_tag }}
+<script src="{{ 'product-image-gallery.js' | asset_url }}" defer></script>
 
 {%- liquid
   assign current_product = product
@@ -11,10 +12,11 @@
 <div {%- render 'section-variables', section: section, class: 'slideshow__section' -%}>
   <div class="page-width">
     {%- if current_product != blank -%}
-      <div class="main-product-section">
+      <div class="main-product-section {{ section.settings.section_layout }}">
         <div class="product-image-gallery-wrapper cms-cell--{{ section.settings.width }}">
-
-          {% render 'breadcrumbs' %}
+          {%if section.settings.enable_breadcrumb %}
+            {% render 'breadcrumbs' %}
+          {% endif %}
 
           {% render 'product-image-gallery',
             product: current_product,
@@ -29,7 +31,7 @@
         <div class="product-info-wrapper">
           {% render 'product-details', product: current_product, blocks: section.blocks %}
         </div>
-      </div>   
+      </div>
     {%- endif -%}
   </div>
 </div>
@@ -38,6 +40,12 @@
 {
   "name": "Product Section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_breadcrumb",
+      "label": "Enable breadcrumb",
+      "default": false
+    },
     {
       "type": "product",
       "id": "product",
@@ -63,6 +71,22 @@
       ],
       "default": "medium",
       "label": "Width"
+    },
+    {
+      "type": "select",
+      "id": "section_layout",
+      "label": "Image Layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "Image First"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Image Second"
+        }
+      ],
+      "default": "row"
     },
     {
       "type": "select",
@@ -659,5 +683,4 @@
 }
 {% endschema %}
 
-
-{{ 'product-block.js' | asset_url | script_tag }}
+<script src="{{ 'product-block.js' | asset_url }}" async></script>

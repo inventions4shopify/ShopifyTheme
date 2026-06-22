@@ -17,6 +17,7 @@
   # ── Alignment class ───────────────────────────────────────────────────────
   assign align_value = s.content_alignment | default: 'center'
   assign align_class = 'text-' | append: align_value
+  assign justify_class = 'justify-' | append: align_value
 
   # ── Gap class ─────────────────────────────────────────────────────────────
   assign gap_value = s.gap | default: '24'
@@ -34,10 +35,10 @@
 -%}
 <div {%- render 'section-variables', section: section, class: 'rich-text__section' -%}>
   <div class="{{ container_class }}">
-    <div class="contact-form flex sm:gap-40 flex-wrap">
+    <div class="contact-form flex sm:gap-40 flex-{{ section.settings.form_position }}">
       {% if description != blank %}
-        <div class="contact-form-content ps-rte">
-          <h2 class="{{ tag }} title title-wrapper--no-top-margin inline-richtext {{ align_class }} {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <div class="contact-form-content ps-rte {{ align_class }}">
+          <h2 class="{{ tag }} title title-wrapper--no-top-margin inline-richtext {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
             {%- if section.settings.heading != blank -%}
               {{ section.settings.heading }}
             {%- else -%}
@@ -55,7 +56,7 @@
           <div class="contact-form-icon-text">
             {% if section.settings.phone_number != blank %}
               <div
-                class="contact-form-icon-with-text flex gap-16 text-lg"
+                class="contact-form-icon-with-text flex gap-16 text-lg {{ justify_class }}"
                 {%- if icon_text_color != blank and icon_text_color != 'rgba(0,0,0,0)' %}
                   style="{%- unless icon_text_color == blank or icon_text_color == 'rgba(0,0,0,0)' -%}color: rgb({{ icon_text_color.rgb }});{%- endunless -%}"
                 {%- endif %}
@@ -73,7 +74,7 @@
             {% endif %}
             {% if section.settings.email_address != blank %}
               <div
-                class="contact-form-icon-with-text flex gap-16 text-lg"
+                class="contact-form-icon-with-text flex gap-16 text-lg {{ justify_class }}"
                 {%- if icon_text_color != blank and icon_text_color != 'rgba(0,0,0,0)' %}
                   style="{%- unless icon_text_color == blank or icon_text_color == 'rgba(0,0,0,0)' -%}color: rgb({{ icon_text_color.rgb }});{%- endunless -%}"
                 {%- endif %}
@@ -248,7 +249,40 @@
         { "value": "full-width", "label": "Full width" },
         { "value": "custom", "label": "Custom" }
       ],
-      "default": "small"
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "Content Alignment"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "inherit", "label": "Inherit from section" },
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ],
+      "default": "start",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "select",
+      "id": "form_position",
+      "options": [
+        {
+          "value": "row",
+          "label": "Form First"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Form Second"
+        }
+      ],
+      "default": "row",
+      "label": "Form Position"
     },
     {
       "type": "header",
@@ -276,19 +310,6 @@
       "visible_if": "{{ section.settings.heading != blank }}"
     },
     {
-      "type": "select",
-      "id": "heading_alignment",
-      "label": "Alignment",
-      "options": [
-        { "value": "inherit", "label": "Inherit from section" },
-        { "value": "start", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "end", "label": "Right" }
-      ],
-      "default": "inherit",
-      "visible_if": "{{ section.settings.heading != blank }}"
-    },
-    {
       "type": "color",
       "id": "heading_color",
       "label": "Heading color",
@@ -303,7 +324,7 @@
         { "value": "center", "label": "Center" },
         { "value": "end", "label": "Right" }
       ],
-      "default": "center"
+      "default": "start"
     },
     {
       "type": "header",

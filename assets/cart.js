@@ -70,33 +70,18 @@ class CartDrawer extends HTMLElement {
       return;
     }
 
-    const decreaseButton = event.target.closest('[data-quantity-decrease]');
-    const increaseButton = event.target.closest('[data-quantity-increase]');
+    // Quantity +/- is handled by the shared <quantity-input> element, which
+    // dispatches a `change` event picked up by onQuantityChange below.
     const removeButton = event.target.closest('[data-cart-remove]');
+
+    if (!removeButton) return;
+
     const lineItem = event.target.closest('[data-cart-item]');
 
     if (!lineItem) return;
 
-    const line = Number(lineItem.dataset.line);
-    const input = lineItem.querySelector('[data-quantity-input]');
-    const currentQuantity = Number(input?.value) || 0;
-
-    if (decreaseButton) {
-      event.preventDefault();
-      this.updateLine(line, Math.max(0, currentQuantity - 1));
-      return;
-    }
-
-    if (increaseButton) {
-      event.preventDefault();
-      this.updateLine(line, currentQuantity + 1);
-      return;
-    }
-
-    if (removeButton) {
-      event.preventDefault();
-      this.updateLine(line, 0);
-    }
+    event.preventDefault();
+    this.updateLine(Number(lineItem.dataset.line), 0);
   }
 
   onQuantityChange(event) {
@@ -114,7 +99,14 @@ class CartDrawer extends HTMLElement {
     this.updateLine(line, quantity);
   }
 
+  setUpdating(isUpdating) {
+    this.classList.toggle('is-updating', isUpdating);
+  }
+
   async updateLine(line, quantity) {
+    this.setUpdating(true);
+    const startTime = Date.now();
+
     try {
       const response = await fetch('/cart/change.js', {
         method: 'POST',
@@ -133,6 +125,9 @@ class CartDrawer extends HTMLElement {
     } catch (error) {
       console.error(error);
       window.alert(error.message || 'Unable to update cart.');
+    } finally {
+      await cartMinLoading(startTime);
+      this.setUpdating(false);
     }
   }
 
@@ -480,6 +475,13 @@ function closeQuickViewModal() {
   }
 }
 
+function cartMinLoading(startTime, min = 500) {
+  const elapsed = Date.now() - startTime;
+  return elapsed < min
+    ? new Promise((resolve) => setTimeout(resolve, min - elapsed))
+    : Promise.resolve();
+}
+
 async function addToCart(payload) {
   const isFormData = payload instanceof FormData;
 
@@ -538,15 +540,21 @@ document.addEventListener('click', async (event) => {
   if (!variantId) return;
 
   button.disabled = true;
+  button.classList.add('is-loading');
+  const startTime = Date.now();
+  let added = false;
 
   try {
     await addToCart({ id: Number(variantId), quantity: 1 });
-    handleCartAfterAdd(window.theme?.cartType || 'cart_drawer');
+    added = true;
   } catch (error) {
     console.error(error);
     window.alert(error.message || 'Unable to add this item to the cart.');
   } finally {
+    await cartMinLoading(startTime);
     button.disabled = false;
+    button.classList.remove('is-loading');
+    if (added) handleCartAfterAdd(window.theme?.cartType || 'cart_drawer');
   }
 });
 

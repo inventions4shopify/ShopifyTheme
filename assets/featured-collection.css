@@ -153,4 +153,7 @@ featured-collection-slider {
   .featured-collection .fc__arrow { display: none; }
 }
 
-
+.collection-placeholder {
+  width: 100%;
+  height: 100%;
+}

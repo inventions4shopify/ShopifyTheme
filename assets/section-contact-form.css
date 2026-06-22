@@ -92,6 +92,14 @@
   .contact-form-icon-with-text:first-of-type {
     margin-bottom: 0.8rem;
   }
+
+  .contact-form {
+    flex-wrap: wrap;
+  }
+
+  .contact-form-description {
+    margin-block: 1.5rem;
+  }
 }
 
 @media screen and (min-width: 750px) {

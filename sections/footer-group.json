@@ -13,9 +13,69 @@
   "sections": {
     "footer": {
       "type": "footer",
+      "blocks": {
+        "text_AjKNf7": {
+          "type": "text",
+          "settings": {
+            "column_size": "large",
+            "text_alignment": "start",
+            "mobile_text_alignment": "start",
+            "title": "Heading",
+            "image": "shopify://shop_images/1.jpg",
+            "logo_width_desktop": 150,
+            "logo_width_mobile": 100,
+            "text": "<p><strong>Lorem Ipsum </strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets.</p>",
+            "text_size": "medium",
+            "button_label": "Explore",
+            "button_link": "",
+            "show_social_links": true
+          }
+        },
+        "link_list_pWFnfU": {
+          "type": "link_list",
+          "settings": {
+            "column_size": "small",
+            "title": "Resources",
+            "menu": "customer-account-main-menu"
+          }
+        },
+        "link_list_jJKpYj": {
+          "type": "link_list",
+          "settings": {
+            "column_size": "small",
+            "title": "Resources",
+            "menu": "main-menu"
+          }
+        },
+        "newsletter_Da6i8d": {
+          "type": "newsletter",
+          "settings": {
+            "column_size": "large",
+            "title": "Subscribe to our newsletter",
+            "text": "<p>Sign up for our newsletter and receive 10% off your first order!</p>",
+            "placeholder": "Email address",
+            "btn_label": "Subscribe",
+            "success_msg": "Thanks for subscribing!"
+          }
+        }
+      },
+      "block_order": [
+        "text_AjKNf7",
+        "link_list_pWFnfU",
+        "link_list_jJKpYj",
+        "newsletter_Da6i8d"
+      ],
       "settings": {
-        "menu": "",
-        "show_payment_icons": true
+        "bottom_menu": "customer-account-main-menu",
+        "copyright_text": "ThePlanetSoft",
+        "enable_language_selector": false,
+        "enable_currency_selector": false,
+        "show_payment_icons": true,
+        "custom_spacing": false,
+        "section_spacing_top_desktop": 64,
+        "section_spacing_bottom_desktop": 64,
+        "section_spacing_top_mobile": 40,
+        "section_spacing_bottom_mobile": 40
       }
     }
   },

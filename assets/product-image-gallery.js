@@ -48,29 +48,30 @@ function initProductGalleries(root = document) {
     function scrollThumbnailIntoView(thumb, behavior = "smooth") {
       if (!thumb || !thumbnailTrack) return;
 
-      const isVerticalDesktop =
-        isVertical && window.matchMedia("(min-width: 767px)").matches;
+      const activeThumb = thumbnails[index];
+ 
+      if (!activeThumb) return;
 
-      if (isVerticalDesktop) {
-        const top =
-          thumb.offsetTop -
-          thumbnailTrack.clientHeight / 2 +
-          thumb.offsetHeight / 2;
+      activeThumb.classList.add("active");
 
-        thumbnailTrack.scrollTo({
-          top: Math.max(0, top),
-          behavior,
-        });
+      // Center the thumbnail within its own track only.
+      // Using Element.scrollIntoView() here would scroll every scrollable
+      // ancestor (including the window), jumping the whole page to the
+      // gallery on load when it sits below the fold.
+      if (!thumbnailTrack) return;
+
+      if (isVertical) {
+        const offset =
+          activeThumb.offsetTop -
+          (thumbnailTrack.clientHeight - activeThumb.offsetHeight) / 2;
+
+        thumbnailTrack.scrollTo({ top: offset, behavior: "smooth" });
       } else {
-        const left =
-          thumb.offsetLeft -
-          thumbnailTrack.clientWidth / 2 +
-          thumb.offsetWidth / 2;
+        const offset =
+          activeThumb.offsetLeft -
+          (thumbnailTrack.clientWidth - activeThumb.offsetWidth) / 2;
 
-        thumbnailTrack.scrollTo({
-          left: Math.max(0, left),
-          behavior,
-        });
+        thumbnailTrack.scrollTo({ left: offset, behavior: "smooth" });
       }
     }
 

@@ -50,7 +50,7 @@
         <div class="collection-grid grid--{{ section.settings.mobile_column_count }}-col sm:grid--3-col lg:grid--{{ section.settings.columns }}-col grid">
           {% for collection in collections %}
             <a href="{{ collection.url }}" class="collection-card{%if section.settings.enable_card_text %} has-overlay-text{% endif %}">
-              <div class="collection-card__image">
+              <div class="collection-card__image aspect-{{ section.settings.image_ratio }}">
                 {% assign collection_image = collection.featured_image %}
 
                 {% if collection_image == blank and collection.products.first %}
@@ -65,7 +65,7 @@
                       loading: 'lazy',
                       widths: '320,480,640,800',
                       sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                      alt: collection.title
+                      alt: 'collection thumb'
                   }}
                 {% else %}
                   {{ 'collection-1' | placeholder_svg_tag }}
@@ -77,9 +77,7 @@
                   {{ collection.title | escape }}
                 </h3>
                 {%if section.settings.collection_heading_alignment == 'start' %}
-                  <span>
-                    {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
-                  </span>
+                  {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
                 {% endif %}
               </div>
             </a>
@@ -94,7 +92,7 @@
 
 {% schema %}
 {
-  "name": "Collection List Page",
+  "name": "Collection List",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -179,6 +177,26 @@
       "max": 6,
       "step": 1,
       "default": 4
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "default": "square",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        }
+      ]
     },
     {
       "type": "range",
@@ -296,7 +314,7 @@
   ],
   "presets": [
     {
-      "name": "Collection List Page",
+      "name": "Collection List",
       "category": "Collections"
     }
   ]

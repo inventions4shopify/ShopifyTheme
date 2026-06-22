@@ -216,13 +216,8 @@ if (!customElements.get("product-recommendations-slider")) {
 
 class ProductCardForm extends HTMLElement {
   connectedCallback() {
-    console.log("connected callback fired");
-
     this.button = this.querySelector(".js_product_card_atc");
     this.variantId = this.querySelector("[data-variant-id]");
-
-    console.log(this.button);
-    console.log(this.variantId);
 
     if (!this.button || !this.variantId) return;
 
@@ -230,22 +225,31 @@ class ProductCardForm extends HTMLElement {
   }
 
   async onClick() {
-    console.log("clicked");
-
-    console.log("variant id", this.variantId.value);
+    this.button.disabled = true;
+    this.button.classList.add("is-loading");
+    const startTime = Date.now();
+    let afterAdd = null;
 
     try {
-      const response = await fetch("/cart/add.js", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-        body: JSON.stringify({
+      if (window.theme?.cart?.add) {
+        await window.theme.cart.add({
           id: this.variantId.value,
           quantity: 1,
-        }),
-      });
+        });
+        afterAdd = () =>
+          window.theme.cart.handleAfterAdd(window.theme?.cartType || "cart_drawer");
+      } else {
+        const response = await fetch("/cart/add.js", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            id: this.variantId.value,
+            quantity: 1,
+          }),
+        });
 
         if (!response.ok) {
           throw new Error("Unable to add this item to the cart.");
@@ -253,13 +257,23 @@ class ProductCardForm extends HTMLElement {
 
         await response.json();
 
-        if (window.theme?.cartType === "cart_drawer" && window.theme.openCartDrawer?.()) {
-          return;
-        }
-
-        window.location.href = "/cart";
+        afterAdd = () => {
+          if (window.theme?.cartType === "cart_drawer" && window.theme.openCartDrawer?.()) {
+            return;
+          }
+          window.location.href = "/cart";
+        };
+      }
     } catch (error) {
       console.error(error);
+    } finally {
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 500) {
+        await new Promise((resolve) => setTimeout(resolve, 500 - elapsed));
+      }
+      this.button.disabled = false;
+      this.button.classList.remove("is-loading");
+      if (afterAdd) afterAdd();
     }
   }
 }

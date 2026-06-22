@@ -33,13 +33,25 @@
           "type": "menu_column",
           "settings": {
             "parent_item": "contact",
-            "heading": "menu",
+            "heading": "our list of menu",
             "menu": "main-menu"
+          }
+        },
+        "image_banner_CqXAqm": {
+          "type": "image_banner",
+          "settings": {
+            "parent_item": "Contact",
+            "image": "shopify://shop_images/crystal-moon-star-earrings-834479.jpg",
+            "heading": "contact us if you have any other issue",
+            "description": "contact us if you have any other issuecontact us if you have any other issuecontact us if you have any other issuecontact us if you have any other issuecontact us if you have any other issue",
+            "button_label": "about us",
+            "button_link": "shopify://policies/terms-of-service"
           }
         }
       },
       "block_order": [
-        "menu_column_yJeHkc"
+        "menu_column_yJeHkc",
+        "image_banner_CqXAqm"
       ],
       "settings": {
         "logo_position": "left",
@@ -50,8 +62,8 @@
         "menu_row": "top",
         "sticky_header": "always",
         "separator_line": true,
-        "show_country": true,
-        "show_language": true,
+        "show_country": false,
+        "show_language": false,
         "enable_customer_avatar": true,
         "separator_color": "#e5e5e5",
         "padding_vertical": 16,

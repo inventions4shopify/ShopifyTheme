@@ -23,10 +23,10 @@
 }
 /* "Always, reduce logo size" — compact header + smaller logo after scroll */
 .header__logo img,
-.header__heading-logo { transition: transform .25s ease; }
+.header__heading-logo { transition: transform .25s ease; height: auto; object-fit: contain; width: revert-layer; }
 .main-header-wrapper.is-scrolled .header__inner { padding-top: 0.6rem; padding-bottom: 0.6rem; }
 .main-header-wrapper.is-scrolled .header__logo img,
-.main-header-wrapper.is-scrolled .header__heading-logo { transform: scale(.8); }
+.main-header-wrapper.is-scrolled .header__heading-logo { transform: scale(0.8); }
 .header--logo-left  .header__logo { transform-origin: left center; }
 .header--logo-right .header__logo { transform-origin: right center; }
 
@@ -35,11 +35,12 @@
 .header__inner {
   display: grid;
   align-items: center;
-  column-gap: 2.4rem;
+  column-gap: 1.8rem;
   row-gap: 0.8rem;
   margin: 0 auto;
   grid-template-columns: auto 1fr auto;
   grid-template-areas: "logo nav utils";
+  padding: var(--header-padding) 0;
 }
 
 
@@ -94,6 +95,7 @@
     "nav   nav nav";
 }
 .header--row-bottom .header__nav {
+  margin: 0;
   justify-self: stretch;        /* nav fills the full-width row */
   border-top: 0.1rem solid var(--header-separator, #e5e5e5);
   padding-top: var(--spacing-8);
@@ -104,17 +106,17 @@
 .header--row-bottom.header--menu-right  .header__nav { justify-content: flex-end; }
 
 /* ----- Logo ----- */
-.header__logo img { display: block; max-width: 100%; height: auto; }
 .header__logo-text { font-size: var(--text-lg); font-weight: 700; text-decoration: none; color: rgb(var(--color-header-text)); }
 
 /* ----- Nav ----- */
 .header__nav { display: flex; align-items: center; gap: var(--spacing-8); }
-.header__nav-list { display: flex; list-style: none; margin: 0; padding: 0; gap: var(--spacing-4); }
+.header__nav-list { display: flex; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
 .header__nav-item { position: relative; }
 .header__nav-link {
-  padding: 0.8rem 1.4rem; text-decoration: none;
+  font-size: var(--text-base);
+  padding: 0.8rem; text-decoration: none;
   color: inherit; white-space: nowrap;
-  display: flex; align-items: center; gap: var(--spacing-6); justify-content: space-between;
+  display: flex; align-items: center; gap: var(--spacing-4); justify-content: space-between;
 }
 
 .header__nav-icon {
@@ -143,7 +145,7 @@
 .header--mega .header__nav-item:hover > .header__submenu { transform: translate(-50%, 0); }
 
 /* ----- Utilities ----- */
-.header__utils { display: flex; align-items: center; gap: var(--spacing-12); }
+.header__utils { display: flex; align-items: center; gap: var(--spacing-8); }
 
 .header__icon-btn { display: inline-flex; background: none; border: 0; color: inherit; cursor: pointer; padding: var(--spacing-6);  position: relative; }
 .header__icon-btn:hover { color: inherit; transform: scale(1.07);}
@@ -182,7 +184,7 @@
 .header__overlay.is-open { opacity: 1; visibility: visible; }
 
 /* ----- Responsive ----- */
-@media (max-width: 990px) {
+@media (max-width: 992px) {
   /* mobile grid: burger | logo | utils */
   .header__inner,
   .header--logo-left .header__inner,
@@ -203,7 +205,7 @@
     display: none;
   }
 }
-@media (min-width: 991px) {
+@media (min-width: 992px) {
 
   .header--drawer .header__nav--desktop { display: none; }
   .header--drawer .header__burger { display: inline-flex; }
@@ -371,8 +373,6 @@
 .header__mega-banner-btn {
   margin-top: var(--spacing-6); 
   align-self: flex-start;
-  border: 0.1rem solid currentColor;
-  border-radius: var(--radius-sm);
   padding: var(--spacing-6) var(--spacing-12);
   font-size: var(--text-sm);
   transition: background .15s ease, color .15s ease;
@@ -380,4 +380,17 @@
 .header__mega-banner:hover .header__mega-banner-btn {
   background: rgb(var(--color-header-text));
   color: rgb(var(--color-header-background));
+}
+
+@media (max-width: 992px) {
+  .header-search,
+  .wishlist,
+  .header__icon--account {
+    display: none;
+  }
+
+  .drawer-nav__footer .header__icon--account {
+    display: inline-flex;
+    color: rgb(var(--color-header-background));
+  }
 }

@@ -70,12 +70,12 @@
                 {{ section.settings.svg_text_icon }}
               {% elsif section.settings.svg_icon_img != blank %}
                 <img
-                  src="{{ section.settings.svg_icon_img | img_url: 'master' }}"
+                  src="{{ section.settings.svg_icon_img | image_url: width: 24 }}"
                   alt="Handle Icon"
                   loading="lazy"
                   width="24"
                   height="24"
-                >
+                />
               {% else %}
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon" viewBox="0 0 16 16">
@@ -93,6 +93,7 @@
               max="100"
               value="50"
               class="slider-range"
+              aria-label="Comparison slider"
             >
           </after-before-section>
         </div>
