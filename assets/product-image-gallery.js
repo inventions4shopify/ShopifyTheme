@@ -45,19 +45,48 @@ function initProductGalleries(root = document) {
       gallery.style.setProperty("--thumbnail-height", `${heightRem}`);
     }
 
-    function updateActiveThumbnail(index) {
-      thumbnails.forEach((thumb) => thumb.classList.remove("active"));
+    function scrollThumbnailIntoView(thumb, behavior = "smooth") {
+      if (!thumb || !thumbnailTrack) return;
 
-      thumbnails[index]?.classList.add("active");
+      const isVerticalDesktop =
+        isVertical && window.matchMedia("(min-width: 767px)").matches;
 
-      thumbnails[index]?.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
+      if (isVerticalDesktop) {
+        const top =
+          thumb.offsetTop -
+          thumbnailTrack.clientHeight / 2 +
+          thumb.offsetHeight / 2;
+
+        thumbnailTrack.scrollTo({
+          top: Math.max(0, top),
+          behavior,
+        });
+      } else {
+        const left =
+          thumb.offsetLeft -
+          thumbnailTrack.clientWidth / 2 +
+          thumb.offsetWidth / 2;
+
+        thumbnailTrack.scrollTo({
+          left: Math.max(0, left),
+          behavior,
+        });
+      }
     }
 
-    function updateSlider(index) {
+    function updateActiveThumbnail(index, shouldScroll = true) {
+      thumbnails.forEach((thumb) => thumb.classList.remove("active"));
+
+      const thumb = thumbnails[index];
+
+      thumb?.classList.add("active");
+
+      if (shouldScroll) {
+        scrollThumbnailIntoView(thumb);
+      }
+    }
+
+    function updateSlider(index, shouldScrollThumb = true) {
       if (!slides.length) return;
 
       if (index < 0) {
@@ -72,7 +101,7 @@ function initProductGalleries(root = document) {
 
       track.style.transform = `translate3d(-${index * getSlideWidth()}px,0,0)`;
 
-      updateActiveThumbnail(index);
+      updateActiveThumbnail(index, shouldScrollThumb);
 
       currentIndex = index;
     }
@@ -82,7 +111,7 @@ function initProductGalleries(root = document) {
     --------------------------------- */
 
     window.addEventListener("resize", () => {
-      updateSlider(currentIndex);
+      updateSlider(currentIndex, false);
     });
 
     // ---------------------------------
@@ -323,7 +352,7 @@ function initProductGalleries(root = document) {
       });
     }
 
-    updateSlider(0);
+    updateSlider(0, false);
 
     updateThumbnailHeight();
   });
