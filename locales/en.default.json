@@ -243,4 +243,10 @@
     "send": "Submit",
     "Error": "Error"
   },
+  "sections": {
+    "featured_blog": {
+      "placeholder_title": "Blog post",
+      "placeholder_excerpt": "Give your customers a summary of your blog post"
+    }
+  }
 }

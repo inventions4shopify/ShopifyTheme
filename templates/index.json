@@ -1165,6 +1165,47 @@
         "section_spacing_bottom_mobile": 40
       }
     },
+    "featured_blog_home": {
+      "type": "featured-blog",
+      "name": "Blog",
+      "settings": {
+        "blog": "",
+        "posts_count": 3,
+        "subheading": "",
+        "heading": "Blog posts",
+        "description": "",
+        "link_text": "View all",
+        "link_url": "",
+        "first_article_full_width": false,
+        "blogs_per_row": 3,
+        "content_alignment": "start",
+        "show_image": true,
+        "image_ratio": "adapt",
+        "zoom_effect": true,
+        "show_date": true,
+        "show_author": true,
+        "show_excerpt": true,
+        "read_more_label": "Read More",
+        "bg_color": "",
+        "heading_color": "",
+        "card_style": false,
+        "card_bg": "",
+        "card_heading_color": "",
+        "author_date": "",
+        "card_text": "",
+        "container_width": "page-width",
+        "background_color": "#ffffff",
+        "background_gradient": "",
+        "button_background_color": "",
+        "button_text_color": "",
+        "button_outline_color": "",
+        "custom_spacing": false,
+        "section_spacing_top_desktop": 64,
+        "section_spacing_bottom_desktop": 64,
+        "section_spacing_top_mobile": 40,
+        "section_spacing_bottom_mobile": 40
+      }
+    },
     "testimonials_RnUgmA": {
       "type": "testimonials",
       "blocks": {
@@ -1265,6 +1306,7 @@
     "main_product_xkDfR7",
     "video_slider_thQVdC",
     "contact_form_M9NGcM",
+    "featured_blog_home",
     "testimonials_RnUgmA"
   ]
 }
