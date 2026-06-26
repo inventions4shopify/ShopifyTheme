@@ -1,0 +1,40 @@
+<cart-popup class="cart-popup" aria-hidden="true" aria-live="polite">
+  <div class="cart-popup__card" role="status">
+    <button type="button" class="cart-popup__close" data-cart-popup-close aria-label="Close">
+      {% render 'icon', icon: 'close', width: 16, height: 16 %}
+    </button>
+
+    <div class="cart-popup__success">
+      {% render 'icon', icon: 'check-mark', width: 18, height: 18 %}
+      <span>Added to your cart!</span>
+    </div>
+
+    <div class="cart-popup__product">
+      <div class="cart-popup__media">
+        <img
+          class="cart-popup__image"
+          data-cart-popup-image
+          src=""
+          alt=""
+          width="72"
+          height="72"
+          loading="lazy"
+        >
+      </div>
+      <div class="cart-popup__details">
+        <p class="cart-popup__title" data-cart-popup-title></p>
+        <p class="cart-popup__price" data-cart-popup-price></p>
+        <p class="cart-popup__variant" data-cart-popup-variant hidden></p>
+      </div>
+    </div>
+
+    <div class="cart-popup__actions">
+      <a href="{{ routes.cart_url }}" class="cart-popup__btn cart-popup__btn--primary">
+        {{ 'cart.view_cart' | t }}
+      </a>
+      <a href="/checkout" class="cart-popup__btn cart-popup__btn--checkout">
+        {{ 'cart.checkout' | t }}
+      </a>
+    </div>
+  </div>
+</cart-popup>
