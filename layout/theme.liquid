@@ -30,6 +30,7 @@
     {{ 'comman-section.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'quantity-input.js' | asset_url }}" defer="defer"></script>
     {%- if settings.enable_wishlist -%}
       {{ 'wishlist.css' | asset_url | stylesheet_tag }}
       <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
@@ -82,13 +83,15 @@
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body class="{{ template.name }}">
     {% sections 'header-group' %}
     {% if settings.cart_type == 'cart_drawer' %}
       {% render 'cart-drawer' %}
     {% endif %}
 
-    {{ content_for_layout }}
+    <main id="MainContent">
+      {{ content_for_layout }}
+    </main>
 
     {% sections 'footer-group' %}
 

@@ -1,0 +1,32 @@
+{%- liquid
+  assign share_label = block.settings.button_label
+  if share_label == blank
+    assign share_label = 'products.product.share.label' | t
+  endif
+-%}
+
+<product-share
+  class="product_share_block"
+  data-title="{{ product.title | escape }}"
+  {{ block.shopify_attributes }}
+>
+  <button
+    type="button"
+    class="product_share_button"
+    data-share-button
+  >
+    {% render 'icon', icon: 'share', width: 18, height: 18 %}
+    <span data-share-label>{{ share_label }}</span>
+  </button>
+
+  <span
+    class="product_share_success visually-hidden"
+    data-share-success
+    role="status"
+    aria-live="polite"
+  >
+    {{ 'products.product.share.success' | t }}
+  </span>
+</product-share>
+
+<script src="{{ 'product-block-share.js' | asset_url }}" defer="defer"></script>

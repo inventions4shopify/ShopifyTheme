@@ -13,10 +13,11 @@ class StickyAddToCart extends HTMLElement {
     this.variant = null;
 
     this.onVariantChange = this.onVariantChange.bind(this);
-
+    this.onSellingPlanChange = this.onSellingPlanChange.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
 
     this.productRoot?.addEventListener('product:variant-change', this.onVariantChange);
+    this.productRoot?.addEventListener('product:selling-plan-change', this.onSellingPlanChange);
 
     this.button?.addEventListener('click', this.onButtonClick);
 
@@ -25,6 +26,7 @@ class StickyAddToCart extends HTMLElement {
 
   disconnectedCallback() {
     this.productRoot?.removeEventListener('product:variant-change', this.onVariantChange);
+    this.productRoot?.removeEventListener('product:selling-plan-change', this.onSellingPlanChange);
 
     this.button?.removeEventListener('click', this.onButtonClick);
 
@@ -53,18 +55,27 @@ class StickyAddToCart extends HTMLElement {
   }
 
   onVariantChange(event) {
-    console.log('variant change', event.detail);
     const variant = event.detail.variant;
 
     if (!variant) return;
 
     this.variant = variant;
 
-    if (variant.featured_media) {
+    if (variant.featured_media?.preview_image?.src && this.image) {
       this.image.src = `${variant.featured_media.preview_image.src}&width=120`;
     }
 
-    this.price.textContent = window.theme.formatMoney(variant.price);
+    if (this.price) {
+      this.price.textContent = window.theme.formatMoney(variant.price);
+    }
+  }
+
+  onSellingPlanChange(event) {
+    const { price } = event.detail;
+
+    if (price == null || !this.price) return;
+
+    this.price.textContent = window.theme.formatMoney(price);
   }
 
   onButtonClick() {

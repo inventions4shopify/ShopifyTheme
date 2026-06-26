@@ -12,11 +12,9 @@ img,
 picture,
 video,
 canvas {
-  display: block;
   width: 100%;
   height: 100%;
   max-width: none;
-  object-fit: cover;
 }
 
 .cms-cell--small,

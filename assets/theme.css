@@ -23,9 +23,19 @@ body {
   font-weight: var(--font-body-weight);
   font-size: var(--text-base);
   letter-spacing: var(--body-letter-spacing);
-  line-height: normal;
+  line-height: 1.5;
   color: rgb(var(--color-body-text));
   background-color: rgb(var(--color-background));
+  min-width: 320px;
+  overflow-x: hidden;
+  min-height: 100%;
+  font-optical-sizing: none;
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 1.6rem;
+  }
 }
 
 .header {
@@ -335,6 +345,22 @@ input[type="submit"] {
   --button-outline: rgb(var(--color-button-secondary-outline));
 }
 
+body .shopify-payment-button__button--unbranded {
+  background: rgb(var(--color-button-secondary-background));
+  color: rgb(var(--color-button-secondary-text));
+  box-shadow: 2px 2px rgb(var(--color-button-primary-outline));
+  padding: 1rem 1.8rem;
+  border: 0.2rem solid rgb(var(--color-button-primary-outline));
+  text-decoration: none;
+  border-radius: var(--button-radius);
+  font: inherit;
+  text-transform: uppercase;
+}
+
+body .shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  background: rgb(var(--color-button-secondary-background));
+}
+
 .button:disabled,
 button:disabled {
   opacity: 0.5;
@@ -568,21 +594,6 @@ canvas {
 .ps-rte ol {
   list-style: decimal;
   padding-left: 2rem;
-}
-
-.ps-rte a {
-  color: rgb(var(--color-heading));
-  text-decoration: underline;
-}
-
-.ps-rte a:hover {
-  color: rgb(var(--color-body-text));
-}
-
-.ps-rte img {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--media-radius);
 }
 
 .ps-rte blockquote {
@@ -1340,9 +1351,6 @@ canvas {
   margin-top: var(--spacing-4);
 }
 
-.visibility-hidden {
-  visibility: hidden;
-}
 .field {
   position: relative;
   width: 100%;
@@ -1474,4 +1482,150 @@ canvas {
   z-index: 10;
   pointer-events: auto;
   cursor: pointer;
+}
+
+/* ── Loading spinner / button loading state ───────────────────────── */
+.loading-spinner {
+  animation: theme-spin 0.6s linear infinite;
+}
+
+@keyframes theme-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button.is-loading {
+  position: relative;
+  pointer-events: none;
+  color: transparent !important;
+}
+
+.button.is-loading > * {
+  visibility: hidden;
+}
+
+.button.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: -0.8rem 0 0 -0.8rem;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: theme-spin 0.6s linear infinite;
+}
+
+.button--primary.is-loading::after {
+  border-color: rgb(var(--color-button-primary-text));
+  border-right-color: transparent;
+}
+
+.button--secondary.is-loading::after {
+  border-color: rgb(var(--color-button-secondary-text));
+  border-right-color: transparent;
+}
+
+.group {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+.group--horizontal {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--padding);
+}
+
+.group--vertical {
+  flex-direction: column;
+  align-items: var(--alignment);
+  padding: var(--padding) 0;
+}
+
+.custom-section {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+.custom-section__background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.custom-section__background img {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-section__content {
+  display: grid;
+  grid-template-columns: var(--content-grid);
+}
+
+.custom-section__content > * {
+  grid-column: 2;
+}
+
+.template-password,
+.template-password .section-password,
+.template-password main {
+  height: 100vh;
+}
+
+.template-password .password__section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.section-password-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  padding: var(--spacing-20);
+  display: flex;
+  gap: var(--spacing-10);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.template-password .password__section .page-width {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+body.search {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.search main,
+.search__section,
+.template-search,
+.search-section {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.search__section {
+  overflow: visible;
 }

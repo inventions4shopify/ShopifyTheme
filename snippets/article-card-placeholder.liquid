@@ -1,0 +1,41 @@
+{%- liquid
+  assign media_height = media_height | default: 'adapt'
+  assign show_image = show_image | default: true
+  assign show_excerpt = show_excerpt | default: true
+  assign placeholder_index = placeholder_index | default: 1
+
+  case placeholder_index
+    when 2
+      assign placeholder_name = 'blog-apparel-2'
+    when 3
+      assign placeholder_name = 'blog-apparel-3'
+    else
+      assign placeholder_name = 'blog-apparel-1'
+  endcase
+-%}
+
+<div class="article-card-wrapper card-wrapper">
+  <div class="card article-card{% if show_image %} card--media{% else %} card--text{% endif %}">
+    {%- if show_image -%}
+      <div class="article-card__image-wrapper">
+        <div class="article-card__image ratio-{{ media_height }} article-card__placeholder">
+          {{ placeholder_name | placeholder_svg_tag: 'article-card__placeholder-svg' }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="card__content">
+      <div class="card__information ps-rte">
+        <h3 class="card__heading h5">
+          {{ 'sections.featured_blog.placeholder_title' | t | default: 'Blog post' }}
+        </h3>
+
+        {%- if show_excerpt -%}
+          <div class="article-card__excerpt text-sm">
+            {{ 'sections.featured_blog.placeholder_excerpt' | t | default: 'Give your customers a summary of your blog post' }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

@@ -193,7 +193,34 @@
     }
   },
   "accessibility": {
-    "close": "Close",
+    "close": "Close"
+  },
+  "products": {
+    "product": {
+      "price": {
+        "unit_price": "Unit price"
+      },
+      "pickup_availability": {
+        "pick_up_available_at_html": "Pickup available at <span>{{ location_name }}</span>",
+        "pick_up_unavailable_at_html": "Pickup unavailable at <span>{{ location_name }}</span>",
+        "available": "Available for pickup",
+        "unavailable": "Not available for pickup",
+        "view_store_info": "View store information",
+        "check_other_stores": "Check availability at other stores",
+        "modal_title": "Pickup availability"
+      },
+      "selling_plans": {
+        "one_time_purchase": "One-time purchase",
+        "each": "each"
+      },
+      "share": {
+        "label": "Share",
+        "success": "Link copied"
+      },
+      "sku": {
+        "label": "SKU"
+      }
+    }
   },
   "localization": {
     "country_label": "Country/region",
@@ -216,4 +243,10 @@
     "send": "Submit",
     "Error": "Error"
   },
+  "sections": {
+    "featured_blog": {
+      "placeholder_title": "Blog post",
+      "placeholder_excerpt": "Give your customers a summary of your blog post"
+    }
+  }
 }

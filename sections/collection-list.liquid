@@ -64,7 +64,7 @@
               class="collection-card"
               {{ block.shopify_attributes }}
             >
-              <div class="collection-card__image">
+              <div class="collection-card__image aspect-{{ section.settings.image_ratio }}">
                 {% if block.settings.custom_image %}
                   {{
                     block.settings.custom_image
@@ -73,7 +73,7 @@
                       loading: 'lazy',
                       widths: '320,480,640,800',
                       sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                      alt: collection.title
+                      alt: 'collection thumb'
                   }}
                 {% elsif collection_image %}
                   {{
@@ -83,12 +83,12 @@
                       loading: 'lazy',
                       widths: '320,480,640,800',
                       sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
-                      alt: collection.title
+                      alt: 'collection thumb'
                   }}
                 {% else %}
                   <img
                     src="{{ 'thumbnail.svg' | asset_url }}"
-                    alt="{{ collection.title | escape }}"
+                    alt="collection thumb"
                     loading="lazy"
                     width="auto"
                     height="auto">
@@ -96,6 +96,7 @@
               </div>
               {%- assign align_value = s.collection_heading_alignment | default: 'center' -%}
               {%- assign align_class = 'text-' | append: align_value -%}
+              {%- if collection.title -%}
               <div class="collection-card__content {{ align_class }} justify-{{align_value}}">
                 {%- if collection.title -%}
                   <h3 class="collection__heading h5">
@@ -103,19 +104,18 @@
                   </h3>
                 {%- endif -%}
                 {%if s.collection_heading_alignment == 'start' %}
-                  <span>
-                    {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
-                  </span>
+                  {% render 'icon', icon: 'arrow-right', width: 24, height: 24 %}
                 {% endif %}
               </div>
+              {%- endif -%}
             </a>
         {% endfor %}
       </div>
       {% if s.layout == 'slider' %}
         {% if s.show_arrow %}
           <div class="collection-grid-slider-arrow-btn flex">
-            <button class="collection-grid-prev button">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
-            <button class="collection-grid-next button">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
+            <button class="collection-grid-prev button" aria-label="previous slide">{% render 'icon', icon: 'chevron-left', width: '2.4rem', height: '2.4rem' %}</button>
+            <button class="collection-grid-next button" aria-label="next slide">{% render 'icon', icon: 'chevron-right', width: '2.4rem', height: '2.4rem' %}</button>
           </div>
         {% endif %}
       {% endif %}
@@ -127,7 +127,7 @@
 
 {% schema %}
 {
-  "name": "Collection List",
+  "name": "Collections",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -257,6 +257,26 @@
     },
     {
       "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "default": "square",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        }
+      ]
+    },
+    {
+      "type": "select",
       "id": "mobile_column_count",
       "label": "Mobile Columns",
       "options": [
@@ -376,7 +396,7 @@
   ],
   "presets": [
     {
-      "name": "Collection List",
+      "name": "Collections",
       "blocks": [
         {
           "type": "collection"

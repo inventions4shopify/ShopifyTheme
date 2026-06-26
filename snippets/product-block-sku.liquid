@@ -1,0 +1,25 @@
+{%- liquid
+  assign sku_variant = product.selected_or_first_available_variant
+  assign sku_show_label = block.settings.show_label
+  assign sku_label = block.settings.label
+  if sku_label == blank
+    assign sku_label = 'products.product.sku.label' | t
+  endif
+  assign sku_hide_when_empty = block.settings.hide_when_empty
+-%}
+
+<product-sku
+  class="product_sku_block"
+  data-hide-when-empty="{{ sku_hide_when_empty }}"
+  {% if sku_hide_when_empty and sku_variant.sku == blank %}
+    hidden
+  {% endif %}
+  {{ block.shopify_attributes }}
+>
+  {%- if sku_show_label -%}
+    <span class="product_sku_label">{{ sku_label }}:</span>
+  {%- endif -%}
+  <span class="product_sku_value" data-sku>{{ sku_variant.sku }}</span>
+</product-sku>
+
+<script src="{{ 'product-block-sku.js' | asset_url }}" defer="defer"></script>

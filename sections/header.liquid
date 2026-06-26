@@ -7,13 +7,8 @@
   .header.has-separator {
     border-bottom: 0.1rem solid {{ section.settings.separator_color }};
   }
-  .header__inner {
-    padding: var(--header-padding) 0;
-  }
   .header--row-bottom .header__nav {
-    margin: 0;
     border-top: 0.1rem solid {{ section.settings.separator_color }};
-    padding-top: 0.8rem;
   }
     /* ----- Dropdown ----- */
   .header__submenu {
@@ -33,7 +28,7 @@
   }
   .header__nav-link:hover { color: {{ settings.header_hover_text_color }} }
   {%- if section.settings.menu_type != "drawer" -%}
-    @media screen and (min-width: 990px) {
+    @media screen and (min-width: 992px) {
       header-drawer {
         display: none;
       }
@@ -91,7 +86,7 @@
               | image_url: width: 600
               | image_tag:
                 class: 'header__heading-logo',
-                widths: widths,
+                width: widths,
                 height: logo_height,
                 alt: logo_alt,
                 sizes: sizes,
@@ -277,7 +272,7 @@
               assign wishlist_url = '/pages/wishlist'
             endif
           -%}
-          <a href="{{ wishlist_url }}" class="header__icon-btn" aria-label="{{ 'wishlist.title' | t }}">
+          <a href="{{ wishlist_url }}" class="header__icon-btn wishlist" aria-label="{{ 'wishlist.title' | t }}">
             {% render 'icon', icon: 'heart', width: 20, height: 20 %}
             <span class="header__wishlist-count" data-wishlist-count hidden>0</span>
           </a>

@@ -1,0 +1,124 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign selling_plans_heading = block.settings.heading | default: 'Purchase options'
+-%}
+
+{%- if product.selling_plan_groups.size > 0 -%}
+  <script src="{{ 'product-block-selling-plans.js' | asset_url }}" defer="defer"></script>
+
+  <selling-plans-picker
+    class="selling_plans_picker"
+    data-requires-selling-plan="{{ product.requires_selling_plan }}"
+    {{ block.shopify_attributes }}
+  >
+    <fieldset class="selling_plans_fieldset">
+      <legend class="selling_plans_legend">
+        {{ selling_plans_heading }}
+      </legend>
+
+      {%- for variant in product.variants -%}
+        {%- if variant.selling_plan_allocations.size > 0 -%}
+          <div
+            class="selling_plans_variant{% unless variant.id == current_variant.id %} selling_plans_variant--hidden{% endunless %}"
+            data-selling-plan-variant="{{ variant.id }}"
+          >
+            <ul class="selling_plans_list">
+              {%- unless product.requires_selling_plan -%}
+                <li class="selling_plans_option">
+                  <label class="selling_plans_label">
+                    <input
+                      type="radio"
+                      class="selling_plans_input visually-hidden"
+                      name="purchase_option_{{ block.id }}_{{ variant.id }}"
+                      value=""
+                      data-radio-type="one_time_purchase"
+                      data-price="{{ variant.price }}"
+                      data-compare-at-price="{{ variant.compare_at_price | default: variant.price }}"
+                      {% if variant.available == false %}
+                        disabled
+                      {% endif %}
+                      checked
+                    >
+                    <span class="selling_plans_radio" aria-hidden="true"></span>
+                    <span class="selling_plans_label_body">
+                      <span class="selling_plans_label_text">
+                        {{ 'products.product.selling_plans.one_time_purchase' | t }}
+                      </span>
+                    </span>
+                    <span class="selling_plans_label_price">
+                      {{ variant.price | money }}
+                      <span class="selling_plans_each">{{ 'products.product.selling_plans.each' | t }}</span>
+                    </span>
+                  </label>
+                </li>
+              {%- endunless -%}
+
+              {%- assign group_ids = variant.selling_plan_allocations | map: 'selling_plan_group_id' | uniq -%}
+
+              {%- for group_id in group_ids -%}
+                {%- liquid
+                  assign allocations = variant.selling_plan_allocations | where: 'selling_plan_group_id', group_id
+
+                  if forloop.first
+                    assign first_selling_plan_group = true
+                  else
+                    assign first_selling_plan_group = false
+                  endif
+                -%}
+
+                {%- for allocation in allocations -%}
+                  {%- liquid
+                    if forloop.first and product.requires_selling_plan and first_selling_plan_group
+                      assign plan_checked = true
+                    else
+                      assign plan_checked = false
+                    endif
+
+                    assign allocation_compare_at = allocation.compare_at_price | default: allocation.price
+                  -%}
+
+                  <li class="selling_plans_option">
+                    <label class="selling_plans_label">
+                      <input
+                        type="radio"
+                        class="selling_plans_input visually-hidden"
+                        name="purchase_option_{{ block.id }}_{{ variant.id }}"
+                        value="{{ allocation.selling_plan.id }}"
+                        data-radio-type="selling_plan"
+                        data-selling-plan-id="{{ allocation.selling_plan.id }}"
+                        data-price="{{ allocation.price }}"
+                        data-compare-at-price="{{ allocation_compare_at }}"
+                        data-per-delivery-price="{{ allocation.per_delivery_price }}"
+                        {% if variant.available == false %}
+                          disabled
+                        {% endif %}
+                        {% if plan_checked %}
+                          checked
+                        {% endif %}
+                      >
+                      <span class="selling_plans_radio" aria-hidden="true"></span>
+                      <span class="selling_plans_label_body">
+                        <span class="selling_plans_label_text">
+                          {{ allocation.selling_plan.name }}
+                        </span>
+                        {%- if allocation.selling_plan.description != blank -%}
+                          <span class="selling_plans_description">
+                            {{ allocation.selling_plan.description }}
+                          </span>
+                        {%- endif -%}
+                      </span>
+                      <span class="selling_plans_label_price">
+                        {{ allocation.per_delivery_price | money }}
+                        <span class="selling_plans_each">{{ 'products.product.selling_plans.each' | t }}</span>
+                      </span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </fieldset>
+  </selling-plans-picker>
+{%- endif -%}

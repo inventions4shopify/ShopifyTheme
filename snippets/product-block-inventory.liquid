@@ -11,36 +11,3 @@
     Only {{ variant.inventory_quantity }} left
   </div>
 {% endif %}
-
-
-{% style %}
-.product_inventory_block {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.8rem 1.2rem;
-  border-radius: 0.6rem;
-  background-color: rgba(255, 145, 0, 0.1);
-  color: #b45309;
-  font-size: 1.3rem;
-  font-weight: 500;
-  line-height: 1.4;
-  margin-top: 1rem;
-}
-
-/* Optional pulse indicator */
-.product_inventory_block::before {
-  content: '';
-  width: 0.8rem;
-  height: 0.8rem;
-  border-radius: 50%;
-  background-color: currentColor;
-  flex-shrink: 0;
-}
-
-@media screen and (min-width: 750px) {
-  .product_inventory_block {
-    font-size: 1.4rem;
-  }
-}
-{% endstyle %}

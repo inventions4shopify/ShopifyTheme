@@ -45,19 +45,49 @@ function initProductGalleries(root = document) {
       gallery.style.setProperty("--thumbnail-height", `${heightRem}`);
     }
 
-    function updateActiveThumbnail(index) {
-      thumbnails.forEach((thumb) => thumb.classList.remove("active"));
+    function scrollThumbnailIntoView(thumb, behavior = "smooth") {
+      if (!thumb || !thumbnailTrack) return;
 
-      thumbnails[index]?.classList.add("active");
+      const activeThumb = thumbnails[index];
+ 
+      if (!activeThumb) return;
 
-      thumbnails[index]?.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
+      activeThumb.classList.add("active");
+
+      // Center the thumbnail within its own track only.
+      // Using Element.scrollIntoView() here would scroll every scrollable
+      // ancestor (including the window), jumping the whole page to the
+      // gallery on load when it sits below the fold.
+      if (!thumbnailTrack) return;
+
+      if (isVertical) {
+        const offset =
+          activeThumb.offsetTop -
+          (thumbnailTrack.clientHeight - activeThumb.offsetHeight) / 2;
+
+        thumbnailTrack.scrollTo({ top: offset, behavior: "smooth" });
+      } else {
+        const offset =
+          activeThumb.offsetLeft -
+          (thumbnailTrack.clientWidth - activeThumb.offsetWidth) / 2;
+
+        thumbnailTrack.scrollTo({ left: offset, behavior: "smooth" });
+      }
     }
 
-    function updateSlider(index) {
+    function updateActiveThumbnail(index, shouldScroll = true) {
+      thumbnails.forEach((thumb) => thumb.classList.remove("active"));
+
+      const thumb = thumbnails[index];
+
+      thumb?.classList.add("active");
+
+      if (shouldScroll) {
+        scrollThumbnailIntoView(thumb);
+      }
+    }
+
+    function updateSlider(index, shouldScrollThumb = true) {
       if (!slides.length) return;
 
       if (index < 0) {
@@ -72,7 +102,7 @@ function initProductGalleries(root = document) {
 
       track.style.transform = `translate3d(-${index * getSlideWidth()}px,0,0)`;
 
-      updateActiveThumbnail(index);
+      updateActiveThumbnail(index, shouldScrollThumb);
 
       currentIndex = index;
     }
@@ -82,7 +112,7 @@ function initProductGalleries(root = document) {
     --------------------------------- */
 
     window.addEventListener("resize", () => {
-      updateSlider(currentIndex);
+      updateSlider(currentIndex, false);
     });
 
     // ---------------------------------
@@ -323,7 +353,7 @@ function initProductGalleries(root = document) {
       });
     }
 
-    updateSlider(0);
+    updateSlider(0, false);
 
     updateThumbnailHeight();
   });

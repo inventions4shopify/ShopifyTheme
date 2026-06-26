@@ -1,3 +1,5 @@
+{{ 'newsletter-popup.css' | asset_url | stylesheet_tag }}
+
 {% liquid
   assign popup_delay = section.settings.popup_delay
   assign scroll_percentage = section.settings.scroll_percentage
@@ -33,7 +35,7 @@
     top: 50%;
     left: 50%;
     width: 92%;
-    max-width: 900px;
+    max-width: 95%;
     transform: translate(-50%, -50%) scale(.9);
     border-radius: {{ section.settings.border_radius }}px;
     z-index: 1000;
@@ -63,100 +65,16 @@
     background: transparent;
   }
 
-  .newsletter-popup-inner {
-    display: flex;
-    align-items: stretch;
-    min-height: 450px;
-  }
-
-  .newsletter-popup-inner.image-right {
-    flex-direction: row-reverse;
-  }
-
-  .newsletter-popup-image {
-    width: 50%;
-  }
-
-  .newsletter-popup-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  /* When image is not added */
-  .newsletter-popup-inner.no-image .newsletter-popup-content {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .newsletter-popup-inner.no-image .newsletter-form {
-    width: 100%;
-  }
-
-  .newsletter-popup-inner.no-image .newsletter-form-inner {
-    justify-content: center;
-  }
-  .newsletter-popup-content {
-    width: 50%;
-    padding: 50px 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .newsletter-subheading {
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .newsletter-form {
-    width: 100%;
-  }
   .newsletter-input {
     border-radius: {{ section.settings.input_radius }}px;
     border: 1px solid {{ section.settings.input_border }};
     background: {{ section.settings.input_bg }};
     color: {{ section.settings.input_text }};
   }
-  .newsletter-form-inner {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
 
-  @media screen and (max-width: 767px) {
-
+  @media screen and (min-width: 768px) {
     .newsletter-popup-{{ section.id }} {
-      max-width: 95%;
-    }
-
-    .newsletter-popup-inner {
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .newsletter-popup-content {
-      width: 100%;
-    }
-
-    .newsletter-popup-image {
-      display: none;
-    }
-
-    .newsletter-popup-content {
-      padding: 30px 20px;
-    }
-
-    .newsletter-form-inner {
-      flex-direction: column;
-    }
-
-    .newsletter-btn,
-    .newsletter-input {
-      width: 100%;
+      max-width: 90rem;
     }
   }
 </style>

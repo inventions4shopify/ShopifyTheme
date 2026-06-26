@@ -1,5 +1,5 @@
 <div class="product_title_block_wrapper" {{ block.shopify_attributes }}>
-  <h1 class="product_title_block">
+  <h1 class="h3">
     {{ product.title }}
   </h1>
 
@@ -10,30 +10,3 @@
     {% render 'wishlist-button', product: product, class: 'wishlist-button--product' %}
   {% endif %}
 </div>
-
-{% style %}
-.product_title_block_wrapper {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.2rem;
-  margin-bottom: 1.2rem;
-}
-
-.product_title_block {
-  line-height: 1.2;
-  font-weight: 600;
-  color: rgb(var(--color-foreground));
-  margin: 0;
-  letter-spacing: -0.02em;
-  word-break: break-word;
-  flex: 1;
-}
-
-/* Desktop */
-@media screen and (min-width: 750px) {
-  .product_title_block_wrapper {
-    margin-bottom: 1.5rem;
-  }
-}
-{% endstyle %}

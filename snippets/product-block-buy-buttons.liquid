@@ -1,48 +1,3 @@
-{% style %}
-  .product_form {
-    margin-top: 1.5rem;
-    display: block;
-  }
-  .product_form_submit {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 1%;
-    flex: 1 1 auto;
-  }
-
-  .product_quantity_buy_wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-
-  .product_form_submit.loading {
-    pointer-events: none;
-  }
-
-  .product_form_spinner {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: inherit;
-  }
-
-  .product_form_spinner.hidden {
-    display: none;
-  }
-
-  .product_form_submit.loading > svg,
-  .product_form_submit.loading > span:not(.product_form_spinner) {
-    opacity: 0;
-  }
-{% endstyle %}
-
 {%- liquid
   assign buy_show_quantity_selector = qv_show_quantity_selector | default: block.settings.show_quantity_selector
   assign buy_show_dynamic_checkout = qv_show_dynamic_checkout | default: block.settings.show_dynamic_checkout
@@ -64,6 +19,13 @@
       name="id"
       value="{{ product.selected_or_first_available_variant.id }}"
       data-variant-id
+    >
+
+    <input
+      type="hidden"
+      name="selling_plan"
+      value=""
+      data-selling-plan-input
     >
 
     <div class="product_quantity_buy_wrapper">
