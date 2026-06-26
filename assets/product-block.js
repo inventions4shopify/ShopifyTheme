@@ -230,14 +230,16 @@ class ProductCardForm extends HTMLElement {
     const startTime = Date.now();
     let afterAdd = null;
 
+    let addedItem = null;
+
     try {
       if (window.theme?.cart?.add) {
-        await window.theme.cart.add({
+        addedItem = await window.theme.cart.add({
           id: this.variantId.value,
           quantity: 1,
         });
         afterAdd = () =>
-          window.theme.cart.handleAfterAdd(window.theme?.cartType || "cart_drawer");
+          window.theme.cart.handleAfterAdd(window.theme?.cartType || "cart_drawer", addedItem);
       } else {
         const response = await fetch("/cart/add.js", {
           method: "POST",
@@ -255,12 +257,14 @@ class ProductCardForm extends HTMLElement {
           throw new Error("Unable to add this item to the cart.");
         }
 
-        await response.json();
+        const addedItem = await response.json();
 
         afterAdd = () => {
-          if (window.theme?.cartType === "cart_drawer" && window.theme.openCartDrawer?.()) {
+          if (window.theme?.cart?.handleAfterAdd) {
+            window.theme.cart.handleAfterAdd(window.theme?.cartType, addedItem);
             return;
           }
+
           window.location.href = "/cart";
         };
       }

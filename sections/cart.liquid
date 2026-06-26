@@ -1,33 +1,25 @@
 {% comment %}
-  This section is used in the cart template to render /cart page with an
-  overview of the items in customer's cart.
+  Cart page section — /cart template.
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
 {% endcomment %}
 
-<h1>{{ 'cart.title' | t }}</h1>
+{{ 'cart.css' | asset_url | stylesheet_tag }}
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
-    {% for item in cart.items %}
-      <tr>
-        <td>
-          {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+<cart-page
+  class="cart-page page-width{% if cart == empty %} is-empty{% endif %}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="cart-page__celebration" data-cart-celebration aria-hidden="true" hidden></div>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
-</form>
+  <div data-cart-page-contents>
+    {% render 'cart-page-content' %}
+  </div>
+
+  <div class="cart-page__loading" data-cart-loading aria-hidden="true">
+    {% render 'loading-spinner' %}
+  </div>
+</cart-page>
 
 {% schema %}
 {

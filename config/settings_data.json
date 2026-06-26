@@ -42,6 +42,7 @@
     "social_whatsapp_link": "#",
     "social_youtube_link": "#",
     "social_linkedln_link": "#",
+    "cart_type": "cart_popup",
     "content_for_index": []
   }
 }

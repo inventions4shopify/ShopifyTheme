@@ -311,7 +311,7 @@
           href="{{ routes.cart_url }}"
           class="header__icon-btn"
           aria-label="Cart"
-          {% if settings.cart_type == 'cart_drawer' %}
+          {% if settings.cart_type == 'cart_drawer' or settings.cart_type == 'cart_popup' %}
             data-cart-drawer-trigger
           {% endif %}
         >

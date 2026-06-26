@@ -1,11 +1,48 @@
-{%- liquid
-  assign buy_show_quantity_selector = qv_show_quantity_selector | default: block.settings.show_quantity_selector
-  assign buy_show_dynamic_checkout = qv_show_dynamic_checkout | default: block.settings.show_dynamic_checkout
--%}
+{% style %}
+  .product_form {
+    margin-top: 1.5rem;
+    display: block;
+  }
+  .product_form_submit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 1%;
+    flex: 1 1 auto;
+  }
 
-<script src="{{ 'product-block-buy-buttons.js' | asset_url }}" defer="defer"></script>
+  .product_quantity_buy_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
 
-{%- if product != blank -%}
+  .product_form_submit.loading {
+    pointer-events: none;
+  }
+
+  .product_form_spinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: inherit;
+  }
+
+  .product_form_spinner.hidden {
+    display: none;
+  }
+
+  .product_form_submit.loading > svg,
+  .product_form_submit.loading > span:not(.product_form_spinner) {
+    opacity: 0;
+  }
+{% endstyle %}
+
 <product-form
   class="product_form"
   data-product-id="{{ product.id }}"
@@ -21,15 +58,8 @@
       data-variant-id
     >
 
-    <input
-      type="hidden"
-      name="selling_plan"
-      value=""
-      data-selling-plan-input
-    >
-
     <div class="product_quantity_buy_wrapper">
-      {% if buy_show_quantity_selector %}
+      {% if block.settings.show_quantity_selector %}
         {% render 'product-quantity-input' %}
       {% endif %}
 
@@ -52,9 +82,10 @@
       </button>
     </div>
 
-    {% if buy_show_dynamic_checkout %}
+    {% if block.settings.show_dynamic_checkout %}
       {{ form | payment_button }}
     {% endif %}
   {% endform %}
 </product-form>
-{%- endif -%}
+
+<script src="{{ 'product-block-buy-buttons.js' | asset_url }}" defer="defer"></script>

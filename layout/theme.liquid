@@ -31,6 +31,12 @@
     {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'quantity-input.js' | asset_url }}" defer="defer"></script>
+    {%- if settings.cart_type == 'cart_drawer' or settings.cart_type == 'cart_popup' or template.name == 'cart' -%}
+      <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+    {%- if settings.cart_type == 'cart_popup' -%}
+      {{ 'cart-popup.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
     {%- if settings.enable_wishlist -%}
       {{ 'wishlist.css' | asset_url | stylesheet_tag }}
       <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
@@ -85,7 +91,7 @@
 
   <body class="{{ template.name }}">
     {% sections 'header-group' %}
-    {% if settings.cart_type == 'cart_drawer' %}
+    {% if settings.cart_type == 'cart_drawer' or settings.cart_type == 'cart_popup' %}
       {% render 'cart-drawer' %}
     {% endif %}
 
@@ -96,5 +102,9 @@
     {% sections 'footer-group' %}
 
     {% render 'quick-view-modal' %}
+
+    {% if settings.cart_type == 'cart_popup' %}
+      {% render 'cart-popup' %}
+    {% endif %}
   </body>
 </html>
