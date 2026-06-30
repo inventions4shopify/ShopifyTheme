@@ -30,7 +30,7 @@
         "media_height": "small",
         "overlay_color": "#000000",
         "overlay_opacity": 0.4,
-        "bg_color": "#000000",
+        "bg_color": "",
         "bg_gradient": "",
         "subheading_color": "#FFFFFF",
         "heading_color": "#FFFFFF",

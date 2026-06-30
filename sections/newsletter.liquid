@@ -1,0 +1,407 @@
+{{ 'newsletter-popup.css' | asset_url | stylesheet_tag }}
+{{ 'newsletter-section.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign sub_color = s.subheading_color
+  assign head_color = s.heading_color
+  assign block_color = s.text_color
+  assign tag = s.heading_tag | default: 'h2'
+
+  assign container_class = 'page-width'
+  if s.section_width == 'full-width'
+    assign container_class = 'page-width--full'
+  endif
+
+  assign align_value = s.content_alignment | default: 'center'
+  assign align_class = 'text-' | append: align_value
+  assign section_class = 'newsletter-section newsletter-section--' | append: s.section_width
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --newsletter-section-radius: {{ s.border_radius }}px;
+  }
+
+  #shopify-section-{{ section.id }} .newsletter-input {
+    border-radius: {{ s.input_radius }}px;
+    {%- if s.input_border != blank and s.input_border != 'rgba(0,0,0,0)' -%}
+      border: 1px solid {{ s.input_border }};
+    {%- endif -%}
+    {%- if s.input_bg != blank and s.input_bg != 'rgba(0,0,0,0)' -%}
+      background: {{ s.input_bg }};
+    {%- endif -%}
+    {%- if s.input_text != blank and s.input_text != 'rgba(0,0,0,0)' -%}
+      color: {{ s.input_text }};
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<div
+  {%- render 'section-variables', section: section, class: section_class -%}
+>
+  <div class="{{ container_class }}">
+    <div class="newsletter-section__card">
+      <div class="newsletter-popup-inner image-{{ s.image_position }} {% if s.section_image == blank %}no-image{% endif %}">
+        {%- if s.section_image != blank -%}
+          <div class="newsletter-popup-image">
+            {{ s.section_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+          </div>
+        {%- endif -%}
+
+        <div class="newsletter-popup-content ps-rte {{ align_class }}">
+          {%- if s.subheading != blank -%}
+            <p
+              class="newsletter-subheading subheading"
+              {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ sub_color.rgb }});"
+              {%- endunless %}
+            >
+              {{ s.subheading }}
+            </p>
+          {%- endif -%}
+
+          {%- if s.heading != blank -%}
+            <{{ tag }}
+              class="section-header__heading"
+              {%- unless head_color == blank or head_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ head_color.rgb }});"
+              {%- endunless %}
+              {{ section.shopify_attributes }}
+            >
+              {{ s.heading | escape }}
+            </{{ tag }}>
+          {%- endif -%}
+
+          {%- if s.text != blank -%}
+            <div
+              class="newsletter-richtext"
+              {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
+                style="color: rgb({{ block_color.rgb }});"
+              {%- endunless %}
+            >
+              {{ s.text }}
+            </div>
+          {%- endif -%}
+
+          {%- if s.form_type == 'shopify' -%}
+            {%- form 'customer', class: 'newsletter-form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+
+              <div class="newsletter-form-inner">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  class="newsletter-input field__input"
+                  placeholder="{{ s.email_placeholder }}"
+                  required
+                  autocomplete="email"
+                >
+                {%- render 'button',
+                  text: s.button_label,
+                  type: 'submit',
+                  background_color: s.button_background_color,
+                  text_color: s.button_text_color,
+                  outline_color: s.button_outline_color
+                -%}
+              </div>
+
+              {%- if form.posted_successfully? -%}
+                <div class="newsletter-success">
+                  {{ s.success_message }}
+                </div>
+              {%- endif -%}
+
+              {%- if form.errors -%}
+                <div class="newsletter-success">
+                  {{ form.errors | default_errors }}
+                </div>
+              {%- endif -%}
+            {%- endform -%}
+
+          {%- elsif s.form_type == 'klaviyo' -%}
+            {{ s.klaviyo_embed }}
+
+          {%- elsif s.form_type == 'mailchimp' -%}
+            {{ s.mailchimp_embed }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "newsletter-section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "default": "page-width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "default": "center",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "section_image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "default": "start",
+      "visible_if": "{{ section.settings.section_image != blank }}",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Subscribe To Our Emails"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag (SEO)",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Rich text",
+      "default": "<p>Be the first to know about new collections and exclusive offers.</p>"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thank you for subscribing!"
+    },
+    {
+      "type": "header",
+      "content": "Form options"
+    },
+    {
+      "type": "select",
+      "id": "form_type",
+      "label": "Form type",
+      "default": "shopify",
+      "options": [
+        { "value": "shopify", "label": "Shopify newsletter" },
+        { "value": "klaviyo", "label": "Klaviyo embed" },
+        { "value": "mailchimp", "label": "Mailchimp embed" }
+      ]
+    },
+    {
+      "type": "html",
+      "id": "klaviyo_embed",
+      "label": "Klaviyo embed code",
+      "visible_if": "{{ section.settings.form_type == 'klaviyo' }}"
+    },
+    {
+      "type": "html",
+      "id": "mailchimp_embed",
+      "label": "Mailchimp embed code",
+      "visible_if": "{{ section.settings.form_type == 'mailchimp' }}"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "Input background"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "Input border"
+    },
+    {
+      "type": "color",
+      "id": "input_text",
+      "label": "Input text"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text"
+    },
+    {
+      "type": "color",
+      "id": "button_outline_color",
+      "label": "Button outline"
+    },
+    {
+      "type": "header",
+      "content": "Border radius"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Section radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "input_radius",
+      "label": "Input radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

@@ -7,13 +7,8 @@
 {{ 'main-collection.css' | asset_url | stylesheet_tag }}
 
 <style>
-  .main-page__overlay {
-    background: {{ section.settings.overlay_color }};
-    opacity: {{ section.settings.overlay_opacity }};
-  }
-
   {% if section.settings.show_bg_image %}
-    .main-page__section {
+    .cms-main-collection-banner .main-page__section {
       background-image: url(
         {% if section.settings.image != blank %}
           {{ section.settings.image | image_url: width: 2000 }}
@@ -23,6 +18,11 @@
       );
     }
   {% endif %}
+
+  .cms-main-collection-banner .main-page__overlay {
+    background: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity }};
+  }
 </style>
 
 
@@ -43,16 +43,24 @@
 
     assign align_class = 'text-' | append: s.content_alignment
     assign tag = s.heading_tag | default: 'h2'
+
+    assign banner_has_image = false
+    if s.show_bg_image
+      if s.image != blank or collection.featured_image != blank
+        assign banner_has_image = true
+      endif
+    endif
   -%}
 
-  <div class="image_media--{{ section.settings.media_height }} cms-main-collection-banner">
+  <div class="cms-main-collection-banner{% if banner_has_image %} image_media--{{ s.media_height }}{% else %} cms-main-collection-banner--compact{% endif %}">
     <div
       {%- render 'section-variables',
         section: section,
-        class: 'main-page__section'
+        class: 'main-page__section',
+        spacing: false
       -%}
     >
-      {% if section.settings.show_bg_image %}
+      {% if banner_has_image %}
         <div class="main-page__overlay"></div>
       {% endif %}
 
