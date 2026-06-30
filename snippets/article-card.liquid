@@ -56,7 +56,7 @@
 
       <div class="card__content">
         <div class="card__information ps-rte">
-          {% if show_date or show_author %}
+          {% if show_date or show_author or show_comment_count %}
             <div
               class="article-card__info text-sm"
               {% unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
@@ -73,6 +73,13 @@
                 <span>
                   {% if show_date %} • {% endif %}
                   {{ article.author }}
+                </span>
+              {% endif %}
+
+              {% if show_comment_count %}
+                <span class="article-card__comment-count">
+                  {% render 'icon', icon: 'comment', width: 16, height: 16 %}
+                  <span class="article-card__comment-count-text">{{ article.comments_count }}</span>
                 </span>
               {% endif %}
             </div>

@@ -58,7 +58,22 @@
 }
 
 .article-card__info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-8) var(--spacing-12);
   opacity: .7;
+}
+
+.article-card__comment-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.article-card__comment-count .icon {
+  flex-shrink: 0;
 }
 
 .card__heading {
