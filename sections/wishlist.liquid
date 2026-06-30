@@ -1,34 +1,36 @@
 {{ 'card-product.css' | asset_url | stylesheet_tag }}
 {{ 'wishlist.css' | asset_url | stylesheet_tag }}
 
-<wishlist-page class="wishlist-page">
-  <div class="page-width">
-    <div class="wishlist-page__header text-center">
-      <h1 class="page-heading">
-        {%- if section.settings.heading != blank -%}
-          {{ section.settings.heading }}
-        {%- else -%}
-          {{ 'wishlist.title' | t }}
+<div {%- render 'section-variables', section: section, class: 'wishlist-page__section' -%}>
+  <wishlist-page class="wishlist-page">
+    <div class="page-width">
+      <div class="wishlist-page__header text-center">
+        <h1 class="page-heading">
+          {%- if section.settings.heading != blank -%}
+            {{ section.settings.heading }}
+          {%- else -%}
+            {{ 'wishlist.title' | t }}
+          {%- endif -%}
+        </h1>
+
+        {%- if section.settings.description != blank -%}
+          <div class="page-description text-sm">
+            {{ section.settings.description }}
+          </div>
         {%- endif -%}
-      </h1>
+      </div>
 
-      {%- if section.settings.description != blank -%}
-        <div class="page-description text-sm">
-          {{ section.settings.description }}
-        </div>
-      {%- endif -%}
+      <div class="wishlist-page__empty" data-wishlist-empty hidden>
+        <p>{{ 'wishlist.empty' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="button">
+          {{ 'wishlist.continue_shopping' | t }}
+        </a>
+      </div>
+
+      <div class="wishlist-page__grid" data-wishlist-grid></div>
     </div>
-
-    <div class="wishlist-page__empty" data-wishlist-empty hidden>
-      <p>{{ 'wishlist.empty' | t }}</p>
-      <a href="{{ routes.all_products_collection_url }}" class="button">
-        {{ 'wishlist.continue_shopping' | t }}
-      </a>
-    </div>
-
-    <div class="wishlist-page__grid" data-wishlist-grid></div>
-  </div>
-</wishlist-page>
+  </wishlist-page>
+</div>
 
 {% schema %}
 {
@@ -44,7 +46,85 @@
       "type": "textarea",
       "id": "description",
       "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Color Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_spacing",
+      "label": "Enable custom spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_desktop.label",
+      "default": 64,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.top_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:settings_schema.layout.settings.section_spacing.bottom_mobile.label",
+      "default": 40,
+      "visible_if": "{{ section.settings.custom_spacing }}"
     }
-  ],
+  ]
 }
 {% endschema %}

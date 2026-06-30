@@ -84,54 +84,149 @@
 
       {% if blog.comments_enabled? and section.settings.show_comments %}
         <div class="article-comments">
-          <h2>{{ 'blog.article_comments' | t }}</h2>
+          <h2 class="article-comments__title">
+            {%- if section.settings.comments_heading != blank -%}
+              {{ section.settings.comments_heading }}
+            {%- else -%}
+              {{ 'blog.comment_form_title' | t }}
+            {%- endif -%}
+          </h2>
 
-          <div id="comments">
-            {% paginate article.comments by 10 %}
-              {% for comment in article.comments %}
-                <div class="article-comment">
-                  <strong>{{ comment.author }}</strong>
-                  <div>{{ comment.created_at | date: '%B %d, %Y' }}</div>
-                  <p>{{ comment.content }}</p>
+          {%- form 'new_comment', article, id: 'ArticleCommentForm', class: 'article-comment-form' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="form-status form__message success-msg" tabindex="-1" autofocus>
+                {{- 'icon-success.svg' | inline_asset_content -}}
+                {{ section.settings.comment_success_message }}
+              </div>
+            {%- elsif form.errors -%}
+              <div class="form__message">
+                {{ form.errors | default_errors }}
+              </div>
+            {%- endif -%}
+
+            {%- liquid
+              assign comment_first_name = ''
+              assign comment_last_name = ''
+              if form.author != blank
+                assign author_parts = form.author | split: ' '
+                assign comment_first_name = author_parts.first
+                if author_parts.size > 1
+                  assign comment_last_name = author_parts | slice: 1, author_parts.size | join: ' '
+                endif
+              endif
+            -%}
+
+            <input type="hidden" name="comment[author]" id="CommentForm-author" value="{{ form.author }}">
+
+            <div class="article-comment-form__fields">
+              <div class="article-comment-form__row">
+                <div class="field">
+                  <input
+                    class="field__input text-lg"
+                    type="text"
+                    id="CommentForm-first-name"
+                    autocomplete="given-name"
+                    value="{{ comment_first_name }}"
+                    placeholder="{{ 'contact_form.first_name' | t }}"
+                    required
+                  >
+                  
                 </div>
-              {% endfor %}
 
-              {{ paginate | default_pagination }}
-            {% endpaginate %}
+                <div class="field">
+                  <input
+                    class="field__input text-lg"
+                    type="text"
+                    id="CommentForm-last-name"
+                    autocomplete="family-name"
+                    value="{{ comment_last_name }}"
+                    placeholder="{{ 'contact_form.last_name' | t }}"
+                    required
+                  >
+                </div>
+              </div>
+
+              <div class="field">
+                <input
+                  class="field__input text-lg"
+                  type="email"
+                  id="CommentForm-email"
+                  name="comment[email]"
+                  autocomplete="email"
+                  value="{{ form.email }}"
+                  placeholder="{{ 'blog.comment_form_email' | t }}"
+                  spellcheck="false"
+                  autocapitalize="off"
+                  required
+                >
+              </div>
+
+              <div class="field">
+                <textarea
+                  class="text-area field__input text-lg"
+                  id="CommentForm-body"
+                  name="comment[body]"
+                  rows="6"
+                  placeholder="{{ 'blog.comment_form_body' | t }}"
+                  required
+                >{{ form.body }}</textarea>
+              
+              </div>
+            </div>
+
+            <div class="article-comment-form__submit">
+              <button type="submit" class="button">
+                {{ 'blog.comment_form_submit' | t }}
+              </button>
+            </div>
+          {%- endform -%}
+
+          <div id="comments" class="article-comments__list{% if article.comments_count > 0 %} article-comments__list--has-comments{% endif %}">
+            {%- if article.comments_count > 0 -%}
+              <h3 class="article-comments__list-title">
+                {{ 'blog.article_comments' | t }}
+                <span class="article-comments__count">({{ article.comments_count }})</span>
+              </h3>
+
+              {%- paginate article.comments by section.settings.comments_per_page -%}
+                {%- for comment in article.comments -%}
+                  <article class="article-comment">
+                    <header class="article-comment__header">
+                      <strong class="article-comment__author">{{ comment.author }}</strong>
+                      <time class="article-comment__date" datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">
+                        {{ comment.created_at | date: '%B %d, %Y' }}
+                      </time>
+                    </header>
+                    <div class="article-comment__content">{{ comment.content }}</div>
+                  </article>
+                {%- endfor -%}
+
+                {%- if paginate.pages > 1 -%}
+                  <div class="article-comments__pagination">
+                    {{ paginate | default_pagination }}
+                  </div>
+                {%- endif -%}
+              {%- endpaginate -%}
+            {%- endif -%}
           </div>
-
-          {% form 'new_comment', article %}
-            <h3>{{ 'blog.comment_form_title' | t }}</h3>
-
-            {{ form.errors | default_errors }}
-
-            <input
-              type="text"
-              name="comment[author]"
-              value="{{ form.author }}"
-              placeholder="{{ 'blog.comment_form_name' | t }}"
-              required
-            >
-
-            <input
-              type="email"
-              name="comment[email]"
-              value="{{ form.email }}"
-              placeholder="{{ 'blog.comment_form_email' | t }}"
-              required
-            >
-
-            <textarea
-              name="comment[body]"
-              placeholder="{{ 'blog.comment_form_body' | t }}"
-              required
-            >{{ form.body }}</textarea>
-
-            <button type="submit">
-              {{ 'blog.comment_form_submit' | t }}
-            </button>
-          {% endform %}
         </div>
+
+        <script>
+          (function () {
+            var form = document.getElementById('ArticleCommentForm');
+            if (!form) return;
+
+            form.addEventListener('submit', function () {
+              var firstName = document.getElementById('CommentForm-first-name').value.trim();
+              var lastName = document.getElementById('CommentForm-last-name').value.trim();
+              document.getElementById('CommentForm-author').value = (firstName + ' ' + lastName).trim();
+            });
+
+            {%- if form.posted_successfully? -%}
+              form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            {%- endif -%}
+          })();
+        </script>
       {% endif %}
     </div>
   </div>
@@ -241,10 +336,41 @@
       "default": true
     },
     {
+      "type": "header",
+      "content": "Comments Settings"
+    },
+    {
+      "type": "paragraph",
+      "content": "Comments must also be enabled in Shopify admin: Online Store > Blog posts > Manage comments."
+    },
+    {
       "type": "checkbox",
       "id": "show_comments",
-      "label": "Show Comments",
+      "label": "Allow customer comments",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "comments_heading",
+      "label": "Comment form heading",
+      "default": "Leave a comment"
+    },
+    {
+      "type": "text",
+      "id": "comment_success_message",
+      "label": "Comment success message",
+      "default": "Thank you! Your comment was submitted successfully.",
+      "visible_if": "{{ section.settings.show_comments == true }}"
+    },
+    {
+      "type": "range",
+      "id": "comments_per_page",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "label": "Comments per page",
+      "default": 10,
+      "visible_if": "{{ section.settings.show_comments == true }}"
     },
 
     {
