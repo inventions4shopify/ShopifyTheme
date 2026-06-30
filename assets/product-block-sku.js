@@ -7,8 +7,11 @@ class ProductSku extends HTMLElement {
 
   connectedCallback() {
     this.skuValue = this.querySelector('[data-sku]');
+    this.skuLabel = this.querySelector('.product_sku_label');
     this.productRoot = this.closest('[data-product-root]');
     this.hideWhenEmpty = this.dataset.hideWhenEmpty === 'true';
+
+    this.updateSku(this.skuValue?.textContent?.trim() || '');
 
     this.productRoot?.addEventListener('product:variant-change', this.onVariantChange);
   }
@@ -18,10 +21,16 @@ class ProductSku extends HTMLElement {
   }
 
   onVariantChange(event) {
-    const sku = event.detail.variant?.sku || '';
+    this.updateSku(event.detail.variant?.sku?.trim() || '');
+  }
 
+  updateSku(sku) {
     if (this.skuValue) {
       this.skuValue.textContent = sku;
+    }
+
+    if (this.skuLabel) {
+      this.skuLabel.hidden = !sku;
     }
 
     if (this.hideWhenEmpty) {

@@ -885,6 +885,10 @@ read-more-description {
     color: rgba(0, 0, 0, 0.7);
 }
 
+.product_sku_block[hidden] {
+    display: none !important;
+}
+
 .product_sku_label {
     font-weight: 600;
 }
