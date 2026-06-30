@@ -1,0 +1,49 @@
+{%- liquid
+  assign has_active_filters = false
+
+  for filter in filters
+    if filter.active_values.size > 0
+      assign has_active_filters = true
+      break
+    endif
+  endfor
+-%}
+
+<div
+  class="collection-active-filters-wrapper"
+  data-collection-active-filters-wrapper
+  {% unless has_active_filters %}hidden{% endunless %}
+>
+  {%- if has_active_filters -%}
+    <div class="collection-active-filters" data-collection-active-filters>
+      <div class="collection-active-filters__pills" role="list">
+        {%- for filter in filters -%}
+          {%- for value in filter.active_values -%}
+            <button
+              type="button"
+              class="collection-active-filters__pill"
+              role="listitem"
+              data-filter-remove-url="{{ value.url_to_remove }}"
+              aria-label="Remove {{ value.label }}"
+            >
+              <span class="collection-active-filters__pill-label">
+                {{- value.label -}}
+              </span>
+              <span class="collection-active-filters__pill-icon" aria-hidden="true">
+                {% render 'icon', icon: 'close', width: 14, height: 14 %}
+              </span>
+            </button>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+
+      <button
+        type="button"
+        class="collection-active-filters__clear text-sm"
+        data-filter-clear-url="{{ clear_url }}"
+      >
+        Clear all filters
+      </button>
+    </div>
+  {%- endif -%}
+</div>

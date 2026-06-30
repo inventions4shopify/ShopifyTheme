@@ -8,11 +8,8 @@
 
 <div {%- render 'section-variables', section: section, class: 'search__section' -%}>
   {% paginate search.results by section.settings.card_per_page %}
-      {% capture collection_filters %}
-        {% if section.settings.filter_position == 'sidebar' %}
-        <div class="cms-filter-sidebar">
-        {% endif %}
-          <form id="CollectionFiltersForm" action="{{ routes.search_url }}{{ search_url }}" method="get" {% if section.settings.filter_position == 'sidebar' %}data-auto-filter{% endif %}>
+      {% capture collection_filters_form %}
+          <form action="{{ routes.search_url }}{{ search_url }}" method="get" data-collection-filter>
 
             <input type="hidden" name="q" value="{{ search.terms | escape }}">
             <input type="hidden" name="options[prefix]" value="last">
@@ -51,19 +48,35 @@
 
                       {% when 'price_range' %}
                         <div class="price-range">
-                          <input
-                            type="number"
-                            name="{{ filter.min_value.param_name }}"
-                            placeholder="Min"
-                            value="{{ filter.min_value.value }}"
-                          >
+                          <div class="field price-range__field">
+                            <input
+                              type="number"
+                              class="field__input text-sm"
+                              id="Filter-Price-{{ section.id }}-{{ forloop.index }}-min"
+                              name="{{ filter.min_value.param_name }}"
+                              placeholder="Min"
+                              value="{{ filter.min_value.value }}"
+                              min="0"
+                              inputmode="numeric"
+                            >
+                            <label class="field__label" for="Filter-Price-{{ section.id }}-{{ forloop.index }}-min">Min</label>
+                          </div>
 
-                          <input
-                            type="number"
-                            name="{{ filter.max_value.param_name }}"
-                            placeholder="Max"
-                            value="{{ filter.max_value.value }}"
-                          >
+                          <span class="price-range__separator" aria-hidden="true">–</span>
+
+                          <div class="field price-range__field">
+                            <input
+                              type="number"
+                              class="field__input text-sm"
+                              id="Filter-Price-{{ section.id }}-{{ forloop.index }}-max"
+                              name="{{ filter.max_value.param_name }}"
+                              placeholder="Max"
+                              value="{{ filter.max_value.value }}"
+                              min="0"
+                              inputmode="numeric"
+                            >
+                            <label class="field__label" for="Filter-Price-{{ section.id }}-{{ forloop.index }}-max">Max</label>
+                          </div>
                         </div>
 
                     {% endcase %}
@@ -75,17 +88,16 @@
               </div>
             {% endfor %}
 
-            <!-- APPLY BUTTON ONLY FOR DRAWER -->
-            
-            {% if section.settings.filter_position == 'drawer' %}
-              <button type="submit" class="button">
-                Apply Filters
-              </button>
-            {% endif %}
-
           </form>
+      {% endcapture %}
+
+      {% capture collection_filters %}
         {% if section.settings.filter_position == 'sidebar' %}
+          <div class="cms-filter-sidebar">
+            {{ collection_filters_form }}
           </div>
+        {% else %}
+          {{ collection_filters_form }}
         {% endif %}
       {% endcapture %}
     <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %}">
@@ -176,120 +188,35 @@
                   </div>
                 </div>
               {%- else -%}
-              <main-collection-section class="cms-main-collection">
+              <main-collection-section class="cms-main-collection" data-section-id="{{ section.id }}">
                 <div class="page-width">
-                  <!-- FILTER + SORT ROW -->
-                  <div class="cms-main-collection-filter-row">
-                    {% if section.settings.show_filter and section.settings.filter_position == 'drawer' %}
-                      <div class="cms-main-collection-filter-left">
+                  <div id="CollectionAjaxContainer" data-collection-ajax>
+                  {%- liquid
+                    assign filter_clear_url = routes.search_url | append: '?q=' | append: terms | append: '&options[prefix]=last'
+                    if search.sort_by != blank
+                      assign filter_clear_url = filter_clear_url | append: '&sort_by=' | append: search.sort_by
+                    endif
+                  -%}
+                  {% render 'collection-filter-sort-row',
+                    show_filter: section.settings.show_filter,
+                    filter_position: section.settings.filter_position,
+                    filters: search.filters,
+                    clear_url: filter_clear_url,
+                    filters_markup: collection_filters_form,
+                    products_count: search.results_count,
+                    sort_options: search.sort_options,
+                    sort_by: search.sort_by,
+                    default_sort_by: search.default_sort_by,
+                    show_total_product: section.settings.show_total_product,
+                    show_sort: section.settings.show_sort,
+                    show_layout: section.settings.show_layout,
+                    sort_form_action: routes.search_url,
+                    search_terms: search.terms
+                  %}
 
-                        <details class="collection-filter-dropdown">
-
-                          <summary>
-                            {% render 'icon', icon: 'sort', width: 20, height: 20 %}
-                            <span>Filter & Sort</span>
-                          </summary>
-
-                          <div class="collection-filter-drawer">
-                            <div class="collection-filter-header">
-                              <div class="collection-filter-header-left">
-                                <h2 class="h5">
-                                  {% render 'icon', icon: 'sort', width: 20, height: 20 %}
-                                  <span>Filter & Sort</span>
-                                </h2>
-                                {{ search.results_count }} Products
-                              </div>
-                              <button type="button" class="collection-filter-drawer-close" aria-label="Close menu">
-                                {% render 'icon' , icon: 'close' , width: 20, height: 20 %}
-                              </button>
-                            </div>
-
-                            {{ collection_filters }}
-                          </div>
-
-                        </details>
-
-                      </div>
-                    {% endif %}
-
-
-                    <div class="cms-main-collection-filter-right">
-                      {% if section.settings.show_total_product %}
-                        <span class="cms-main-collection-total-product">
-                          {{ search.results_count }} Products
-                        </span>
-                      {% endif %}
-
-
-                      {% if section.settings.show_sort %}
-                        <div class="cms-main-collection-sort">
-
-                          <form id="SortByForm" method="get" action="{{ routes.search_url }}">
-
-                            <input type="hidden" name="q" value="{{ search.terms | escape }}">
-                            <input type="hidden" name="options[prefix]" value="last">
-
-                            <input
-                              type="hidden"
-                              name="sort_by"
-                              id="SortByInput"
-                              value="{{ search.sort_by | default: search.default_sort_by }}"
-                            >
-
-                            <div class="cms-sort-dropdown js-sort-dropdown">
-
-                              <div class="cms-sort-selected js-sort-selected">
-                                <span class="cms-sort-label js-sort-label">
-                                  Sort By
-                                </span>
-
-                                <span class="cms-sort-icon">
-                                  {% render 'icon', icon: 'chevron-bottom', width: 20, height: 20 %}
-                                </span>
-                              </div>
-
-                              <ul class="cms-sort-options">
-                                {% for option in search.sort_options %}
-                                  <li
-                                    class="cms-sort-option js-sort-option {% if option.value == search.sort_by %}active{% endif %}"
-                                    data-value="{{ option.value }}"
-                                  >
-                                    {{ option.name }}
-                                  </li>
-                                {% endfor %}
-                              </ul>
-
-                            </div>
-
-                          </form>
-
-                        </div>
-                      {% endif %}
-
-
-                      {% if section.settings.show_layout %}
-                        <div class="cms-main-collection-view">
-
-                          <button type="button" data-grid="3">
-                            {% render 'icon', icon: 'three-grid', width: 20, height: 20 %}
-                          </button>
-
-                          <button type="button" data-grid="4">
-                            {% render 'icon', icon: 'four-grid', width: 20, height: 20 %}
-                          </button>
-
-                        </div>
-                      {% endif %}
-
-                    </div>
-
-                  </div>
-        
-                  <div class="template-search__results collection{% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %} cms-main-collection-grid{% endif %}" id="product-grid" data-id="{{ section.id }}" >
+                  <div class="template-search__results collection{% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %} cms-main-collection-grid cms-main-collection-grid--sidebar{% endif %}" id="product-grid" data-id="{{ section.id }}" >
                     {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                       {{ collection_filters }}
-                    {% endif %}
-                    {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                       <div class="collection-products">
                         <div class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
                           {%- for item in search.results -%}
@@ -398,6 +325,7 @@
                         {% render 'pagination', paginate: paginate %}
                       {%- endif -%}
                     {% endif %}
+                  </div>
                   </div>
                 </div>
               </main-collection-section>
