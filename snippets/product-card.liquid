@@ -1,6 +1,4 @@
-{{ 'card-product.css' | asset_url | stylesheet_tag }}
-
-<div class="product-card card_style-{{ style }}">
+<div class="product-card card_style-{{ style | default: 'standard' }}{% if enable_image_zoom %} product-card--zoom{% endif %}">
   {% assign first_variant = product.selected_or_first_available_variant %}
 
   <div class="product-card__media product-card__media--{{ image_ratio }} aspect-{{ image_ratio }}">

@@ -939,7 +939,10 @@ read-more-description {
 .product_quantity {
     display: inline-flex;
     align-items: center;
-    border: 0.1rem solid rgba(0, 0, 0, 0.15);
+    background: rgb(var(--color-button-secondary-background));
+    color: rgb(var(--color-button-secondary-text));
+    box-shadow: 2px 2px rgb(var(--color-button-primary-outline));
+    border: .2rem solid rgb(var(--color-button-primary-outline));
     border-radius: var(--radius-md);
     overflow: hidden;
 }
@@ -962,12 +965,12 @@ read-more-description {
 }
 
 .product_quantity_button:disabled {
-    opacity: 0.4;
+    opacity: 0.8;
     cursor: not-allowed;
 }
 
 .product_quantity_input {
-    width: 6rem;
+    width: 3rem;
     height: var(--spacing-48);
     border: 0;
     padding: 0;
@@ -976,6 +979,7 @@ read-more-description {
     background: transparent;
     appearance: textfield;
     -moz-appearance: textfield;
+    min-width: unset;
 }
 
 .product_quantity_input::-webkit-outer-spin-button,
@@ -987,12 +991,9 @@ read-more-description {
 .product_quantity_input:focus {
     outline: none;
 }
-.product_quantity_button:first-child {
-    border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
-}
-
-.product_quantity_button:last-child {
-    border-left: 0.1rem solid rgba(0, 0, 0, 0.1);
+.product_quantity_buy_wrapper svg{
+    width: 18px;
+    height: 18px;
 }
 
 /* Pickup availability */

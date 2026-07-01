@@ -6,14 +6,34 @@ class SiteHeader extends HTMLElement {
     this.mode = this.dataset.sticky || 'none';
     this.host = this.closest('.shopify-section') || this;
 
+    this.updateHeaderHeight = () => {
+      if (this.mode === 'none' || this.classList.contains('is-hidden')) {
+        document.documentElement.style.setProperty('--header-height', '0px');
+        return;
+      }
+
+      document.documentElement.style.setProperty('--header-height', `${this.offsetHeight}px`);
+    };
+
     if (this.mode !== 'none') {
       this.host.classList.add('header-sticky-host');
+      this.updateHeaderHeight();
+
+      this.abortController = new AbortController();
+      const { signal } = this.abortController;
+
+      window.addEventListener('resize', this.updateHeaderHeight, { passive: true, signal });
+
+      if (typeof ResizeObserver !== 'undefined') {
+        this.resizeObserver = new ResizeObserver(() => this.updateHeaderHeight());
+        this.resizeObserver.observe(this);
+      }
+    } else {
+      document.documentElement.style.setProperty('--header-height', '0px');
     }
 
     if (this.mode !== 'reduce' && this.mode !== 'scroll-up') return;
 
-    this.abortController = new AbortController();
-    const { signal } = this.abortController;
     this.lastY = window.pageYOffset;
 
     this.onScroll = () => {
@@ -32,14 +52,16 @@ class SiteHeader extends HTMLElement {
       }
 
       this.lastY = y;
+      this.updateHeaderHeight();
     };
 
-    window.addEventListener('scroll', this.onScroll, { passive: true, signal });
+    window.addEventListener('scroll', this.onScroll, { passive: true, signal: this.abortController.signal });
   }
 
   disconnectedCallback() {
     this._initialized = false;
     this.abortController?.abort();
+    this.resizeObserver?.disconnect();
   }
 }
 
