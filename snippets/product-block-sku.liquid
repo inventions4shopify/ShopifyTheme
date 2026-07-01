@@ -5,19 +5,24 @@
   if sku_label == blank
     assign sku_label = 'products.product.sku.label' | t
   endif
-  assign sku_hide_when_empty = block.settings.hide_when_empty
+  assign sku_hide_when_empty = block.settings.hide_when_empty | default: true
+  assign sku_stripped = sku_variant.sku | strip
+  assign sku_is_empty = false
+  if sku_stripped == blank
+    assign sku_is_empty = true
+  endif
 -%}
 
 <product-sku
   class="product_sku_block"
   data-hide-when-empty="{{ sku_hide_when_empty }}"
-  {% if sku_hide_when_empty and sku_variant.sku == blank %}
+  {% if sku_hide_when_empty and sku_is_empty %}
     hidden
   {% endif %}
   {{ block.shopify_attributes }}
 >
   {%- if sku_show_label -%}
-    <span class="product_sku_label">{{ sku_label }}:</span>
+    <span class="product_sku_label"{% if sku_is_empty %} hidden{% endif %}>{{ sku_label }}:</span>
   {%- endif -%}
   <span class="product_sku_value" data-sku>{{ sku_variant.sku }}</span>
 </product-sku>

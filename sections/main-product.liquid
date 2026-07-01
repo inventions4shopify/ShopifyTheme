@@ -12,7 +12,7 @@
 <div {%- render 'section-variables', section: section, class: 'slideshow__section' -%}>
   <div class="page-width">
     {%- if current_product != blank -%}
-      <div class="main-product-section {{ section.settings.section_layout }}">
+      <div class="main-product-section {{ section.settings.section_layout }}{% if section.settings.enable_sticky_image %} main-product-section--sticky-image{% endif %}">
         <div class="product-image-gallery-wrapper cms-cell--{{ section.settings.width }}">
           {%if section.settings.enable_breadcrumb %}
             {% render 'breadcrumbs' %}
@@ -178,6 +178,13 @@
       "id": "enable_desktop_drag",
       "label": "Enable desktop image drag",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_image",
+      "label": "Enable sticky image on scroll",
+      "default": true,
+      "info": "Keeps the product gallery visible while scrolling product details on desktop."
     },
     {
       "type": "header",

@@ -27,6 +27,22 @@
 }
 
 @media (min-width: 768px) {
+    .section:has(.main-product-section--sticky-image) {
+        overflow: visible;
+    }
+
+    .main-product-section--sticky-image {
+        align-items: flex-start;
+    }
+
+    .main-product-section--sticky-image .product-image-gallery-wrapper {
+        position: sticky;
+        top: 2rem;
+        align-self: flex-start;
+        overflow: visible;
+        z-index: 1;
+    }
+
     .product-info-wrapper {
         width: 1%;
         margin-top: 4rem;

@@ -103,6 +103,7 @@ body.quick-view-open {
   .quick-view-modal .product-image-gallery-wrapper {
     flex: 1 1 50%;
     max-width: 50%;
+    position: static;
   }
 
   .quick-view-modal .product-info-wrapper {

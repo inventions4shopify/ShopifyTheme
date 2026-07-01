@@ -3,16 +3,53 @@
 {% liquid
   assign popup_delay = section.settings.popup_delay
   assign scroll_percentage = section.settings.scroll_percentage
+
+  assign show_popup = false
+  case request.page_type
+    when 'index'
+      if section.settings.show_on_home
+        assign show_popup = true
+      endif
+    when 'product'
+      if section.settings.show_on_product
+        assign show_popup = true
+      endif
+    when 'collection'
+      if section.settings.show_on_collection
+        assign show_popup = true
+      endif
+    when 'page'
+      if section.settings.show_on_page
+        assign show_popup = true
+      endif
+    else
+      if section.settings.show_on_other
+        assign show_popup = true
+      endif
+  endcase
 %}
 
 <style>
+  #shopify-section-{{ section.id }} {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: none;
+  }
+
   #shopify-section-{{ section.id }} newsletter-popup-section {
     display: block;
     position: relative;
-  }
-
-  #shopify-section-{{ section.id }} {
-    position: relative;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: none;
   }
 
   .newsletter-popup-overlay-{{ section.id }} {
@@ -38,6 +75,7 @@
     max-width: 95%;
     transform: translate(-50%, -50%) scale(.9);
     border-radius: {{ section.settings.border_radius }}px;
+    background: var(--section-background, {{ settings.background_color }});
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
@@ -78,8 +116,9 @@
     }
   }
 </style>
+{% if show_popup %}
 <newsletter-popup-section
-  {% render 'section-variables' %}
+  {% render 'section-variables', popup: true %}
   data-section-id="{{ section.id }}"
   data-show-once="{{ section.settings.show_once }}"
   data-trigger-type="{{ section.settings.trigger_type }}"
@@ -91,11 +130,6 @@
     assign head_color = section.settings.heading_color
     assign block_color = section.settings.text_color
     assign tag = section.settings.heading_tag | default: 'h2'
-    if section.settings.bg_color != 'rgba(0,0,0,0)'
-      assign background_color = section.settings.bg_color
-    else
-      assign background_color = settings.background_color
-    endif
   %}
 
   <div class="newsletter-popup-overlay-{{ section.id }}" data-newsletter-overlay></div>
@@ -103,7 +137,6 @@
   <div
     class="newsletter-popup-{{ section.id }}"
     data-newsletter-popup
-    style="background-color: {{ background_color | strip }}"
   >
     <button
       type="button"
@@ -206,6 +239,7 @@
 </newsletter-popup-section>
 
 <script src="{{ 'newsletter-popup.js' | asset_url }}" defer="defer"></script>
+{% endif %}
 
 {% schema %}
 {
@@ -339,6 +373,40 @@
       "id": "mailchimp_embed",
       "label": "Mailchimp Embed Code",
       "visible_if": "{{ section.settings.form_type == 'mailchimp' }}"
+    },
+    {
+      "type": "header",
+      "content": "Page visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_home",
+      "label": "Show on home page",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_product",
+      "label": "Show on product pages",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_collection",
+      "label": "Show on collection pages",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_page",
+      "label": "Show on pages",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_other",
+      "label": "Show on other pages (blog, cart, search, etc.)",
+      "default": true
     },
     {
       "type": "header",

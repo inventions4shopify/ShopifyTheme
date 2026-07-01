@@ -1,0 +1,24 @@
+.newsletter-section__card {
+  border-radius: var(--newsletter-section-radius, 1.6rem);
+  overflow: hidden;
+  background: var(--section-background, transparent);
+}
+
+.newsletter-section .newsletter-popup-inner {
+  min-height: 0;
+}
+
+.newsletter-section .newsletter-popup-inner.no-image .newsletter-popup-content {
+  max-width: 80rem;
+}
+
+.newsletter-success {
+  margin-top: 10px;
+  color: green;
+}
+
+@media screen and (min-width: 768px) {
+  .newsletter-section--full .newsletter-section__card {
+    border-radius: 0;
+  }
+}
