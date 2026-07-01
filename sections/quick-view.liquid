@@ -1,4 +1,5 @@
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'main-product.css' | asset_url | stylesheet_tag: preload: true }}
 <script src="{{ 'product-image-gallery.js' | asset_url }}" defer="defer"></script>
 
 <div class="page-width">
@@ -33,7 +34,7 @@
           qv_swatch_source: settings.qv_swatch_source,
           qv_swatch_size: settings.qv_swatch_size,
           qv_swatch_shape: settings.qv_swatch_shape,
-          qv_show_color_name: settings.qv_show_color_name,
+          qv_show_color_name: false,
           qv_button_shape: settings.qv_button_shape,
           qv_show_dropdown_swatches: settings.qv_show_dropdown_swatches,
           qv_show_option_labels: settings.qv_show_option_labels,

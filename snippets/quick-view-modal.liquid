@@ -1,6 +1,9 @@
 {{ 'product-image-gallery.css' | asset_url | stylesheet_tag }}
+{{ 'main-product.css' | asset_url | stylesheet_tag }}
 {{ 'quick-view.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'product-image-gallery.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-block-variant-picker.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-block-buy-buttons.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quick-view.js' | asset_url }}" defer="defer"></script>
 
 <quick-view-modal
