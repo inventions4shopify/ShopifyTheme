@@ -1,0 +1,119 @@
+<div class="cms-main-collection-filter-row{% if show_filter and filter_position == 'sidebar' %} cms-main-collection-filter-row--sidebar{% endif %}">
+  {% if show_filter and filter_position == 'drawer' %}
+    <div class="cms-main-collection-filter-left">
+      <details class="collection-filter-dropdown">
+        <summary>
+          {% render 'icon', icon: 'sort', width: 20, height: 20 %}
+          {% render 'collection-filter-sort-label', filters: filters %}
+        </summary>
+
+        <div class="collection-filter-drawer">
+          <div class="collection-filter-header">
+            <div class="collection-filter-header-left">
+              <h2 class="h5">
+                {% render 'icon', icon: 'sort', width: 20, height: 20 %}
+                {% render 'collection-filter-sort-label', filters: filters %}
+              </h2>
+              <span class="cms-collection-product-count">{{ products_count }} Products</span>
+            </div>
+            <button type="button" class="collection-filter-drawer-close" aria-label="Close menu">
+              {% render 'icon', icon: 'close', width: 20, height: 20 %}
+            </button>
+          </div>
+
+          {% render 'collection-filter-active-bar', filters: filters, clear_url: clear_url %}
+          {{ filters_markup }}
+        </div>
+      </details>
+    </div>
+  {% elsif show_filter and filter_position == 'sidebar' %}
+    <div class="cms-main-collection-filter-left">
+      <details class="collection-filter-dropdown cms-sidebar-mobile-drawer">
+        <summary>
+          {% render 'icon', icon: 'sort', width: 20, height: 20 %}
+          {% render 'collection-filter-sort-label', filters: filters %}
+        </summary>
+
+        <div class="collection-filter-drawer">
+          <div class="collection-filter-header">
+            <div class="collection-filter-header-left">
+              <h2 class="h5">
+                {% render 'icon', icon: 'sort', width: 20, height: 20 %}
+                {% render 'collection-filter-sort-label', filters: filters %}
+              </h2>
+              <span class="cms-collection-product-count">{{ products_count }} Products</span>
+            </div>
+            <button type="button" class="collection-filter-drawer-close" aria-label="Close menu">
+              {% render 'icon', icon: 'close', width: 20, height: 20 %}
+            </button>
+          </div>
+
+          {% render 'collection-filter-active-bar', filters: filters, clear_url: clear_url %}
+          {{ filters_markup }}
+        </div>
+      </details>
+
+      <div class="cms-sidebar-active-filters-desktop">
+        {% render 'collection-filter-active-bar', filters: filters, clear_url: clear_url %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="cms-main-collection-filter-right">
+    {% if show_total_product %}
+      <span class="cms-main-collection-total-product">
+        <span class="cms-collection-product-count">{{ products_count }} Products</span>
+      </span>
+    {% endif %}
+
+    {% if show_sort %}
+      <div class="cms-main-collection-sort">
+        <form id="SortByForm" method="get"{% if sort_form_action != blank %} action="{{ sort_form_action }}"{% endif %}>
+          {% if search_terms != blank %}
+            <input type="hidden" name="q" value="{{ search_terms | escape }}">
+            <input type="hidden" name="options[prefix]" value="last">
+          {% endif %}
+
+          <input
+            type="hidden"
+            name="sort_by"
+            id="SortByInput"
+            value="{{ sort_by | default: default_sort_by }}"
+          >
+
+          <div class="cms-sort-dropdown js-sort-dropdown">
+            <div class="cms-sort-selected js-sort-selected">
+              <span class="cms-sort-label js-sort-label">Sort By</span>
+              <span class="cms-sort-icon">
+                {% render 'icon', icon: 'chevron-bottom', width: 20, height: 20 %}
+              </span>
+            </div>
+
+            <ul class="cms-sort-options">
+              {% for option in sort_options %}
+                <li
+                  class="cms-sort-option js-sort-option {% if option.value == sort_by %}active{% endif %}"
+                  data-value="{{ option.value }}"
+                >
+                  {{ option.name }}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </form>
+      </div>
+    {% endif %}
+
+    {% if show_layout %}
+      <div class="cms-main-collection-view">
+        <button type="button" data-grid="3">
+          {% render 'icon', icon: 'three-grid', width: 20, height: 20 %}
+        </button>
+
+        <button type="button" data-grid="4">
+          {% render 'icon', icon: 'four-grid', width: 20, height: 20 %}
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</div>

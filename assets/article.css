@@ -109,23 +109,98 @@
 
 .article-comments {
     margin-top: var(--spacing-60);
+    padding-top: var(--spacing-40);
+}
+
+.article-comments__title {
+    margin-bottom: var(--spacing-32);
+}
+
+@media screen and (min-width: 769px) {
+    .article-comments__title,
+    .article-comment-form {
+        max-width: var(--page-width-small);
+    }
+}
+
+.article-comment-form__fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+}
+
+.article-comment-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-16);
+}
+
+.article-comment-form .field__input {
+    width: 100%;
+}
+
+.article-comment-form .text-area.field__input {
+    min-height: 12rem;
+    resize: vertical;
+}
+
+.article-comment-form__submit {
+    margin-top: var(--spacing-32);
+    margin-bottom: 0;
+}
+
+.article-comments__list--has-comments {
+    margin-top: var(--spacing-60);
+    padding-top: var(--spacing-40);
+}
+
+.article-comments__list-title {
+    margin-bottom: var(--spacing-24);
+}
+
+.article-comments__count {
+    font-weight: normal;
+    opacity: 0.7;
 }
 
 .article-comment {
-    padding: var(--spacing-20) 0;
-    border-bottom: 0.1rem solid;
+    padding: var(--spacing-24) 0;
+    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.1);
 }
 
-.article-comments input,
-.article-comments textarea {
-    width: 100%;
-    padding: var(--spacing-12);
-    margin-bottom: 1.5rem;
+.article-comment:first-of-type {
+    border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
 }
 
-.article-comments button {
-    padding: var(--spacing-12) var(--spacing-24);
-    cursor: pointer;
+.article-comment__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--spacing-12) var(--spacing-24);
+    margin-bottom: var(--spacing-12);
+}
+
+.article-comment__author {
+    font-size: var(--text-base);
+}
+
+.article-comment__date {
+    font-size: var(--text-sm);
+    opacity: 0.7;
+}
+
+.article-comment__content {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+}
+
+.article-comments__pagination {
+    margin-top: var(--spacing-32);
+}
+
+.article-comment-form .form__message,
+.article-comment-form .success-msg {
+    margin-bottom: var(--spacing-24);
 }
 
 @media screen and (max-width: 768px) {
@@ -146,5 +221,9 @@
 }
 .article-header {
     padding: var(--spacing-12) 0 var(--spacing-24);
+}
+
+.article-comment-form__row {
+    grid-template-columns: 1fr;
 }
 }
