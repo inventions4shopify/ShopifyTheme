@@ -415,43 +415,22 @@
       return this.resultsMaxHeight;
     }
 
-    getSearchTemplateMaxHeight() {
-      const anchor = this.querySelector('.field') || this;
-      const rect = anchor.getBoundingClientRect();
-      return Math.max(200, window.innerHeight - rect.bottom - 24);
-    }
-
     updateResultsMaxHeight() {
       if (!this.predictiveSearchResults) return;
+      if (
+        this.predictiveSearchResults.classList.contains(
+          'predictive-search--search-template'
+        )
+      ) {
+        return;
+      }
 
-      const maxHeight = this.isSearchTemplate()
-        ? this.getSearchTemplateMaxHeight()
-        : this.getResultsMaxHeight();
-
-      this.predictiveSearchResults.style.maxHeight = maxHeight + 'px';
-    }
-
-    isSearchTemplate() {
-      return this.predictiveSearchResults?.classList.contains(
-        'predictive-search--search-template'
-      );
-    }
-
-    getSearchTemplateRoot() {
-      return this.closest('.template-search');
-    }
-
-    setSearchTemplateOpenState(isOpen) {
-      if (!this.isSearchTemplate()) return;
-      this.getSearchTemplateRoot()?.classList.toggle(
-        'template-search--predictive-open',
-        isOpen
-      );
+      this.predictiveSearchResults.style.maxHeight =
+        this.getResultsMaxHeight() + 'px';
     }
 
     open() {
       this.updateResultsMaxHeight();
-      this.setSearchTemplateOpenState(true);
       this.setAttribute('open', true);
       this.input.setAttribute('aria-expanded', true);
       this.isOpen = true;
@@ -475,7 +454,6 @@
       this.removeAttribute('loading');
       this.removeAttribute('open');
       this.input.setAttribute('aria-expanded', false);
-      this.setSearchTemplateOpenState(false);
       if (this.predictiveSearchResults) {
         this.predictiveSearchResults.removeAttribute('style');
       }
