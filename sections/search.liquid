@@ -1,4 +1,5 @@
 {{ 'main-collection.css' | asset_url | stylesheet_tag }}
+{{ 'card-product.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign sort_by = search.sort_by | default: search.default_sort_by
@@ -47,37 +48,105 @@
                         {% endfor %}
 
                       {% when 'price_range' %}
-                        <div class="price-range">
-                          <div class="field price-range__field">
+                        {%- liquid
+                          assign price_range_min = filter.range_min | divided_by: 100.0
+                          assign price_range_max = filter.range_max | divided_by: 100.0
+                          assign price_step = 1
+                          assign price_round = 0
+                          if price_range_max < 100
+                            assign price_step = 0.01
+                            assign price_round = 2
+                          endif
+
+                          assign price_current_min = price_range_min
+                          if filter.min_value.value != blank
+                            assign price_current_min = filter.min_value.value | divided_by: 100.0
+                          endif
+
+                          assign price_current_max = price_range_max
+                          if filter.max_value.value != blank
+                            assign price_current_max = filter.max_value.value | divided_by: 100.0
+                          endif
+
+                          assign price_input_min = ''
+                          if filter.min_value.value != blank
+                            assign price_input_min = filter.min_value.value | divided_by: 100.0 | round: price_round
+                          endif
+
+                          assign price_input_max = ''
+                          if filter.max_value.value != blank
+                            assign price_input_max = filter.max_value.value | divided_by: 100.0 | round: price_round
+                          endif
+                        -%}
+
+                        <price-range-filter
+                          class="price-range-filter"
+                          data-range-min="{{ price_range_min }}"
+                          data-range-max="{{ price_range_max }}"
+                          data-price-step="{{ price_step }}"
+                        >
+                          <div class="price-range-filter__slider" data-price-slider>
+                            <div class="price-range-filter__track">
+                              <div class="price-range-filter__progress" data-price-progress></div>
+                            </div>
                             <input
-                              type="number"
-                              class="field__input text-sm"
-                              id="Filter-Price-{{ section.id }}-{{ forloop.index }}-min"
-                              name="{{ filter.min_value.param_name }}"
-                              placeholder="Min"
-                              value="{{ filter.min_value.value }}"
-                              min="0"
-                              inputmode="numeric"
+                              type="range"
+                              class="price-range-filter__range price-range-filter__range--min"
+                              data-price-range-min
+                              min="{{ price_range_min }}"
+                              max="{{ price_range_max }}"
+                              value="{{ price_current_min }}"
+                              step="{{ price_step }}"
+                              aria-label="{{ filter.label }} minimum"
                             >
-                            <label class="field__label" for="Filter-Price-{{ section.id }}-{{ forloop.index }}-min">Min</label>
+                            <input
+                              type="range"
+                              class="price-range-filter__range price-range-filter__range--max"
+                              data-price-range-max
+                              min="{{ price_range_min }}"
+                              max="{{ price_range_max }}"
+                              value="{{ price_current_max }}"
+                              step="{{ price_step }}"
+                              aria-label="{{ filter.label }} maximum"
+                            >
                           </div>
 
-                          <span class="price-range__separator" aria-hidden="true">–</span>
+                          <div class="price-range">
+                            <div class="field price-range__field">
+                              <input
+                                type="number"
+                                class="field__input text-sm"
+                                id="Filter-Price-{{ section.id }}-{{ forloop.index }}-min"
+                                name="{{ filter.min_value.param_name }}"
+                                placeholder="{{ price_range_min | round: price_round }}"
+                                value="{{ price_input_min }}"
+                                min="{{ price_range_min }}"
+                                max="{{ price_range_max }}"
+                                step="{{ price_step }}"
+                                inputmode="decimal"
+                                data-price-input-min
+                              >
+                            </div>
 
-                          <div class="field price-range__field">
-                            <input
-                              type="number"
-                              class="field__input text-sm"
-                              id="Filter-Price-{{ section.id }}-{{ forloop.index }}-max"
-                              name="{{ filter.max_value.param_name }}"
-                              placeholder="Max"
-                              value="{{ filter.max_value.value }}"
-                              min="0"
-                              inputmode="numeric"
-                            >
-                            <label class="field__label" for="Filter-Price-{{ section.id }}-{{ forloop.index }}-max">Max</label>
+                            <span class="price-range__separator" aria-hidden="true">–</span>
+
+                            <div class="field price-range__field">
+                              <input
+                                type="number"
+                                class="field__input text-sm"
+                                id="Filter-Price-{{ section.id }}-{{ forloop.index }}-max"
+                                name="{{ filter.max_value.param_name }}"
+                                placeholder="{{ price_range_max | round: price_round }}"
+                                value="{{ price_input_max }}"
+                                min="{{ price_range_min }}"
+                                max="{{ price_range_max }}"
+                                step="{{ price_step }}"
+                                inputmode="decimal"
+                                data-price-input-max
+                              >
+                            </div>
                           </div>
-                        </div>
+                        </price-range-filter>
 
                     {% endcase %}
 
@@ -114,12 +183,14 @@
             {%- endif -%}
               <form action="{{ routes.search_url }}" method="get" role="search" class="search">
                 <div class="field with-icon-right">
+                  <label class="visually-hidden" for="Search-In-Template">{{ 'search.placeholder' | t }}</label>
                   <input
                     class="search__input field__input"
                     id="Search-In-Template"
                     type="search"
                     name="q"
                     value="{{ search.terms | escape }}"
+                    placeholder="{{ 'search.placeholder' | t }}"
                     {%- if settings.predictive_search_enabled %}
                       role="combobox"
                       aria-expanded="false"
@@ -133,7 +204,6 @@
                       spellcheck="false"
                     {%- endif %}
                   >
-                  <label class="field__label" for="Search-In-Template">{{ 'search.placeholder' | t }}</label>
                   <input name="options[prefix]" type="hidden" value="last">
 
                   <button
@@ -272,58 +342,60 @@
                         {%- endif -%}
                       </div>
                     {% else %}
-                      <div class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
-                        {%- for item in search.results -%}
-                          <div class="grid__item" >
-                            {%- case item.object_type -%}
-                              {%- when 'product' -%}
-                                {% render 'product-card',
-                                  product: item,
-                                  show_vendor: settings.show_vendor,
-                                  show_secondary_image: settings.show_secondary_image,
-                                  show_quick_buy: settings.show_quick_buy,
-                                  show_rating: settings.show_rating,
-                                  rating_display: settings.rating_display,
-                                  show_sold_out_badge: settings.show_sold_out_badge,
-                                  show_discount_badge: settings.show_discount_badge,
-                                  discount_type: settings.discount_type,
-                                  color_display_mode: settings.color_display_mode,
-                                  image_ratio: settings.image_ratio,
-                                  content_alignment: settings.content_alignment,
-                                  style: settings.style
-                                %}
-                              {%- when 'article' -%}
-                                  {%- render 'article-card',
-                                      article: item,
-                                      media_height: section.settings.image_ratio,
-                                      show_image: section.settings.show_image,
-                                      show_date: section.settings.show_date,
-                                      show_author: section.settings.show_author,
-                                      show_excerpt: section.settings.show_excerpt,
-                                      read_more_label: section.settings.read_more_label,
-                                      settings: settings
-                                    -%}
-                              {%- when 'page' -%}
-                                <div class="article-card-wrapper card-wrapper underline-links-hover">
-                                  <div class="card">
-                                    <div class="card__content">
-                                      <div class="card__information">
-                                        <h3 class="card__heading">
-                                          <a href="{{ item.url }}" class="full-unstyled-link">
-                                            {{ item.title | truncate: 50 | escape }}
-                                          </a>
-                                        </h3>
+                      <div class="collection-products">
+                        <div class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
+                          {%- for item in search.results -%}
+                            <div class="grid__item" >
+                              {%- case item.object_type -%}
+                                {%- when 'product' -%}
+                                  {% render 'product-card',
+                                    product: item,
+                                    show_vendor: settings.show_vendor,
+                                    show_secondary_image: settings.show_secondary_image,
+                                    show_quick_buy: settings.show_quick_buy,
+                                    show_rating: settings.show_rating,
+                                    rating_display: settings.rating_display,
+                                    show_sold_out_badge: settings.show_sold_out_badge,
+                                    show_discount_badge: settings.show_discount_badge,
+                                    discount_type: settings.discount_type,
+                                    color_display_mode: settings.color_display_mode,
+                                    image_ratio: settings.image_ratio,
+                                    content_alignment: settings.content_alignment,
+                                    style: settings.style
+                                  %}
+                                {%- when 'article' -%}
+                                    {%- render 'article-card',
+                                        article: item,
+                                        media_height: section.settings.image_ratio,
+                                        show_image: section.settings.show_image,
+                                        show_date: section.settings.show_date,
+                                        show_author: section.settings.show_author,
+                                        show_excerpt: section.settings.show_excerpt,
+                                        read_more_label: section.settings.read_more_label,
+                                        settings: settings
+                                      -%}
+                                {%- when 'page' -%}
+                                  <div class="article-card-wrapper card-wrapper underline-links-hover">
+                                    <div class="card">
+                                      <div class="card__content">
+                                        <div class="card__information">
+                                          <h3 class="card__heading">
+                                            <a href="{{ item.url }}" class="full-unstyled-link">
+                                              {{ item.title | truncate: 50 | escape }}
+                                            </a>
+                                          </h3>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                            {%- endcase -%}
-                          </div>
-                        {%- endfor -%}
+                              {%- endcase -%}
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                        {%- if paginate.pages > 1 -%}
+                          {% render 'pagination', paginate: paginate %}
+                        {%- endif -%}
                       </div>
-                      {%- if paginate.pages > 1 -%}
-                        {% render 'pagination', paginate: paginate %}
-                      {%- endif -%}
                     {% endif %}
                   </div>
                   </div>
