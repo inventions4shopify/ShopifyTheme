@@ -95,26 +95,13 @@
 
 .search__input.field__input {
   padding-right: 8.5rem;
-  padding-left: 2rem;
-  padding-top: 1.5rem;
+  padding-left: var(--spacing-20);
+  line-height: normal;
 }
 
-.search .field__input::placeholder {
-  opacity: 0;
-  color: transparent;
-}
-
-.search .field__input:focus ~ .field__label,
-.search .field__input:not(:placeholder-shown) ~ .field__label,
-.search .field__input:-webkit-autofill ~ .field__label {
-  font-size: 1rem;
-  top: calc(var(--input-border-width) + 0.5rem);
-  left: 2rem;
-  letter-spacing: 0;
-}
-
-.search .field__label {
-  left: 2rem;
+.search__input.field__input::placeholder {
+  color: rgba(var(--color-body-text), 0.55);
+  opacity: 1;
 }
 
 .search .field__button {

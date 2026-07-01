@@ -1,3 +1,5 @@
+{{ 'card-product.css' | asset_url | stylesheet_tag }}
+
 {%- liquid
   assign products_to_show = section.settings.products_count
   assign columns = section.settings.columns

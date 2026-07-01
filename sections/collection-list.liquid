@@ -19,6 +19,58 @@
       {% endif %};
   }
 
+  .section-{{ section.id }} .collection-grid.is-slider {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: {% if section.settings.mobile_column_count == '2' %}calc((100% - var(--spacing-20)) / 2){% else %}100%{% endif %};
+    gap: var(--spacing-20);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    width: 100%;
+  }
+
+  .section-{{ section.id }} .collection-grid.is-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  .section-{{ section.id }} .collection-grid.is-slider > .collection-card {
+    scroll-snap-align: start;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .section-{{ section.id }} .collection-card .collection-card__image {
+    width: 100%;
+  }
+
+  @media (min-width: 576px) {
+    .section-{{ section.id }} .collection-grid.is-slider {
+      grid-auto-columns: calc((100% - var(--spacing-20)) / 2);
+    }
+  }
+
+  @media (min-width: 992px) {
+    .section-{{ section.id }} .collection-grid.is-slider {
+      grid-auto-columns: calc((100% - (var(--spacing-20) * 2)) / 3);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .section-{{ section.id }} .collection-grid.columns-4.is-slider {
+      grid-auto-columns: calc((100% - (var(--spacing-20) * 3)) / 4);
+    }
+
+    .section-{{ section.id }} .collection-grid.columns-3.is-slider {
+      grid-auto-columns: calc((100% - (var(--spacing-20) * 2)) / 3);
+    }
+
+    .section-{{ section.id }} .collection-grid.columns-2.is-slider {
+      grid-auto-columns: calc((100% - var(--spacing-20)) / 2);
+    }
+  }
 </style>
 
 {% liquid
@@ -39,7 +91,7 @@
 
 <div {%- render 'section-variables', section: section, class: 'collection-list__section' -%}>
   <div class="{{ container_class }}">
-    <div class="collection-list-header 123 {{ align_class }}">
+    <div class="collection-list-header {{ align_class }}">
       {%- render 'section-header',
         subheading:    section.settings.subheading,
         heading:       section.settings.heading,
@@ -52,7 +104,10 @@
       data-autoplay="{{ section.settings.autoplay }}"
       data-autoplay-speed="{{ section.settings.autoplay_speed }}"
     >
-      <div id="collection-slider-{{ section.id }}" class="collection-grid columns-{{ columns }} {% if section.settings.layout == 'slider' %}is-slider flex{% else %}is-grid grid grid--{{ section.settings.mobile_column_count }}-col md:grid--3-col lg:grid--4-col{% endif %}">
+      <div
+        id="collection-slider-{{ section.id }}"
+        class="collection-grid columns-{{ columns }} mobile-columns-{{ section.settings.mobile_column_count }}{% if section.settings.layout == 'slider' %} is-slider{% else %} is-grid grid grid--{{ section.settings.mobile_column_count }}-col md:grid--3-col lg:grid--4-col{% endif %}"
+      >
         {% for block in section.blocks %}
           {% assign collection = block.settings.collection %}
             {% assign collection_image = collection.featured_image %}

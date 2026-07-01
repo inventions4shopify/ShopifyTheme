@@ -193,13 +193,16 @@
                   {%- endif -%}
                     <form action="{{ routes.search_url }}" method="get" role="search" class="search">
                       <div class="field with-icon-right">
+                        <label class="visually-hidden" for="HeaderSearch-Input">
+                          {{- 'search.placeholder' | t -}}
+                        </label>
                         <input
                           class="search__input field__input"
                           id="HeaderSearch-Input"
                           type="search"
                           name="q"
                           value="{{ search.terms | escape }}"
-                          placeholder=" "
+                          placeholder="{{ 'search.placeholder' | t }}"
                           {%- if settings.predictive_search_enabled %}
                             role="combobox"
                             aria-expanded="false"
@@ -213,9 +216,6 @@
                             spellcheck="false"
                           {%- endif %}
                         >
-                        <label class="field__label" for="HeaderSearch-Input">
-                          {{- 'search.placeholder' | t -}}
-                        </label>
                         <input name="options[prefix]" type="hidden" value="last">
 
                         <button

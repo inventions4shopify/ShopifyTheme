@@ -37,10 +37,10 @@
 
     .main-product-section--sticky-image .product-image-gallery-wrapper {
         position: sticky;
-        top: 2rem;
+        top: calc(var(--header-height, 0px) + var(--spacing-16, 1.6rem));
         align-self: flex-start;
         overflow: visible;
-        z-index: 1;
+        z-index: 2;
     }
 
     .product-info-wrapper {
