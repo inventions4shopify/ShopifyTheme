@@ -1031,7 +1031,7 @@
         "type": "checkbox",
         "id": "qv_show_color_name",
         "label": "t:settings_schema.quick_view.settings.qv_show_color_name.label",
-        "default": true
+        "default": false
       },
       {
         "type": "select",
