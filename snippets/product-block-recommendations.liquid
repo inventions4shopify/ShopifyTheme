@@ -1,3 +1,9 @@
+<style>
+.product_card_button{
+  padding: 7px;
+}
+</style>
+
 <product-recommendations-slider
   class="prs"
   {{ block.shopify_attributes }}
@@ -24,16 +30,19 @@
 
             <div class="prs_content">
               <h3 class="prs_title">
-                <a href="{{ recommendation_product.url }}">
+                <a href="{{ recommendation_product.url }}" class="line-clamp-2">
                   {{ recommendation_product.title }}
                 </a>
               </h3>
 
-              <div class="prs_price">
-                {{ recommendation_product.price | money }}
-              </div>
+              <div class="prs_price_row">
+                <div class="prs_price">
+                  {{ recommendation_product.price | money }}
+                  <span class="product_compare_price">{{ recommendation_product.compare_at_price | money }}</span>
+                </div>
 
-              {% render 'product-card-form', product: recommendation_product %}
+                {% render 'product-card-form', product: recommendation_product %}
+              </div>
             </div>
           </div>
         </div>

@@ -133,6 +133,7 @@ class ProductRecommendationsSlider extends HTMLElement {
     this.nextButton?.addEventListener("click", () => this.next());
 
     this.resizeHandler = () => {
+      this.gap = parseFloat(getComputedStyle(this.track).gap) || 0;
       this.currentIndex = Math.min(this.currentIndex, this.getMaxIndex());
 
       this.update();
@@ -147,20 +148,27 @@ class ProductRecommendationsSlider extends HTMLElement {
     window.removeEventListener("resize", this.resizeHandler);
   }
 
-  getSlidesPerView() {
-    if (window.innerWidth >= 992) {
-      return 4;
-    }
+  getSlideStep() {
+    const slideWidth = this.slides[0]?.offsetWidth || 0;
 
-    if (window.innerWidth >= 768) {
-      return 2;
-    }
+    return slideWidth + this.gap;
+  }
 
-    return 1;
+  usesNativeScroll() {
+    return window.innerWidth < 768;
   }
 
   getMaxIndex() {
-    return Math.max(0, this.slides.length - this.getSlidesPerView());
+    if (!this.slides.length) return 0;
+
+    const viewport = this.querySelector(".prs_viewport");
+    const step = this.getSlideStep();
+
+    if (!viewport || !step) return Math.max(0, this.slides.length - 1);
+
+    const maxOffset = Math.max(0, this.track.scrollWidth - viewport.clientWidth);
+
+    return Math.max(0, Math.ceil(maxOffset / step));
   }
 
   next() {
@@ -176,13 +184,25 @@ class ProductRecommendationsSlider extends HTMLElement {
   }
 
   update() {
-    const slideWidth = this.slides[0]?.offsetWidth || 0;
-
-    const offset = (slideWidth + this.gap) * this.currentIndex;
-
-    this.track.style.transform = `translateX(-${offset}px)`;
+    if (this.usesNativeScroll()) {
+      this.track.style.transform = "";
+      this.track.style.transition = "";
+      return;
+    }
 
     const maxIndex = this.getMaxIndex();
+    const step = this.getSlideStep();
+    let offset = step * this.currentIndex;
+
+    if (this.currentIndex === maxIndex && maxIndex > 0) {
+      const viewport = this.querySelector(".prs_viewport");
+      offset = Math.max(
+        0,
+        this.track.scrollWidth - (viewport?.clientWidth || 0),
+      );
+    }
+
+    this.track.style.transform = `translateX(-${offset}px)`;
 
     if (maxIndex === 0) {
       this.prevButton?.setAttribute("hidden", "");

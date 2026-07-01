@@ -40,7 +40,7 @@ body {
 
 .header {
   position: relative;
-  z-index: 30;
+  /* z-index: 30; */
 }
 
 *,
@@ -1609,23 +1609,4 @@ canvas {
   flex-direction: column;
   flex: 1 1 auto;
   justify-content: center;
-}
-
-body.search {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.search main,
-.search__section,
-.template-search,
-.search-section {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.search__section {
-  overflow: visible;
 }
