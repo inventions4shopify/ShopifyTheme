@@ -433,12 +433,40 @@ read-more-description {
 .prs_track {
     display: flex;
     gap: var(--spacing-16);
-    transition: transform 0.3s ease;
-    will-change: transform;
 }
 
 .prs_slide {
-    flex: 0 0 100%;
+    flex: 0 0 85%;
+}
+
+@media screen and (max-width: 767px) {
+    .prs_viewport {
+        overflow: visible;
+    }
+
+    .prs_track {
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+        touch-action: pan-x;
+        scrollbar-width: none;
+        transform: none !important;
+        transition: none;
+        will-change: auto;
+        padding-bottom: var(--spacing-4);
+    }
+
+    .prs_track::-webkit-scrollbar {
+        display: none;
+    }
+
+    .prs_slide {
+        scroll-snap-align: start;
+        flex: 0 0 85%;
+    }
 }
 
 .prs_image {
@@ -468,10 +496,12 @@ read-more-description {
 @media screen and (min-width: 768px) {
     .prs_track {
         gap: 20px;
+        transition: transform 0.3s ease;
+        will-change: transform;
     }
 
     .prs_slide {
-        flex: 0 0 calc(50% - var(--spacing-10));
+        flex: 0 0 calc(75% - var(--spacing-10));
     }
 
     .prs_prev,
@@ -506,7 +536,7 @@ read-more-description {
 
 @media screen and (min-width: 992px) {
     .prs_slide {
-        flex: 0 0 calc(25% - 15px);
+        flex: 0 0 calc(65% - 15px);
     }
     .product_card_button {
         font-size: var(--text-base);
@@ -514,9 +544,13 @@ read-more-description {
     }
 }
 
-.prs_slide {
-    flex: 0 0 100%;
+@media screen and (min-width: 1200px) {
+    .prs_slide {
+        flex: 0 0 calc(60% - var(--spacing-10));
+    }
 }
+
+
 
 .prs_slide_inner {
     display: flex;
@@ -525,8 +559,8 @@ read-more-description {
 }
 
 .prs_image {
-    flex: 0 0 12rem;
-    width: 12rem;
+    flex: 0 0 10rem;
+    width: 10rem;
     margin-bottom: 0;
 }
 
@@ -546,18 +580,26 @@ read-more-description {
 }
 
 .prs_price {
-    font-size: var(--text-base);
+    font-size: var(--text-lg);
     font-weight: 600;
 }
 
+.prs_price_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+}
+
+.prs_price_row product-card-form {
+    flex-shrink: 0;
+}
+
 @media screen and (min-width: 768px) {
-    .prs_slide {
-        flex: 0 0 50%;
-    }
 
     .prs_image {
-        flex: 0 0 14rem;
-        width: 14rem;
+        flex: 0 0 10rem;
+        width: 10rem;
     }
 }
 
@@ -574,7 +616,8 @@ read-more-description {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 50;
+    z-index: 2;
+    margin-bottom: 0;
     background: rgb(var(--color-background));
     border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
     transform: translateY(100%);

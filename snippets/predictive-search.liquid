@@ -22,11 +22,25 @@
     if products.size > 0 or collections.size > 0 or pages.size > 0 or articles.size > 0 or queries.size > 0
       assign has_results = true
     endif
+
+    assign has_suggestions = false
+    if queries.size > 0 or pages.size > 0 or articles.size > 0
+      assign has_suggestions = true
+    endif
+
+    assign has_catalog = false
+    if products.size > 0 or collections.size > 0
+      assign has_catalog = true
+    endif
   -%}
 
   <div id="predictive-search-results" class="predictive-search__results" role="listbox">
     {%- if has_results -%}
-      <div class="predictive-search__results-groups-wrapper">
+      <div class="predictive-search__results-groups-wrapper{% if has_suggestions and has_catalog %} predictive-search__results-groups-wrapper--split{% endif %}">
+        {%- if has_suggestions -%}
+          <div class="predictive-search__column predictive-search__column--suggestions">
+        {%- endif -%}
+
         {%- comment -%} Suggested search queries {%- endcomment -%}
         {%- if queries.size > 0 -%}
           <div class="predictive-search__result-group">
@@ -55,6 +69,85 @@
               {%- endfor -%}
             </ul>
           </div>
+        {%- endif -%}
+
+        {%- comment -%} Pages {%- endcomment -%}
+        {%- if pages.size > 0 -%}
+          <div class="predictive-search__result-group">
+            <h2 id="predictive-search-pages" class="predictive-search__heading">
+              {{ 'search.pages' | t }}
+            </h2>
+            <ul
+              class="predictive-search__results-list list-unstyled"
+              role="group"
+              aria-labelledby="predictive-search-pages"
+            >
+              {%- for page in pages -%}
+                <li
+                  id="predictive-search-option-page-{{ forloop.index }}"
+                  class="predictive-search__list-item"
+                  role="option"
+                  aria-selected="false"
+                >
+                  <a href="{{ page.url }}" class="predictive-search__item predictive-search__item--link link">
+                    <span class="predictive-search__item-content predictive-search__item-content--centered">
+                      <span class="predictive-search__item-heading">{{ page.title }}</span>
+                    </span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Articles {%- endcomment -%}
+        {%- if articles.size > 0 -%}
+          <div class="predictive-search__result-group">
+            <h2 id="predictive-search-articles" class="predictive-search__heading">
+              {{ 'search.articles' | t }}
+            </h2>
+            <ul
+              class="predictive-search__results-list list-unstyled"
+              role="group"
+              aria-labelledby="predictive-search-articles"
+            >
+              {%- for article in articles -%}
+                <li
+                  id="predictive-search-option-article-{{ forloop.index }}"
+                  class="predictive-search__list-item"
+                  role="option"
+                  aria-selected="false"
+                >
+                  <a href="{{ article.url }}" class="predictive-search__item predictive-search__item--link link">
+                    {%- if article.image != blank -%}
+                      <span class="predictive-search__item-media">
+                        {{
+                          article.image
+                          | image_url: width: 150
+                          | image_tag:
+                            widths: '50, 100, 150',
+                            sizes: '50px',
+                            class: 'predictive-search__image',
+                            alt: article.image.alt
+                        }}
+                      </span>
+                    {%- endif -%}
+                    <span class="predictive-search__item-content">
+                      <span class="predictive-search__item-heading">{{ article.title }}</span>
+                    </span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- if has_suggestions -%}
+          </div>
+        {%- endif -%}
+
+        {%- if has_catalog -%}
+          <div class="predictive-search__column predictive-search__column--catalog">
         {%- endif -%}
 
         {%- comment -%} Products {%- endcomment -%}
@@ -140,74 +233,7 @@
           </div>
         {%- endif -%}
 
-        {%- comment -%} Pages {%- endcomment -%}
-        {%- if pages.size > 0 -%}
-          <div class="predictive-search__result-group">
-            <h2 id="predictive-search-pages" class="predictive-search__heading">
-              {{ 'search.pages' | t }}
-            </h2>
-            <ul
-              class="predictive-search__results-list list-unstyled"
-              role="group"
-              aria-labelledby="predictive-search-pages"
-            >
-              {%- for page in pages -%}
-                <li
-                  id="predictive-search-option-page-{{ forloop.index }}"
-                  class="predictive-search__list-item"
-                  role="option"
-                  aria-selected="false"
-                >
-                  <a href="{{ page.url }}" class="predictive-search__item predictive-search__item--link link">
-                    <span class="predictive-search__item-content predictive-search__item-content--centered">
-                      <span class="predictive-search__item-heading">{{ page.title }}</span>
-                    </span>
-                  </a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} Articles {%- endcomment -%}
-        {%- if articles.size > 0 -%}
-          <div class="predictive-search__result-group">
-            <h2 id="predictive-search-articles" class="predictive-search__heading">
-              {{ 'search.articles' | t }}
-            </h2>
-            <ul
-              class="predictive-search__results-list list-unstyled"
-              role="group"
-              aria-labelledby="predictive-search-articles"
-            >
-              {%- for article in articles -%}
-                <li
-                  id="predictive-search-option-article-{{ forloop.index }}"
-                  class="predictive-search__list-item"
-                  role="option"
-                  aria-selected="false"
-                >
-                  <a href="{{ article.url }}" class="predictive-search__item predictive-search__item--link link">
-                    {%- if article.image != blank -%}
-                      <span class="predictive-search__item-media">
-                        {{
-                          article.image
-                          | image_url: width: 150
-                          | image_tag:
-                            widths: '50, 100, 150',
-                            sizes: '50px',
-                            class: 'predictive-search__image',
-                            alt: article.image.alt
-                        }}
-                      </span>
-                    {%- endif -%}
-                    <span class="predictive-search__item-content">
-                      <span class="predictive-search__item-heading">{{ article.title }}</span>
-                    </span>
-                  </a>
-                </li>
-              {%- endfor -%}
-            </ul>
+        {%- if has_catalog -%}
           </div>
         {%- endif -%}
       </div>
