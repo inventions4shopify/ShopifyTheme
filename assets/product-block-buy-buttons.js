@@ -1,4 +1,5 @@
-class ProductForm extends HTMLElement {
+if (!customElements.get('product-form')) {
+  class ProductForm extends HTMLElement {
   constructor() {
     super();
 
@@ -114,8 +115,7 @@ class ProductForm extends HTMLElement {
       if (afterAdd) afterAdd();
     }
   }
-}
+  }
 
-if (!customElements.get('product-form')) {
   customElements.define('product-form', ProductForm);
 }
