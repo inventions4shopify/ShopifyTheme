@@ -77,18 +77,14 @@ class QuickViewModal extends HTMLElement {
   }
 
   async open(productUrl, sectionId) {
-    if (!productUrl) return;
+    if (!productUrl || this._loading) return;
+
+    this._loading = true;
 
     const productPath = this.getProductPath(productUrl);
     const sectionIds = sectionId ? [sectionId, ...this.sectionIds] : this.sectionIds;
     const uniqueSectionIds = [...new Set(sectionIds)];
-
-    this.activeProductUrl = productUrl;
-    this.removeAttribute('hidden');
-    this.classList.add('is-open');
-    this.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('quick-view-open');
-    this.showLoader();
+    const wasOpen = this.isOpen();
 
     try {
       const sectionHtml = await this.fetchProductSection(productPath, uniqueSectionIds);
@@ -102,14 +98,38 @@ class QuickViewModal extends HTMLElement {
       await this.loadSectionAssets(html);
 
       const section = html.querySelector('.shopify-section');
+      const markup = section ? section.innerHTML : sectionHtml;
 
-      this.content.innerHTML = section ? section.innerHTML : sectionHtml;
+      this.activeProductUrl = productUrl;
+
+      if (!wasOpen) {
+        this.removeAttribute('hidden');
+        this.classList.add('is-open', 'is-preparing');
+        this.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('quick-view-open');
+      } else {
+        this.classList.add('is-preparing');
+      }
+
+      this.content.innerHTML = markup;
       this.runInlineScripts(this.content);
-      this.initModalGallery();
       this.appendViewDetailsLink(productUrl);
+      await this.prepareContent();
+      this.classList.remove('is-preparing');
     } catch (error) {
       console.error(error);
+
+      if (!wasOpen) {
+        this.removeAttribute('hidden');
+        this.classList.add('is-open');
+        this.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('quick-view-open');
+      }
+
+      this.classList.remove('is-preparing');
       this.content.innerHTML = `<p class="quick-view-modal__loader">${error.message}</p>`;
+    } finally {
+      this._loading = false;
     }
   }
 
@@ -155,20 +175,22 @@ class QuickViewModal extends HTMLElement {
   }
 
   close() {
-    this.classList.remove('is-open');
+    this.classList.remove('is-open', 'is-preparing');
     this.setAttribute('aria-hidden', 'true');
     this.setAttribute('hidden', '');
     document.body.classList.remove('quick-view-open');
     this.content.innerHTML = '';
     this.activeProductUrl = null;
+    this._loading = false;
   }
 
-  showLoader() {
-    this.content.innerHTML = `
-      <div class="quick-view-modal__loader">
-        <span>Loading...</span>
-      </div>
-    `;
+  prepareContent() {
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        window.theme?.initProductGalleries?.(this.content);
+        requestAnimationFrame(resolve);
+      });
+    });
   }
 
   loadSectionAssets(doc) {
@@ -215,17 +237,6 @@ class QuickViewModal extends HTMLElement {
 
       script.textContent = oldScript.textContent;
       oldScript.replaceWith(script);
-    });
-  }
-
-  initModalGallery() {
-    const initialize = () => {
-      window.theme?.initProductGalleries?.(this.content);
-      window.dispatchEvent(new Event('resize'));
-    };
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(initialize);
     });
   }
 
