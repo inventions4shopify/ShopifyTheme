@@ -24,13 +24,13 @@
 
 .cms-product-bottom {
 	display: block;
-	margin-top: var(--spacing-40);
+	margin-top: var(--spacing-20);
 }
 
 .product-tab__tabs {
 	display: flex;
 	gap: var(--spacing-20);
-	margin-bottom: var(--spacing-64);
+	margin-bottom: var(--spacing-20);
 	padding-bottom: var(--spacing-20);
 	border-bottom: 0.1rem solid rgb(var(--color-border));
 	overflow: hidden;
@@ -125,6 +125,11 @@
 
 	.product-tab__tabs {
 		width: 90%;
+		margin-bottom: var(--spacing-64);
+	}
+
+	.cms-product-bottom {
+		margin-top: var(--spacing-40);
 	}
 }
 

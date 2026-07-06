@@ -20,6 +20,7 @@ class QuantityInput extends HTMLElement {
     super();
     this.onClick = this.onClick.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onKeydown = this.onKeydown.bind(this);
   }
 
   connectedCallback() {
@@ -33,6 +34,7 @@ class QuantityInput extends HTMLElement {
 
     this.addEventListener('click', this.onClick);
     this.input.addEventListener('change', this.onChange);
+    this.input.addEventListener('keydown', this.onKeydown);
 
     this.validate();
   }
@@ -40,6 +42,7 @@ class QuantityInput extends HTMLElement {
   disconnectedCallback() {
     this.removeEventListener('click', this.onClick);
     this.input?.removeEventListener('change', this.onChange);
+    this.input?.removeEventListener('keydown', this.onKeydown);
   }
 
   get step() {
@@ -85,6 +88,16 @@ class QuantityInput extends HTMLElement {
 
   onChange() {
     this.validate();
+  }
+
+  onKeydown(event) {
+    if (event.key !== 'Enter') return;
+
+    // Prevent implicit form submit (e.g. cart page checkout button).
+    event.preventDefault();
+    this.validate();
+    this.input.dispatchEvent(new Event('change', { bubbles: true }));
+    this.input.blur();
   }
 
   validate(value = Number(this.input.value) || 0) {

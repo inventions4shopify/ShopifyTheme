@@ -188,6 +188,7 @@ class QuickViewModal extends HTMLElement {
     return new Promise((resolve) => {
       requestAnimationFrame(() => {
         window.theme?.initProductGalleries?.(this.content);
+        window.theme?.initProductAccordions?.(this.content);
         requestAnimationFrame(resolve);
       });
     });

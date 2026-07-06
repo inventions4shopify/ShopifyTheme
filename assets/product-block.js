@@ -7,24 +7,29 @@ class ProductAccordion {
     this.contentWrapper = details.querySelector(
       ".product_accordion_content_wrapper",
     );
+    this.transitionDuration = 400;
 
-    this.isActive = this.details.hasAttribute("open");
+    if (!this.summary || !this.contentWrapper) return;
 
-    this.details.classList.toggle("is-active", this.isActive);
+    this.onSummaryClick = this.onSummaryClick.bind(this);
+    this.summary.addEventListener("click", this.onSummaryClick);
 
-    this.summary.addEventListener("click", this.onClick.bind(this));
+    const startsOpen = this.details.hasAttribute("open");
+    this.details.classList.toggle("is-active", startsOpen);
 
-    if (this.isActive) {
-      this.contentWrapper.style.height = "auto";
+    if (startsOpen) {
+      requestAnimationFrame(() => {
+        this.contentWrapper.style.height = "auto";
+      });
+    } else {
+      this.contentWrapper.style.height = "0px";
     }
   }
 
-  onClick(event) {
+  onSummaryClick(event) {
     event.preventDefault();
 
-    const isOpen = this.details.hasAttribute("open");
-
-    if (isOpen) {
+    if (this.details.classList.contains("is-active")) {
       this.close();
     } else {
       this.closeOthers();
@@ -33,36 +38,10 @@ class ProductAccordion {
   }
 
   closeOthers() {
-    document
-      .querySelectorAll(".product_accordion[open]")
-      .forEach((accordion) => {
-        if (accordion === this.details) return;
-
-        accordion.querySelector(
-          ".product_accordion_content_wrapper",
-        ).style.height = `${
-          accordion.querySelector(".product_accordion_content_wrapper")
-            .scrollHeight
-        }px`;
-
-        accordion.classList.remove("is-active");
-
-        requestAnimationFrame(() => {
-          accordion.querySelector(
-            ".product_accordion_content_wrapper",
-          ).style.height = "0px";
-        });
-
-        accordion
-          .querySelector(".product_accordion_content_wrapper")
-          .addEventListener(
-            "transitionend",
-            () => {
-              accordion.removeAttribute("open");
-            },
-            { once: true },
-          );
-      });
+    document.querySelectorAll(".product_accordion.is-active").forEach((accordion) => {
+      if (accordion === this.details) return;
+      accordion._productAccordion?.close();
+    });
   }
 
   open() {
@@ -70,45 +49,87 @@ class ProductAccordion {
     this.details.setAttribute("open", "");
 
     this.contentWrapper.style.height = "0px";
+    const targetHeight = this.contentWrapper.scrollHeight;
+    void this.contentWrapper.offsetHeight;
 
     requestAnimationFrame(() => {
-      this.contentWrapper.style.height = `${this.contentWrapper.scrollHeight}px`;
+      this.contentWrapper.style.height = `${targetHeight}px`;
     });
 
-    this.contentWrapper.addEventListener(
-      "transitionend",
-      () => {
-        if (this.details.hasAttribute("open")) {
-          this.contentWrapper.style.height = "auto";
-        }
-      },
-      { once: true },
-    );
+    this.waitForHeightTransition(() => {
+      if (this.details.classList.contains("is-active")) {
+        this.contentWrapper.style.height = "auto";
+      }
+    });
   }
 
   close() {
     this.details.classList.remove("is-active");
-    this.contentWrapper.style.height = `${this.contentWrapper.scrollHeight}px`;
+
+    const currentHeight = this.contentWrapper.scrollHeight;
+    if (!currentHeight) {
+      this.finishClose();
+      return;
+    }
+
+    this.contentWrapper.style.height = `${currentHeight}px`;
+    void this.contentWrapper.offsetHeight;
 
     requestAnimationFrame(() => {
       this.contentWrapper.style.height = "0px";
     });
 
-    this.contentWrapper.addEventListener(
-      "transitionend",
-      () => {
-        this.details.removeAttribute("open");
-      },
-      { once: true },
+    this.waitForHeightTransition(() => this.finishClose());
+  }
+
+  finishClose() {
+    this.details.removeAttribute("open");
+    this.contentWrapper.style.height = "0px";
+  }
+
+  waitForHeightTransition(callback) {
+    let finished = false;
+
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      this.contentWrapper.removeEventListener("transitionend", onTransitionEnd);
+      clearTimeout(fallbackTimer);
+      callback();
+    };
+
+    const onTransitionEnd = (event) => {
+      if (
+        event.target === this.contentWrapper &&
+        event.propertyName === "height"
+      ) {
+        finish();
+      }
+    };
+
+    this.contentWrapper.addEventListener("transitionend", onTransitionEnd);
+    const fallbackTimer = setTimeout(
+      finish,
+      this.transitionDuration,
     );
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".product_accordion").forEach((accordion) => {
-    new ProductAccordion(accordion);
+function initProductAccordions(root = document) {
+  root.querySelectorAll(".product_accordion:not([data-accordion-bound])").forEach((details) => {
+    details.dataset.accordionBound = "true";
+    details._productAccordion = new ProductAccordion(details);
   });
-});
+}
+
+window.theme = window.theme || {};
+window.theme.initProductAccordions = initProductAccordions;
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => initProductAccordions());
+} else {
+  initProductAccordions();
+}
 
 // Product recommendations slider ------------------
 

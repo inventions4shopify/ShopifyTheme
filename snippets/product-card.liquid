@@ -53,11 +53,7 @@
     </a>
   </div>
 
-  {% render 'product-card-variant',
-    product: product,
-    color_display_mode: color_display_mode,
-    content_alignment: content_alignment
-  %}
+  
 
   <div class="product-card__content text-{{ content_alignment }}">
     {% if show_vendor and product.vendor != blank %}
@@ -71,6 +67,12 @@
         {{ product.title }}
       </a>
     </h3>
+
+    {% render 'product-card-variant',
+      product: product,
+      color_display_mode: color_display_mode,
+      content_alignment: content_alignment
+    %}
 
     {% if show_rating and product.metafields.reviews.rating.value %}
       <div class="product-card__rating">
