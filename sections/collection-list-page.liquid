@@ -24,7 +24,7 @@
 
   assign s = section.settings
 
-  # ── Container width ──────────────────────────────────────────────────────
+  # ── Layout Width ──────────────────────────────────────────────────────
   assign container_class = 'page-width'
   if s.container_width == 'full-width'
     assign container_class = 'page-width--full'
@@ -140,7 +140,7 @@
     {
       "type": "select",
       "id": "container_width",
-      "label": "Container width",
+      "label": "Layout Width",
       "options": [
         { "value": "page-width", "label": "Page width" },
         { "value": "full-width", "label": "Full width" },

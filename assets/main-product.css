@@ -355,9 +355,8 @@ read-more-description {
     }
 }
 
-/* price css */
-.product_price_wrapper {
-    margin-top: var(--spacing-4);
+product-price {
+    display: block;
 }
 
 .product_price_block {
