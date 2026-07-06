@@ -13,6 +13,7 @@
   }
   .footer__mobile-toggle{
     color: {{ settings.footer_text_color }};
+    padding-bottom: 2.4rem;
   }
   .footer__bottom-link {  color: {{ settings.footer_text_color }}; }
   .footer__bottom-link:hover { color: {{ settings.footer_text_color }}}
@@ -34,13 +35,6 @@
     {%- if section.blocks.size > 0 -%}
       <div class="footer__blocks-row">
         {%- for block in section.blocks -%}
-          {%- style -%}
-            .footer__text-img {
-              max-width: {{ block.settings.logo_width_desktop }}px;
-              height: auto;
-              display: block;
-            }
-          {%- endstyle -%}
           {%- comment -%} Column size class {%- endcomment -%}
           {%- liquid
             case block.settings.column_size
@@ -95,20 +89,22 @@
               <div class="footer__block {{ col_class }} footer__block--menu" {{ block.shopify_attributes }}>
                 {%- if block.settings.menu != blank -%}
                   <div class="footer__menu-mobile">
-                    <button class="footer__mobile-toggle">
+                    <button class="footer__mobile-toggle" type="button" aria-expanded="false">
                       <h3 class="footer__block-title">{{ block.settings.title }}</h3>
                       <span class="footer__toggle-icon"></span>
                     </button>
 
-                    <ul class="footer__menu-list" role="list">
-                      {%- for link in block.settings.menu.links -%}
-                        <li>
-                          <a href="{{ link.url }}" class="footer__menu-link">
-                            {{ link.title }}
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
+                    <div class="footer__menu-panel">
+                      <ul class="footer__menu-list" role="list">
+                        {%- for link in block.settings.menu.links -%}
+                          <li>
+                            <a href="{{ link.url }}" class="footer__menu-link">
+                              {{ link.title }}
+                            </a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
                   </div>
                 {%- endif -%}
               </div>
@@ -137,6 +133,13 @@
                     assign mobile_align_class = 'footer__block--mobile-left'
                 endcase
               -%}
+              {%- style -%}
+                .footer__text-img {
+                  max-width: {{ block.settings.logo_width_desktop }}px;
+                  height: auto;
+                  display: block;
+                }
+              {%- endstyle -%}
               <div class="footer__block {{ col_class }} footer__block--text {{ desktop_align_class }} {{ mobile_align_class }}" {{ block.shopify_attributes }}>
                 {%- if block.settings.image != blank -%}
                   <div class="footer__text-img-wrap">
@@ -249,14 +252,28 @@
 </footer>
 
 <script>
-  const footerMobile = document.querySelectorAll('.footer__mobile-toggle');
-  if(footerMobile){  
-    footerMobile.forEach((button) => {
-      button.addEventListener('click', () => {
-        button.parentElement.classList.toggle('active');
+  const footerMobileToggles = document.querySelectorAll('.footer__mobile-toggle');
+  const footerMobileQuery = window.matchMedia('(max-width: 749px)');
+
+  const setFooterMenuState = (menu, isOpen) => {
+    menu.classList.toggle('active', isOpen);
+    menu.querySelector('.footer__mobile-toggle')?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  };
+
+  footerMobileToggles.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!footerMobileQuery.matches) return;
+
+      const menu = button.closest('.footer__menu-mobile');
+      const isOpening = !menu.classList.contains('active');
+
+      document.querySelectorAll('.footer__menu-mobile.active').forEach((openMenu) => {
+        if (openMenu !== menu) setFooterMenuState(openMenu, false);
       });
+
+      setFooterMenuState(menu, isOpening);
     });
-  }
+  });
 </script>
 
 {% schema %}

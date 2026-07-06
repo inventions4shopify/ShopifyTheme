@@ -1,17 +1,36 @@
 .product-tab__section {
 	position: relative;
-	overflow: hidden;
+}
+
+.product-tab__container {
+	width: 100%;
+}
+
+.product-tab--full-width .product-tab__container {
+	max-width: none;
+	margin-inline: 0;
+	padding-inline: 0;
+}
+
+.product-tab--full-width .product-tab__tabs {
+	width: 100%;
+}
+
+.product-tab--full-width .product-tab__content,
+.product-tab--full-width .custom-slider-wrapper,
+.product-tab--full-width .product-row {
+	width: 100%;
 }
 
 .cms-product-bottom {
 	display: block;
-	margin-top: var(--spacing-40);
+	margin-top: var(--spacing-20);
 }
 
 .product-tab__tabs {
 	display: flex;
 	gap: var(--spacing-20);
-	margin-bottom: var(--spacing-64);
+	margin-bottom: var(--spacing-20);
 	padding-bottom: var(--spacing-20);
 	border-bottom: 0.1rem solid rgb(var(--color-border));
 	overflow: hidden;
@@ -69,8 +88,8 @@
 
 .product-cell {
 	width: 100%;
-	max-width: calc(100% - var(--grid-spacing));
-	flex: 0 0 calc(100% - var(--grid-spacing));
+	max-width: 100%;
+	flex: 0 0 100%;
 	border-radius: var(--media-radius);
 	overflow: hidden;
 }
@@ -84,8 +103,8 @@
 
 @media (min-width: 576px) {
 	.product-cell {
-		max-width: calc(50% - var(--grid-spacing));
-		flex: 0 0 calc(50% - var(--grid-spacing));
+		max-width: calc((100% - var(--grid-spacing)) / 2);
+		flex: 0 0 calc((100% - var(--grid-spacing)) / 2);
 	}
 
 	.product-tab__tabs {
@@ -100,18 +119,23 @@
 
 @media (min-width: 768px) {
 	.product-cell {
-		max-width: calc(33.33% - var(--grid-spacing));
-		flex: 0 0 calc(33.33% - var(--grid-spacing));
+		max-width: calc((100% - (2 * var(--grid-spacing))) / 3);
+		flex: 0 0 calc((100% - (2 * var(--grid-spacing))) / 3);
 	}
 
 	.product-tab__tabs {
 		width: 90%;
+		margin-bottom: var(--spacing-64);
+	}
+
+	.cms-product-bottom {
+		margin-top: var(--spacing-40);
 	}
 }
 
 @media (min-width: 1200px) {
 	.product-cell {
-		max-width: calc(25% - var(--grid-spacing));
-		flex: 0 0 calc(25% - var(--grid-spacing));
+		max-width: calc((100% - (3 * var(--grid-spacing))) / 4);
+		flex: 0 0 calc((100% - (3 * var(--grid-spacing))) / 4);
 	}
 }

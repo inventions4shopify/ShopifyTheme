@@ -7,13 +7,16 @@
     or option.name contains 'colour'
   %}
     {% assign color_option = option %}
+    {% assign color_option_visible = true %}
     {% break %}
   {% endif %}
 {% endfor %}
 
+
 {% if color_option %}
   {% case color_display_mode %}
     {% when 'swatch' %}
+    {% if color_option_visible %}
       <div class="product-card__swatches text-{{ content_alignment }}">
         {% for value in color_option.values %}
           <span
@@ -23,6 +26,7 @@
           ></span>
         {% endfor %}
       </div>
+      {% endif %}
 
     {% when 'count' %}
       <div class="product-card__color-count">{{ color_option.values.size }} Colors</div>

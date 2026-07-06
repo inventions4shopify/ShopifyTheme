@@ -11,21 +11,20 @@
 }
 
 .pagination__list > li {
-  flex: 1 0 4.4rem;
-  max-width: 4.4rem;
+  flex: 1 0 3rem;
+  max-width: 3rem;
   list-style: none;
+  margin-right: 5px;
 }
 
-.pagination__list > li:not(:last-child) {
-  margin-right: 1rem;
-}
+
 
 .pagination__item {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  height: 4.4rem;
+  height: 3rem;
   width: 100%;
   padding: 0;
   text-decoration: none;
@@ -41,4 +40,18 @@ a.pagination__item:hover::after {
 
 .pagination__item .icon-caret {
   height: 0.6rem;
+}
+
+@media (min-width: 768px) { 
+  .pagination__list > li:not(:last-child) {
+    margin-right: 1rem;
+  }
+
+  .pagination__list > li {
+    flex: 1 0 4.4rem;
+    max-width: 4.4rem;
+  }
+  .pagination__item {
+    height: 4.4rem;
+  }
 }

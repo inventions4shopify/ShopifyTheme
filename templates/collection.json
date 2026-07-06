@@ -9,11 +9,9 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "collection",
+    "collection-header": {
+      "type": "collection-header",
       "settings": {
-        "collection_header": true,
-        "card_per_page": 16,
         "container_width": "small",
         "custom_container_width": 800,
         "content_alignment": "center",
@@ -21,11 +19,6 @@
         "subheading": "",
         "heading": "",
         "heading_tag": "h2",
-        "show_filter": true,
-        "filter_position": "sidebar",
-        "show_total_product": true,
-        "show_sort": true,
-        "show_layout": true,
         "show_bg_image": true,
         "media_height": "small",
         "overlay_color": "#000000",
@@ -36,9 +29,21 @@
         "heading_color": "#FFFFFF",
         "text_color": "#FFFFFF"
       }
+    },
+    "main": {
+      "type": "collection",
+      "settings": {
+        "card_per_page": 16,
+        "show_filter": true,
+        "filter_position": "sidebar",
+        "show_total_product": true,
+        "show_sort": true,
+        "show_layout": true
+      }
     }
   },
   "order": [
+    "collection-header",
     "main"
   ]
 }

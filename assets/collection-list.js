@@ -13,12 +13,13 @@ class CollectionListSection extends HTMLElement {
     this.autoplayEnabled = this.dataset.autoplay === 'true';
     this.autoplaySpeed = (parseInt(this.dataset.autoplaySpeed, 10) || 5) * 1000;
 
-    this.slides = [...this.slider.querySelectorAll('.collection-card')];
+    this.slides = [...this.slider.querySelectorAll('.collection-card:not(.clone)')];
     if (!this.slides.length) return;
 
     this.slides.forEach((slide) => {
       const clone = slide.cloneNode(true);
       clone.classList.add('clone');
+      clone.setAttribute('aria-hidden', 'true');
       this.slider.appendChild(clone);
     });
 
@@ -77,8 +78,12 @@ class CollectionListSection extends HTMLElement {
   }
 
   getScrollAmount() {
-    const card = this.slider.querySelector('.collection-card');
-    return card ? card.offsetWidth + 20 : 300;
+    const card = this.slides[this.currentIndex % this.slides.length] || this.slides[0];
+    if (!card) return 300;
+
+    const styles = getComputedStyle(this.slider);
+    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+    return card.offsetWidth + gap;
   }
 
   goToSlide(index, smooth = true) {

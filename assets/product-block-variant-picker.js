@@ -1,4 +1,5 @@
-class VariantPicker extends HTMLElement {
+if (!customElements.get('variant-picker')) {
+  class VariantPicker extends HTMLElement {
   constructor() {
     super();
 
@@ -147,8 +148,7 @@ class VariantPicker extends HTMLElement {
       })
     );
   }
-}
+  }
 
-if (!customElements.get('variant-picker')) {
   customElements.define('variant-picker', VariantPicker);
 }

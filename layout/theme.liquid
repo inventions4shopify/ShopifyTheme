@@ -27,6 +27,7 @@
 
     {% # Load theme stylesheet %}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'card-product.css' | asset_url | stylesheet_tag }}
     {{ 'comman-section.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>

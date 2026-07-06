@@ -1,5 +1,5 @@
 {{ 'featured-collection.css' | asset_url | stylesheet_tag }}
-{{ 'card-product.css' | asset_url | stylesheet_tag }}
+
 {%- liquid
   assign collection = section.settings.collection
   assign products_to_show = section.settings.products_count
@@ -46,34 +46,53 @@
     --fc-mobile-columns: {{ section.settings.mobile_columns }};
     --fc-gap: {{ section.settings.horizontal_gap }}px;
   }
-  .product-card--card {
+  .section-{{ section.id }} .card_style-card {
     background-color:
       {% if section.settings.card_bg_color != blank and section.settings.card_bg_color != 'rgba(0,0,0,0)' %}
         {{ section.settings.card_bg_color }}
       {% else %}
         rgb(var(--color-product-card-background))
       {% endif %};
+    border-radius: var(--media-radius);
+  }
+  .section-{{ section.id }} .card_style-card .product-card__content {
+    padding: var(--spacing-6) var(--spacing-10);
+  }
+  {% if section.settings.card_heading_color != blank and section.settings.card_heading_color != 'rgba(0,0,0,0)' %}
+    .section-{{ section.id }} .product-card__content > * {
+      color: {{ section.settings.card_heading_color }};
+    }
+  {% endif %}
+  {% if section.settings.image_shape == 'rounded' %}
+    .section-{{ section.id }} .product-card__image-link {
       border-radius: var(--media-radius);
-  }
-  .product-card--card .product-card__content{
-      padding: var(--spacing-6) var(--spacing-10);
-  }
-  .product-card__content > * {
-    color:
-      {% if section.settings.card_heading_color != blank and section.settings.card_heading_color != 'rgba(0,0,0,0)' %}
-        {{ section.settings.card_heading_color }}
-      {% else %}
-        rgb(var(--color-product-card-text))
-      {% endif %};
-  }
+      overflow: hidden;
+    }
+    .section-{{ section.id }} .product-card__image {
+      border-radius: var(--media-radius);
+    }
+  {% elsif section.settings.image_shape == 'circle' %}
+    .section-{{ section.id }} .product-card__media {
+      aspect-ratio: 1 / 1;
+    }
+    .section-{{ section.id }} .product-card__image-link {
+      border-radius: 50%;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+    .section-{{ section.id }} .product-card__image {
+      border-radius: 50%;
+    }
+  {% endif %}
 {%- endstyle -%}
 
 <div {%- render 'section-variables', section: section, class: 'featured-collection' -%}>
   <div class="{{ container_class }}">
       <div class="fc__wrapper-main section-{{ section.id }}">
         {%- if section.settings.heading != blank
-          or section.settings.content != blank
-          or section.settings.link_url != blank
+          or section.settings.description != blank
+          or section.settings.link_text != blank
         -%}
           <div class="fc__header">
             <div class="fc__header-text">
@@ -129,16 +148,19 @@
                 {%- for product in collection_products limit: products_to_show -%}
                   {% render 'product-card',
                     product: product,
+                    style: section.settings.card_style,
                     enable_image_zoom: section.settings.enable_image_zoom,
-                    card_style: section.settings.card_style,
                     image_ratio: settings.image_ratio,
-                    image_shape: section.settings.image_shape,
-                    show_sale_badge: settings.show_discount_badge,
-                    show_secondary_image: settings.show_secondary_image,
-                    show_color_swatches: settings.show_color_swatches,
                     show_vendor: settings.show_vendor,
+                    show_secondary_image: settings.show_secondary_image,
+                    show_quick_buy: settings.show_quick_buy,
                     show_rating: settings.show_rating,
-                    show_quick_buy: settings.show_quick_buy
+                    rating_display: settings.rating_display,
+                    show_sold_out_badge: settings.show_sold_out_badge,
+                    show_discount_badge: settings.show_discount_badge,
+                    discount_type: settings.discount_type,
+                    color_display_mode: settings.color_display_mode,
+                    content_alignment: settings.content_alignment
                   %}
                 {%- endfor -%}
               {%- else -%}
@@ -169,15 +191,19 @@
               {%- for product in collection_products limit: products_to_show -%}
                 {% render 'product-card',
                   product: product,
+                  style: section.settings.card_style,
                   enable_image_zoom: section.settings.enable_image_zoom,
                   image_ratio: settings.image_ratio,
-                  image_shape: section.settings.image_shape,
-                  show_sale_badge: settings.show_discount_badge,
-                  show_secondary_image: settings.show_secondary_image,
-                  show_color_swatches: settings.show_color_swatches,
                   show_vendor: settings.show_vendor,
+                  show_secondary_image: settings.show_secondary_image,
+                  show_quick_buy: settings.show_quick_buy,
                   show_rating: settings.show_rating,
-                  show_quick_buy: settings.show_quick_buy
+                  rating_display: settings.rating_display,
+                  show_sold_out_badge: settings.show_sold_out_badge,
+                  show_discount_badge: settings.show_discount_badge,
+                  discount_type: settings.discount_type,
+                  color_display_mode: settings.color_display_mode,
+                  content_alignment: settings.content_alignment
                 %}
               {%- endfor -%}
             {%- endif -%}
@@ -265,7 +291,7 @@
         }
       ],
       "default": "standard",
-      "label": "standard"
+      "label": "Card style"
     },
     {
       "type": "select",

@@ -17,6 +17,7 @@ class MainCollectionSection extends HTMLElement {
 
     this.initSortDropdown(signal);
     this.initAutoFilter(signal);
+    this.initPriceRangeFilters(signal);
     this.initFilterAccordions(signal);
     this.initFilterDrawer(signal);
     this.initLayoutToggle(signal);
@@ -87,6 +88,14 @@ class MainCollectionSection extends HTMLElement {
       },
       { signal }
     );
+  }
+
+  initPriceRangeFilters(signal) {
+    this.querySelectorAll('price-range-filter').forEach((filter) => {
+      if (filter.dataset.priceRangeBound === 'true') return;
+      filter.dataset.priceRangeBound = 'true';
+      filter.init({ signal, section: this });
+    });
   }
 
   initAutoFilter(signal) {
@@ -335,7 +344,8 @@ class MainCollectionSection extends HTMLElement {
   getProductGrid() {
     return (
       this.querySelector('.collection-products > .grid') ||
-      this.querySelector('.collection-products.grid')
+      this.querySelector('.collection-products.grid') ||
+      this.querySelector('#CollectionAjaxContainer .template-search__results > .grid')
     );
   }
 
@@ -446,13 +456,20 @@ class MainCollectionSection extends HTMLElement {
   buildRequestUrl(filterForm) {
     const sectionId = this.dataset.sectionId;
     const requestUrl = new URL(window.location.pathname, window.location.origin);
+    const currentUrl = new URL(window.location.href);
     const form = filterForm || this.querySelector('[data-collection-filter]');
+    const singleValueKeys = new Set(['q', 'sort_by', 'options[prefix]']);
 
     if (form) {
       const formData = new FormData(form);
       formData.forEach((value, key) => {
         if (value === '') return;
-        requestUrl.searchParams.append(key, value);
+
+        if (singleValueKeys.has(key)) {
+          requestUrl.searchParams.set(key, value);
+        } else {
+          requestUrl.searchParams.append(key, value);
+        }
       });
     } else {
       const sortForm = this.querySelector('#SortByForm');
@@ -463,6 +480,17 @@ class MainCollectionSection extends HTMLElement {
           requestUrl.searchParams.set(key, value);
         });
       }
+    }
+
+    if (!requestUrl.searchParams.has('q') && currentUrl.searchParams.has('q')) {
+      requestUrl.searchParams.set('q', currentUrl.searchParams.get('q'));
+    }
+
+    if (
+      !requestUrl.searchParams.has('options[prefix]') &&
+      currentUrl.searchParams.has('options[prefix]')
+    ) {
+      requestUrl.searchParams.set('options[prefix]', currentUrl.searchParams.get('options[prefix]'));
     }
 
     const sortInput = this.querySelector('#SortByInput');
@@ -594,6 +622,10 @@ class MainCollectionSection extends HTMLElement {
           currentInput.value = newInput.value;
         }
       });
+
+      currentForm.querySelectorAll('price-range-filter').forEach((filter) => {
+        filter.syncFromInputs?.();
+      });
     });
   }
 
@@ -665,6 +697,7 @@ class MainCollectionSection extends HTMLElement {
   reinitDynamicContent() {
     const { signal } = this.abortController;
     this.initFilterAccordions(signal);
+    this.initPriceRangeFilters(signal);
     this.refreshGridLayout();
   }
 
@@ -712,6 +745,184 @@ class MainCollectionSection extends HTMLElement {
       this.setLoading(false);
     }
   }
+}
+
+class PriceRangeFilter extends HTMLElement {
+  init({ signal, section }) {
+    this.section = section;
+    this.rangeMin = parseFloat(this.dataset.rangeMin) || 0;
+    this.rangeMax = parseFloat(this.dataset.rangeMax) || 0;
+    this.step = parseFloat(this.dataset.priceStep) || 1;
+
+    this.minSlider = this.querySelector('[data-price-range-min]');
+    this.maxSlider = this.querySelector('[data-price-range-max]');
+    this.minInput = this.querySelector('[data-price-input-min]');
+    this.maxInput = this.querySelector('[data-price-input-max]');
+    this.progress = this.querySelector('[data-price-progress]');
+
+    if (!this.minSlider || !this.maxSlider || this.rangeMax <= this.rangeMin) return;
+
+    this.applyFilter = this.debounce(() => {
+      const form = this.closest('[data-collection-filter]');
+      if (form && this.section) {
+        this.section.applyFromForms(form);
+      }
+    }, 500);
+
+    this.minSlider.addEventListener('pointerdown', () => this.setActiveSlider('min'), { signal });
+    this.maxSlider.addEventListener('pointerdown', () => this.setActiveSlider('max'), { signal });
+    this.minSlider.addEventListener('pointerup', () => this.clearActiveSlider(), { signal });
+    this.maxSlider.addEventListener('pointerup', () => this.clearActiveSlider(), { signal });
+    this.minSlider.addEventListener('pointercancel', () => this.clearActiveSlider(), { signal });
+    this.maxSlider.addEventListener('pointercancel', () => this.clearActiveSlider(), { signal });
+    this.minSlider.addEventListener('input', () => this.onSliderInput('min'), { signal });
+    this.maxSlider.addEventListener('input', () => this.onSliderInput('max'), { signal });
+    this.minSlider.addEventListener('change', () => this.applyFilter(), { signal });
+    this.maxSlider.addEventListener('change', () => this.applyFilter(), { signal });
+
+    if (this.minInput) {
+      this.minInput.addEventListener('input', () => this.onNumberInput(), { signal });
+    }
+
+    if (this.maxInput) {
+      this.maxInput.addEventListener('input', () => this.onNumberInput(), { signal });
+    }
+
+    this.syncFromInputs();
+  }
+
+  debounce(fn, wait) {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+
+  setActiveSlider(which) {
+    this.minSlider.classList.toggle('is-active', which === 'min');
+    this.maxSlider.classList.toggle('is-active', which === 'max');
+  }
+
+  clearActiveSlider() {
+    this.minSlider.classList.remove('is-active');
+    this.maxSlider.classList.remove('is-active');
+    this.updateThumbZIndex(
+      parseFloat(this.minSlider.value),
+      parseFloat(this.maxSlider.value)
+    );
+  }
+
+  updateThumbZIndex(minVal, maxVal) {
+    const range = this.rangeMax - this.rangeMin;
+    const threshold = range > 0 ? range * 0.05 : 0;
+
+    if (maxVal - minVal <= threshold) {
+      this.minSlider.style.zIndex = this.minSlider.classList.contains('is-active') ? '6' : '5';
+      this.maxSlider.style.zIndex = this.maxSlider.classList.contains('is-active') ? '6' : '4';
+    } else {
+      this.minSlider.style.zIndex = '';
+      this.maxSlider.style.zIndex = '';
+    }
+  }
+
+  clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  parseInputValue(input, fallback) {
+    if (!input || input.value === '') return fallback;
+    const value = parseFloat(input.value);
+    return Number.isNaN(value) ? fallback : value;
+  }
+
+  syncFromInputs() {
+    let minVal = this.parseInputValue(this.minInput, this.rangeMin);
+    let maxVal = this.parseInputValue(this.maxInput, this.rangeMax);
+
+    minVal = this.clamp(minVal, this.rangeMin, this.rangeMax);
+    maxVal = this.clamp(maxVal, this.rangeMin, this.rangeMax);
+
+    if (minVal > maxVal) {
+      minVal = maxVal;
+    }
+
+    this.minSlider.value = minVal;
+    this.maxSlider.value = maxVal;
+    this.updateProgress(minVal, maxVal);
+    this.updateThumbZIndex(minVal, maxVal);
+  }
+
+  onSliderInput(which) {
+    let minVal = parseFloat(this.minSlider.value);
+    let maxVal = parseFloat(this.maxSlider.value);
+
+    if (minVal > maxVal) {
+      if (which === 'min') {
+        minVal = maxVal;
+        this.minSlider.value = minVal;
+      } else {
+        maxVal = minVal;
+        this.maxSlider.value = maxVal;
+      }
+    }
+
+    if (this.minInput) {
+      this.minInput.value = minVal <= this.rangeMin ? '' : this.formatInputValue(minVal);
+    }
+
+    if (this.maxInput) {
+      this.maxInput.value = maxVal >= this.rangeMax ? '' : this.formatInputValue(maxVal);
+    }
+
+    this.updateProgress(minVal, maxVal);
+    this.updateThumbZIndex(minVal, maxVal);
+  }
+
+  onNumberInput() {
+    let minVal = this.parseInputValue(this.minInput, this.rangeMin);
+    let maxVal = this.parseInputValue(this.maxInput, this.rangeMax);
+
+    minVal = this.clamp(minVal, this.rangeMin, this.rangeMax);
+    maxVal = this.clamp(maxVal, this.rangeMin, this.rangeMax);
+
+    if (minVal > maxVal) {
+      maxVal = minVal;
+      if (this.maxInput) {
+        this.maxInput.value = maxVal >= this.rangeMax ? '' : this.formatInputValue(maxVal);
+      }
+    }
+
+    this.minSlider.value = minVal;
+    this.maxSlider.value = maxVal;
+    this.updateProgress(minVal, maxVal);
+    this.updateThumbZIndex(minVal, maxVal);
+  }
+
+  formatInputValue(value) {
+    if (this.step < 1) {
+      return value.toFixed(2);
+    }
+
+    return String(Math.round(value));
+  }
+
+  updateProgress(minVal, maxVal) {
+    if (!this.progress) return;
+
+    const range = this.rangeMax - this.rangeMin;
+    if (range <= 0) return;
+
+    const left = ((minVal - this.rangeMin) / range) * 100;
+    const width = ((maxVal - minVal) / range) * 100;
+
+    this.progress.style.left = `${left}%`;
+    this.progress.style.width = `${width}%`;
+  }
+}
+
+if (!customElements.get('price-range-filter')) {
+  customElements.define('price-range-filter', PriceRangeFilter);
 }
 
 if (!customElements.get('main-collection-section')) {

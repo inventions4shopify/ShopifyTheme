@@ -13,7 +13,27 @@
 
 {{ 'component-pagination.css' | asset_url | stylesheet_tag }}
 
-{%- if paginate.parts.size > 0 -%}
+{%- if paginate.pages > 1 -%}
+  {%- liquid
+    assign total_pages = paginate.pages
+    assign current_page = paginate.current_page
+    assign page_window = 1
+    assign prev_shown = 0
+    assign page_minus_window = current_page | minus: page_window
+    assign page_plus_window = current_page | plus: page_window
+
+    if paginate.next
+      assign pagination_ref_url = paginate.next.url
+      assign pagination_ref_page = paginate.current_page | plus: 1
+    elsif paginate.previous
+      assign pagination_ref_url = paginate.previous.url
+      assign pagination_ref_page = paginate.current_page | minus: 1
+    else
+      assign pagination_ref_url = request.path | append: '?page=' | append: paginate.current_page
+      assign pagination_ref_page = paginate.current_page
+    endif
+  -%}
+
   <div class="pagination-wrapper" data-page="{{ paginate.current_page }}">
     <nav class="pagination" role="navigation" aria-label="pagination">
       <ul class="pagination__list list-unstyled" role="list">
@@ -29,32 +49,67 @@
           </li>
         {%- endif -%}
 
-        {%- for part in paginate.parts -%}
-          <li>
-            {%- if part.is_link -%}
-              <a
-                href="{{ part.url }}{{ anchor }}"
-                class="pagination__item link"
-                aria-label="page {{ part.title }}"
-              >
-                {{- part.title -}}
-              </a>
-            {%- else -%}
-              {%- if part.title == paginate.current_page -%}
+        {%- for i in (1..total_pages) -%}
+          {%- liquid
+            assign show_page = false
+
+            if i == 1 or i == total_pages
+              assign show_page = true
+            elsif i >= page_minus_window and i <= page_plus_window
+              assign show_page = true
+            endif
+          -%}
+
+          {%- if show_page -%}
+            {%- liquid
+              assign ellipsis_threshold = prev_shown | plus: 1
+            -%}
+            {%- if prev_shown > 0 and i > ellipsis_threshold -%}
+              <li>
+                <span class="pagination__item">…</span>
+              </li>
+            {%- endif -%}
+
+            <li>
+              {%- if i == current_page -%}
                 <a
                   role="link"
                   aria-disabled="true"
                   class="pagination__item pagination__item--current light button button--primary"
                   aria-current="page"
-                  aria-label="page {{ part.title }}"
+                  aria-label="page {{ i }}"
                 >
-                  {{- part.title -}}
+                  {{- i -}}
                 </a>
               {%- else -%}
-                <span class="pagination__item">{{ part.title }}</span>
+                {%- liquid
+                  assign page_url = ''
+
+                  for part in paginate.parts
+                    if part.is_link and part.title == i
+                      assign page_url = part.url
+                      break
+                    endif
+                  endfor
+
+                  if page_url == ''
+                    assign from_param = 'page=' | append: pagination_ref_page
+                    assign to_param = 'page=' | append: i
+                    assign page_url = pagination_ref_url | replace: from_param, to_param
+                  endif
+                -%}
+                <a
+                  href="{{ page_url }}{{ anchor }}"
+                  class="pagination__item link"
+                  aria-label="page {{ i }}"
+                >
+                  {{- i -}}
+                </a>
               {%- endif -%}
-            {%- endif -%}
-          </li>
+            </li>
+
+            {%- assign prev_shown = i -%}
+          {%- endif -%}
         {%- endfor -%}
 
         {%- if paginate.next -%}

@@ -53,9 +53,17 @@ class ProductTabSection extends HTMLElement {
     };
 
     this.onMouseDown = (e) => {
-      this.slider = this.getActiveSlider();
-      if (!this.slider) return;
+      if (e.button !== 0) return;
 
+      const slider = e.target.closest('.js-product-slider');
+      if (!slider || !this.contains(slider)) return;
+
+      const activeSlider = this.getActiveSlider();
+      if (!activeSlider || slider !== activeSlider) return;
+
+      if (e.target.closest('a, button, input, select, textarea')) return;
+
+      this.slider = slider;
       this.isDown = true;
       this.startX = e.pageX;
       this.moved = 0;
@@ -88,7 +96,7 @@ class ProductTabSection extends HTMLElement {
 
     this.nextBtn?.addEventListener('click', this.onNextClick, { signal });
     this.prevBtn?.addEventListener('click', this.onPrevClick, { signal });
-    document.addEventListener('mousedown', this.onMouseDown, { signal });
+    this.addEventListener('mousedown', this.onMouseDown, { signal });
     document.addEventListener('mousemove', this.onMouseMove, { signal });
     document.addEventListener('mouseup', this.onMouseUp, { signal });
   }

@@ -1,5 +1,13 @@
+{% unless block.settings.background_color == blank or block.settings.background_color == 'rgba(0,0,0,0)' %}
+  {% style %}
+    .delivery-date-{{ block.id }} .csm_date_delivery {
+      background-color: {{ block.settings.background_color }};
+    }
+  {% endstyle %}
+{% endunless %}
+
 <product-delivery-date
-  class="product-delivery-date"
+  class="product-delivery-date delivery-date-{{ block.id }}"
   {% if block.settings.set_time_limit %}
     data-storage-key="delivery-countdown-{{ block.id }}"
     data-default-seconds="13500"

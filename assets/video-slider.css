@@ -64,6 +64,7 @@
     justify-content: center;
     margin-top: var(--spacing-40);
     gap: var(--grid-spacing);
+    margin-bottom: 5px;
 }
 
 @media (min-width: 768px) {
