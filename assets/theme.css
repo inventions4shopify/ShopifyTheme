@@ -19,11 +19,11 @@ html {
 body {
   margin: 0;
   font-family: var(--font-body-family);
-  font-style: var(--font-body-style);
-  font-weight: var(--font-body-weight);
   font-size: var(--text-base);
-  letter-spacing: var(--body-letter-spacing);
+  font-weight: var(--font-body-weight);
   line-height: 1.5;
+  font-style: var(--font-body-style);
+  letter-spacing: var(--body-letter-spacing);
   color: rgb(var(--color-body-text));
   background-color: rgb(var(--color-background));
   min-width: 320px;
@@ -40,7 +40,7 @@ body {
 
 .header {
   position: relative;
-  z-index: 30;
+  /* z-index: 30; */
 }
 
 *,
@@ -57,11 +57,11 @@ h5,
 h6 {
   margin: 0 0 1.2rem;
   font-family: var(--font-heading-family);
-  font-style: var(--font-heading-style);
   font-weight: var(--font-heading-weight);
+  line-height: normal;
+  font-style: var(--font-heading-style);
   letter-spacing: var(--text-letter-spacing);
   text-transform: var(--heading-transform);
-  line-height: normal;
   color: rgb(var(--color-heading));
 }
 
@@ -127,9 +127,9 @@ p {
 .sub-heading {
   margin: 0 0 0.8rem;
   font-family: var(--font-subheading-family);
-  font-style: var(--font-subheading-style);
-  font-weight: var(--font-subheading-weight);
   font-size: var(--sub-heading-text);
+  font-weight: var(--font-subheading-weight);
+  font-style: var(--font-subheading-style);
   letter-spacing: var(--sub-heading-letter-spacing);
   text-transform: var(--sub-heading-transform);
   color: rgb(var(--color-subheading));
@@ -169,6 +169,17 @@ ol {
 
 .page-width--xs-small {
   max-width: var(--page-width-xs-small);
+}
+
+.page-width.page-width--full {
+  max-width: none;
+}
+
+.page-width--full:not(.page-width) {
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  padding-inline: var(--container-padding-inline);
 }
 
 .full-width {
@@ -401,7 +412,7 @@ select {
   padding-left: 5rem;
 }
 
-.field__input:focus ~ .field__label, .field__input:-webkit-autofill ~ .field__label, .customer .field input:focus ~ label, .customer .field input:-webkit-autofill ~ label {
+.field__input:focus ~ .field__label, .field__input:not(:placeholder-shown) ~ .field__label, .field__input:-webkit-autofill ~ .field__label, .customer .field input:focus ~ label, .customer .field input:not(:placeholder-shown) ~ label, .customer .field input:-webkit-autofill ~ label {
   font-size: 1rem;
   top: calc(var(--input-border-width) + 0.5rem);
   left: calc(var(--input-border-width) + var(--spacing-20));
@@ -435,10 +446,6 @@ canvas {
 .grid {
   display: grid;
   gap: var(--grid-spacing);
-}
-
-.flex {
-  display: flex;
 }
 
 .visually-hidden {
@@ -621,6 +628,10 @@ canvas {
 
 
 /* Flex utilities */
+.flex {
+  display: flex;
+}
+
 .flex-row {
   flex-direction: row;
 }
@@ -743,9 +754,6 @@ canvas {
    ============================================================ */
 
 /* Auto grid — items flow into equal columns */
-.grid {
-  display: grid;
-}
 
 .grid--1-col {
   grid-template-columns: repeat(1, 1fr);
@@ -1609,23 +1617,4 @@ canvas {
   flex-direction: column;
   flex: 1 1 auto;
   justify-content: center;
-}
-
-body.search {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.search main,
-.search__section,
-.template-search,
-.search-section {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.search__section {
-  overflow: visible;
 }

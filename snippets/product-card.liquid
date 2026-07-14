@@ -1,6 +1,4 @@
-{{ 'card-product.css' | asset_url | stylesheet_tag }}
-
-<div class="product-card card_style-{{ style }}">
+<div class="product-card card_style-{{ style | default: 'standard' }}{% if enable_image_zoom %} product-card--zoom{% endif %}">
   {% assign first_variant = product.selected_or_first_available_variant %}
 
   <div class="product-card__media product-card__media--{{ image_ratio }} aspect-{{ image_ratio }}">
@@ -55,11 +53,7 @@
     </a>
   </div>
 
-  {% render 'product-card-variant',
-    product: product,
-    color_display_mode: color_display_mode,
-    content_alignment: content_alignment
-  %}
+  
 
   <div class="product-card__content text-{{ content_alignment }}">
     {% if show_vendor and product.vendor != blank %}
@@ -73,6 +67,12 @@
         {{ product.title }}
       </a>
     </h3>
+
+    {% render 'product-card-variant',
+      product: product,
+      color_display_mode: color_display_mode,
+      content_alignment: content_alignment
+    %}
 
     {% if show_rating and product.metafields.reviews.rating.value %}
       <div class="product-card__rating">

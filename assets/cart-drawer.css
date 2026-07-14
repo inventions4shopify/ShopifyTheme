@@ -81,7 +81,7 @@ body.cart-drawer-open {
   justify-content: space-between;
   gap: 1.2rem;
   flex-shrink: 0;
-  padding: 2rem 2rem 1.2rem;
+  padding: 1.2rem 2rem;
   border-bottom: 0.1rem solid rgba(0, 0, 0, 0.08);
 }
 
@@ -342,6 +342,10 @@ cart-drawer.is-updating .cart-drawer__loading {
   transform: translate(-50%, -50%);
 }
 
+.cart-drawer__progress-milestone--shipping {
+  left: 50%;
+}
+
 .cart-drawer__progress-milestone--gift {
   left: 100%;
   transform: translate(-50%, -50%);
@@ -353,8 +357,8 @@ cart-drawer.is-updating .cart-drawer__loading {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 4rem;
-  height: 4rem;
+  width: 3.2rem;
+  height: 3.2rem;
   border-radius: 50%;
   background: #fee7d5;
   border: 0.2rem solid rgba(0, 0, 0, 0.15);

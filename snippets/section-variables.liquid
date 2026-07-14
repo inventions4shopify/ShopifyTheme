@@ -46,12 +46,16 @@
 
   {%- comment -%} ── Custom spacing — overrides theme pre-calc'd vars ── {%- endcomment -%}
   {%- if s.custom_spacing -%}
-    --section-spacing-top-mobile: {{ s.section_spacing_top_mobile | default: 40 }}px;
-    --section-spacing-bottom-mobile: {{ s.section_spacing_bottom_mobile | default: 40 }}px;
-    --section-spacing-top-tablet: {{ s.section_spacing_top_mobile | default: 40 | plus: s.section_spacing_top_desktop | default: 64 | divided_by: 2 }}px;
-    --section-spacing-bottom-tablet: {{ s.section_spacing_bottom_mobile | default: 40 | plus: s.section_spacing_bottom_desktop | default: 64 | divided_by: 2 }}px;
-    --section-spacing-top-desktop: {{ s.section_spacing_top_desktop | default: 64 }}px;
-    --section-spacing-bottom-desktop: {{ s.section_spacing_bottom_desktop | default: 64 }}px;
+    {%- assign spacing_top_mobile = s.section_spacing_top_mobile | default: 40 -%}
+    {%- assign spacing_bottom_mobile = s.section_spacing_bottom_mobile | default: 40 -%}
+    {%- assign spacing_top_desktop = s.section_spacing_top_desktop | default: 64 -%}
+    {%- assign spacing_bottom_desktop = s.section_spacing_bottom_desktop | default: 64 -%}
+    --section-spacing-top-mobile: {{ spacing_top_mobile }}px;
+    --section-spacing-bottom-mobile: {{ spacing_bottom_mobile }}px;
+    --section-spacing-top-tablet: {{ spacing_top_mobile | plus: spacing_top_desktop | divided_by: 2 }}px;
+    --section-spacing-bottom-tablet: {{ spacing_bottom_mobile | plus: spacing_bottom_desktop | divided_by: 2 }}px;
+    --section-spacing-top-desktop: {{ spacing_top_desktop }}px;
+    --section-spacing-bottom-desktop: {{ spacing_bottom_desktop }}px;
   {%- endif -%}
 {%- endcapture -%}
 

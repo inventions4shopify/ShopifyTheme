@@ -1,7 +1,36 @@
 {{ 'product-tab.css' | asset_url | stylesheet_tag }}
 
-<div {%- render 'section-variables', section: section, class: 'product-tab__section' -%}>
-  <div class="{{ section.settings.section_width }}">
+{%- liquid
+  assign s = section.settings
+  assign section_class = 'product-tab__section product-tab--' | append: s.section_width
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .product-tab__container {
+    width: 100%;
+  }
+
+  {%- if s.section_width == 'full-width' -%}
+    #shopify-section-{{ section.id }} .product-tab__container {
+      max-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .product-tab__content,
+    #shopify-section-{{ section.id }} .custom-slider-wrapper,
+    #shopify-section-{{ section.id }} .product-row {
+      width: 100%;
+    }
+  {%- else -%}
+    #shopify-section-{{ section.id }} .product-tab__container {
+      max-width: var(--page-width);
+      margin-inline: auto;
+      padding-inline: var(--container-padding-inline);
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div {%- render 'section-variables', section: section, class: section_class -%}>
+  <div class="product-tab__container">
     <div class="cms-product-top">
       <div class="flex flex-col text-{{ section.settings.content_alignment }} items-{{ section.settings.content_alignment }} gap-{{ section.settings.gap }}">
         {%- assign tag = section.settings.heading_tag | default: 'h2' -%}

@@ -39,6 +39,7 @@
 {% schema %}
 {
   "name": "Product Section",
+  "tag": "section",
   "settings": [
     {
       "type": "checkbox",
@@ -654,6 +655,12 @@
           "id": "set_time_limit",
           "label": "Set Time Limit",
           "default": false
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#9b04704d"
         }
       ]
     },
@@ -773,4 +780,4 @@
 }
 {% endschema %}
 
-<script src="{{ 'product-block.js' | asset_url }}" async></script>
+<script src="{{ 'product-block.js' | asset_url }}" defer="defer"></script>
