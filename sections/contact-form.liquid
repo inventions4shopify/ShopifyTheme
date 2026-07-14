@@ -252,6 +252,17 @@
       "default": "page-width"
     },
     {
+      "type": "range",
+      "id": "custom_container_width",
+      "min": 400,
+      "max": 1200,
+      "step": 10,
+      "unit": "px",
+      "label": "Custom max-width",
+      "default": 800,
+      "visible_if": "{{ section.settings.container_width == 'custom' }}"
+    },
+    {
       "type": "header",
       "content": "Content Alignment"
     },
