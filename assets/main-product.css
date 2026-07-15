@@ -507,7 +507,7 @@ product-price {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        z-index: 2;
+        z-index: 1;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -614,7 +614,7 @@ product-price {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2;
+    z-index: 20;
     margin-bottom: 0;
     background: rgb(var(--color-background));
     border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
@@ -984,7 +984,7 @@ product-price {
     color: rgb(var(--color-button-secondary-text));
     box-shadow: 2px 2px rgb(var(--color-button-primary-outline));
     border: .2rem solid rgb(var(--color-button-primary-outline));
-    border-radius: var(--radius-md);
+    border-radius: var(--input-radius);
     overflow: hidden;
 }
 

@@ -43,21 +43,29 @@
     {% if thumbnail_layout == 'vertical' %}
       <div class="product_gallery_thumbnail_wrapper">
         <div class="product_gallery_thumbnail_track">
+          {% assign gallery_index = 0 %}
           {% for media in product.media %}
-            {% if media.media_type == 'image' %}
+            {% if media.media_type == 'image' or media.media_type == 'video' or media.media_type == 'external_video' %}
               <button
                 type="button"
-                class="product_gallery_thumbnail {% if forloop.first %}active{% endif %}"
-                data-index="{{ forloop.index0 }}"
+                class="product_gallery_thumbnail {% if gallery_index == 0 %}active{% endif %}{% if media.media_type != 'image' %} product_gallery_thumbnail--video{% endif %}"
+                data-index="{{ gallery_index }}"
+                aria-label="{% if media.media_type != 'image' %}Play media{% else %}View image{% endif %} {{ gallery_index | plus: 1 }}"
               >
                 <img
-                  src="{{ media | image_url: width: 160 }}"
+                  src="{{ media.preview_image | image_url: width: 160 }}"
                   alt="{{ media.alt | escape }}"
                   loading="lazy"
                   width="80"
                   height="80"
                 >
+                {% if media.media_type != 'image' %}
+                  <span class="product_gallery_thumbnail_play" aria-hidden="true">
+                    {% render 'icon', icon: 'play-button', width: 14, height: 14 %}
+                  </span>
+                {% endif %}
               </button>
+              {% assign gallery_index = gallery_index | plus: 1 %}
             {% endif %}
           {% endfor %}
         </div>
@@ -69,7 +77,7 @@
         <button
           class="product_gallery_arrow product_gallery_arrow_prev button button--secondary"
           type="button"
-          aria-label="Previous image"
+          aria-label="Previous media"
         >
           {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
         </button>
@@ -77,7 +85,7 @@
         <button
           class="product_gallery_arrow product_gallery_arrow_next button button--secondary"
           type="button"
-          aria-label="Next image"
+          aria-label="Next media"
         >
           {% render 'icon', icon: 'chevron-right', width: 22, height: 22 %}
         </button>
@@ -91,11 +99,13 @@
 
       <div class="product_gallery_main_slider">
         <div class="product_gallery_main_track">
+          {% assign gallery_index = 0 %}
           {% for media in product.media %}
             {% if media.media_type == 'image' %}
               <div
                 class="product_gallery_main_slide"
-                data-index="{{ forloop.index0 }}"
+                data-index="{{ gallery_index }}"
+                data-media-type="image"
                 data-full="{{ media | image_url: width: 2200 }}"
               >
                 <picture>
@@ -120,12 +130,44 @@
                     alt="{{ media.alt | escape }}"
                     width="{{ media.width }}"
                     height="{{ media.height }}"
-                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                    fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
+                    loading="{% if gallery_index == 0 %}eager{% else %}lazy{% endif %}"
+                    fetchpriority="{% if gallery_index == 0 %}high{% else %}auto{% endif %}"
                     draggable="false"
                   >
                 </picture>
               </div>
+              {% assign gallery_index = gallery_index | plus: 1 %}
+            {% elsif media.media_type == 'video' %}
+              <div
+                class="product_gallery_main_slide product_gallery_main_slide--video"
+                data-index="{{ gallery_index }}"
+                data-media-type="video"
+              >
+                {{
+                  media
+                  | video_tag:
+                    class: 'product_gallery_video',
+                    controls: true,
+                    playsinline: true,
+                    preload: 'metadata',
+                    image_size: '1200x'
+                }}
+              </div>
+              {% assign gallery_index = gallery_index | plus: 1 %}
+            {% elsif media.media_type == 'external_video' %}
+              <div
+                class="product_gallery_main_slide product_gallery_main_slide--video"
+                data-index="{{ gallery_index }}"
+                data-media-type="external_video"
+              >
+                {{
+                  media
+                  | external_video_tag:
+                    class: 'product_gallery_video product_gallery_video--external',
+                    loading: 'lazy'
+                }}
+              </div>
+              {% assign gallery_index = gallery_index | plus: 1 %}
             {% endif %}
           {% endfor %}
         </div>
@@ -135,21 +177,29 @@
     {% if thumbnail_layout == 'horizontal' %}
       <div class="product_gallery_thumbnail_wrapper">
         <div class="product_gallery_thumbnail_track">
+          {% assign gallery_index = 0 %}
           {% for media in product.media %}
-            {% if media.media_type == 'image' %}
+            {% if media.media_type == 'image' or media.media_type == 'video' or media.media_type == 'external_video' %}
               <button
-                class="product_gallery_thumbnail {% if forloop.first %}active{% endif %}"
+                class="product_gallery_thumbnail {% if gallery_index == 0 %}active{% endif %}{% if media.media_type != 'image' %} product_gallery_thumbnail--video{% endif %}"
                 type="button"
-                data-index="{{ forloop.index0 }}"
+                data-index="{{ gallery_index }}"
+                aria-label="{% if media.media_type != 'image' %}Play media{% else %}View image{% endif %} {{ gallery_index | plus: 1 }}"
               >
                 <img
-                  src="{{ media | image_url: width: 160 }}"
+                  src="{{ media.preview_image | image_url: width: 160 }}"
                   alt="{{ media.alt | escape }}"
                   loading="lazy"
                   width="80"
                   height="80"
                 >
+                {% if media.media_type != 'image' %}
+                  <span class="product_gallery_thumbnail_play" aria-hidden="true">
+                    {% render 'icon', icon: 'play-button', width: 14, height: 14 %}
+                  </span>
+                {% endif %}
               </button>
+              {% assign gallery_index = gallery_index | plus: 1 %}
             {% endif %}
           {% endfor %}
         </div>
@@ -169,32 +219,42 @@
         <div class="product_lightbox_layout">
           <div class="product_lightbox_thumbnails_wrapper">
             <div class="product_lightbox_thumbnails">
+              {% assign gallery_index = 0 %}
               {% for media in product.media %}
-                {% if media.media_type == 'image' %}
+                {% if media.media_type == 'image' or media.media_type == 'video' or media.media_type == 'external_video' %}
                   <button
-                    class="product_lightbox_thumbnail aspect-square {% if forloop.first %}active{% endif %}"
-                    data-index="{{ forloop.index0 }}"
+                    class="product_lightbox_thumbnail aspect-square {% if gallery_index == 0 %}active{% endif %}{% if media.media_type != 'image' %} product_lightbox_thumbnail--video{% endif %}"
+                    data-index="{{ gallery_index }}"
                     type="button"
+                    aria-label="{% if media.media_type != 'image' %}Play media{% else %}View image{% endif %} {{ gallery_index | plus: 1 }}"
                   >
                     <img
-                      src="{{ media | image_url: width: 160 }}"
+                      src="{{ media.preview_image | image_url: width: 160 }}"
                       alt="{{ media.alt | escape }}"
                       width="80"
                       height="80"
                       loading="lazy"
                     >
+                    {% if media.media_type != 'image' %}
+                      <span class="product_gallery_thumbnail_play" aria-hidden="true">
+                        {% render 'icon', icon: 'play-button', width: 14, height: 14 %}
+                      </span>
+                    {% endif %}
                   </button>
+                  {% assign gallery_index = gallery_index | plus: 1 %}
                 {% endif %}
               {% endfor %}
             </div>
           </div>
 
           <div class="product_lightbox_images">
+            {% assign gallery_index = 0 %}
             {% for media in product.media %}
               {% if media.media_type == 'image' %}
                 <div
                   class="product_lightbox_image_item"
-                  data-index="{{ forloop.index0 }}"
+                  data-index="{{ gallery_index }}"
+                  data-media-type="image"
                 >
                   <img
                     src="{{ media | image_url: width: 2200 }}"
@@ -204,6 +264,38 @@
                     loading="lazy"
                   >
                 </div>
+                {% assign gallery_index = gallery_index | plus: 1 %}
+              {% elsif media.media_type == 'video' %}
+                <div
+                  class="product_lightbox_image_item product_lightbox_image_item--video"
+                  data-index="{{ gallery_index }}"
+                  data-media-type="video"
+                >
+                  {{
+                    media
+                    | video_tag:
+                      class: 'product_gallery_video',
+                      controls: true,
+                      playsinline: true,
+                      preload: 'metadata',
+                      image_size: '2200x'
+                  }}
+                </div>
+                {% assign gallery_index = gallery_index | plus: 1 %}
+              {% elsif media.media_type == 'external_video' %}
+                <div
+                  class="product_lightbox_image_item product_lightbox_image_item--video"
+                  data-index="{{ gallery_index }}"
+                  data-media-type="external_video"
+                >
+                  {{
+                    media
+                    | external_video_tag:
+                      class: 'product_gallery_video product_gallery_video--external',
+                      loading: 'lazy'
+                  }}
+                </div>
+                {% assign gallery_index = gallery_index | plus: 1 %}
               {% endif %}
             {% endfor %}
           </div>

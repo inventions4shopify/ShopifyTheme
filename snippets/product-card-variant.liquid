@@ -19,10 +19,21 @@
     {% if color_option_visible %}
       <div class="product-card__swatches text-{{ content_alignment }}">
         {% for value in color_option.values %}
+          {%- liquid
+            assign swatch_value = null
+            assign swatch_focal_point = null
+            if value.swatch.image
+              assign image_url = value.swatch.image | image_url: width: 50
+              assign swatch_value = 'url(' | append: image_url | append: ')'
+              assign swatch_focal_point = value.swatch.image.presentation.focal_point
+            elsif value.swatch.color
+              assign swatch_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+            endif
+          -%}
           <span
-            class="product-card__swatch rounded-lg"
-            style="background-color: {{ value | downcase }};"
-            title="{{ value }}"
+            class="product-card__swatch rounded-lg{% if value.swatch.image %} product-card__swatch--image{% endif %}"
+            style="{% if swatch_value %}background: {{ swatch_value }} no-repeat {% if swatch_focal_point %}{{ swatch_focal_point }}{% else %}center{% endif %}; background-size: cover;{% else %}background-color: {{ value | handleize }};{% endif %}"
+            title="{{ value | escape }}"
           ></span>
         {% endfor %}
       </div>

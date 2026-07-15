@@ -136,6 +136,59 @@
     transition: transform 0.3s ease;
 }
 
+.product_gallery_main_slide--video,
+.product_lightbox_image_item--video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    touch-action: manipulation;
+}
+
+.product_gallery_video {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #000;
+    pointer-events: auto;
+}
+
+.product_gallery_video--external {
+    border: 0;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    max-height: 100%;
+}
+
+.product_gallery_thumbnail,
+.product_lightbox_thumbnail {
+    position: relative;
+}
+
+.product_gallery_thumbnail_play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+}
+
+.product_gallery_thumbnail_play svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.product_lightbox_image_item--video .product_gallery_video {
+    width: 100%;
+    max-height: 80vh;
+}
+
 .product_gallery_main_slider,
 .product_gallery_main_track,
 .product_gallery_main_slide {
@@ -380,6 +433,15 @@
     position: fixed;
     inset: 0;
     z-index: 9999;
+}
+
+/* Hide header / sticky ATC so lightbox stays on top */
+body.product-lightbox-open .shopify-section-group-header-group,
+body.product-lightbox-open .header-sticky-host,
+body.product-lightbox-open .main-header-wrapper,
+body.product-lightbox-open .sticky_add_to_cart {
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .product_lightbox_overlay {
