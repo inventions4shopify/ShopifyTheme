@@ -268,57 +268,49 @@ class ProductCardForm extends HTMLElement {
   async onClick() {
     this.button.disabled = true;
     this.button.classList.add("is-loading");
-    const startTime = Date.now();
-    let afterAdd = null;
-
-    let addedItem = null;
 
     try {
       if (window.theme?.cart?.add) {
-        addedItem = await window.theme.cart.add({
+        const addedItem = await window.theme.cart.add({
           id: this.variantId.value,
           quantity: 1,
         });
-        afterAdd = () =>
-          window.theme.cart.handleAfterAdd(window.theme?.cartType || "cart_drawer", addedItem);
-      } else {
-        const response = await fetch("/cart/add.js", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            id: this.variantId.value,
-            quantity: 1,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Unable to add this item to the cart.");
-        }
-
-        const addedItem = await response.json();
-
-        afterAdd = () => {
-          if (window.theme?.cart?.handleAfterAdd) {
-            window.theme.cart.handleAfterAdd(window.theme?.cartType, addedItem);
-            return;
-          }
-
-          window.location.href = "/cart";
-        };
+        this.button.disabled = false;
+        this.button.classList.remove("is-loading");
+        window.theme.cart.handleAfterAdd(window.theme?.cartType || "cart_drawer", addedItem);
+        return;
       }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      const elapsed = Date.now() - startTime;
-      if (elapsed < 500) {
-        await new Promise((resolve) => setTimeout(resolve, 500 - elapsed));
+
+      const response = await fetch("/cart/add.js", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          id: this.variantId.value,
+          quantity: 1,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to add this item to the cart.");
       }
+
+      const addedItem = await response.json();
       this.button.disabled = false;
       this.button.classList.remove("is-loading");
-      if (afterAdd) afterAdd();
+
+      if (window.theme?.cart?.handleAfterAdd) {
+        window.theme.cart.handleAfterAdd(window.theme?.cartType, addedItem);
+        return;
+      }
+
+      window.location.href = "/cart";
+    } catch (error) {
+      console.error(error);
+      this.button.disabled = false;
+      this.button.classList.remove("is-loading");
     }
   }
 }

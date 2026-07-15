@@ -10,7 +10,14 @@ class StickyAddToCart extends HTMLElement {
 
     this.buyButtons = document.querySelector('product-form');
 
+    this.footer =
+      document.querySelector('footer.footer') ||
+      document.querySelector('.footer_section') ||
+      document.querySelector('footer');
+
     this.variant = null;
+    this.buyButtonsVisible = true;
+    this.footerVisible = false;
 
     this.onVariantChange = this.onVariantChange.bind(this);
     this.onSellingPlanChange = this.onSellingPlanChange.bind(this);
@@ -34,24 +41,36 @@ class StickyAddToCart extends HTMLElement {
   }
 
   initObserver() {
-    if (!this.buyButtons) return;
-
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.classList.remove('is-visible');
-          } else {
-            this.classList.add('is-visible');
+          if (entry.target === this.buyButtons) {
+            this.buyButtonsVisible = entry.isIntersecting;
+          }
+
+          if (entry.target === this.footer) {
+            this.footerVisible = entry.isIntersecting;
           }
         });
+
+        this.updateVisibility();
       },
       {
         threshold: 0,
       }
     );
 
-    this.observer.observe(this.buyButtons);
+    if (this.buyButtons) this.observer.observe(this.buyButtons);
+    if (this.footer) this.observer.observe(this.footer);
+  }
+
+  updateVisibility() {
+    if (!this.buyButtonsVisible && !this.footerVisible) {
+      this.classList.add('is-visible');
+      return;
+    }
+
+    this.classList.remove('is-visible');
   }
 
   onVariantChange(event) {

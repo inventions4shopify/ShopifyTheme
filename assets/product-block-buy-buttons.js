@@ -59,13 +59,6 @@ if (!customElements.get('product-form')) {
     }
   }
 
-  ensureMinLoading(startTime, min = 500) {
-    const elapsed = Date.now() - startTime;
-    return elapsed < min
-      ? new Promise((resolve) => setTimeout(resolve, min - elapsed))
-      : Promise.resolve();
-  }
-
   async onSubmit(event) {
     event.preventDefault();
 
@@ -74,45 +67,37 @@ if (!customElements.get('product-form')) {
     const cartType = this.dataset.cartType || 'cart_page';
 
     this.setLoading(true);
-    const startTime = Date.now();
-    let afterAdd = null;
-
-    let addedItem = null;
 
     try {
       if (window.theme?.cart?.add) {
-        addedItem = await window.theme.cart.add(new FormData(this.form));
-        afterAdd = () => window.theme.cart.handleAfterAdd(cartType, addedItem);
-      } else {
-        const response = await fetch('/cart/add.js', {
-          method: 'POST',
-          body: new FormData(this.form),
-        });
-
-        if (!response.ok) {
-          throw new Error('Unable to add this item to the cart.');
-        }
-
-        const addedItem = await response.json();
-
-        afterAdd = () => {
-          if (window.theme?.cart?.handleAfterAdd) {
-            window.theme.cart.handleAfterAdd(window.theme?.cartType, addedItem);
-            return;
-          }
-
-          window.location.href = '/cart';
-        };
+        const addedItem = await window.theme.cart.add(new FormData(this.form));
+        this.setLoading(false);
+        window.theme.cart.handleAfterAdd(cartType, addedItem);
+        return;
       }
+
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        body: new FormData(this.form),
+      });
+
+      if (!response.ok) {
+        throw new Error('Unable to add this item to the cart.');
+      }
+
+      const addedItem = await response.json();
+      this.setLoading(false);
+
+      if (window.theme?.cart?.handleAfterAdd) {
+        window.theme.cart.handleAfterAdd(window.theme?.cartType, addedItem);
+        return;
+      }
+
+      window.location.href = '/cart';
     } catch (error) {
       console.error(error);
       window.alert(error.message || 'Unable to add this item to the cart.');
-    } finally {
-      // Keep the loader visible for the whole request (and a minimum time),
-      // then hide it and run the post-add behavior (open drawer / redirect).
-      await this.ensureMinLoading(startTime);
       this.setLoading(false);
-      if (afterAdd) afterAdd();
     }
   }
   }

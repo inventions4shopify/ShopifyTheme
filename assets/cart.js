@@ -131,6 +131,24 @@ class CartDrawer extends HTMLElement {
     }
   }
 
+  applySectionHtml(htmlString, { initFeatures = true } = {}) {
+    if (!this.contents || !htmlString) return false;
+
+    const html = new DOMParser().parseFromString(htmlString, 'text/html');
+    const section = html.querySelector('.shopify-section');
+
+    this.contents.innerHTML = section ? section.innerHTML : htmlString;
+
+    const isEmpty = !this.contents.querySelector('[data-cart-drawer-items]');
+    this.classList.toggle('is-empty', isEmpty);
+
+    if (initFeatures) {
+      initCartDrawerFeatures(this);
+    }
+
+    return true;
+  }
+
   async refresh() {
     if (!this.contents) return;
 
@@ -141,16 +159,8 @@ class CartDrawer extends HTMLElement {
     }
 
     const responseText = await response.text();
-    const html = new DOMParser().parseFromString(responseText, 'text/html');
-    const section = html.querySelector('.shopify-section');
-
-    this.contents.innerHTML = section ? section.innerHTML : responseText;
-
-    const isEmpty = !this.contents.querySelector('[data-cart-drawer-items]');
-    this.classList.toggle('is-empty', isEmpty);
-
-    initCartDrawerFeatures(this);
-    await updateCartCount();
+    this.applySectionHtml(responseText, { initFeatures: true });
+    syncCartCountFromDrawer(this) || (await updateCartCount());
   }
 }
 
@@ -464,6 +474,38 @@ function initCartDrawerFeatures(drawer) {
   });
 }
 
+function setCartCount(count) {
+  const next = Math.max(0, Number(count) || 0);
+
+  document.querySelectorAll('[data-cart-count]').forEach((element) => {
+    element.textContent = next;
+    element.hidden = next === 0;
+  });
+}
+
+function bumpCartCount(delta = 1) {
+  const first = document.querySelector('[data-cart-count]');
+  const current = first ? Number(first.textContent) || 0 : 0;
+  setCartCount(current + (Number(delta) || 0));
+}
+
+function syncCartCountFromDrawer(drawer) {
+  if (!drawer) return false;
+
+  if (!drawer.querySelector('[data-cart-drawer-items]')) {
+    setCartCount(0);
+    return true;
+  }
+
+  const countEl = drawer.querySelector('.cart-drawer__count');
+  const match = countEl?.textContent?.match(/\d+/);
+
+  if (!match) return false;
+
+  setCartCount(Number(match[0]));
+  return true;
+}
+
 async function updateCartCount() {
   try {
     const response = await fetch('/cart.js');
@@ -471,11 +513,7 @@ async function updateCartCount() {
     if (!response.ok) return;
 
     const cart = await response.json();
-
-    document.querySelectorAll('[data-cart-count]').forEach((element) => {
-      element.textContent = cart.item_count;
-      element.hidden = cart.item_count === 0;
-    });
+    setCartCount(cart.item_count);
   } catch (error) {
     console.error(error);
   }
@@ -515,7 +553,7 @@ function closeQuickViewModal() {
   }
 }
 
-function cartMinLoading(startTime, min = 500) {
+function cartMinLoading(startTime, min = 200) {
   const elapsed = Date.now() - startTime;
   return elapsed < min
     ? new Promise((resolve) => setTimeout(resolve, min - elapsed))
@@ -532,15 +570,75 @@ function normalizeCartAddResponse(data) {
   return data;
 }
 
+function getAddedQuantity(payload) {
+  // Use the request quantity — line item.quantity is the cart line total after add.
+  if (payload instanceof FormData) {
+    return Math.max(1, Number(payload.get('quantity')) || 1);
+  }
+
+  if (payload?.quantity != null) return Math.max(1, Number(payload.quantity) || 1);
+
+  if (Array.isArray(payload?.items)) {
+    return payload.items.reduce(
+      (sum, line) => sum + Math.max(1, Number(line.quantity) || 1),
+      0,
+    ) || 1;
+  }
+
+  return 1;
+}
+
+function prepareAddRequest(payload, { withSections, sectionId }) {
+  if (payload instanceof FormData) {
+    const body = new FormData();
+
+    for (const [key, value] of payload.entries()) {
+      body.append(key, value);
+    }
+
+    if (withSections && sectionId) {
+      body.append('sections', sectionId);
+      body.append('sections_url', '/cart');
+    }
+
+    return {
+      headers: { Accept: 'application/json' },
+      body,
+    };
+  }
+
+  const json = { ...payload };
+
+  if (withSections && sectionId) {
+    json.sections = sectionId;
+    json.sections_url = '/cart';
+  }
+
+  return {
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(json),
+  };
+}
+
+function refreshCartInBackground() {
+  refreshCart().catch((error) => {
+    console.warn('Background cart refresh failed:', error);
+    updateCartCount();
+  });
+}
+
 async function addToCart(payload) {
-  const isFormData = payload instanceof FormData;
+  const cartType = window.theme?.cartType || 'cart_drawer';
+  const drawer = document.querySelector('cart-drawer');
+  const sectionId = drawer?.dataset?.sectionId || 'cart-drawer';
+  // Only block the add response on section HTML when the drawer opens immediately.
+  const withSections = cartType === 'cart_drawer' && !!drawer;
+  const request = prepareAddRequest(payload, { withSections, sectionId });
 
   const response = await fetch('/cart/add.js', {
     method: 'POST',
-    headers: isFormData
-      ? { Accept: 'application/json' }
-      : { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: isFormData ? payload : JSON.stringify(payload),
+    headers: request.headers,
+    body: request.body,
   });
 
   if (!response.ok) {
@@ -548,13 +646,26 @@ async function addToCart(payload) {
     throw new Error(error.description || 'Unable to add this item to the cart.');
   }
 
-  const item = normalizeCartAddResponse(await response.json());
+  const data = await response.json();
+  const sectionHtml = data?.sections?.[sectionId];
+  const item = normalizeCartAddResponse(data);
 
-  try {
-    await refreshCartDrawer();
-  } catch (error) {
-    console.warn('Cart refresh failed after add:', error);
-    await updateCartCount();
+  // Drop sections payload so popup/other UI gets a clean line item.
+  if (item?.sections) {
+    delete item.sections;
+  }
+
+  bumpCartCount(getAddedQuantity(payload));
+
+  if (sectionHtml && drawer) {
+    // open() initializes drawer features — skip here to avoid double work.
+    drawer.applySectionHtml(sectionHtml, { initFeatures: false });
+    syncCartCountFromDrawer(drawer);
+  } else if (drawer || document.querySelector('cart-page')) {
+    // Keep drawer/page in sync without delaying popup / success UI.
+    refreshCartInBackground();
+  } else {
+    updateCartCount();
   }
 
   return item;
@@ -910,22 +1021,19 @@ async function handleProductCardAtcClick(button) {
   button.dataset.loading = 'true';
   button.disabled = true;
   button.classList.add('is-loading');
-  const startTime = Date.now();
-  let added = false;
-  let addedItem = null;
 
   try {
-    addedItem = await addToCart({ id: Number(variantId), quantity: 1 });
-    added = true;
-  } catch (error) {
-    console.error(error);
-    window.alert(error.message || 'Unable to add this item to the cart.');
-  } finally {
-    await cartMinLoading(startTime);
+    const addedItem = await addToCart({ id: Number(variantId), quantity: 1 });
     button.disabled = false;
     button.classList.remove('is-loading');
     delete button.dataset.loading;
-    if (added) handleCartAfterAdd(window.theme?.cartType || 'cart_drawer', addedItem);
+    handleCartAfterAdd(window.theme?.cartType || 'cart_drawer', addedItem);
+  } catch (error) {
+    console.error(error);
+    window.alert(error.message || 'Unable to add this item to the cart.');
+    button.disabled = false;
+    button.classList.remove('is-loading');
+    delete button.dataset.loading;
   }
 }
 

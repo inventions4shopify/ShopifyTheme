@@ -79,6 +79,37 @@ function initProductGalleries(root = document) {
       }
     }
 
+    function pauseSlideMedia(slide) {
+      if (!slide) return;
+
+      slide.querySelectorAll("video").forEach((video) => {
+        video.pause();
+      });
+
+      slide.querySelectorAll("iframe").forEach((iframe) => {
+        try {
+          iframe.contentWindow?.postMessage(
+            '{"event":"command","func":"pauseVideo","args":""}',
+            "*",
+          );
+          iframe.contentWindow?.postMessage('{"method":"pause"}', "*");
+        } catch (error) {
+          // Cross-origin hosts may block postMessage; ignore safely.
+        }
+      });
+    }
+
+    function pauseInactiveMedia(activeIndex) {
+      slides.forEach((slide, index) => {
+        if (index === activeIndex) return;
+        pauseSlideMedia(slide);
+      });
+    }
+
+    function isInteractiveMediaTarget(target) {
+      return Boolean(target?.closest?.("video, iframe"));
+    }
+
     function updateSlider(index, shouldScrollThumb = true) {
       if (!slides.length) return;
 
@@ -95,6 +126,8 @@ function initProductGalleries(root = document) {
       track.style.transform = `translate3d(-${index * getSlideWidth()}px,0,0)`;
 
       updateActiveThumbnail(index, shouldScrollThumb);
+
+      pauseInactiveMedia(index);
 
       currentIndex = index;
     }
@@ -147,8 +180,17 @@ function initProductGalleries(root = document) {
       track.style.transform = `translate3d(${value}px,0,0)`;
     }
 
-    function canDragSlider() {
-      const activeImg = slides[currentIndex]?.querySelector("img");
+    function canDragSlider(event) {
+      if (event && isInteractiveMediaTarget(event.target)) {
+        return false;
+      }
+
+      const activeSlide = slides[currentIndex];
+      const activeImg =
+        activeSlide?.querySelector("picture img") ||
+        (activeSlide?.dataset.mediaType === "image"
+          ? activeSlide.querySelector("img")
+          : null);
 
       if (activeImg?._zoomScale > 1) {
         return false;
@@ -216,7 +258,7 @@ function initProductGalleries(root = document) {
     slider.addEventListener(
       "touchstart",
       (e) => {
-        if (!canDragSlider()) return;
+        if (!canDragSlider(e)) return;
 
         if (e.touches.length !== 1) return;
 
@@ -228,7 +270,7 @@ function initProductGalleries(root = document) {
     slider.addEventListener(
       "touchmove",
       (e) => {
-        if (!canDragSlider()) return;
+        if (!canDragSlider(e)) return;
 
         if (e.touches.length !== 1) return;
 
@@ -248,7 +290,7 @@ function initProductGalleries(root = document) {
 
       if (!enableDesktopDrag) return;
 
-      if (!canDragSlider()) return;
+      if (!canDragSlider(e)) return;
 
       e.preventDefault();
 
@@ -378,7 +420,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const slides = gallery.querySelectorAll(".product_gallery_main_slide");
 
     slides.forEach((slide) => {
-      const image = slide.querySelector("img");
+      if (slide.dataset.mediaType && slide.dataset.mediaType !== "image") {
+        return;
+      }
+
+      const image = slide.querySelector("picture img") || slide.querySelector("img");
 
       if (!image) return;
 
@@ -481,7 +527,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const slides = gallery.querySelectorAll(".product_gallery_main_slide");
 
     slides.forEach((slide) => {
-      const img = slide.querySelector("img");
+      if (slide.dataset.mediaType && slide.dataset.mediaType !== "image") {
+        return;
+      }
+
+      const img = slide.querySelector("picture img") || slide.querySelector("img");
 
       if (!img) return;
 
@@ -593,6 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lightbox.hidden = false;
 
       document.body.style.overflow = "hidden";
+      document.body.classList.add("product-lightbox-open");
 
       scrollToImage(index);
     }
@@ -601,10 +652,31 @@ document.addEventListener("DOMContentLoaded", () => {
     // CLOSE
     // -----------------------------
 
+    function pauseLightboxMedia() {
+      lightbox.querySelectorAll("video").forEach((video) => {
+        video.pause();
+      });
+
+      lightbox.querySelectorAll("iframe").forEach((iframe) => {
+        try {
+          iframe.contentWindow?.postMessage(
+            '{"event":"command","func":"pauseVideo","args":""}',
+            "*",
+          );
+          iframe.contentWindow?.postMessage('{"method":"pause"}', "*");
+        } catch (error) {
+          // Cross-origin hosts may block postMessage; ignore safely.
+        }
+      });
+    }
+
     function closeLightbox() {
+      pauseLightboxMedia();
+
       lightbox.hidden = true;
 
       document.body.style.overflow = "";
+      document.body.classList.remove("product-lightbox-open");
     }
 
     // -----------------------------
@@ -646,6 +718,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // -----------------------------
 
     slides.forEach((slide, index) => {
+      // Keep video/external video interactive in-place; only images open lightbox.
+      if (slide.dataset.mediaType && slide.dataset.mediaType !== "image") {
+        return;
+      }
+
       slide.addEventListener("click", () => {
         openLightbox(index);
       });
@@ -700,7 +777,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const slides = gallery.querySelectorAll(".product_gallery_main_slide");
 
     slides.forEach((slide) => {
-      const img = slide.querySelector("img");
+      if (slide.dataset.mediaType && slide.dataset.mediaType !== "image") {
+        return;
+      }
+
+      const img = slide.querySelector("picture img") || slide.querySelector("img");
 
       if (!img) return;
 
