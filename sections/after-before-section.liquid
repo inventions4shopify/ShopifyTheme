@@ -47,15 +47,15 @@
             </div>
 
             <div class="cms-image-labels items-{{ section.settings.bedge_position }}">
-              {% if section.settings.after_text != blank %}
-                <div class="badge">
-                  {{ section.settings.after_text }}
-                </div>
-              {% endif %}
-
               {% if section.settings.before_text != blank %}
                 <div class="badge">
                   {{ section.settings.before_text }}
+                </div>
+              {% endif %}
+              
+              {% if section.settings.after_text != blank %}
+                <div class="badge">
+                  {{ section.settings.after_text }}
                 </div>
               {% endif %}
             </div>

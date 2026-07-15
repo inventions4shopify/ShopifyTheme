@@ -185,6 +185,10 @@
     border-bottom: none;
 }
 
+.cms-collection-product-count {
+    font-size: var(--text-sm);
+}
+
 .cms-main-collection-grid--sidebar .cms-collection-sidebar,
 .cms-main-collection-grid--sidebar .cms-filter-sidebar {
     display: none;

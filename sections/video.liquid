@@ -108,7 +108,7 @@
     </div>
     {% if section.blocks.size > 0 %}
       <div class="{% if section.settings.content_size == 'full-width' %}full-width{% else %}page-width{% endif %}">
-        <div class="media-overlay-content ps-rte media-overlay-content--{{ section.settings.content_alignment }} media-content-width-{{ section.settings.content_width }}">
+        <div class="media-overlay-content section-spacing ps-rte media-overlay-content--{{ section.settings.content_alignment }} media-content-width-{{ section.settings.content_width }}">
           {% for block in section.blocks %}
             {%- case block.type -%}
               {%- when 'subheading' -%}

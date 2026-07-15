@@ -63,8 +63,14 @@
     align-items: center;
     justify-content: center;
     margin-top: var(--spacing-40);
-    gap: var(--grid-spacing);
+    gap: var(--grid-spacing-tablet);
     margin-bottom: 5px;
+}
+
+.video-slider__controls .button {
+    width: 4.4rem;
+    height: 4.4rem;
+    padding: 0;
 }
 
 @media (min-width: 768px) {
