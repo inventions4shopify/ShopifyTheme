@@ -1,0 +1,65 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "container_width": "small",
+        "custom_container_width": 800,
+        "content_alignment": "center",
+        "gap": "24",
+        "subheading": "",
+        "heading": "",
+        "heading_tag": "h2",
+        "slide_height": "medium",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0.4,
+        "bg_color": "",
+        "bg_gradient": "",
+        "subheading_color": "",
+        "heading_color": "",
+        "text_color": ""
+      }
+    },
+    "contact_form_h8RVLE": {
+      "type": "contact-form",
+      "name": "Contact Form",
+      "settings": {
+        "container_width": "small",
+        "custom_container_width": 800,
+        "heading_alignment": "start",
+        "form_position": "row",
+        "heading": "",
+        "heading_tag": "h2",
+        "heading_color": "",
+        "content_alignment": "start",
+        "text": "",
+        "text_color": "",
+        "phone_number": "",
+        "email_address": "",
+        "icon_background_color": "",
+        "icon_text_color": "",
+        "background_color": "",
+        "background_gradient": "",
+        "custom_spacing": false,
+        "section_spacing_top_desktop": 64,
+        "section_spacing_bottom_desktop": 64,
+        "section_spacing_top_mobile": 40,
+        "section_spacing_bottom_mobile": 40
+      }
+    }
+  },
+  "order": [
+    "main",
+    "contact_form_h8RVLE"
+  ]
+}
