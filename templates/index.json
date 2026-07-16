@@ -16,10 +16,12 @@
           "type": "slide",
           "settings": {
             "media_type": "image",
+            "image_1": "shopify://shop_images/banner-1.png",
+            "image_2": "shopify://shop_images/banner-1_mobile.png",
             "toggle_overlay": true,
-            "overlay_color": "#00000026",
+            "overlay_color": "#0000008A",
             "content_width": "medium",
-            "content_alignment": "center-center",
+            "content_alignment": "left-bottom",
             "subheading_color": "",
             "subheading": "Experience innovation that makes every day easier.",
             "heading_color": "",
@@ -27,30 +29,32 @@
             "heading": "Smart Technology For Modern Life",
             "text_color": "",
             "description": "<p>Upgrade your setup with high-performance products designed for speed, productivity, and style.</p>",
-            "link": "",
+            "link": "shopify://collections/all",
             "link_label": "Explore More",
             "button_text_color": "",
             "button_background_color": "",
             "button_outline_color": ""
           }
         },
-        "slide_2": {
+        "slide_ETCrrG": {
           "type": "slide",
           "settings": {
             "media_type": "image",
+            "image_1": "shopify://shop_images/banner-2.png",
+            "image_2": "shopify://shop_images/banner-2_mobile.png",
             "toggle_overlay": true,
-            "overlay_color": "#00000026",
+            "overlay_color": "#0000008A",
             "content_width": "medium",
-            "content_alignment": "center-center",
+            "content_alignment": "left-bottom",
             "subheading_color": "",
-            "subheading": "Discover New Possibilities",
+            "subheading": "Designed To Inspire Confidence",
             "heading_color": "",
             "heading_gradient": "",
-            "heading": "Designed For Everyday Performance",
+            "heading": "Fashion For Every Moment",
             "text_color": "",
-            "description": "<p>Find products that combine innovation, quality, and style to elevate your experience.</p>",
-            "link": "",
-            "link_label": "Learn More",
+            "description": "<p>Refresh your wardrobe with timeless styles, flattering silhouettes, and effortless pieces designed to keep you looking and feeling your best.</p>",
+            "link": "shopify://collections",
+            "link_label": "Explore More",
             "button_text_color": "",
             "button_background_color": "",
             "button_outline_color": ""
@@ -59,81 +63,61 @@
       },
       "block_order": [
         "slide_1",
-        "slide_2"
+        "slide_ETCrrG"
       ],
       "settings": {
         "section_width": "full-width",
         "slide_width": "page-width",
         "slide_height": "medium",
         "icons_style": "chevron",
-        "icons_shape": "none",
+        "icons_shape": "circle",
         "slideshow_controls_style": "dots",
         "autoplay": false,
         "autoplay_speed": 4
       }
     },
-    "marquee": {
+    "marquee_ph7wCN": {
       "type": "marquee",
       "blocks": {
-        "item_1": {
+        "item_x7GBA6": {
           "type": "item",
           "settings": {
-            "text": "Special Offer"
+            "text": "New Arrivals Every Week"
           }
         },
-        "item_2": {
+        "item_3mJakV": {
           "type": "item",
           "settings": {
-            "text": "Free Shipping"
+            "text": "Free Shipping on Orders Over $99"
           }
         },
-        "item_3": {
+        "item_ippNQ9": {
           "type": "item",
           "settings": {
-            "text": "Premium Quality"
+            "text": "Premium Quality Fabrics"
           }
         },
-        "item_4": {
+        "item_pgaPmF": {
           "type": "item",
           "settings": {
-            "text": "Best Sellers"
+            "text": "Easy 14-Day Returns"
           }
         },
-        "item_5": {
+        "item_MmdxRm": {
           "type": "item",
           "settings": {
-            "text": "New Arrivals"
-          }
-        },
-        "item_6": {
-          "type": "item",
-          "settings": {
-            "text": "Limited Edition"
-          }
-        },
-        "item_7": {
-          "type": "item",
-          "settings": {
-            "text": "Exclusive Deals"
-          }
-        },
-        "item_8": {
-          "type": "item",
-          "settings": {
-            "text": "Shop Now"
+            "text": "Up to 50% OFF Selected Styles"
           }
         }
       },
       "block_order": [
-        "item_1",
-        "item_2",
-        "item_3",
-        "item_4",
-        "item_5",
-        "item_6",
-        "item_7",
-        "item_8"
+        "item_x7GBA6",
+        "item_3mJakV",
+        "item_ippNQ9",
+        "item_pgaPmF",
+        "item_MmdxRm"
       ],
+      "name": "Marquee",
       "settings": {
         "container_width": "page-width",
         "speed": 30,
@@ -143,62 +127,62 @@
         "direction": "start",
         "background_color": "#ffffff",
         "background_gradient": "",
-        "text_color": "#000000",
-        "custom_spacing": false,
+        "text_color": "",
+        "custom_spacing": true,
         "section_spacing_top_desktop": 40,
         "section_spacing_bottom_desktop": 40,
         "section_spacing_top_mobile": 20,
         "section_spacing_bottom_mobile": 20
       }
     },
-    "rich_text_Q7BM9K": {
+    "rich_text_kg8jGf": {
       "type": "rich-text",
       "blocks": {
-        "subheading_r3ifxH": {
+        "subheading_mkTXzX": {
           "type": "subheading",
           "settings": {
-            "subheading": "Our story",
+            "subheading": "New Style",
             "subheading_alignment": "inherit",
-            "subheading_color": "rgba(0,0,0,0)"
+            "subheading_color": ""
           }
         },
-        "heading_Qeh8pj": {
+        "heading_hDEDFx": {
           "type": "heading",
           "settings": {
-            "heading": "Talk about your brand",
+            "heading": "Dresses for every day",
             "heading_tag": "h2",
             "heading_size": "h2",
             "heading_alignment": "inherit",
-            "heading_color": "rgba(0,0,0,0)",
+            "heading_color": "",
             "heading_gradient": ""
           }
         },
-        "text_cjN3UU": {
+        "text_fYQqrW": {
           "type": "text",
           "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+            "text": "<p>Elevate your wardrobe with carefully curated fashion designed for confidence, comfort, and effortless elegance. Explore styles that inspire every day and every occasion.</p>",
             "text_alignment": "inherit",
             "text_width": "",
-            "text_color": "rgba(0,0,0,0)"
+            "text_color": ""
           }
         },
-        "button_8YPtBA": {
+        "button_mnDBkR": {
           "type": "button",
           "settings": {
             "link_label": "Shop now",
             "link": "",
-            "button_alignment": "inherit",
-            "button_background_color": "rgba(0,0,0,0)",
+            "button_alignment": "center",
+            "button_background_color": "",
             "button_text_color": "",
             "button_outline_color": ""
           }
         }
       },
       "block_order": [
-        "subheading_r3ifxH",
-        "heading_Qeh8pj",
-        "text_cjN3UU",
-        "button_8YPtBA"
+        "subheading_mkTXzX",
+        "heading_hDEDFx",
+        "text_fYQqrW",
+        "button_mnDBkR"
       ],
       "name": "Rich text",
       "settings": {
@@ -206,7 +190,7 @@
         "custom_container_width": 800,
         "content_alignment": "center",
         "gap": "16",
-        "background_color": "rgba(0,0,0,0)",
+        "background_color": "",
         "background_gradient": "",
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
@@ -215,49 +199,50 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "image_with_text": {
+    "image_with_text_7iniQr": {
       "type": "image-with-text",
       "blocks": {
-        "subheading_1": {
+        "subheading_VtihHz": {
           "type": "subheading",
           "settings": {
             "subheading": "Upgrade Your Style Today",
-            "subheading_color": "rgba(0,0,0,0)"
+            "subheading_color": ""
           }
         },
-        "heading_1": {
+        "heading_QBhtMF": {
           "type": "heading",
           "settings": {
             "heading": "Discover Our Latest Collection",
             "heading_size": "h2",
-            "heading_color": "rgba(0,0,0,0)",
+            "heading_color": "",
             "heading_gradient": ""
           }
         },
-        "description_1": {
+        "description_37BCj9": {
           "type": "description",
           "settings": {
-            "description": "<p>Explore our latest collection of fashion-forward apparel and accessories. From trendy tops to stylish shoes, we have everything you need to elevate your wardrobe.</p>",
-            "text_color": "rgba(0,0,0,0)"
+            "description": "<p>Shop curated collections featuring elegant dresses, stylish separates, and everyday essentials crafted to complement your unique style.</p>",
+            "text_color": ""
           }
         },
-        "button_1": {
+        "buttons_NRFV9L": {
           "type": "buttons",
           "settings": {
-            "link": "/collections/all",
+            "link": "",
             "link_label": "Shop Now",
-            "button_background_color": "rgba(0,0,0,0)",
-            "button_text_color": "rgba(0,0,0,0)",
-            "button_outline_color": "rgba(0,0,0,0)"
+            "button_background_color": "",
+            "button_text_color": "",
+            "button_outline_color": ""
           }
         }
       },
       "block_order": [
-        "subheading_1",
-        "heading_1",
-        "description_1",
-        "button_1"
+        "subheading_VtihHz",
+        "heading_QBhtMF",
+        "description_37BCj9",
+        "buttons_NRFV9L"
       ],
+      "name": "Image With Text",
       "settings": {
         "section_width": "page-width",
         "background_color": "#ffffff",
@@ -266,9 +251,11 @@
         "image_show": false,
         "image_position": "row",
         "media_type": "image",
-        "media_height": "medium",
+        "mb_image": "shopify://shop_images/poster-1.jpg",
+        "desktop_image": "shopify://shop_images/poster-2.jpg",
+        "media_height": "large",
         "text_alignment": "center",
-        "gap": "12",
+        "gap": "16",
         "content_alignment": "center",
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
@@ -277,69 +264,70 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "multi_column_icons": {
+    "multicolumn_bFj7Eh": {
       "type": "multicolumn",
       "blocks": {
-        "icon_1": {
-          "type": "icon",
-          "settings": {
-            "media_type": "icon",
-            "icon_name": "truck",
-            "icon-height": 60,
-            "thumb-height": 40,
-            "title": "Fast Shipping",
-            "text": "<p>Optimized rendering and lightweight architecture for smooth and responsive user experience across all devices.</p>"
-          }
-        },
-        "icon_2": {
-          "type": "icon",
-          "settings": {
-            "media_type": "icon",
-            "icon_name": "security",
-            "icon-height": 60,
-            "thumb-height": 40,
-            "title": "Secure Payments",
-            "text": "<p>Shop confidently with trusted payment methods and industry-standard security.</p>"
-          }
-        },
-        "icon_3": {
+        "icon_ydD7mC": {
           "type": "icon",
           "settings": {
             "media_type": "icon",
             "icon_name": "gift",
             "icon-height": 60,
             "thumb-height": 40,
-            "title": "Special Gifts",
-            "text": "<p>Enjoy exclusive rewards, gifts, and offers available throughout the year.</p>"
+            "title": "Premium Quality Fabrics",
+            "text": "<p>Crafted from soft, breathable, and durable materials that keep you comfortable while looking stylish all day long.</p>"
+          }
+        },
+        "icon_YDtaTy": {
+          "type": "icon",
+          "settings": {
+            "media_type": "icon",
+            "icon_name": "trust",
+            "icon-height": 60,
+            "thumb-height": 40,
+            "title": "Modern & Trendy Designs",
+            "text": "<p>Discover timeless essentials and the latest fashion trends, designed to suit every occasion and personal style.</p>"
+          }
+        },
+        "icon_zeCEhY": {
+          "type": "icon",
+          "settings": {
+            "media_type": "icon",
+            "icon_name": "truck",
+            "icon-height": 60,
+            "thumb-height": 40,
+            "title": "Fast Shipping & Easy Returns",
+            "text": "<p>Enjoy quick delivery, secure checkout, and hassle-free returns for a smooth shopping experience.</p>"
           }
         }
       },
       "block_order": [
-        "icon_1",
-        "icon_2",
-        "icon_3"
+        "icon_ydD7mC",
+        "icon_YDtaTy",
+        "icon_zeCEhY"
       ],
+      "name": "Multi Column Icons",
       "settings": {
         "container_width": "page-width",
         "custom_container_width": 800,
-        "background_color": "rgba(0,0,0,0)",
+        "background_color": "#f3f3ef",
         "background_gradient": "",
-        "heading": "Talk about your brand",
+        "heading": "Why You'll Love Our Collection",
         "heading_size": "h2",
         "heading_alignment": "center",
-        "heading_color": "rgba(0,0,0,0)",
+        "heading_color": "",
         "heading_gradient": "",
         "title_size": "h4",
-        "bg_color": "#fdf2e7",
+        "bg_color": "#ffffff",
         "text_color": "#4a3230",
         "border_color": "#e4e2e2",
         "border_radius": 0,
         "button_alignment": "center",
         "link_label": "Shop now",
         "link": "",
-        "button_background_color": "rgba(0,0,0,0)",
-        "button_text_color": "rgba(0,0,0,0)",
-        "button_outline_color": "rgba(0,0,0,0)",
+        "button_background_color": "",
+        "button_text_color": "",
+        "button_outline_color": "",
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
         "section_spacing_bottom_desktop": 64,
@@ -347,61 +335,64 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "after_before_comparison": {
+    "after_before_section_fzKthY": {
       "type": "after-before-section",
       "blocks": {
-        "caption_1": {
+        "caption_YB9DiU": {
           "type": "caption",
           "settings": {
-            "caption": "Before We Started",
-            "subheading_color": "rgba(0,0,0,0)"
+            "caption": "New Season",
+            "subheading_color": ""
           }
         },
-        "heading_1": {
+        "heading_U7H9Rc": {
           "type": "heading",
           "settings": {
-            "heading": "Challenges that were holding the business back.",
+            "heading": "Fashion That Moves With You",
             "heading_size": "h2",
-            "heading_color": "rgba(0,0,0,0)",
+            "heading_color": "",
             "heading_gradient": ""
           }
         },
-        "text_1": {
+        "text_JXcaT3": {
           "type": "text",
           "settings": {
-            "text": "<p>The brand struggled with low engagement, outdated design, and a poor user experience that affected conversions and customer trust.</p>",
-            "text_color": "rgba(0,0,0,0)"
+            "text": "<p>Fashion is more than just clothing—it's a reflection of your personality, confidence, and individuality. That's why we create collections that combine timeless elegance with modern trends, ensuring you always have the perfect outfit for every occasion.</p><p>From effortlessly chic everyday essentials to sophisticated statement pieces, every garment is thoughtfully designed using high-quality fabrics, flattering silhouettes, and attention to every detail. Whether you're dressing for work, a casual day out, a festive celebration, or a special evening event, our collections are made to help you feel comfortable, confident, and stylish.</p>",
+            "text_color": ""
           }
         },
-        "button_1": {
+        "button_YPFkw6": {
           "type": "button",
           "settings": {
             "button_label": "Shop Now",
-            "button_link": "/collections/all",
+            "button_link": "",
             "button_style_secondary": false,
-            "button_background_color": "rgba(0,0,0,0)",
-            "button_text_color": "rgba(0,0,0,0)",
-            "button_outline_color": "rgba(0,0,0,0)"
+            "button_background_color": "",
+            "button_text_color": "",
+            "button_outline_color": ""
           }
         }
       },
       "block_order": [
-        "caption_1",
-        "heading_1",
-        "text_1",
-        "button_1"
+        "caption_YB9DiU",
+        "heading_U7H9Rc",
+        "text_JXcaT3",
+        "button_YPFkw6"
       ],
+      "name": "After Before comparison",
       "settings": {
         "background_color": "#ffffff",
         "background_gradient": "",
         "desktop_content_position": "center",
         "image_position": "row-reverse",
         "width": "medium",
-        "after_text": "After",
-        "before_text": "Before",
+        "after_image": "shopify://shop_images/after.png",
+        "before_image": "shopify://shop_images/ChatGPT_Image_Jul_15_2026_03_02_54_PM.png",
+        "after_text": "",
+        "before_text": "",
         "bedge_position": "alternate",
         "svg_text_icon": "",
-        "bg_color": "rgba(0,0,0,0)",
+        "bg_color": "",
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
         "section_spacing_bottom_desktop": 64,
@@ -409,13 +400,13 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "featured_collection_KDwNEY": {
+    "featured_collection_eWaU6x": {
       "type": "featured-collection",
       "name": "Featured collection",
       "settings": {
-        "collection": "new-arrivals",
+        "collection": "best-seller",
         "layout": "carousel",
-        "products_count": 8,
+        "products_count": 14,
         "columns": 4,
         "horizontal_gap": 8,
         "mobile_columns": "2",
@@ -443,74 +434,29 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "collection_list_EPfH6K": {
-      "type": "collection-list",
-      "blocks": {
-        "collection_639TQp": {
-          "type": "collection",
-          "settings": {
-            "collection": "anklet",
-            "custom_title": "Collection"
-          }
-        },
-        "collection_cJXGY9": {
-          "type": "collection",
-          "settings": {
-            "collection": "bracelet",
-            "custom_title": "Collection"
-          }
-        },
-        "collection_TnpEec": {
-          "type": "collection",
-          "settings": {
-            "collection": "earrings",
-            "custom_title": "Collection"
-          }
-        },
-        "collection_4NYcjR": {
-          "type": "collection",
-          "settings": {
-            "collection": "necklace",
-            "custom_title": "Collection"
-          }
-        },
-        "collection_CtkLTt": {
-          "type": "collection",
-          "settings": {
-            "collection": "new-arrivals",
-            "custom_title": "Collection"
-          }
-        }
-      },
-      "block_order": [
-        "collection_639TQp",
-        "collection_cJXGY9",
-        "collection_TnpEec",
-        "collection_4NYcjR",
-        "collection_CtkLTt"
-      ],
+    "collection_list_page_aR63ap": {
+      "type": "collection-list-page",
       "name": "Collection List",
       "settings": {
-        "subheading": "Collection",
-        "heading": "Our Latest Collecton",
-        "description": "<p>Most Populer Products</p>",
+        "subheading": "Fashion Collections",
+        "heading": "Shop Our Signature Collections",
+        "description": "",
         "subheading_color": "",
         "heading_color": "",
         "heading_gradient": "",
         "text_color": "",
         "container_width": "page-width",
         "content_alignment": "center",
-        "collection_heading_alignment": "start",
-        "layout": "slider",
-        "show_arrow": true,
-        "autoplay": false,
-        "autoplay_speed": 5,
+        "collection_heading_alignment": "center",
         "columns": 4,
-        "mobile_column_count": "1",
+        "image_ratio": "square",
+        "rows": 16,
+        "mobile_column_count": "2",
         "background_color": "#ffffff",
         "background_gradient": "",
+        "enable_card_text": true,
         "card_bg_color": "",
-        "card_heading_color": "",
+        "card_heading_color": "#f3f3ef",
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
         "section_spacing_bottom_desktop": 64,
@@ -518,21 +464,21 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "video_7kgPWy": {
+    "video_gUcHfw": {
       "type": "video",
       "blocks": {
-        "subheading_Hq3QqW": {
+        "subheading_WbUkYX": {
           "type": "subheading",
           "settings": {
-            "subheading": "Our story",
+            "subheading": "Our Collection",
             "subheading_alignment": "inherit",
             "subheading_color": "#ffffff"
           }
         },
-        "heading_tgEieM": {
+        "heading_LhGiYi": {
           "type": "heading",
           "settings": {
-            "heading": "Talk about your brand",
+            "heading": "Elevate Your Everyday Style",
             "heading_tag": "h2",
             "heading_size": "h2",
             "heading_alignment": "inherit",
@@ -540,37 +486,37 @@
             "heading_gradient": ""
           }
         },
-        "text_N3VV94": {
+        "text_4VmQmq": {
           "type": "text",
           "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+            "text": "<p><br/>From timeless classics to modern trends, our collections are thoughtfully curated to help you express your unique style. Every piece is crafted with quality fabrics, elegant details, and flattering silhouettes for every occasion.<br/><br/></p>",
             "text_alignment": "inherit",
             "text_width": "",
             "text_color": "#ffffff"
           }
         },
-        "button_jpWRwX": {
+        "button_nQC9Bq": {
           "type": "button",
           "settings": {
             "link_label": "Shop now",
             "link": "",
             "button_alignment": "inherit",
-            "button_background_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_outline_color": "#ffffff"
+            "button_background_color": "",
+            "button_text_color": "",
+            "button_outline_color": ""
           }
         }
       },
       "block_order": [
-        "subheading_Hq3QqW",
-        "heading_tgEieM",
-        "text_N3VV94",
-        "button_jpWRwX"
+        "subheading_WbUkYX",
+        "heading_LhGiYi",
+        "text_4VmQmq",
+        "button_nQC9Bq"
       ],
       "name": "Video",
       "settings": {
         "source": "uploaded",
-        "video": "shopify://files/videos/277068.mp4",
+        "video": "shopify://files/videos/Create_a_cinematic_luxury_fash.mp4",
         "video_url": "",
         "autoplay": true,
         "loop": true,
@@ -586,13 +532,28 @@
         "content_alignment": "left-bottom"
       }
     },
-    "table_comparison_7cpFmP": {
+    "table_comparison_LHCkw3": {
       "type": "table-comparison",
       "blocks": {
-        "list_C4J6Tr": {
+        "list_AQrmh8": {
           "type": "list",
           "settings": {
-            "heading": "Feature Title",
+            "heading": "Premium Quality",
+            "compare_options-1": "compare-icons",
+            "cell-1": "First Compared Option",
+            "icon-1": true,
+            "compare_options-2": "compare-icons",
+            "cell-2": "Second Compared Option",
+            "icon-2": true,
+            "compare_options-3": "compare-icons",
+            "cell-3": "Third Compared Option",
+            "icon-3": true
+          }
+        },
+        "list_fPKFUe": {
+          "type": "list",
+          "settings": {
+            "heading": "Everyday Wear",
             "compare_options-1": "compare-icons",
             "cell-1": "First Compared Option",
             "icon-1": true,
@@ -601,105 +562,87 @@
             "icon-2": false,
             "compare_options-3": "compare-icons",
             "cell-3": "Third Compared Option",
-            "icon-3": true
+            "icon-3": false
           }
         },
-        "list_McCmk9": {
+        "list_ne6twX": {
           "type": "list",
           "settings": {
-            "heading": "Feature Title",
-            "compare_options-1": "compare-text",
-            "cell-1": "Lorem Ipsum",
-            "icon-1": true,
-            "compare_options-2": "compare-icons",
-            "cell-2": "Second Compared Option",
-            "icon-2": false,
-            "compare_options-3": "compare-text",
-            "cell-3": "Lorem Ipsum",
-            "icon-3": true
-          }
-        },
-        "list_xDeHaK": {
-          "type": "list",
-          "settings": {
-            "heading": "Feature Title",
+            "heading": "Lightweight Fabric",
             "compare_options-1": "compare-icons",
             "cell-1": "First Compared Option",
             "icon-1": true,
             "compare_options-2": "compare-icons",
             "cell-2": "Second Compared Option",
-            "icon-2": false,
+            "icon-2": true,
             "compare_options-3": "compare-icons",
             "cell-3": "Third Compared Option",
             "icon-3": true
           }
         },
-        "list_F7K7zT": {
+        "list_jKphdH": {
           "type": "list",
           "settings": {
-            "heading": "Feature Title",
-            "compare_options-1": "compare-icons",
-            "cell-1": "First Compared Option",
-            "icon-1": true,
-            "compare_options-2": "compare-text",
-            "cell-2": "Lorem Ipsum",
-            "icon-2": false,
-            "compare_options-3": "compare-icons",
-            "cell-3": "Third Compared Option",
-            "icon-3": true
-          }
-        },
-        "list_y9r7fC": {
-          "type": "list",
-          "settings": {
-            "heading": "Feature Title",
+            "heading": "Comfortable Fit",
             "compare_options-1": "compare-icons",
             "cell-1": "First Compared Option",
             "icon-1": true,
             "compare_options-2": "compare-icons",
             "cell-2": "Second Compared Option",
-            "icon-2": false,
+            "icon-2": true,
             "compare_options-3": "compare-icons",
             "cell-3": "Third Compared Option",
             "icon-3": true
           }
         },
-        "list_GdVw6Q": {
+        "list_CxJRyN": {
           "type": "list",
           "settings": {
-            "heading": "Feature Title",
+            "heading": "New Arrivals",
             "compare_options-1": "compare-icons",
             "cell-1": "First Compared Option",
             "icon-1": true,
             "compare_options-2": "compare-icons",
             "cell-2": "Second Compared Option",
-            "icon-2": false,
+            "icon-2": true,
             "compare_options-3": "compare-icons",
             "cell-3": "Third Compared Option",
             "icon-3": true
+          }
+        },
+        "list_83dWPe": {
+          "type": "list",
+          "settings": {
+            "heading": "Machine Washable",
+            "compare_options-1": "compare-icons",
+            "cell-1": "First Compared Option",
+            "icon-1": true,
+            "compare_options-2": "compare-icons",
+            "cell-2": "Second Compared Option",
+            "icon-2": true,
+            "compare_options-3": "compare-icons",
+            "cell-3": "Third Compared Option",
+            "icon-3": false
           }
         }
       },
       "block_order": [
-        "list_C4J6Tr",
-        "list_McCmk9",
-        "list_xDeHaK",
-        "list_F7K7zT",
-        "list_y9r7fC",
-        "list_GdVw6Q"
+        "list_AQrmh8",
+        "list_fPKFUe",
+        "list_ne6twX",
+        "list_jKphdH",
+        "list_CxJRyN",
+        "list_83dWPe"
       ],
       "name": "Comparison Table",
       "settings": {
         "container_width": "small",
         "custom_container_width": 800,
-        "table_image_1": "shopify://shop_images/6.jpg",
-        "table_image_2": "shopify://shop_images/1.jpg",
-        "table_image_3": "shopify://shop_images/logo-light.webp",
         "text_alignment": "center",
         "gap": "24",
         "subheading": "Compare Plans",
         "heading_tag": "h2",
-        "heading": "Find the Perfect Option for Your Needs",
+        "heading": "Find Your Perfect Style",
         "description": "<p>Explore features, pricing, and benefits side by side to choose the solution that best fits your workflow and business goals.</p>",
         "link": "",
         "link_label": "View Full Comparison",
@@ -715,7 +658,7 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "countdown_rQ6kCK": {
+    "countdown_gJjG4r": {
       "type": "countdown",
       "name": "Countdown",
       "settings": {
@@ -725,8 +668,8 @@
         "background_gradient": "",
         "image_position": "row",
         "image_show": true,
-        "mb_image": "shopify://shop_images/cloudy-sky-from-above.jpg",
-        "desktop_image": "shopify://shop_images/cloudy-sky-from-above.jpg",
+        "mb_image": "shopify://shop_images/coming-soon-1.png",
+        "desktop_image": "shopify://shop_images/coming-soon.png",
         "text_alignment": "center",
         "content_alignment": "center",
         "countdown_date": "12-31-2028 23:59:59",
@@ -743,43 +686,51 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "faq_VUKbkn": {
+    "faq_abpaMm": {
       "type": "faq",
       "blocks": {
-        "faq_YUwKkj": {
+        "faq_qABayg": {
           "type": "faq",
           "settings": {
-            "heading": "How long does the project take to complete?",
-            "description": "<p>The timeline depends on the project scope and requirements, but most projects are completed within 1–3 weeks.</p>"
+            "heading": "What sizes do you offer?",
+            "description": "<p>We offer a wide range of sizes to ensure the perfect fit for every woman. Please refer to our Size Guide on each product page for detailed measurements and fitting recommendations.</p>"
           }
         },
-        "faq_BqXFht": {
+        "faq_6pfEW9": {
           "type": "faq",
           "settings": {
-            "heading": "How long does the project take to complete?",
-            "description": "<p>The timeline depends on the project scope and requirements, but most projects are completed within 1–3 weeks.</p>"
+            "heading": "How long does shipping take?",
+            "description": "<p>Orders are typically processed within 1–2 business days. Standard delivery usually takes 3–7 business days, depending on your location. You'll receive a tracking number once your order has been shipped.</p>"
           }
         },
-        "faq_RPEi8t": {
+        "faq_eWfhNF": {
           "type": "faq",
           "settings": {
-            "heading": "How long does the project take to complete?",
-            "description": "<p>The timeline depends on the project scope and requirements, but most projects are completed within 1–3 weeks.</p>"
+            "heading": "Can I return or exchange an item?",
+            "description": "<p>Yes! We accept returns and exchanges within 14 days of delivery, provided the item is unworn, unwashed, and has all original tags attached. Visit our Returns page for complete details.</p>"
           }
         },
-        "faq_8HDteJ": {
+        "faq_aTg6wj": {
           "type": "faq",
           "settings": {
-            "heading": "How long does the project take to complete?",
-            "description": "<p>The timeline depends on the project scope and requirements, but most projects are completed within 1–3 weeks.</p>"
+            "heading": "How can I track my order?",
+            "description": "<p>Once your order has been dispatched, we'll send you a confirmation email with a tracking link so you can monitor your shipment in real time.</p>"
+          }
+        },
+        "faq_7YeYzg": {
+          "type": "faq",
+          "settings": {
+            "heading": "How can I contact customer support?",
+            "description": "<p>Our customer support team is here to help. You can reach us through our Contact Us page or by emailing us with any questions regarding your order, sizing, or products.</p>"
           }
         }
       },
       "block_order": [
-        "faq_YUwKkj",
-        "faq_BqXFht",
-        "faq_RPEi8t",
-        "faq_8HDteJ"
+        "faq_qABayg",
+        "faq_6pfEW9",
+        "faq_eWfhNF",
+        "faq_aTg6wj",
+        "faq_7YeYzg"
       ],
       "name": "Faq",
       "settings": {
@@ -788,7 +739,8 @@
         "background_color": "#ffffff",
         "background_gradient": "",
         "image-position": "row",
-        "image": "shopify://shop_images/crystal-moon-star-earrings-467731.jpg",
+        "mb-image": "shopify://shop_images/4_80d5f619-e1c6-4ad0-84c2-e20e08103b14.png",
+        "image": "shopify://shop_images/ChatGPT_Image_Jul_15_2026_03_02_54_PM.png",
         "media_height": "medium",
         "text_alignment": "center",
         "subheading_color": "",
@@ -804,10 +756,10 @@
         "button_background_color": "",
         "button_outline_color": "",
         "faq_alignment": "center",
-        "faq_heading_size": "h5",
-        "faq_button_color": "#e4d7ce",
-        "faq_heading_color": "#000000",
-        "faq_button_border_color": "#f3f1f1",
+        "faq_heading_size": "h6",
+        "faq_button_color": "",
+        "faq_heading_color": "",
+        "faq_button_border_color": "",
         "faq_button_br": 10,
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
@@ -816,17 +768,30 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "hot_spot_rXCdBG": {
+    "hot_spot_m39YUw": {
       "type": "hot-spot",
       "blocks": {
-        "hot_spot_NAeiPH": {
+        "hot_spot_gjaV96": {
           "type": "hot-spot",
           "settings": {
-            "horizontal_position": 47,
-            "vertical_position": 39,
-            "mb_horizontal_position": 25,
-            "mb_vertical_position": 33,
-            "hot-spot-icon": "shopify://shop_images/images-removebg-preview.png",
+            "horizontal_position": 71,
+            "vertical_position": 24,
+            "mb_horizontal_position": 83,
+            "mb_vertical_position": 74,
+            "hot-spot-icon-width": 30,
+            "hot-spot-heading": "Card Title",
+            "hot-spot-description": "<p>Card Description</p>",
+            "box_color": "#ffffff",
+            "hot_spot_head_color": ""
+          }
+        },
+        "hot_spot_Mty7pQ": {
+          "type": "hot-spot",
+          "settings": {
+            "horizontal_position": 50,
+            "vertical_position": 38,
+            "mb_horizontal_position": 52,
+            "mb_vertical_position": 38,
             "hot-spot-icon-width": 40,
             "hot-spot-heading": "Card Title",
             "hot-spot-description": "<p>Card Description</p>",
@@ -834,29 +799,13 @@
             "hot_spot_head_color": ""
           }
         },
-        "hot_spot_f6GdFi": {
+        "hot_spot_fhpaFY": {
           "type": "hot-spot",
           "settings": {
-            "horizontal_position": 74,
-            "vertical_position": 26,
-            "mb_horizontal_position": 50,
-            "mb_vertical_position": 4,
-            "hot-spot-icon": "shopify://shop_images/images-removebg-preview.png",
-            "hot-spot-icon-width": 40,
-            "hot-spot-heading": "Card Title",
-            "hot-spot-description": "<p>Card Description</p>",
-            "box_color": "#ffffff",
-            "hot_spot_head_color": ""
-          }
-        },
-        "hot_spot_eYtQ7q": {
-          "type": "hot-spot",
-          "settings": {
-            "horizontal_position": 83,
-            "vertical_position": 74,
-            "mb_horizontal_position": 50,
-            "mb_vertical_position": 75,
-            "hot-spot-icon": "shopify://shop_images/images-removebg-preview.png",
+            "horizontal_position": 60,
+            "vertical_position": 83,
+            "mb_horizontal_position": 45,
+            "mb_vertical_position": 70,
             "hot-spot-icon-width": 40,
             "hot-spot-heading": "Card Title",
             "hot-spot-description": "<p>Card Description</p>",
@@ -866,33 +815,35 @@
         }
       },
       "block_order": [
-        "hot_spot_NAeiPH",
-        "hot_spot_f6GdFi",
-        "hot_spot_eYtQ7q"
+        "hot_spot_gjaV96",
+        "hot_spot_Mty7pQ",
+        "hot_spot_fhpaFY"
       ],
       "name": "Hot Spots",
       "settings": {
         "section_width": "full-width",
-        "background_color": "",
+        "background_color": "#ffffff",
         "background_gradient": "",
         "width": "medium",
         "media_height": "large",
         "media_type": "image",
-        "mb_image": "shopify://shop_images/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
-        "desktop_image": "shopify://shop_images/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
+        "mb_image": "shopify://shop_images/banner-2_mobile.png",
+        "desktop_image": "shopify://shop_images/banner-2.png",
+        "toggle_overlay": true,
+        "overlay_color": "#00000045",
         "content_alignment": "left-center",
-        "subheading": "Upgrade Your Style Today",
+        "subheading": "Festive Special",
         "subheading_color": "#ffffff",
-        "heading": "Discover Our Latest Collection",
+        "heading": "Celebrate Every Occasion in Style",
         "heading_size": "h2",
         "heading_color": "#ffffff",
         "heading_gradient": "",
-        "description": "<p>Explore our latest collection of fashion-forward apparel and accessories. From trendy tops to stylish shoes, we have everything you need to elevate your wardrobe.</p>",
+        "description": "<p>Shop our latest collection of elegant ethnic wear, embroidered suits, and graceful dresses. Enjoy exclusive festive discounts for a limited time and make every celebration unforgettable.<br/><br/></p>",
         "text_color": "#ffffff",
         "link": "",
         "link_label": "Shop Now",
-        "button_background_color": "#ffffff",
-        "button_text_color": "#000000",
+        "button_background_color": "",
+        "button_text_color": "",
         "button_outline_color": "",
         "custom_spacing": true,
         "section_spacing_top_desktop": 0,
@@ -901,35 +852,35 @@
         "section_spacing_bottom_mobile": 0
       }
     },
-    "product_tab_aNCjrg": {
+    "product_tab_fCH6RF": {
       "type": "product-tab",
       "blocks": {
-        "list_item_LnnjCL": {
+        "list_item_aaReKg": {
           "type": "list_item",
           "settings": {
             "tab_title": "Best Seller",
-            "collection": "necklace"
+            "collection": "floral-dresses"
           }
         },
-        "list_item_dBCBGe": {
+        "list_item_zz9jVd": {
           "type": "list_item",
           "settings": {
             "tab_title": "New Arrivals",
-            "collection": "new-arrivals"
+            "collection": "maxi-dresses"
           }
         },
-        "list_item_Wih6TH": {
+        "list_item_eTCmxH": {
           "type": "list_item",
           "settings": {
             "tab_title": "Sale",
-            "collection": "ring"
+            "collection": "summer-dresses"
           }
         }
       },
       "block_order": [
-        "list_item_LnnjCL",
-        "list_item_dBCBGe",
-        "list_item_Wih6TH"
+        "list_item_aaReKg",
+        "list_item_zz9jVd",
+        "list_item_eTCmxH"
       ],
       "name": "Product Tab",
       "settings": {
@@ -940,10 +891,10 @@
         "content_alignment": "start",
         "heading_tag": "h2",
         "heading_size": "h2",
-        "heading": "Product Tab",
+        "heading": "Explore Our Collections",
         "heading_color": "",
         "heading_gradient": "",
-        "description": "<p>Product description goes here.</p>",
+        "description": "<p>Refresh your wardrobe with fashion you'll love. Browse our most-loved best sellers, discover the newest arrivals, or save big with our latest sale collection.</p>",
         "text_color": "",
         "link_label": "Shop now",
         "link": "",
@@ -958,18 +909,34 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "main_product_xkDfR7": {
+    "main_product_jgiK8R": {
       "type": "main-product",
       "blocks": {
-        "vendor_jgUDLf": {
+        "vendor_Tjkhxf": {
           "type": "vendor",
           "settings": {}
         },
-        "title_EJHXUK": {
+        "title_URNC4r": {
           "type": "title",
           "settings": {}
         },
-        "description_jBeFgV": {
+        "price_BmW8nM": {
+          "type": "price",
+          "settings": {
+            "show_save_badge": true,
+            "save_type": "percentage"
+          }
+        },
+        "sku_DDtwQr": {
+          "type": "sku",
+          "disabled": true,
+          "settings": {
+            "show_label": true,
+            "label": "SKU",
+            "hide_when_empty": true
+          }
+        },
+        "description_hUJVzn": {
           "type": "description",
           "settings": {
             "description_content": "",
@@ -979,20 +946,19 @@
             "read_less_text": "Read less"
           }
         },
-        "price_QVqApg": {
-          "type": "price",
+        "richtext_fbDfCM": {
+          "type": "richtext",
           "settings": {
-            "show_save_badge": true,
-            "save_type": "percentage"
+            "content": ""
           }
         },
-        "inventory_dCEf6t": {
+        "inventory_Pc39qy": {
           "type": "inventory",
           "settings": {
             "inventory_threshold": 10
           }
         },
-        "variant_picker_74xmRi": {
+        "variant_picker_HLjC77": {
           "type": "variant_picker",
           "settings": {
             "option_1_layout": "swatch",
@@ -1000,7 +966,7 @@
             "option_3_layout": "dropdown",
             "swatch_source": "color",
             "swatch_size": 36,
-            "swatch_shape": "rounded",
+            "swatch_shape": "circle",
             "show_color_name": true,
             "button_shape": "square",
             "show_dropdown_swatches": true,
@@ -1010,41 +976,66 @@
             "update_url": true
           }
         },
-        "buy_buttons_4yC6dk": {
+        "selling_plans_zfUnMb": {
+          "type": "selling_plans",
+          "settings": {
+            "heading": "Purchase options"
+          }
+        },
+        "buy_buttons_gQywWf": {
           "type": "buy_buttons",
           "settings": {
             "show_quantity_selector": true,
-            "show_dynamic_checkout": true
+            "show_dynamic_checkout": false
           }
         },
-        "delivery_date_UdXHq6": {
+        "pickup_availability_WBVgtW": {
+          "type": "pickup_availability",
+          "settings": {}
+        },
+        "delivery_date_K4kh8Y": {
           "type": "delivery_date",
           "settings": {
             "delivery_gap_days": 5,
-            "set_time_limit": false
+            "set_time_limit": false,
+            "background_color": "#9b04704d"
+          }
+        },
+        "share_3PpgLa": {
+          "type": "share",
+          "settings": {
+            "button_label": "Share"
           }
         }
       },
       "block_order": [
-        "vendor_jgUDLf",
-        "title_EJHXUK",
-        "description_jBeFgV",
-        "price_QVqApg",
-        "inventory_dCEf6t",
-        "variant_picker_74xmRi",
-        "buy_buttons_4yC6dk",
-        "delivery_date_UdXHq6"
+        "vendor_Tjkhxf",
+        "title_URNC4r",
+        "price_BmW8nM",
+        "sku_DDtwQr",
+        "description_hUJVzn",
+        "richtext_fbDfCM",
+        "inventory_Pc39qy",
+        "variant_picker_HLjC77",
+        "selling_plans_zfUnMb",
+        "buy_buttons_gQywWf",
+        "pickup_availability_WBVgtW",
+        "delivery_date_K4kh8Y",
+        "share_3PpgLa"
       ],
       "name": "Product Section",
       "settings": {
-        "product": "for-the-dreamer-moon-pearl-earrings",
+        "enable_breadcrumb": false,
+        "product": "autumn-ember-floral-midi-dress",
         "width": "medium",
+        "section_layout": "row",
         "thumbnail_layout": "vertical",
         "gallery_arrows_device": "both",
         "gallery_arrow_display": "always",
         "gallery_zoom_type": "none",
         "hover_zoom_style": "magnifier",
         "enable_desktop_drag": true,
+        "enable_sticky_image": true,
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
         "section_spacing_bottom_desktop": 64,
@@ -1052,56 +1043,61 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "video_slider_thQVdC": {
+    "video_slider_4kfXfi": {
       "type": "video-slider",
       "blocks": {
-        "slide_4cdA8P": {
+        "slide_aJMrNQ": {
           "type": "slide",
           "settings": {
             "source": "uploaded",
+            "video": "shopify://files/videos/5_53915934-e254-48ff-adac-9320b3dddd13.mp4",
             "video_url": "",
             "product_url": ""
           }
         },
-        "slide_JtE4LF": {
+        "slide_8ndWEU": {
           "type": "slide",
           "settings": {
             "source": "uploaded",
+            "video": "shopify://files/videos/5_ead0bd6f-f35c-4849-8226-cfed2d6d180d.mp4",
             "video_url": "",
             "product_url": ""
           }
         },
-        "slide_CBqY9e": {
+        "slide_8Nz4nj": {
           "type": "slide",
           "settings": {
             "source": "uploaded",
+            "video": "shopify://files/videos/Create_a_cinematic_luxury_fash.mp4",
             "video_url": "",
             "product_url": ""
           }
         },
-        "slide_6mUjLc": {
+        "slide_thQN7w": {
           "type": "slide",
           "settings": {
             "source": "uploaded",
+            "video": "shopify://files/videos/5_f6ebcc3d-6032-4d2e-8ba0-f9afe8bb169a.mp4",
             "video_url": "",
             "product_url": ""
           }
         },
-        "slide_66mJyE": {
+        "slide_FbdpUy": {
           "type": "slide",
           "settings": {
             "source": "uploaded",
+            "video": "shopify://files/videos/5_465d0cbd-320b-4e31-8b28-c75214ebcb58.mp4",
             "video_url": "",
             "product_url": ""
           }
         }
       },
       "block_order": [
-        "slide_4cdA8P",
-        "slide_JtE4LF",
-        "slide_CBqY9e",
-        "slide_6mUjLc",
-        "slide_66mJyE"
+        "slide_aJMrNQ",
+        "slide_8ndWEU",
+        "slide_8Nz4nj",
+        "slide_thQN7w",
+        "slide_FbdpUy"
       ],
       "name": "Video Slider",
       "settings": {
@@ -1109,19 +1105,19 @@
         "content_alignment": "center",
         "gap": "24",
         "desktop_height": "medium",
-        "autoplay": false,
+        "autoplay": true,
         "muted": true,
-        "loop": false,
-        "heading": "Watch & Shop Our Latest Collection",
+        "loop": true,
+        "heading": "Where Every Outfit Tells a Story",
         "heading_tag": "h2",
         "heading_size": "h2",
         "heading_alignment": "inherit",
         "heading_color": "",
         "heading_gradient": "",
-        "subheading": "Innovative solutions designed to help your business grow faster.",
+        "subheading": "Exclusive Collection",
         "subheading_alignment": "inherit",
         "subheading_color": "",
-        "text": "<p>Discover powerful strategies, cutting-edge technology, and expert support that drive success and create lasting impact.</p>",
+        "text": "<p>Step inside our newest collection and discover sophisticated fashion designed with quality, elegance, and versatility in mind.</p>",
         "text_alignment": "inherit",
         "text_width": "",
         "text_color": "",
@@ -1140,16 +1136,18 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "contact_form_M9NGcM": {
+    "contact_form_bjUFim": {
       "type": "contact-form",
       "name": "Contact Form",
       "settings": {
         "container_width": "small",
-        "heading": "Talk about your brand",
+        "custom_container_width": 800,
+        "heading_alignment": "start",
+        "form_position": "row",
+        "heading": "We're Here to Help",
         "heading_tag": "h2",
-        "heading_alignment": "inherit",
         "heading_color": "",
-        "content_alignment": "center",
+        "content_alignment": "start",
         "text": "",
         "text_color": "",
         "phone_number": "",
@@ -1165,108 +1163,47 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "featured_blog_home": {
-      "type": "featured-blog",
-      "name": "Blog",
-      "settings": {
-        "blog": "",
-        "posts_count": 3,
-        "subheading": "",
-        "heading": "Blog posts",
-        "description": "",
-        "link_text": "View all",
-        "link_url": "",
-        "first_article_full_width": false,
-        "blogs_per_row": 3,
-        "content_alignment": "start",
-        "show_image": true,
-        "image_ratio": "adapt",
-        "zoom_effect": true,
-        "show_date": true,
-        "show_author": true,
-        "show_excerpt": true,
-        "read_more_label": "Read More",
-        "bg_color": "",
-        "heading_color": "",
-        "card_style": false,
-        "card_bg": "",
-        "card_heading_color": "",
-        "author_date": "",
-        "card_text": "",
-        "container_width": "page-width",
-        "background_color": "#ffffff",
-        "background_gradient": "",
-        "button_background_color": "",
-        "button_text_color": "",
-        "button_outline_color": "",
-        "custom_spacing": false,
-        "section_spacing_top_desktop": 64,
-        "section_spacing_bottom_desktop": 64,
-        "section_spacing_top_mobile": 40,
-        "section_spacing_bottom_mobile": 40
-      }
-    },
-    "testimonials_RnUgmA": {
+    "testimonials_p4Dmwz": {
       "type": "testimonials",
       "blocks": {
-        "testimonial_cQjBEK": {
+        "testimonial_CB8gkC": {
           "type": "testimonial",
           "settings": {
-            "review": "<p>This service exceeded our expectations. The team was professional, responsive, and delivered outstanding results. Highly recommended!</p>",
-            "name": "Sarah Johnson",
+            "review": "<p>\"I absolutely love the quality of the fabrics and the attention to detail in every piece. The dress fit perfectly, and I received so many compliments. The entire shopping experience was smooth from ordering to delivery.\"</p>",
+            "name": "Bhadresh Sutaria",
             "position": "CEO, ThePlanetsoft",
             "rating": 5
           }
         },
-        "testimonial_YM3xiJ": {
+        "testimonial_JfBMPi": {
           "type": "testimonial",
           "settings": {
-            "review": "<p>This service exceeded our expectations. The team was professional, responsive, and delivered outstanding results. Highly recommended!</p>",
-            "name": "Sarah Johnson",
-            "position": "CEO, ThePlanetsoft",
+            "review": "<p>\"The designs are elegant, comfortable, and exactly as shown in the photos. Fast shipping, beautiful packaging, and excellent customer service made this one of my favorite online shopping experiences.\"</p>",
+            "name": "Ravi Usadadiya",
+            "position": "CTO, ThePlanetsoft",
             "rating": 5
           }
         },
-        "testimonial_8V9cRb": {
+        "testimonial_DPyrE6": {
           "type": "testimonial",
           "settings": {
-            "review": "<p>This service exceeded our expectations. The team was professional, responsive, and delivered outstanding results. Highly recommended!</p>",
-            "name": "Sarah Johnson",
-            "position": "CEO, ThePlanetsoft",
-            "rating": 5
-          }
-        },
-        "testimonial_ixMKkV": {
-          "type": "testimonial",
-          "settings": {
-            "review": "<p>This service exceeded our expectations. The team was professional, responsive, and delivered outstanding results. Highly recommended!</p>",
-            "name": "Sarah Johnson",
-            "position": "CEO, ThePlanetsoft",
-            "rating": 5
-          }
-        },
-        "testimonial_c44F9m": {
-          "type": "testimonial",
-          "settings": {
-            "review": "<p>This service exceeded our expectations. The team was professional, responsive, and delivered outstanding results. Highly recommended!</p>",
-            "name": "Sarah Johnson",
-            "position": "CEO, ThePlanetsoft",
+            "review": "<p>\"I've ordered multiple outfits, and every purchase has exceeded my expectations. The quality is exceptional, the sizing is accurate, and the styles are perfect for both everyday wear and special occasions.\"</p>",
+            "name": "Kartik Rangholiya",
+            "position": "Digital Marketing, ThePlanetsoft",
             "rating": 5
           }
         }
       },
       "block_order": [
-        "testimonial_cQjBEK",
-        "testimonial_YM3xiJ",
-        "testimonial_8V9cRb",
-        "testimonial_ixMKkV",
-        "testimonial_c44F9m"
+        "testimonial_CB8gkC",
+        "testimonial_JfBMPi",
+        "testimonial_DPyrE6"
       ],
       "name": "Testimonials",
       "settings": {
         "subheading": "Testimonials",
-        "heading": "Our Trusted Clients",
-        "description": "<p>Our Testimonials</p>",
+        "heading": "What Our Customers Love",
+        "description": "<p>From perfect fits to premium quality, hear what our happy customers have to say about their shopping experience and favorite styles.</p>",
         "container_width": "page-width",
         "content_alignment": "center",
         "layout": "slider",
@@ -1290,23 +1227,22 @@
   },
   "order": [
     "main",
-    "marquee",
-    "rich_text_Q7BM9K",
-    "image_with_text",
-    "multi_column_icons",
-    "after_before_comparison",
-    "featured_collection_KDwNEY",
-    "collection_list_EPfH6K",
-    "video_7kgPWy",
-    "table_comparison_7cpFmP",
-    "countdown_rQ6kCK",
-    "faq_VUKbkn",
-    "hot_spot_rXCdBG",
-    "product_tab_aNCjrg",
-    "main_product_xkDfR7",
-    "video_slider_thQVdC",
-    "contact_form_M9NGcM",
-    "featured_blog_home",
-    "testimonials_RnUgmA"
+    "marquee_ph7wCN",
+    "rich_text_kg8jGf",
+    "image_with_text_7iniQr",
+    "multicolumn_bFj7Eh",
+    "after_before_section_fzKthY",
+    "featured_collection_eWaU6x",
+    "collection_list_page_aR63ap",
+    "video_gUcHfw",
+    "table_comparison_LHCkw3",
+    "countdown_gJjG4r",
+    "faq_abpaMm",
+    "hot_spot_m39YUw",
+    "product_tab_fCH6RF",
+    "main_product_jgiK8R",
+    "video_slider_4kfXfi",
+    "contact_form_bjUFim",
+    "testimonials_p4Dmwz"
   ]
 }

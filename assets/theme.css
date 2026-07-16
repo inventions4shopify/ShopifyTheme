@@ -1,13 +1,13 @@
 /* Base theme styles */
 
 :root {
-  --container-padding-inline: 1.6rem;
+  --container-padding-inline: 2rem;
   --section-gap: var(--section-spacing-top, 3.2rem);
 }
 
-@media (--sm) {
+@media (min-width: 992px) {
   :root {
-    --container-padding-inline: 2.4rem;
+    --container-padding-inline: 5rem;
   }
 }
 
@@ -142,7 +142,7 @@ a {
 }
 
 a:hover {
-  color: rgb(var(--color-body-text));
+  color: inherit;
 }
 
 ul,
@@ -351,8 +351,8 @@ input[type="submit"] {
 }
 
 .button:hover {
-  --button-background: rgba(var(--button-background) / 0.8);
-  --button-text: var(--button-text);
+  --button-background: rgb(var(--color-button-primary-text));
+  --button-text: rgb(var(--color-button-primary-background));
 }
 
 .button--secondary {

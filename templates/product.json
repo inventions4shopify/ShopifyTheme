@@ -20,12 +20,6 @@
           "type": "title",
           "settings": {}
         },
-        "share": {
-          "type": "share",
-          "settings": {
-            "button_label": "Share"
-          }
-        },
         "price": {
           "type": "price",
           "settings": {
@@ -73,7 +67,7 @@
             "swatch_size": 40,
             "swatch_shape": "circle",
             "show_color_name": false,
-            "button_shape": "rounded",
+            "button_shape": "square",
             "show_dropdown_swatches": true,
             "show_option_labels": true,
             "show_selected_value": true,
@@ -102,7 +96,8 @@
           "type": "delivery_date",
           "settings": {
             "delivery_gap_days": 5,
-            "set_time_limit": false
+            "set_time_limit": false,
+            "background_color": "#9b04704d"
           }
         },
         "sticky_add_to_cart": {
@@ -129,24 +124,30 @@
           "type": "recommendations",
           "settings": {
             "products": [
-              "dreaming-in-the-clouds-moon-star-necklace",
-              "falling-for-you-reversible-heart-necklace",
-              "for-the-dreamer-moon-pearl-earrings",
-              "fragile-love-rose-necklace",
-              "free-as-a-bird-charm",
-              "god-of-the-waves-pendant-necklace",
-              "hug-me-forever-18k-gold-ring"
+              "autumn-ember-floral-midi-dress",
+              "black-gold-embroidered-tiered-midi-dress",
+              "blue-floral-tiered-midi-dress",
+              "blush-beige-floral-layered-midi-dress",
+              "blush-pink-floral-tiered-midi-dress",
+              "burgundy-floral-lace-trim-midi-dress",
+              "cherry-blossom-charm-midi-dress",
+              "chocolate-brown-floral-tiered-midi-dress"
             ],
             "show_price": true,
             "show_vendor": false,
             "show_add_to_cart": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "button_label": "Share"
           }
         }
       },
       "block_order": [
         "vendor",
         "title",
-        "share",
         "price",
         "sku",
         "richtext",
@@ -160,17 +161,21 @@
         "sticky_add_to_cart",
         "accordion_1",
         "accordion_2",
-        "recommendations"
+        "recommendations",
+        "share"
       ],
       "settings": {
+        "enable_breadcrumb": false,
         "product": "",
         "width": "medium",
+        "section_layout": "row",
         "thumbnail_layout": "vertical",
         "gallery_arrows_device": "both",
         "gallery_arrow_display": "always",
-        "gallery_zoom_type": "none",
+        "gallery_zoom_type": "hover",
         "hover_zoom_style": "magnifier",
         "enable_desktop_drag": true,
+        "enable_sticky_image": true,
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
         "section_spacing_bottom_desktop": 64,
