@@ -82,6 +82,30 @@
     font-size: var(--tps-text-lg); line-height: 1.25; font-weight: 400;
     color: inherit; text-decoration: none;
     background: none; border: 0; cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .drawer-nav__link span {
+    position: relative;
+  }
+
+  .drawer-nav__link span::before {
+      width: 100%;
+      display: block;
+      content: "";
+      height: .1rem;
+      background-color: rgb(var(--tps-color-header-hover-text));
+      position: absolute;
+      border-radius: 2rem;
+      bottom: -.2rem;
+      left: 0;
+      transition: transform .15s;
+      transform: scaleX(0);
+  }
+
+  .drawer-nav__link:hover span::before,
+  .drawer-nav__link:focus span::before {
+      transform: scaleX(1);
   }
 
   /* sub-panel content */

@@ -118,6 +118,29 @@
   transition: all 0.25s ease;
 }
 
+.header__nav-link span {
+  position: relative;
+}
+
+.header__nav-link span::before {
+    width: 100%;
+    display: block;
+    content: "";
+    height: .1rem;
+    background-color: rgb(var(--tps-color-header-hover-text));
+    position: absolute;
+    border-radius: 2rem;
+    bottom: -.2rem;
+    left: 0;
+    transition: transform .15s;
+    transform: scaleX(0);
+}
+
+.header__nav-link:hover span::before,
+.header__nav-link:focus span::before {
+    transform: scaleX(1);
+}
+
 .header__nav-icon {
   display: flex;
   align-items: center;

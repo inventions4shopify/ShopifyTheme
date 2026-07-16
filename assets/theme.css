@@ -141,10 +141,6 @@ a {
   text-underline-offset: 0.2rem;
 }
 
-a:hover {
-  color: inherit;
-}
-
 ul,
 ol {
   margin: 0 0 1.2rem;
@@ -363,8 +359,8 @@ input[type="submit"] {
 }
 
 .button--secondary:hover {
-  --tps-button-text: rgb(var(--tps-color-button-secondary-text));
-  --tps-button-background: rgba(var(--tps-color-button-secondary-background) / 0.8);
+  background: rgb(var(--tps-color-button-secondary-text));
+  color: rgba(var(--tps-color-button-secondary-background) / 0.8);
 }
 
 body .shopify-payment-button__button--unbranded {

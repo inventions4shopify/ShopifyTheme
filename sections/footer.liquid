@@ -98,7 +98,9 @@
                         {%- for link in block.settings.menu.links -%}
                           <li>
                             <a href="{{ link.url }}" class="footer__menu-link">
-                              {{ link.title }}
+                              <span>
+                                {{ link.title }}
+                              </span>
                             </a>
                           </li>
                         {%- endfor -%}
@@ -199,7 +201,13 @@
         {%- if section.settings.bottom_menu != blank -%}
           <ul class="footer__bottom-nav" role="list">
             {%- for link in section.settings.bottom_menu.links -%}
-              <li><a href="{{ link.url }}" class="footer__bottom-link">{{ link.title }}</a></li>
+              <li>
+                <a href="{{ link.url }}" class="footer__bottom-link">
+                  <span>
+                    {{ link.title }}
+                  </span>
+                </a>
+            </li>
             {%- endfor -%}
           </ul>
         {%- endif -%}

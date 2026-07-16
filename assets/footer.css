@@ -89,10 +89,12 @@
 .footer__menu-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--tps-spacing-10); }
 .footer__menu-link { font-size: var(--tps-text-base);; text-decoration: none; opacity: 0.75; transition: opacity 0.15s;color: var(--tps-color-background); }
 
+.footer__bottom-link span,
 .footer__menu-link span {
   position: relative;
 }
 
+.footer__bottom-link span::before,
 .footer__menu-link span::before {
     width: 100%;
     display: block;
@@ -107,7 +109,9 @@
     transform: scaleX(0);
 }
 
+.footer__bottom-link:hover span::before,
 .footer__menu-link:hover span::before,
+.footer__bottom-link:focus span::before,
 .footer__menu-link:focus span::before {
     transform: scaleX(1);
 }
@@ -182,6 +186,7 @@ footer .social_list {
   display: flex;
   align-items: center;
   justify-content: center; 
+  transition: all 0.25s ease;
 }
 
 .facebook:hover {
