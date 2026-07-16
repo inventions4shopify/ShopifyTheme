@@ -12,30 +12,31 @@
     bottom: 0;
 }
 
+.cms-hot-spot__media >* {
+    height: auto;
+}
+
 .cms-hot-spot__content {
-    z-index: 2;
     position: relative;
+    z-index: 4;
     height: 100%;
 }
 
 .cms-hot-spot-items {
     position: absolute;
     inset: 0;
-    z-index: 10;
-}
-
-.cms-hot-spot-items::before {
-    
+    z-index: 2;
+    pointer-events: none;
 }
 
 .cms-hot-spot-cell {
-    position: absolute;
-    top: var(--button-position-vertical-mobile);
-    left: var(--button-position-horizontal-mobile);
+    pointer-events: all;
+    top: var(--tps-button-position-vertical-mobile);
+    left: var(--tps-button-position-horizontal-mobile);
 }
 
 .cms-hot-spot-cell .button {
-    border-radius: var(--radius-full);
+    border-radius: var(--tps-radius-full);
     padding: 0;
     width: 4.4rem;
     height: 4.4rem;
@@ -54,15 +55,15 @@
     visibility: hidden;
     transition: all 0.3s ease;
     pointer-events: none;
-    border-radius: var(--media-radius);
-    background-color: var(--hot-spot-bg);
-    padding: var(--spacing-16);
-    margin: var(--spacing-10);
+    border-radius: var(--tps-media-radius);
+    background-color: var(--tps-hot-spot-bg);
+    padding: var(--tps-spacing-16);
+    margin: var(--tps-spacing-10);
     min-width: 25rem;
 }
 
 .cms-hot-spot-body >* {
-    color: var(--hot-spot-heading-color);
+    color: var(--tps-hot-spot-heading-color);
 }
 
 .cms-hot-spot-cell.active .cms-hot-spot-body {
@@ -74,7 +75,7 @@
 @media (min-width: 992px) {
     .cms-hot-spot-cell {
         position: absolute;
-        top: var(--button-position-vertical-desktop);
-        left: var(--button-position-horizontal-desktop);
+        top: var(--tps-button-position-vertical-desktop);
+        left: var(--tps-button-position-horizontal-desktop);
     }
 }

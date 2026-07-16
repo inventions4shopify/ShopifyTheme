@@ -71,7 +71,7 @@ class SlideshowSection extends HTMLElement {
 
   setProgress(deg) {
     if (!this.progressEl) return;
-    this.progressEl.style.setProperty('--progress', deg + 'deg');
+    this.progressEl.style.setProperty('--tps-progress', deg + 'deg');
   }
 
   startProgressBar() {

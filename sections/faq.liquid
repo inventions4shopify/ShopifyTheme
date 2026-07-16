@@ -6,17 +6,17 @@
     border: 0.1rem solid {%if section.settings.faq_button_border_color != blank %}{{ section.settings.faq_button_border_color }}{% else %}#ccc{% endif %};
     border-radius: {%if section.settings.faq_button_br != blank %}{{ section.settings.faq_button_br }}{% else %}0{% endif %}px;
     background-color: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
-    color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}var(--black){% endif %};
+    color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}var(--tps-black){% endif %};
   }
 
   .cms-faq-question {{ section.settings.faq_heading_size }} {
-      color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}var(--black){% endif %};
+      color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}var(--tps-black){% endif %};
   }
 
   .cms-faq-content .cms-cell--{{ section.settings.width }} >* {
     postion: relative;
     overflow: hidden;
-    border-radius: var(--media-radius);
+    border-radius: var(--tps-media-radius);
   }
   
   {% if section.settings.image == blank %}
@@ -56,7 +56,7 @@
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
               {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-                --color-heading: {{ head_color.rgb }};
+                --tps-color-heading: {{ head_color.rgb }};
               {%- endif -%}
             {%- endcapture -%}
 

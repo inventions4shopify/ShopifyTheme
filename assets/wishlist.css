@@ -7,8 +7,8 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: rgb(var(--color-background));
-  color: rgb(var(--color-foreground));
+  background: rgb(var(--tps-color-background));
+  color: rgb(var(--tps-color-foreground));
   box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease;
@@ -43,19 +43,19 @@
 }
 
 .header__wishlist-count {
-  background: rgb(var(--color-header-text));
+  background: rgb(var(--tps-color-header-text));
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 50%;
-  color: rgb(var(--color-header-background));
+  color: rgb(var(--tps-color-header-background));
   display: flex;
   justify-content: center;
   position: absolute;
   right: -0.2rem;
   top: -0.2rem;
-  font-size: var(--text-xss);
+  font-size: var(--tps-text-xss);
   align-items: center;
-  padding: var(--spacing-4);
+  padding: var(--tps-spacing-4);
 }
 
 .header__wishlist-count[hidden] {
@@ -116,8 +116,8 @@
   height: 3rem;
   border: 0;
   border-radius: 50%;
-  background: rgb(var(--color-background));
-  color: rgb(var(--color-foreground));
+  background: rgb(var(--tps-color-background));
+  color: rgb(var(--tps-color-foreground));
   font-size: 2rem;
   line-height: 1;
   cursor: pointer;

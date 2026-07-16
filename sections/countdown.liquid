@@ -3,7 +3,7 @@
 {% if section.settings.image_show == false %}
   <style>
     .cms-countdown-main .cms-cell--{{ section.settings.width }} >* {
-      border-radius: var(--media-radius);
+      border-radius: var(--tps-media-radius);
       position: relative;
       overflow: hidden;
     }
@@ -110,7 +110,7 @@
                   -webkit-text-fill-color: transparent;
                   background-clip: text;
                 {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-                  --color-heading: {{ head_color.rgb }};
+                  --tps-color-heading: {{ head_color.rgb }};
                 {%- endif -%}
               {%- endcapture -%}
                 <h2 class="h2"

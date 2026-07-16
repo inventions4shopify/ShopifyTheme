@@ -24,15 +24,15 @@
 
 .cms-product-bottom {
 	display: block;
-	margin-top: var(--spacing-20);
+	margin-top: var(--tps-spacing-20);
 }
 
 .product-tab__tabs {
 	display: flex;
-	gap: var(--spacing-20);
-	margin-bottom: var(--spacing-20);
-	padding-bottom: var(--spacing-20);
-	border-bottom: 0.1rem solid rgb(var(--color-border));
+	gap: var(--tps-spacing-20);
+	margin-bottom: var(--tps-spacing-20);
+	padding-bottom: var(--tps-spacing-20);
+	border-bottom: 0.1rem solid rgb(var(--tps-color-border));
 	overflow: hidden;
 	overflow-x: auto;
 	scroll-behavior: smooth;
@@ -57,7 +57,7 @@
 
 .product-row {
 	display: flex;
-	gap: var(--grid-spacing);
+	gap: var(--tps-grid-spacing);
 }
 
 .js-product-slider {
@@ -77,12 +77,12 @@
 	right: 0;
 	display: flex;
 	justify-content: space-between;
-	gap: var(--spacing-20);
+	gap: var(--tps-spacing-20);
 	width: 100%;
 }
 
 .product-tab-slider-controls .button {
-	padding: var(--spacing-10);
+	padding: var(--tps-spacing-10);
 	flex-shrink: 0;
 }
 
@@ -90,25 +90,25 @@
 	width: 100%;
 	max-width: 100%;
 	flex: 0 0 100%;
-	border-radius: var(--media-radius);
+	border-radius: var(--tps-media-radius);
 	overflow: hidden;
 }
 
 .product-tab__tabs .button--secondary:hover,
 .product-tab__tabs .button--secondary.active {
-	--button-background: rgb(var(--color-button-secondary-text));
-	--button-text: rgb(var(--color-button-secondary-background));
+	--tps-button-background: rgb(var(--tps-color-button-secondary-text));
+	--tps-button-text: rgb(var(--tps-color-button-secondary-background));
 
 }
 
 @media (min-width: 576px) {
 	.product-cell {
-		max-width: calc((100% - var(--grid-spacing)) / 2);
-		flex: 0 0 calc((100% - var(--grid-spacing)) / 2);
+		max-width: calc((100% - var(--tps-grid-spacing)) / 2);
+		flex: 0 0 calc((100% - var(--tps-grid-spacing)) / 2);
 	}
 
 	.product-tab__tabs {
-		margin-bottom: var(--spacing-40);
+		margin-bottom: var(--tps-spacing-40);
 	}
 
 	.product-tab-slider-controls {
@@ -119,23 +119,23 @@
 
 @media (min-width: 768px) {
 	.product-cell {
-		max-width: calc((100% - (2 * var(--grid-spacing))) / 3);
-		flex: 0 0 calc((100% - (2 * var(--grid-spacing))) / 3);
+		max-width: calc((100% - (2 * var(--tps-grid-spacing))) / 3);
+		flex: 0 0 calc((100% - (2 * var(--tps-grid-spacing))) / 3);
 	}
 
 	.product-tab__tabs {
 		width: 90%;
-		margin-bottom: var(--spacing-64);
+		margin-bottom: var(--tps-spacing-64);
 	}
 
 	.cms-product-bottom {
-		margin-top: var(--spacing-40);
+		margin-top: var(--tps-spacing-40);
 	}
 }
 
 @media (min-width: 1200px) {
 	.product-cell {
-		max-width: calc((100% - (3 * var(--grid-spacing))) / 4);
-		flex: 0 0 calc((100% - (3 * var(--grid-spacing))) / 4);
+		max-width: calc((100% - (3 * var(--tps-grid-spacing))) / 4);
+		flex: 0 0 calc((100% - (3 * var(--tps-grid-spacing))) / 4);
 	}
 }

@@ -7,13 +7,13 @@
     background: {{ section.settings.section_bg }};
   }
   .custom-video-section {
-    min-height: var(--section-height-{{ section.settings.slide_height }});
+    min-height: var(--tps-section-height-{{ section.settings.slide_height }});
   }
 
   .media-overlay {
     background: {{ section.settings.overlay_color }};
     opacity: {{ overlay_opacity }};
-    border-radius: var(--media-radius);
+    border-radius: var(--tps-media-radius);
   }
   .custom-video-play-btn {
     color: {{ section.settings.ply_color }};
@@ -140,7 +140,7 @@
                   -webkit-text-fill-color: transparent;
                   background-clip: text;
                 {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-                  --color-heading: {{ head_color.rgb }};
+                  --tps-color-heading: {{ head_color.rgb }};
                 {%- endif -%}
               {%- endcapture -%}
 

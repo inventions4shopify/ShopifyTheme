@@ -7,7 +7,7 @@
 
 <div
   class="text {{ block.settings.text_style }}"
-  style="--text-align: {{ block.settings.alignment }}"
+  style="--tps-text-align: {{ block.settings.alignment }}"
   {{ block.shopify_attributes }}
 >
   {{ block.settings.text }}
@@ -15,7 +15,7 @@
 
 {% stylesheet %}
   .text {
-    text-align: var(--text-align);
+    text-align: var(--tps-text-align);
   }
   .text--title {
     font-size: 2rem;

@@ -1,7 +1,7 @@
 .cms-faq-content {
     display: flex;
     flex-direction: column;
-    gap: var(--grid-spacing);
+    gap: var(--tps-grid-spacing);
 }
 
 .cms-faq-wrapper {
@@ -13,12 +13,12 @@
 .cms-faq-question {
     width:100%;
     display:flex;
-    gap: var(--spacing-12);
+    gap: var(--tps-spacing-12);
     text-align: start;
     justify-content:space-between;
     cursor:pointer;
-    --button-background: inherit;
-    --button-text: inherit;
+    --tps-button-background: inherit;
+    --tps-button-text: inherit;
     border: 0;
     border-radius: 0;
 }
@@ -45,7 +45,7 @@
 }
 
 .cms-faq-answer-inner {
-    padding: var(--spacing-16) var(--spacing-20);
+    padding: var(--tps-spacing-16) var(--tps-spacing-20);
 }
 
 .cms-faq-answer-inner >:first-child {

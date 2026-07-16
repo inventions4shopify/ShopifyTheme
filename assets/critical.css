@@ -32,17 +32,17 @@ input,
 textarea,
 select {
   font: inherit;
-  border-radius: var(--style-border-radius-inputs);
+  border-radius: var(--tps-style-border-radius-inputs);
 }
 
 select {
-  background-color: var(--color-background);
+  background-color: var(--tps-color-background);
   color: currentcolor;
 }
 
 dialog {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: var(--tps-color-background);
+  color: var(--tps-color-foreground);
 }
 
 p {
@@ -75,19 +75,19 @@ p:empty {
 
 /** Theme styles below */
 body {
-  font-family: var(--font-primary--family);
-  background-color: var(--color-background);
-  color: rgb(var(--text-color));
+  font-family: var(--tps-font-primary--family);
+  background-color: var(--tps-color-background);
+  color: rgb(var(--tps-text-color));
 }
 
 .page-width {
-  max-width: var(--page-width);
+  max-width: var(--tps-page-width);
   margin: 0 auto;
   padding: 0 15px;
 }
 
 .rte {
-  color: rgb(var(--text-color));
+  color: rgb(var(--tps-text-color));
 }
 
 .text-large {
@@ -105,5 +105,5 @@ body {
 /** Section layout utilities */
 
 .bg-custom {
-  background-color: rgb(var(--color-background));
+  background-color: rgb(var(--tps-color-background));
 }

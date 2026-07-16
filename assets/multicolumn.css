@@ -1,8 +1,8 @@
 .multicolumn__content .grid__item {
-  padding: var(--spacing-20);
-  border: 1px solid var(--card-border-color);
-  border-radius: var(--card-border-radius);
-  background-color: var(--card-bg-color);
+  padding: var(--tps-spacing-20);
+  border: 1px solid var(--tps-card-border-color);
+  border-radius: var(--tps-card-border-radius);
+  background-color: var(--tps-card-bg-color);
 }
 
 .multicolumn__content .heading {
@@ -14,12 +14,12 @@
 }
 
 .multicolumn__content .icon-wrapper-svg {
-  background-color: var(--icon-bg-color);
+  background-color: var(--tps-icon-bg-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
-   border: 1px solid color-mix(in srgb, var(--card-border-color) 60%, transparent);
+  border-radius: var(--tps-radius-full);
+   border: 1px solid color-mix(in srgb, var(--tps-card-border-color) 60%, transparent);
 }
 
 .multicolumn__content .icon-image {

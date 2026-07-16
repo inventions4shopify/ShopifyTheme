@@ -6,7 +6,7 @@
   data-autoplay="{{ section.settings.autoplay | json }}"
   data-autoplay-speed="{{ section.settings.autoplay_speed | json }}"
 >
-  <div class="cms-slideshow-main" style="min-height: var(--section-height-{{ section.settings.slide_height }});">
+  <div class="cms-slideshow-main" style="min-height: var(--tps-section-height-{{ section.settings.slide_height }});">
     {%- for block in section.blocks -%}
       <div class="cms-slideshow-slide{% if forloop.first %} active{% endif %}">
         <div class="{% if section.settings.section_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
@@ -79,7 +79,7 @@
                       -webkit-text-fill-color: transparent;
                       background-clip: text;
                     {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-                      --color-heading: {{ head_color.rgb }};
+                      --tps-color-heading: {{ head_color.rgb }};
                     {%- endif -%}
                   {%- endcapture -%}
 
