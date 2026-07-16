@@ -309,7 +309,7 @@ cart-drawer.is-updating .cart-drawer__loading {
   position: relative;
   height: 0.4rem;
   margin: 0 2rem 3.6rem;
-  background: rgba(var(--color-button-primary-outline) / 0.45);
+  background: #d3d3d366;
   border-radius: 999px;
 }
 
