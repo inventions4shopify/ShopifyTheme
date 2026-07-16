@@ -350,10 +350,21 @@ input[type="submit"] {
   box-shadow: 2px 2px 0 0 rgb(var(--color-button-primary-outline));
 }
 
+.button:hover {
+  --button-background: rgba(var(--button-background) / 0.8);
+  --button-text: var(--button-text);
+}
+
 .button--secondary {
   --button-text: rgb(var(--color-button-secondary-text));
   --button-background: rgb(var(--color-button-secondary-background));
   --button-outline: rgb(var(--color-button-secondary-outline));
+  box-shadow: 2px 2px rgb(var(--color-button-secondary-outline));
+}
+
+.button--secondary:hover {
+  --button-text: rgb(var(--color-button-secondary-text));
+  --button-background: rgba(var(--color-button-secondary-background) / 0.8);
 }
 
 body .shopify-payment-button__button--unbranded {
