@@ -111,33 +111,6 @@
   opacity: .7;
 }
 
-.pagination-wrapper {
-  text-align: center;
-}
-
-.pagination-wrapper .pagination {
-  display: flex;
-  justify-content: center;
-  gap: .8rem;
-  flex-wrap: wrap;
-}
-
-.pagination-wrapper a,
-.pagination-wrapper span {
-  min-width: 4.4rem;
-  min-height: 4.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  border: 1px solid rgba(0, 0, 0, .15);
-  transition: all .2s ease;
-}
-
-.pagination-wrapper a:hover {
-  background: rgba(0, 0, 0, .05);
-}
-
 .blog-card--featured {
   grid-column: 1 / -1;
 }

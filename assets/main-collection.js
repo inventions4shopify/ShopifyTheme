@@ -23,6 +23,86 @@ class MainCollectionSection extends HTMLElement {
     this.initLayoutToggle(signal);
     this.initPagination(signal);
     this.initActiveFilterPills(signal);
+    this.syncSearchSortFromUrl();
+  }
+
+  isSearchPage() {
+    return this.hasAttribute('data-search-page');
+  }
+
+  getUrlSortBy() {
+    return new URL(window.location.href).searchParams.get('sort_by') || '';
+  }
+
+  isClientSearchSort(sortBy) {
+    return [
+      'title-ascending',
+      'title-descending',
+      'created-ascending',
+      'created-descending',
+      'best-selling',
+    ].includes(sortBy);
+  }
+
+  syncSearchSortFromUrl() {
+    if (!this.isSearchPage()) return;
+
+    const sortBy = this.getUrlSortBy();
+    if (!sortBy) return;
+
+    this.setSortDropdownValue(sortBy);
+    this.applyClientSearchSort(sortBy);
+  }
+
+  setSortDropdownValue(sortBy) {
+    if (!sortBy) return;
+
+    const input = this.querySelector('#SortByInput');
+    const label = this.querySelector('.js-sort-label');
+    const options = this.querySelectorAll('.js-sort-option');
+    let matched = false;
+
+    options.forEach((option) => {
+      const isActive = option.dataset.value === sortBy;
+      option.classList.toggle('active', isActive);
+      if (isActive) {
+        matched = true;
+        if (label) label.textContent = option.textContent.trim();
+      }
+    });
+
+    if (matched && input) input.value = sortBy;
+  }
+
+  applyClientSearchSort(sortBy) {
+    if (!this.isSearchPage() || !this.isClientSearchSort(sortBy)) return;
+
+    const grid = this.querySelector('[data-search-results-grid]');
+    if (!grid) return;
+
+    const items = [...grid.querySelectorAll(':scope > .grid__item[data-sort-title]')];
+    if (items.length < 2) return;
+
+    const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+
+    items.sort((a, b) => {
+      switch (sortBy) {
+        case 'title-ascending':
+          return collator.compare(a.dataset.sortTitle || '', b.dataset.sortTitle || '');
+        case 'title-descending':
+          return collator.compare(b.dataset.sortTitle || '', a.dataset.sortTitle || '');
+        case 'created-ascending':
+          return Number(a.dataset.sortCreated || 0) - Number(b.dataset.sortCreated || 0);
+        case 'created-descending':
+          return Number(b.dataset.sortCreated || 0) - Number(a.dataset.sortCreated || 0);
+        case 'best-selling':
+          return Number(b.dataset.sortBest || 0) - Number(a.dataset.sortBest || 0);
+        default:
+          return 0;
+      }
+    });
+
+    items.forEach((item) => grid.appendChild(item));
   }
 
   disconnectedCallback() {
@@ -225,6 +305,48 @@ class MainCollectionSection extends HTMLElement {
     });
   }
 
+  openFilterDrawer(drawerDetails) {
+    if (!drawerDetails) return;
+
+    drawerDetails.classList.remove('is-closing');
+    document.body.classList.add('open-filter-drawer');
+
+    // Force the closed transform first, then slide in on the next frame.
+    // Needed because <details> skips the transition on reopen.
+    drawerDetails.classList.remove('is-open');
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!drawerDetails.open) return;
+        drawerDetails.classList.add('is-open');
+      });
+    });
+  }
+
+  closeFilterDrawer(drawerDetails) {
+    if (!drawerDetails?.open || drawerDetails.classList.contains('is-closing')) return;
+
+    const drawer = drawerDetails.querySelector('.collection-filter-drawer');
+    drawerDetails.classList.add('is-closing');
+    drawerDetails.classList.remove('is-open');
+    document.body.classList.remove('open-filter-drawer');
+
+    const finish = () => {
+      if (!drawerDetails.classList.contains('is-closing')) return;
+      drawerDetails.removeAttribute('open');
+      drawerDetails.classList.remove('is-closing');
+      drawer?.removeEventListener('transitionend', onEnd);
+    };
+
+    const onEnd = (event) => {
+      if (event.target !== drawer || event.propertyName !== 'transform') return;
+      finish();
+    };
+
+    drawer?.addEventListener('transitionend', onEnd);
+    setTimeout(finish, 300);
+  }
+
   initFilterDrawer(signal) {
     if (this._filterDrawerBound) return;
     this._filterDrawerBound = true;
@@ -232,9 +354,15 @@ class MainCollectionSection extends HTMLElement {
     this.addEventListener(
       'toggle',
       (event) => {
-        const drawerDetails = event.target.closest('.collection-filter-dropdown');
-        if (!drawerDetails) return;
-        document.body.classList.toggle('open-filter-drawer', drawerDetails.open);
+        const drawerDetails = event.target;
+        if (!drawerDetails?.classList?.contains('collection-filter-dropdown')) return;
+
+        if (drawerDetails.open) {
+          this.openFilterDrawer(drawerDetails);
+        } else {
+          drawerDetails.classList.remove('is-open', 'is-closing');
+          document.body.classList.remove('open-filter-drawer');
+        }
       },
       { signal, capture: true }
     );
@@ -242,11 +370,22 @@ class MainCollectionSection extends HTMLElement {
     this.addEventListener(
       'click',
       (event) => {
-        const closeBtn = event.target.closest('.collection-filter-drawer-close');
-        if (!closeBtn) return;
+        const drawerDetails = event.target.closest('.collection-filter-dropdown');
+        if (!drawerDetails) return;
 
-        event.preventDefault();
-        closeBtn.closest('.collection-filter-dropdown')?.removeAttribute('open');
+        const closeBtn = event.target.closest('.collection-filter-drawer-close');
+        if (closeBtn) {
+          event.preventDefault();
+          this.closeFilterDrawer(drawerDetails);
+          return;
+        }
+
+        // Animate close when toggling via the Filter summary while open
+        const summary = event.target.closest('summary');
+        if (summary && drawerDetails.open && summary.parentElement === drawerDetails) {
+          event.preventDefault();
+          this.closeFilterDrawer(drawerDetails);
+        }
       },
       { signal }
     );
@@ -261,7 +400,7 @@ class MainCollectionSection extends HTMLElement {
         const summary = drawerDetails.querySelector('summary');
         if (drawer?.contains(event.target) || summary?.contains(event.target)) return;
 
-        drawerDetails.removeAttribute('open');
+        this.closeFilterDrawer(drawerDetails);
       },
       { signal }
     );
@@ -553,6 +692,8 @@ class MainCollectionSection extends HTMLElement {
     const drawerDetails = this.querySelector('.collection-filter-dropdown');
     if (state.drawerOpen && drawerDetails) {
       drawerDetails.setAttribute('open', '');
+      drawerDetails.classList.add('is-open');
+      drawerDetails.classList.remove('is-closing');
       document.body.classList.add('open-filter-drawer');
     }
 
@@ -641,22 +782,14 @@ class MainCollectionSection extends HTMLElement {
   }
 
   syncSortDropdown(newContainer) {
+    const inputSort = this.isSearchPage() ? this.querySelector('#SortByInput')?.value : '';
+    const urlSort = this.isSearchPage() ? this.getUrlSortBy() : '';
     const newActive = newContainer.querySelector('.js-sort-option.active');
-    const newValue = newActive?.dataset.value;
+    const newValue = inputSort || urlSort || newActive?.dataset.value;
     if (!newValue) return;
 
-    const input = this.querySelector('#SortByInput');
-    const label = this.querySelector('.js-sort-label');
-
-    if (input) input.value = newValue;
-
-    this.querySelectorAll('.js-sort-option').forEach((option) => {
-      const isActive = option.dataset.value === newValue;
-      option.classList.toggle('active', isActive);
-      if (isActive && label) {
-        label.textContent = option.textContent.trim();
-      }
-    });
+    this.setSortDropdownValue(newValue);
+    this.applyClientSearchSort(newValue);
   }
 
   syncPagination(newContainer, currentContainer) {
@@ -737,6 +870,12 @@ class MainCollectionSection extends HTMLElement {
 
       history.pushState({}, '', browseUrl.toString());
       this.restoreFilterDrawerState(drawerState);
+
+      if (this.isSearchPage()) {
+        const sortBy = browseUrl.searchParams.get('sort_by') || this.querySelector('#SortByInput')?.value;
+        this.setSortDropdownValue(sortBy);
+        this.applyClientSearchSort(sortBy);
+      }
     } catch (error) {
       console.error(error);
       window.location.assign(browseUrl.toString());

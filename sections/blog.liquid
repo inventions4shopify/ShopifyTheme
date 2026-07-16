@@ -51,11 +51,7 @@
         {% endfor %}
       </div>
 
-      {% if paginate.pages > 1 %}
-        <div class="pagination-wrapper">
-          {{ paginate | default_pagination }}
-        </div>
-      {% endif %}
+      {% render 'pagination', paginate: paginate %}
     </div>
   </div>
 {% endpaginate %}

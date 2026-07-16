@@ -1,9 +1,14 @@
 {{ 'main-collection.css' | asset_url | stylesheet_tag }}
+{{ 'blog-template.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign sort_by = search.sort_by | default: search.default_sort_by
+  if sort_by == blank
+    assign sort_by = 'relevance'
+  endif
   assign terms = search.terms | escape
-  assign search_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
+  assign search_type = 'product,collection,page'
+  assign search_url = '?q=' | append: terms | append: '&type=' | append: search_type | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
 -%}
 
 <div {%- render 'section-variables', section: section, class: 'search__section' -%}>
@@ -13,6 +18,7 @@
 
             <input type="hidden" name="q" value="{{ search.terms | escape }}">
             <input type="hidden" name="options[prefix]" value="last">
+            <input type="hidden" name="type" value="{{ search_type }}">
 
             {% for filter in search.filters %}
               <div class="cms-filter-group">
@@ -168,7 +174,22 @@
           {{ collection_filters_form }}
         {% endif %}
       {% endcapture %}
-    <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %}">
+    {%- liquid
+      assign use_search_fallback = false
+      if search.performed and search.results_count == 0 and search.filters == empty and search.terms != blank and settings.predictive_search_enabled
+        assign use_search_fallback = true
+      endif
+
+      assign has_search_layout = false
+      if use_search_fallback
+        assign has_search_layout = true
+      elsif search.performed and search.results_count > 0
+        assign has_search_layout = true
+      elsif search.performed and search.filters != empty
+        assign has_search_layout = true
+      endif
+    -%}
+    <div class="template-search{% unless has_search_layout %} template-search--empty{% endunless %}">
       <div class="template-search__header page-width">
         <div class="flex items-center flex-col justify-center">
           <h1 class="h2 text-center">
@@ -204,6 +225,7 @@
                     {%- endif %}
                   >
                   <input name="options[prefix]" type="hidden" value="last">
+                  <input name="type" type="hidden" value="{{ search_type }}">
 
                   <button
                     type="reset"
@@ -238,16 +260,12 @@
           </div>
         </div>
         {%- if search.performed -%}
-        
-          {%- if search.results_count == 0 and search.filters == empty -%}
+          {%- if search.results_count == 0 and search.filters == empty and use_search_fallback == false -%}
             <p role="status">{{ 'search.no_results_html' | t: terms: search.terms }}</p>
-          {%- endif -%}
-        {%- endif -%}
-      
-        {%- if search.performed -%}
+          {%- elsif has_search_layout -%}
           <div>
             <div class="product-grid-container" id="ProductGridContainer">
-              {%- if search.results.size == 0 and search.filters != empty -%}
+              {%- if search.results.size == 0 and search.filters != empty and use_search_fallback == false -%}
                 <div class="template-search__results">
                   <div class="loading-overlay gradient"></div>
                   <div class="title-wrapper center">
@@ -257,13 +275,23 @@
                   </div>
                 </div>
               {%- else -%}
-              <main-collection-section class="cms-main-collection" data-section-id="{{ section.id }}">
+              <main-collection-section
+                class="cms-main-collection"
+                data-section-id="{{ section.id }}"
+                data-search-page
+                {% if use_search_fallback %}
+                  data-search-fallback
+                  data-search-terms="{{ search.terms | escape }}"
+                  data-predictive-url="{{ routes.predictive_search_url }}"
+                  data-search-type="{{ search_type }}"
+                {% endif %}
+              >
                 <div class="">
                   <div id="CollectionAjaxContainer" data-collection-ajax>
                   {%- liquid
-                    assign filter_clear_url = routes.search_url | append: '?q=' | append: terms | append: '&options[prefix]=last'
-                    if search.sort_by != blank
-                      assign filter_clear_url = filter_clear_url | append: '&sort_by=' | append: search.sort_by
+                    assign filter_clear_url = routes.search_url | append: '?q=' | append: terms | append: '&type=' | append: search_type | append: '&options[prefix]=last'
+                    if sort_by != blank
+                      assign filter_clear_url = filter_clear_url | append: '&sort_by=' | append: sort_by
                     endif
                   -%}
                   {% render 'collection-filter-sort-row',
@@ -274,7 +302,7 @@
                     filters_markup: collection_filters_form,
                     products_count: search.results_count,
                     sort_options: search.sort_options,
-                    sort_by: search.sort_by,
+                    sort_by: sort_by,
                     default_sort_by: search.default_sort_by,
                     show_total_product: section.settings.show_total_product,
                     show_sort: section.settings.show_sort,
@@ -286,123 +314,67 @@
                   <div class="template-search__results collection{% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %} cms-main-collection-grid cms-main-collection-grid--sidebar{% endif %}" id="product-grid" data-id="{{ section.id }}" >
                     {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                       {{ collection_filters }}
-                      <div class="collection-products">
-                        <div class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
-                          {%- for item in search.results -%}
-                            <div class="grid__item" >
-                              {%- case item.object_type -%}
-                                {%- when 'product' -%}
-                                  {% render 'product-card',
-                                    product: item,
-                                    show_vendor: settings.show_vendor,
-                                    show_secondary_image: settings.show_secondary_image,
-                                    show_quick_buy: settings.show_quick_buy,
-                                    show_rating: settings.show_rating,
-                                    rating_display: settings.rating_display,
-                                    show_sold_out_badge: settings.show_sold_out_badge,
-                                    show_discount_badge: settings.show_discount_badge,
-                                    discount_type: settings.discount_type,
-                                    color_display_mode: settings.color_display_mode,
-                                    image_ratio: settings.image_ratio,
-                                    content_alignment: settings.content_alignment,
-                                    style: settings.style
-                                  %}
-                                {%- when 'article' -%}
-                                    {%- render 'article-card',
-                                        article: item,
-                                        media_height: section.settings.image_ratio,
-                                        show_image: section.settings.show_image,
-                                        show_date: section.settings.show_date,
-                                        show_author: section.settings.show_author,
-                                        show_excerpt: section.settings.show_excerpt,
-                                        read_more_label: section.settings.read_more_label,
-                                        settings: settings
-                                      -%}
-                                {%- when 'page' -%}
-                                  <div class="article-card-wrapper card-wrapper underline-links-hover">
-                                    <div class="card">
-                                      <div class="card__content">
-                                        <div class="card__information">
-                                          <h3 class="card__heading">
-                                            <a href="{{ item.url }}" class="full-unstyled-link">
-                                              {{ item.title | truncate: 50 | escape }}
-                                            </a>
-                                          </h3>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                              {%- endcase -%}
-                            </div>
-                          {%- endfor -%}
-                        </div>
-                        {%- if paginate.pages > 1 -%}
-                          {% render 'pagination', paginate: paginate %}
-                        {%- endif -%}
-                      </div>
-                    {% else %}
-                      <div class="collection-products">
-                        <div class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
-                          {%- for item in search.results -%}
-                            <div class="grid__item" >
-                              {%- case item.object_type -%}
-                                {%- when 'product' -%}
-                                  {% render 'product-card',
-                                    product: item,
-                                    show_vendor: settings.show_vendor,
-                                    show_secondary_image: settings.show_secondary_image,
-                                    show_quick_buy: settings.show_quick_buy,
-                                    show_rating: settings.show_rating,
-                                    rating_display: settings.rating_display,
-                                    show_sold_out_badge: settings.show_sold_out_badge,
-                                    show_discount_badge: settings.show_discount_badge,
-                                    discount_type: settings.discount_type,
-                                    color_display_mode: settings.color_display_mode,
-                                    image_ratio: settings.image_ratio,
-                                    content_alignment: settings.content_alignment,
-                                    style: settings.style
-                                  %}
-                                {%- when 'article' -%}
-                                    {%- render 'article-card',
-                                        article: item,
-                                        media_height: section.settings.image_ratio,
-                                        show_image: section.settings.show_image,
-                                        show_date: section.settings.show_date,
-                                        show_author: section.settings.show_author,
-                                        show_excerpt: section.settings.show_excerpt,
-                                        read_more_label: section.settings.read_more_label,
-                                        settings: settings
-                                      -%}
-                                {%- when 'page' -%}
-                                  <div class="article-card-wrapper card-wrapper underline-links-hover">
-                                    <div class="card">
-                                      <div class="card__content">
-                                        <div class="card__information">
-                                          <h3 class="card__heading">
-                                            <a href="{{ item.url }}" class="full-unstyled-link">
-                                              {{ item.title | truncate: 50 | escape }}
-                                            </a>
-                                          </h3>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                              {%- endcase -%}
-                            </div>
-                          {%- endfor -%}
-                        </div>
-                        {%- if paginate.pages > 1 -%}
-                          {% render 'pagination', paginate: paginate %}
-                        {%- endif -%}
-                      </div>
                     {% endif %}
+                      <div class="collection-products">
+                        <div
+                          class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col"
+                          data-search-results-grid
+                        >
+                          {%- if use_search_fallback -%}
+                            <p
+                              class="grid__item"
+                              role="status"
+                              data-search-fallback-empty
+                              data-no-results-text="{{ 'search.no_results_html' | t: terms: search.terms | escape }}"
+                              style="grid-column: 1 / -1;"
+                            >
+                              {{ 'search.loading' | t }}
+                            </p>
+                          {%- else -%}
+                            {%- for item in search.results -%}
+                              {%- if item.object_type == 'product' or item.object_type == 'collection' or item.object_type == 'page' -%}
+                                {%- liquid
+                                  assign sort_title = item.title | downcase
+                                  assign sort_price = 0
+                                  assign sort_created = 0
+                                  if item.object_type == 'product'
+                                    assign sort_price = item.price_min | default: item.price | default: 0
+                                    assign sort_created = item.created_at | date: '%s'
+                                  elsif item.object_type == 'page'
+                                    assign sort_created = item.published_at | default: item.created_at | date: '%s'
+                                  endif
+                                -%}
+                                <div
+                                  class="grid__item"
+                                  data-sort-title="{{ sort_title | escape }}"
+                                  data-sort-price="{{ sort_price }}"
+                                  data-sort-created="{{ sort_created }}"
+                                >
+                                  {% render 'search-result-item',
+                                    item: item,
+                                    image_ratio: section.settings.image_ratio,
+                                    settings: settings
+                                  %}
+                                </div>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                        </div>
+                        {%- if use_search_fallback == false and paginate.pages > 1 -%}
+                          {% render 'pagination', paginate: paginate %}
+                        {%- endif -%}
+                      </div>
                   </div>
                   </div>
                 </div>
               </main-collection-section>
+              {%- if use_search_fallback -%}
+                <script src="{{ 'search-fallback.js' | asset_url }}" defer="defer"></script>
+              {%- endif -%}
               {%- endif -%}
             </div>
           </div>
+          {%- endif -%}
         {%- endif -%}
       </div>
     </div>
