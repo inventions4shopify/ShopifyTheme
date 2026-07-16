@@ -329,9 +329,11 @@
       const params = new URLSearchParams({
         q: searchTerm,
         section_id: 'predictive-search',
-        'resources[type]': 'product,page,article,collection,query',
-        'resources[limit]': 10,
+        'resources[type]': 'product,page,collection',
+        'resources[limit]': 4,
+        'resources[limit_scope]': 'each',
         'resources[options][unavailable_products]': 'last',
+        'resources[options][fields]': 'title,product_type,variants.title,vendor',
       });
 
       fetch(`${PREDICTIVE_SEARCH_URL}?${params.toString()}`, {

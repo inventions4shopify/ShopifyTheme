@@ -30,6 +30,9 @@
     {{ 'card-product.css' | asset_url | stylesheet_tag }}
     {{ 'comman-section.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
+    {%- if settings.enable_swatch_hover_image -%}
+      <script src="{{ 'product-card.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
     <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'quantity-input.js' | asset_url }}" defer="defer"></script>
     {%- if settings.cart_type == 'cart_drawer' or settings.cart_type == 'cart_popup' or template.name == 'cart' -%}

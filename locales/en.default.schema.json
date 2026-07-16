@@ -384,6 +384,10 @@
             "option_4": "Variant Image"
           }
         },
+        "enable_swatch_hover_image": {
+          "label": "Show variant image on swatch hover",
+          "info": "When enabled, hovering a color swatch on the product card previews that variant's image."
+        },
         "discount_type": {
           "label": "Show discount",
           "options": {

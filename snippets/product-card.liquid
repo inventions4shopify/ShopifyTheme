@@ -29,14 +29,15 @@
     {% endif %}
 
     <a href="{{ product.url }}" class="product-card__image-link">
-      {% if product.featured_image %}
+      {% assign card_featured_image = product.featured_image | default: product.featured_media %}
+      {% if card_featured_image %}
         <img
-          src="{{ product.featured_image | image_url: width: 800 }}"
-          alt="{{ product.featured_image.alt | escape }}"
+          src="{{ card_featured_image | image_url: width: 800 }}"
+          alt="{{ card_featured_image.alt | escape }}"
           class="product-card__image product-card__image--primary"
           loading="lazy"
-          width="{{ product.featured_image.width }}"
-          height="{{ product.featured_image.height }}"
+          width="{{ card_featured_image.width }}"
+          height="{{ card_featured_image.height }}"
         >
       {% endif %}
 

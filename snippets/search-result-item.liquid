@@ -1,0 +1,109 @@
+{%- comment -%}
+  Renders a single search result card (product, collection, or page).
+
+  Accepts:
+  - item: {Object} Search result item
+  - result_type: {String} Optional override when object_type is missing (e.g. collection)
+  - image_ratio: {String} Image aspect ratio (adapt|square|portrait)
+  - settings: {Object} Theme settings (for product card)
+{%- endcomment -%}
+
+{%- liquid
+  assign result_type = result_type | default: item.object_type
+-%}
+
+{%- case result_type -%}
+  {%- when 'product' -%}
+    {% render 'product-card',
+      product: item,
+      show_vendor: settings.show_vendor,
+      show_secondary_image: settings.show_secondary_image,
+      show_quick_buy: settings.show_quick_buy,
+      show_rating: settings.show_rating,
+      rating_display: settings.rating_display,
+      show_sold_out_badge: settings.show_sold_out_badge,
+      show_discount_badge: settings.show_discount_badge,
+      discount_type: settings.discount_type,
+      color_display_mode: settings.color_display_mode,
+      image_ratio: settings.image_ratio,
+      content_alignment: settings.content_alignment,
+      style: settings.style
+    %}
+
+  {%- when 'collection' -%}
+    {%- liquid
+      assign result_image = item.featured_image
+      if result_image == blank and item.products.first.featured_image
+        assign result_image = item.products.first.featured_image
+      endif
+      assign ratio_class = image_ratio | default: 'square'
+      if ratio_class == 'adapt' or ratio_class == blank
+        assign ratio_class = 'square'
+      endif
+    -%}
+    <a href="{{ item.url }}" class="product-card search-result-card search-result-card--collection">
+      <div class="product-card__media product-card__media--{{ ratio_class }} aspect-{{ ratio_class }}">
+        <span class="product-card__image-link">
+          {%- if result_image != blank -%}
+            {{
+              result_image
+              | image_url: width: 800
+              | image_tag:
+                loading: 'lazy',
+                widths: '320,480,640,800',
+                sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+                class: 'product-card__image',
+                alt: item.title
+            }}
+          {%- else -%}
+            <span class="search-result-card__placeholder" aria-hidden="true">
+              <img
+                src="{{ 'thumbnail.svg' | asset_url }}"
+                alt=""
+                loading="lazy"
+                width="80"
+                height="80"
+                class="search-result-card__placeholder-img"
+              >
+            </span>
+          {%- endif -%}
+        </span>
+      </div>
+      <div class="product-card__content text-{{ settings.content_alignment | default: 'left' }}">
+        <div class="product-card__vendor text-xss">{{ 'search.collections' | t }}</div>
+        <h3 class="product-card__title text-xlg">
+          <span class="line-clamp-2">{{ item.title | escape }}</span>
+        </h3>
+      </div>
+    </a>
+
+  {%- when 'page' -%}
+    {%- liquid
+      assign ratio_class = image_ratio | default: 'square'
+      if ratio_class == 'adapt' or ratio_class == blank
+        assign ratio_class = 'square'
+      endif
+    -%}
+    <a href="{{ item.url }}" class="product-card search-result-card search-result-card--page">
+      <div class="product-card__media product-card__media--{{ ratio_class }} aspect-{{ ratio_class }}">
+        <span class="product-card__image-link">
+          <span class="search-result-card__placeholder" aria-hidden="true">
+            <img
+              src="{{ 'thumbnail.svg' | asset_url }}"
+              alt=""
+              loading="lazy"
+              width="80"
+              height="80"
+              class="search-result-card__placeholder-img"
+            >
+          </span>
+        </span>
+      </div>
+      <div class="product-card__content text-{{ settings.content_alignment | default: 'left' }}">
+        <div class="product-card__vendor text-xss">{{ 'search.pages' | t }}</div>
+        <h3 class="product-card__title text-xlg">
+          <span class="line-clamp-2">{{ item.title | truncate: 50 | escape }}</span>
+        </h3>
+      </div>
+    </a>
+{%- endcase -%}

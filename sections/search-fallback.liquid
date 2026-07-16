@@ -1,0 +1,77 @@
+{%- comment -%}
+  AJAX-only section: returns grid items from predictive search so the
+  main search page can keep its normal filter/sort layout when storefront
+  search returns no results for a partial query (e.g. "rin").
+
+  Requested as:
+  {{ routes.predictive_search_url }}?q=TERM&section_id=search-fallback
+{%- endcomment -%}
+
+{%- if predictive_search.performed -%}
+  {%- liquid
+    assign products = predictive_search.resources.products
+    assign collections = predictive_search.resources.collections
+    assign pages = predictive_search.resources.pages
+    assign total = products.size | plus: collections.size | plus: pages.size
+  -%}
+
+  <div
+    id="search-fallback-results"
+    data-fallback-count="{{ total }}"
+  >
+    {%- for product in products -%}
+      <div
+        class="grid__item"
+        data-sort-title="{{ product.title | downcase | escape }}"
+        data-sort-price="{{ product.price_min | default: product.price | default: 0 }}"
+        data-sort-created="{{ product.created_at | date: '%s' }}"
+      >
+        {% render 'search-result-item',
+          item: product,
+          result_type: 'product',
+          image_ratio: settings.image_ratio,
+          settings: settings
+        %}
+      </div>
+    {%- endfor -%}
+
+    {%- for collection in collections -%}
+      <div
+        class="grid__item"
+        data-sort-title="{{ collection.title | downcase | escape }}"
+        data-sort-price="0"
+        data-sort-created="0"
+      >
+        {% render 'search-result-item',
+          item: collection,
+          result_type: 'collection',
+          image_ratio: settings.image_ratio,
+          settings: settings
+        %}
+      </div>
+    {%- endfor -%}
+
+    {%- for page in pages -%}
+      <div
+        class="grid__item"
+        data-sort-title="{{ page.title | downcase | escape }}"
+        data-sort-price="0"
+        data-sort-created="{{ page.published_at | default: page.created_at | date: '%s' }}"
+      >
+        {% render 'search-result-item',
+          item: page,
+          result_type: 'page',
+          image_ratio: settings.image_ratio,
+          settings: settings
+        %}
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Search fallback",
+  "settings": []
+}
+{% endschema %}

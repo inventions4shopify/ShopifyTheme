@@ -732,6 +732,14 @@
         "default": "swatch"
       },
       {
+        "type": "checkbox",
+        "id": "enable_swatch_hover_image",
+        "label": "t:settings_schema.product_card.settings.enable_swatch_hover_image.label",
+        "info": "t:settings_schema.product_card.settings.enable_swatch_hover_image.info",
+        "default": false,
+        "visible_if": "{{ settings.color_display_mode == 'swatch' or settings.color_display_mode == 'variant_image' }}"
+      },
+      {
         "type": "select",
         "id": "image_ratio",
         "label": "t:settings_schema.product_card.settings.image_ratio.label",

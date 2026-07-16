@@ -72,6 +72,7 @@
           {% if search_terms != blank %}
             <input type="hidden" name="q" value="{{ search_terms | escape }}">
             <input type="hidden" name="options[prefix]" value="last">
+            <input type="hidden" name="type" value="product,collection,page">
           {% endif %}
 
           <input
@@ -90,14 +91,47 @@
             </div>
 
             <ul class="cms-sort-options">
-              {% for option in sort_options %}
-                <li
-                  class="cms-sort-option js-sort-option {% if option.value == sort_by %}active{% endif %}"
-                  data-value="{{ option.value }}"
-                >
-                  {{ option.name }}
-                </li>
-              {% endfor %}
+              {%- liquid
+                assign active_sort = sort_by | default: default_sort_by
+                if active_sort == blank
+                  assign active_sort = 'relevance'
+                endif
+              -%}
+              {%- if search_terms != blank -%}
+                {%- comment -%}
+                  Storefront search only returns relevance + price sorts via search.sort_options.
+                  Mirror collection sort options so search matches the collection Sort By menu.
+                {%- endcomment -%}
+                {%- for option in sort_options -%}
+                  {%- if option.value == 'relevance' -%}
+                    <li
+                      class="cms-sort-option js-sort-option {% if active_sort == 'relevance' %}active{% endif %}"
+                      data-value="relevance"
+                    >
+                      {{ option.name }}
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- for option in collections.all.sort_options -%}
+                  {%- unless option.value == 'manual' or option.value == 'most-relevant' -%}
+                    <li
+                      class="cms-sort-option js-sort-option {% if option.value == active_sort %}active{% endif %}"
+                      data-value="{{ option.value }}"
+                    >
+                      {{ option.name }}
+                    </li>
+                  {%- endunless -%}
+                {%- endfor -%}
+              {%- else -%}
+                {% for option in sort_options %}
+                  <li
+                    class="cms-sort-option js-sort-option {% if option.value == active_sort %}active{% endif %}"
+                    data-value="{{ option.value }}"
+                  >
+                    {{ option.name }}
+                  </li>
+                {% endfor %}
+              {%- endif -%}
             </ul>
           </div>
         </form>
