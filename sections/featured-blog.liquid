@@ -91,20 +91,20 @@
   }
 
   .featured-blog__header {
-    margin-bottom: var(--spacing-32);
+    margin-bottom: var(--tps-spacing-32);
   }
 
   .featured-blog__footer {
-    margin-top: var(--spacing-32);
+    margin-top: var(--tps-spacing-32);
   }
 
   .featured-blog .article-card__placeholder {
-    background: rgb(var(--img-placeholder, 243 243 243));
+    background: rgb(var(--tps-img-placeholder, 243 243 243));
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    border-radius: var(--media-radius);
+    border-radius: var(--tps-media-radius);
   }
 
   .featured-blog .article-card__placeholder-svg {
@@ -135,37 +135,37 @@
 
   {% if s.card_style == true %}
     .featured-blog .card__content {
-      padding: var(--spacing-16);
+      padding: var(--tps-spacing-16);
     }
 
     .featured-blog .article-card__image-wrapper,
     .featured-blog .article-card__image img {
-      border-radius: var(--media-radius) var(--media-radius) 0 0;
+      border-radius: var(--tps-media-radius) var(--tps-media-radius) 0 0;
     }
 
     @media screen and (max-width: 768px) {
       .featured-blog .blog-card--featured .article-card__image-wrapper,
       .featured-blog .blog-card--featured .article-card__image img {
-        border-radius: var(--media-radius) var(--media-radius) 0 0;
+        border-radius: var(--tps-media-radius) var(--tps-media-radius) 0 0;
       }
     }
   {% else %}
     .featured-blog .card__content {
-      padding: var(--spacing-16);
+      padding: var(--tps-spacing-16);
     }
 
     .featured-blog .blog-card--featured .card__content {
-      padding: var(--spacing-16);
+      padding: var(--tps-spacing-16);
     }
 
     .featured-blog .blog-card--featured .article-card__image-wrapper,
     .featured-blog .blog-card--featured .article-card__image img {
-      border-radius: var(--media-radius);
+      border-radius: var(--tps-media-radius);
     }
 
     @media screen and (max-width: 768px) {
       .featured-blog .blog-card--featured .card__content {
-        padding: var(--spacing-16) 0 0 0;
+        padding: var(--tps-spacing-16) 0 0 0;
       }
     }
   {% endif %}

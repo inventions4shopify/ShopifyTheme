@@ -1,5 +1,5 @@
 .pagination-wrapper {
-  margin-top: var(--spacing-20);
+  margin-top: var(--tps-spacing-20);
 }
 
 .pagination__list {
@@ -31,7 +31,7 @@
 }
 
 .pagination__item:not(.button) {
-  color: rgb(var(--color-button-secondary-outline));
+  color: rgb(var(--tps-color-button-secondary-outline));
 }
 
 a.pagination__item:hover::after {

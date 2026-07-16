@@ -17,7 +17,7 @@
 
 <variant-picker
   class="variant_picker"
-  style="--swatch-size: {{ picker_swatch_size }};"
+  style="--tps-swatch-size: {{ picker_swatch_size }};"
   data-product-id="{{ product.id }}"
   data-update-url="{{ picker_update_url }}"
   data-hide-unavailable-options="{{ picker_hide_unavailable_options }}"
@@ -111,7 +111,7 @@
                     variant_picker_swatch--{{ picker_swatch_shape }}
                     {% if value.swatch.image %}variant_picker_swatch--image{% endif %}
                   "
-                  style="--swatch--background: {{ swatch_value }};{% if swatch_focal_point %} --swatch-focal-point: {{ swatch_focal_point }};{% endif %}"
+                  style="--tps-swatch--background: {{ swatch_value }};{% if swatch_focal_point %} --tps-swatch-focal-point: {{ swatch_focal_point }};{% endif %}"
                   data-option-value="{{ value | escape }}"
                   {% if value.swatch.image %}title="{{ value.swatch.image.alt | escape }}"{% endif %}
                 ></span>

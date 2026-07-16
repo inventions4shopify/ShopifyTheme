@@ -1,6 +1,6 @@
 <style>
 .error-page-section .sub-title {
-  margin: var(--spacing-16) 0;
+  margin: var(--tps-spacing-16) 0;
 }
 .error-page-section {
   width: 100%;
@@ -22,13 +22,13 @@
 }
 @media only screen and (min-width: 768px){
   .error-page-section .sub-title {
-    margin: var(--spacing-20) 0;
+    margin: var(--tps-spacing-20) 0;
   }
 }
 </style>
 
 <div {%- render 'section-variables', section: section, class: '404__section' -%}>
-  {% if section.settings.show_media %}<div class="404-main-section flex" style="min-height: var(--section-height-{{ section.settings.height }});">{% endif %}
+  {% if section.settings.show_media %}<div class="404-main-section flex" style="min-height: var(--tps-section-height-{{ section.settings.height }});">{% endif %}
     {% if section.settings.show_media %}
       <picture>
         {% if section.settings.image_2 %}
@@ -76,7 +76,7 @@
           -webkit-text-fill-color: transparent;
           background-clip: text;
         {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-          --color-heading: {{ head_color.rgb }};
+          --tps-color-heading: {{ head_color.rgb }};
         {%- endif -%}
       {%- endcapture -%}
 

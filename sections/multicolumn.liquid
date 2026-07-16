@@ -3,7 +3,7 @@
 
 <style>
     .multicolumn__content .grid__item >* {
-      color: var(--card-text-color);
+      color: var(--tps-card-text-color);
     }
 </style>
 
@@ -21,7 +21,7 @@
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
               {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-                --color-heading: {{ head_color.rgb }};
+                --tps-color-heading: {{ head_color.rgb }};
               {%- endif -%}
             {%- endcapture -%}
 
@@ -44,16 +44,16 @@
 
               {%- capture card_style -%}
                 {%- if card_bg_color != blank and card_bg_color != 'rgba(0,0,0,0)' -%}
-                  --card-bg-color: {{ card_bg_color }};
+                  --tps-card-bg-color: {{ card_bg_color }};
                 {%- endif -%}
                 {%- if text_color != blank and text_color != 'rgba(0,0,0,0)' -%}
-                  --card-text-color: {{ text_color }};
+                  --tps-card-text-color: {{ text_color }};
                 {%- endif -%}
                 {%- if border_color != blank and border_color != 'rgba(0,0,0,0)' -%}
-                  --card-border-color: {{ border_color }};
+                  --tps-card-border-color: {{ border_color }};
                 {%- endif -%}
                 {%- if border_radius != blank -%}
-                  --card-border-radius: {{ border_radius }}px;
+                  --tps-card-border-radius: {{ border_radius }}px;
                 {%- endif -%}
               {%- endcapture -%}
 

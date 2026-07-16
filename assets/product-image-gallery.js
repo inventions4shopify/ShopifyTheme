@@ -42,7 +42,7 @@ function initProductGalleries(root = document) {
 
       const heightRem = heightPx / rootFontSize;
 
-      gallery.style.setProperty("--thumbnail-height", `${heightRem}`);
+      gallery.style.setProperty("--tps-thumbnail-height", `${heightRem}`);
     }
 
     function scrollThumbnailIntoView(thumb, behavior = "smooth") {

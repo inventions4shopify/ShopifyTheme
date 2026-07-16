@@ -19,7 +19,7 @@
 
 .marquee-track {
   width: max-content;
-  animation: marqueeScroll var(--marquee-speed) linear infinite;
+  animation: marqueeScroll var(--tps-marquee-speed) linear infinite;
 }
 
 .marquee-track.reverse {
@@ -40,7 +40,7 @@
 }
 
 .marquee-item {
-  padding: var(--spacing-12);
+  padding: var(--tps-spacing-12);
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
@@ -50,7 +50,7 @@
 }
 
 .marquee-logo {
-  height: var(--logo-height);
+  height: var(--tps-logo-height);
   width: auto;
   object-fit: contain;
   border-radius: 0;
@@ -58,6 +58,6 @@
 
 @media screen and (max-width: 768px) {
   .marquee-item {
-    padding: var(--spacing-12) var(--spacing-16);
+    padding: var(--tps-spacing-12) var(--tps-spacing-16);
   }
 }

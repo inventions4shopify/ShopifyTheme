@@ -39,8 +39,8 @@ cart-drawer.is-open,
   flex-direction: column;
   transform: translateX(100%);
   transition: transform 0.3s ease;
-  background: rgb(var(--color-header-background));
-  color: rgb(var(--color-header-text));
+  background: rgb(var(--tps-color-header-background));
+  color: rgb(var(--tps-color-header-text));
   overflow: hidden;
 }
 
@@ -167,7 +167,7 @@ body.cart-drawer-open {
   display: block;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: var(--card-radius, 0.6rem);
+  border-radius: var(--tps-card-radius, 0.6rem);
 }
 
 .cart-drawer__item-details {
@@ -213,7 +213,7 @@ body.cart-drawer-open {
 .cart-drawer__quantity {
   display: inline-flex;
   align-items: center;
-  border: 0.1rem solid rgb(var(--color-header-text));
+  border: 0.1rem solid rgb(var(--tps-color-header-text));
   border-radius: 0.6rem;
   overflow: hidden;
 }
@@ -225,7 +225,7 @@ body.cart-drawer-open {
   display: none;
   align-items: center;
   justify-content: center;
-  background: rgba(var(--color-background), 0.6);
+  background: rgba(var(--tps-color-background), 0.6);
   backdrop-filter: blur(1px);
 }
 
@@ -247,11 +247,11 @@ cart-drawer.is-updating .cart-drawer__loading {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: rgb(var(--color-header-text));
+  color: rgb(var(--tps-color-header-text));
 }
 
 .cart-drawer__quantity-input {
-  max-width: calc(7rem + (var(--input-border-width) * 2));
+  max-width: calc(7rem + (var(--tps-input-border-width) * 2));
   height: 3.2rem;
   border: 0;
   border-left: 0.1rem solid rgba(0, 0, 0, 0.1);
@@ -276,7 +276,7 @@ cart-drawer.is-updating .cart-drawer__loading {
   display: block;
   align-items: center;
   justify-content: center;
-  color: rgb(var(--color-header-text));
+  color: rgb(var(--tps-color-header-text));
 }
 
 .cart-drawer__remove:hover {
@@ -285,7 +285,7 @@ cart-drawer.is-updating .cart-drawer__loading {
 
 /* Progress bar */
 .cart-drawer__progress {
-  --cart-progress-color: #701d21;
+  --tps-cart-progress-color: #701d21;
   position: relative;
   flex-shrink: 0;
   padding: 1.4rem 2rem 1.8rem;
@@ -320,19 +320,19 @@ cart-drawer.is-updating .cart-drawer__loading {
 .cart-drawer__progress-fill {
   position: absolute;
   inset: 0 auto 0 0;
-  width: var(--cart-progress, 0%);
-  background: rgb(var(--color-header-text));
+  width: var(--tps-cart-progress, 0%);
+  background: rgb(var(--tps-color-header-text));
   border-radius: inherit;
   transition: width 0.4s ease, background-color 0.3s ease;
 }
 
 .cart-drawer__progress.is-complete .cart-drawer__progress-track {
-  background: var(--cart-progress-color);
+  background: var(--tps-cart-progress-color);
 }
 
 .cart-drawer__progress.is-complete .cart-drawer__progress-fill {
   width: 100%;
-  background: var(--cart-progress-color);
+  background: var(--tps-cart-progress-color);
 }
 
 .cart-drawer__progress-milestone {
@@ -364,17 +364,17 @@ cart-drawer.is-updating .cart-drawer__loading {
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 50%;
-  background: rgb(var(--color-header-text));
+  background: rgb(var(--tps-color-header-text));
   border: 0.2rem solid rgba(0, 0, 0, 0.15);
-  color: rgb(var(--color-header-background));
+  color: rgb(var(--tps-color-header-background));
   transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 }
 
 .cart-drawer__progress-milestone.is-reached .cart-drawer__progress-icon,
 .cart-drawer__progress.is-complete .cart-drawer__progress-milestone .cart-drawer__progress-icon {
-  border-color: var(--cart-progress-color);
-  background: var(--cart-progress-color);
-  color: var(--white);
+  border-color: var(--tps-cart-progress-color);
+  background: var(--tps-cart-progress-color);
+  color: var(--tps-white);
 }
 
 .cart-drawer__progress.is-complete .cart-drawer__progress-icon {
@@ -433,7 +433,7 @@ cart-drawer.is-updating .cart-drawer__loading {
 
   100% {
     opacity: 0;
-    transform: translate3d(var(--confetti-drift, 0), 110vh, 0) rotate(var(--confetti-rotation, 360deg));
+    transform: translate3d(var(--tps-confetti-drift, 0), 110vh, 0) rotate(var(--tps-confetti-rotation, 360deg));
   }
 }
 
@@ -483,7 +483,7 @@ cart-drawer.is-rewards-complete .cart-drawer__progress {
 }
 
 .cart-drawer__recommendations-dot.is-active {
-  background: rgb(var(--color-button-primary-background, 255 140 0));
+  background: rgb(var(--tps-color-button-primary-background, 255 140 0));
 }
 
 .cart-drawer__recommendations-viewport {
@@ -578,7 +578,7 @@ cart-drawer.is-rewards-complete .cart-drawer__progress {
   flex-shrink: 0;
   margin-top: auto;
   padding: 1.6rem 2rem 2rem;
-  border-top: 0.1rem solid rgb(var(--color-header-text) / 0.35);
+  border-top: 0.1rem solid rgb(var(--tps-color-header-text) / 0.35);
   display: flex;
   flex-direction: column;
   gap: 1rem;

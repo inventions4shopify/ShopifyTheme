@@ -8,11 +8,11 @@ class SiteHeader extends HTMLElement {
 
     this.updateHeaderHeight = () => {
       if (this.mode === 'none' || this.classList.contains('is-hidden')) {
-        document.documentElement.style.setProperty('--header-height', '0px');
+        document.documentElement.style.setProperty('--tps-header-height', '0px');
         return;
       }
 
-      document.documentElement.style.setProperty('--header-height', `${this.offsetHeight}px`);
+      document.documentElement.style.setProperty('--tps-header-height', `${this.offsetHeight}px`);
     };
 
     if (this.mode !== 'none') {
@@ -29,7 +29,7 @@ class SiteHeader extends HTMLElement {
         this.resizeObserver.observe(this);
       }
     } else {
-      document.documentElement.style.setProperty('--header-height', '0px');
+      document.documentElement.style.setProperty('--tps-header-height', '0px');
     }
 
     if (this.mode !== 'reduce' && this.mode !== 'scroll-up') return;

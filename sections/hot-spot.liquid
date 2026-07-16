@@ -105,7 +105,7 @@
                     -webkit-text-fill-color: transparent;
                     background-clip: text;
                     {%- elsif head_color != blank and head_color != 'rgba(0,0,0,0)' -%}
-                    --color-heading: {{ head_color.rgb }};
+                    --tps-color-heading: {{ head_color.rgb }};
                     {%- endif -%}
                 {%- endcapture -%}
                 
@@ -137,12 +137,12 @@
             {%  for block in section.blocks  %}
                 <div class="cms-hot-spot-cell" 
                 style="
-                    --hot-spot-bg: {{ block.settings.box_color }};
-                    --button-position-horizontal-mobile: {{ block.settings.mb_horizontal_position }}%;
-                    --button-position-vertical-mobile: {{ block.settings.mb_vertical_position }}%;
-                    --button-position-horizontal-desktop: {{ block.settings.horizontal_position }}%;
-                    --button-position-vertical-desktop: {{ block.settings.vertical_position }}%;
-                    --hot-spot-heading-color: {{ block.settings.hot_spot_head_color }};
+                    --tps-hot-spot-bg: {{ block.settings.box_color }};
+                    --tps-button-position-horizontal-mobile: {{ block.settings.mb_horizontal_position }}%;
+                    --tps-button-position-vertical-mobile: {{ block.settings.mb_vertical_position }}%;
+                    --tps-button-position-horizontal-desktop: {{ block.settings.horizontal_position }}%;
+                    --tps-button-position-vertical-desktop: {{ block.settings.vertical_position }}%;
+                    --tps-hot-spot-heading-color: {{ block.settings.hot_spot_head_color }};
                 ">
                     <button class="button button--secondary">
                         {% assign icon = block.settings.hot-spot-icon %}

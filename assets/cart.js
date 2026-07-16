@@ -421,8 +421,8 @@ function launchCartConfetti(confettiRoot) {
     piece.style.background = colors[index % colors.length];
     piece.style.animationDelay = `${Math.random() * 1.2}s`;
     piece.style.animationDuration = `${2.4 + Math.random() * 1.6}s`;
-    piece.style.setProperty('--confetti-drift', `${-40 + Math.random() * 80}px`);
-    piece.style.setProperty('--confetti-rotation', `${Math.random() * 720}deg`);
+    piece.style.setProperty('--tps-confetti-drift', `${-40 + Math.random() * 80}px`);
+    piece.style.setProperty('--tps-confetti-rotation', `${Math.random() * 720}deg`);
     confettiRoot.appendChild(piece);
   }
 

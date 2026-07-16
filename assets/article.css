@@ -27,7 +27,7 @@
 .article-content td,
 .article-content th,
 .article-content tr {
-    font-size: var(--text-sm);
+    font-size: var(--tps-text-sm);
 }
 .article-back-btn {
     display: inline-flex;
@@ -50,14 +50,14 @@
 .article-category {
     text-transform: uppercase;
     opacity: 0.7;
-    margin-bottom: var(--spacing-10);
+    margin-bottom: var(--tps-spacing-10);
 }
 
 .article-meta {
     display: flex;
-    gap: var(--spacing-32);
+    gap: var(--tps-spacing-32);
     flex-wrap: wrap;
-    margin-bottom: var(--spacing-40);
+    margin-bottom: var(--tps-spacing-40);
 }
 
 .article-featured-image {
@@ -74,12 +74,12 @@
 .article-content img {
     width: 100%;
     display: block;
-    margin: var(--spacing-40) 0;
+    margin: var(--tps-spacing-40) 0;
 }
 
 .article-content a {
-    text-decoration-thickness: var(--spacing-2);
-    text-underline-offset: var(--spacing-4);
+    text-decoration-thickness: var(--tps-spacing-2);
+    text-underline-offset: var(--tps-spacing-4);
 }
 
 .article-content ul,
@@ -89,50 +89,50 @@
 }
 
 .article-content blockquote {
-    padding: var(--spacing-20) 3rem;
-    margin: var(--spacing-40) 0;
+    padding: var(--tps-spacing-20) 3rem;
+    margin: var(--tps-spacing-40) 0;
     background: rgba(0, 0, 0, 0.03);
 }
 
 .article-content table {
     width: 100%;
     border-collapse: collapse;
-    margin: var(--spacing-40) 0;
+    margin: var(--tps-spacing-40) 0;
 }
 
 .article-content th,
 .article-content td {
-    padding: var(--spacing-16);
+    padding: var(--tps-spacing-16);
     border: 0.1rem solid;
     text-align: center;
 }
 
 .article-comments {
-    margin-top: var(--spacing-60);
-    padding-top: var(--spacing-40);
+    margin-top: var(--tps-spacing-60);
+    padding-top: var(--tps-spacing-40);
 }
 
 .article-comments__title {
-    margin-bottom: var(--spacing-32);
+    margin-bottom: var(--tps-spacing-32);
 }
 
 @media screen and (min-width: 769px) {
     .article-comments__title,
     .article-comment-form {
-        max-width: var(--page-width-small);
+        max-width: var(--tps-page-width-small);
     }
 }
 
 .article-comment-form__fields {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-16);
+    gap: var(--tps-spacing-16);
 }
 
 .article-comment-form__row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-16);
+    gap: var(--tps-spacing-16);
 }
 
 .article-comment-form .field__input {
@@ -145,17 +145,17 @@
 }
 
 .article-comment-form__submit {
-    margin-top: var(--spacing-32);
+    margin-top: var(--tps-spacing-32);
     margin-bottom: 0;
 }
 
 .article-comments__list--has-comments {
-    margin-top: var(--spacing-60);
-    padding-top: var(--spacing-40);
+    margin-top: var(--tps-spacing-60);
+    padding-top: var(--tps-spacing-40);
 }
 
 .article-comments__list-title {
-    margin-bottom: var(--spacing-24);
+    margin-bottom: var(--tps-spacing-24);
 }
 
 .article-comments__count {
@@ -164,7 +164,7 @@
 }
 
 .article-comment {
-    padding: var(--spacing-24) 0;
+    padding: var(--tps-spacing-24) 0;
     border-bottom: 0.1rem solid rgba(0, 0, 0, 0.1);
 }
 
@@ -176,36 +176,36 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--spacing-12) var(--spacing-24);
-    margin-bottom: var(--spacing-12);
+    gap: var(--tps-spacing-12) var(--tps-spacing-24);
+    margin-bottom: var(--tps-spacing-12);
 }
 
 .article-comment__author {
-    font-size: var(--text-base);
+    font-size: var(--tps-text-base);
 }
 
 .article-comment__date {
-    font-size: var(--text-sm);
+    font-size: var(--tps-text-sm);
     opacity: 0.7;
 }
 
 .article-comment__content {
-    font-size: var(--text-sm);
+    font-size: var(--tps-text-sm);
     line-height: 1.6;
 }
 
 .article-comments__pagination {
-    margin-top: var(--spacing-32);
+    margin-top: var(--tps-spacing-32);
 }
 
 .article-comment-form .form__message,
 .article-comment-form .success-msg {
-    margin-bottom: var(--spacing-24);
+    margin-bottom: var(--tps-spacing-24);
 }
 
 @media screen and (max-width: 768px) {
 .article-template {
-    padding: var(--spacing-40) 0;
+    padding: var(--tps-spacing-40) 0;
 }
 
 .article-back-btn {
@@ -213,14 +213,14 @@
 }
 
 .article-meta {
-    gap: var(--spacing-16);
+    gap: var(--tps-spacing-16);
 }
 
 .article-featured-image {
     margin-bottom: 3rem;
 }
 .article-header {
-    padding: var(--spacing-12) 0 var(--spacing-24);
+    padding: var(--tps-spacing-12) 0 var(--tps-spacing-24);
 }
 
 .article-comment-form__row {

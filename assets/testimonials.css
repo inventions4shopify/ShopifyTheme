@@ -8,7 +8,7 @@
 .testimonial-wrapper.is-slider {
   padding: 0.5rem;
   overflow:hidden;
-  gap: var(--spacing-20);
+  gap: var(--tps-spacing-20);
   transition: transform 0.5s ease;
   scroll-behavior: auto;
 }
@@ -16,7 +16,7 @@
   width: 100%;
   justify-content: center;
   margin-top: 3rem;
-  gap: var(--spacing-16);
+  gap: var(--tps-spacing-16);
 }
 .testimonial-slider-arrow-btn button {
   cursor: pointer;
@@ -29,14 +29,14 @@
   height: 1.8rem;
 }
 .testimonial-card {
-  background: var(--input-background);
+  background: var(--tps-input-background);
   padding: 2rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: var(--input-radius);
-  border: var(--input-border-width) var(--input-border-style) var(--input-border-color);
+  border-radius: var(--tps-input-radius);
+  border: var(--tps-input-border-width) var(--tps-input-border-style) var(--tps-input-border-color);
 }
 .testimonial-stars {
-  gap: var(--spacing-4);
+  gap: var(--tps-spacing-4);
   align-items: center;
 }
 .testimonial-content>*:last-child {
@@ -46,13 +46,13 @@
   margin-top: 1.6rem;
 }
 .testimonial-content p {
-  font-size: var(--text-sm);
+  font-size: var(--tps-text-sm);
   line-height: 1.4;
 }
 .testimonial-footer {
   margin-top: 1.5rem;
   align-items: center;
-  gap: var(--spacing-12);
+  gap: var(--tps-spacing-12);
 }
 .testimonial-stars svg {
   width: 1.8rem;
@@ -64,13 +64,13 @@
   height: 6rem;
 }
 span.testimonial-author-name {
-  font-size: var(--text-sm);
+  font-size: var(--tps-text-sm);
   display: block;
   font-weight: 600;
   line-height: 1.5;
 }
 span.testimonial-author-position {
-  font-size: var(--text-xs);
+  font-size: var(--tps-text-xs);
   display: block;
   line-height: 1.5;
 }

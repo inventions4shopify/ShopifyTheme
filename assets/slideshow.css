@@ -195,18 +195,18 @@ slideshow-section {
   height: 4rem;
   border-radius: 50%;
   position: relative;
-  background: conic-gradient(red var(--progress), #ddd 0deg);
+  background: conic-gradient(red var(--tps-progress), #ddd 0deg);
   display: flex;
   align-items: center;
   justify-content: center;
-  --progress: 0deg;
+  --tps-progress: 0deg;
 }
 
 .cms-autoplay-progress::before {
   content: "";
   width: calc(100% - 8px);
   height: calc(100% - 8px);
-  background: var(--black);
+  background: var(--tps-black);
   border-radius: 50%;
   position: absolute;
 }

@@ -7,7 +7,7 @@ collection-list-section {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 100%;
-  gap: var(--spacing-20);
+  gap: var(--tps-spacing-20);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
@@ -27,14 +27,14 @@ collection-list-section {
 }
 
 .collection-grid.is-slider.mobile-columns-2 {
-  grid-auto-columns: calc((100% - var(--spacing-20)) / 2);
+  grid-auto-columns: calc((100% - var(--tps-spacing-20)) / 2);
 }
 
 .collection-grid-slider-arrow-btn {
   width: 100%;
   justify-content: center;
-  margin-top: var(--spacing-24);
-  gap: var(--spacing-16);
+  margin-top: var(--tps-spacing-24);
+  gap: var(--tps-spacing-16);
 }
 
 .collection-grid-slider-arrow-btn button {
@@ -61,7 +61,7 @@ collection-list-section {
   color: inherit;
   position: relative;
   overflow: hidden;
-  border-radius: var(--input-radius);
+  border-radius: var(--tps-input-radius);
 }
 
 .collection-card.has-overlay-text .collection-card__content {
@@ -111,7 +111,7 @@ collection-list-section {
   padding: 1.6rem;
   display: flex;
   align-items: center;
-  gap: var(--spacing-12);
+  gap: var(--tps-spacing-12);
 }
 
 @media (min-width: 576px) {
@@ -132,7 +132,7 @@ collection-list-section {
   }
 
   .collection-grid.is-slider {
-    grid-auto-columns: calc((100% - var(--spacing-20)) / 2);
+    grid-auto-columns: calc((100% - var(--tps-spacing-20)) / 2);
   }
 }
 
@@ -143,7 +143,7 @@ collection-list-section {
   }
 
   .collection-grid.is-slider {
-    grid-auto-columns: calc((100% - (var(--spacing-20) * 2)) / 3);
+    grid-auto-columns: calc((100% - (var(--tps-spacing-20) * 2)) / 3);
   }
 }
 
@@ -153,14 +153,14 @@ collection-list-section {
   }
 
   .collection-grid.columns-4.is-slider {
-    grid-auto-columns: calc((100% - (var(--spacing-20) * 3)) / 4);
+    grid-auto-columns: calc((100% - (var(--tps-spacing-20) * 3)) / 4);
   }
 
   .collection-grid.columns-3.is-slider {
-    grid-auto-columns: calc((100% - (var(--spacing-20) * 2)) / 3);
+    grid-auto-columns: calc((100% - (var(--tps-spacing-20) * 2)) / 3);
   }
 
   .collection-grid.columns-2.is-slider {
-    grid-auto-columns: calc((100% - var(--spacing-20)) / 2);
+    grid-auto-columns: calc((100% - var(--tps-spacing-20)) / 2);
   }
 }

@@ -1,7 +1,7 @@
 .before-after-wrapper {
   position: relative;
   overflow: hidden;
-  border-radius: var(--media-radius);
+  border-radius: var(--tps-media-radius);
   width: 100%;
 }
 
@@ -38,8 +38,8 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: var(--spacing-2);
-  background: var(--white);
+  width: var(--tps-spacing-2);
+  background: var(--tps-white);
   transform: translateX(-50%);
   z-index: 2;
 }
@@ -50,7 +50,7 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  background: var(--white);
+  background: var(--tps-white);
   border-radius: 100%;
   z-index: 3;
   display: flex;
@@ -61,7 +61,7 @@
 }
 
 .divider-handle img {
-  border-radius: var(--radius-full);
+  border-radius: var(--tps-radius-full);
 }
 
 .divider-handle span {
@@ -109,8 +109,8 @@
   font-weight: 600;
   line-height: 1;
   border-radius: 3rem;
-  background: var(--black);
-  color: var(--white);
+  background: var(--tps-black);
+  color: var(--tps-white);
   text-transform: uppercase;
 }
 

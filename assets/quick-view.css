@@ -50,8 +50,8 @@
   width: min(100%, 112rem);
   max-height: calc(100vh - 3.2rem);
   overflow: auto;
-  background: rgb(var(--color-background));
-  border-radius: var(--card-radius, 0.8rem);
+  background: rgb(var(--tps-color-background));
+  border-radius: var(--tps-card-radius, 0.8rem);
   box-shadow: 0 1.6rem 4.8rem rgba(0, 0, 0, 0.18);
   will-change: transform, opacity;
 }
@@ -146,7 +146,7 @@ body.quick-view-open {
 }
 
 .quick-view-modal .product_title_block {
-  font-size: var(--text-h3, 2.4rem);
+  font-size: var(--tps-text-h3, 2.4rem);
 }
 
 .quick-view-modal__view-details {

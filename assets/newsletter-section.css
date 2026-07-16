@@ -1,7 +1,7 @@
 .newsletter-section__card {
-  border-radius: var(--newsletter-section-radius, 1.6rem);
+  border-radius: var(--tps-newsletter-section-radius, 1.6rem);
   overflow: hidden;
-  background: var(--section-background, transparent);
+  background: var(--tps-section-background, transparent);
 }
 
 .newsletter-section .newsletter-popup-inner {

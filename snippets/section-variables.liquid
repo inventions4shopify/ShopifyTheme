@@ -17,31 +17,31 @@
 {%- capture css_vars -%}
   {%- comment -%} ── Background ─────────────────────────────────────── {%- endcomment -%}
   {%- if s.background_gradient != blank and s.background_gradient != 'none' -%}
-    --section-background: {{ s.background_gradient }};
+    --tps-section-background: {{ s.background_gradient }};
   {%- elsif s.background_color != blank and s.background_color != 'rgba(0,0,0,0)' -%}
-    --section-background: rgb({{ s.background_color.rgb }});
+    --tps-section-background: rgb({{ s.background_color.rgb }});
   {%- endif -%}
 
   {%- comment -%} ── Colors ─────────────────────────────────────────── {%- endcomment -%}
   {%- if s.text_color != blank and s.text_color != 'rgba(0,0,0,0)' -%}
-    --color-body-text: {{ s.text_color.rgb }};
+    --tps-color-body-text: {{ s.text_color.rgb }};
   {%- endif -%}
   {%- if s.heading_color != blank and s.heading_color != 'rgba(0,0,0,0)' -%}
-    --color-heading: {{ s.heading_color.rgb }};
+    --tps-color-heading: {{ s.heading_color.rgb }};
   {%- endif -%}
   {%- if s.subheading_color != blank and s.subheading_color != 'rgba(0,0,0,0)' -%}
-    --color-subheading: {{ s.subheading_color.rgb }};
+    --tps-color-subheading: {{ s.subheading_color.rgb }};
   {%- endif -%}
 
   {%- comment -%} ── Button overrides ───────────────────────────────── {%- endcomment -%}
   {%- if s.button_background_color != blank and s.button_background_color != 'rgba(0,0,0,0)' -%}
-    --color-button-primary-background: {{ s.button_background_color.rgb }};
+    --tps-color-button-primary-background: {{ s.button_background_color.rgb }};
   {%- endif -%}
   {%- if s.button_text_color != blank and s.button_text_color != 'rgba(0,0,0,0)' -%}
-    --color-button-primary-text: {{ s.button_text_color.rgb }};
+    --tps-color-button-primary-text: {{ s.button_text_color.rgb }};
   {%- endif -%}
   {%- if s.button_outline_color != blank and s.button_outline_color != 'rgba(0,0,0,0)' -%}
-    --color-button-primary-outline: {{ s.button_outline_color.rgb }};
+    --tps-color-button-primary-outline: {{ s.button_outline_color.rgb }};
   {%- endif -%}
 
   {%- comment -%} ── Custom spacing — overrides theme pre-calc'd vars ── {%- endcomment -%}
@@ -50,12 +50,12 @@
     {%- assign spacing_bottom_mobile = s.section_spacing_bottom_mobile | default: 40 -%}
     {%- assign spacing_top_desktop = s.section_spacing_top_desktop | default: 64 -%}
     {%- assign spacing_bottom_desktop = s.section_spacing_bottom_desktop | default: 64 -%}
-    --section-spacing-top-mobile: {{ spacing_top_mobile }}px;
-    --section-spacing-bottom-mobile: {{ spacing_bottom_mobile }}px;
-    --section-spacing-top-tablet: {{ spacing_top_mobile | plus: spacing_top_desktop | divided_by: 2 }}px;
-    --section-spacing-bottom-tablet: {{ spacing_bottom_mobile | plus: spacing_bottom_desktop | divided_by: 2 }}px;
-    --section-spacing-top-desktop: {{ spacing_top_desktop }}px;
-    --section-spacing-bottom-desktop: {{ spacing_bottom_desktop }}px;
+    --tps-section-spacing-top-mobile: {{ spacing_top_mobile }}px;
+    --tps-section-spacing-bottom-mobile: {{ spacing_bottom_mobile }}px;
+    --tps-section-spacing-top-tablet: {{ spacing_top_mobile | plus: spacing_top_desktop | divided_by: 2 }}px;
+    --tps-section-spacing-bottom-tablet: {{ spacing_bottom_mobile | plus: spacing_bottom_desktop | divided_by: 2 }}px;
+    --tps-section-spacing-top-desktop: {{ spacing_top_desktop }}px;
+    --tps-section-spacing-bottom-desktop: {{ spacing_bottom_desktop }}px;
   {%- endif -%}
 {%- endcapture -%}
 

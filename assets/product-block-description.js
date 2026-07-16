@@ -21,7 +21,7 @@ class ReadMoreDescription extends HTMLElement {
 
     this.readLessText = this.dataset.readLess || 'Read less';
 
-    this.content.style.setProperty('--read-more-lines', this.lines);
+    this.content.style.setProperty('--tps-read-more-lines', this.lines);
 
     this.content.classList.add('is-clamped');
 

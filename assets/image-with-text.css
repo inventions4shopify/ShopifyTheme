@@ -1,5 +1,5 @@
 .cms-image-with-text__media >* {
-  object-fit: var(--media-fit);
+  object-fit: var(--tps-media-fit);
 }
 
 .cms-image-with-text__content {
