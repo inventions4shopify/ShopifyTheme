@@ -33,6 +33,7 @@
     pointer-events: all;
     top: var(--tps-button-position-vertical-mobile);
     left: var(--tps-button-position-horizontal-mobile);
+    z-index: 2;
 }
 
 .cms-hot-spot-cell .button {
