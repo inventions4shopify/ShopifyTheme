@@ -1629,3 +1629,22 @@ canvas {
   flex: 1 1 auto;
   justify-content: center;
 }
+
+.shopify-policy__container {
+  padding-top: var(--section-spacing-top-mobile);
+  padding-bottom: var(--section-spacing-bottom-mobile);
+}
+
+@media (min-width: 768px) {
+  .shopify-policy__container {
+    padding-top: var(--section-spacing-top-tablet);
+    padding-bottom: var(--section-spacing-bottom-tablet);
+  }
+}
+
+@media (min-width: 1200px) {
+  .shopify-policy__container {
+    padding-top: var(--section-spacing-top-desktop);
+    padding-bottom: var(--section-spacing-bottom-desktop);
+  }
+}

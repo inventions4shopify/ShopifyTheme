@@ -3,7 +3,7 @@
 <style>
 
   .cms-faq-item {
-    border: 0.1rem solid {%if section.settings.faq_button_border_color != blank %}{{ section.settings.faq_button_border_color }}{% else %}#ccc{% endif %};
+    border: 0.1rem solid {%if section.settings.faq_button_border_color != blank %}{{ section.settings.faq_button_border_color }}{% else %}rgb(var(--tps-color-button-primary-outline)){% endif %};
     border-radius: {%if section.settings.faq_button_br != blank %}{{ section.settings.faq_button_br }}{% else %}0{% endif %}px;
     background-color: {%if section.settings.faq_button_color != blank %}{{ section.settings.faq_button_color }}{% else %}transparent{% endif %};
     color: {%if section.settings.faq_heading_color != blank %}{{ section.settings.faq_heading_color }}{% else %}var(--tps-black){% endif %};
