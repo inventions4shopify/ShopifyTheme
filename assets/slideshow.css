@@ -135,7 +135,6 @@ slideshow-section {
     height: 3.4rem;
     padding: 0;
     flex-shrink: 0;
-    cursor: pointer;
 }
 
 .icons-style-none .cms-slide-button {

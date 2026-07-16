@@ -213,13 +213,11 @@
     width: 3.6rem;
     height: 3.6rem;
     border: 0.1rem solid var(--color-border);
-    border-radius: var(--radius-full);
+    border-radius: var(--button-radius);
     padding: 0;
     cursor: pointer;
     transform: translateY(-50%);
-    transition:
-        opacity 0.25s ease,
-        visibility 0.25s ease;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .product_gallery_arrow_prev {
@@ -435,11 +433,10 @@
     z-index: 9999;
 }
 
-/* Hide header / sticky ATC so lightbox stays on top */
+/* Hide header (sticky / scroll-up / always) so lightbox close stays visible */
 body.product-lightbox-open .shopify-section-group-header-group,
 body.product-lightbox-open .header-sticky-host,
-body.product-lightbox-open .main-header-wrapper,
-body.product-lightbox-open .sticky_add_to_cart {
+body.product-lightbox-open .main-header-wrapper {
     visibility: hidden;
     pointer-events: none;
 }
@@ -615,8 +612,6 @@ body.product-lightbox-open .sticky_add_to_cart {
         min-width: 8rem;
     }
 }
-
-
 
 /* ---------------------------------
   TABLET
