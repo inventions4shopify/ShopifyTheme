@@ -4,7 +4,7 @@
     --header-padding: {{ section.settings.padding_vertical }}px;
     --header-separator: {{ section.settings.separator_color }};
   }
-  .header.has-separator {
+  .main-header-wrapper.has-separator {
     border-bottom: 0.1rem solid {{ section.settings.separator_color }};
   }
   .header--row-bottom .header__nav {
@@ -49,7 +49,7 @@
 -%}
 
 <site-header
-  class="main-header-wrapper header--sticky-{{ sticky }}"
+  class="main-header-wrapper header--sticky-{{ sticky }} {% if section.settings.separator_line %}has-separator{% endif %}"
   data-sticky="{{ sticky }}"
 >
   <header
@@ -63,7 +63,6 @@
       {% if section.settings.menu_type == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu_type != blank %} header--has-menu{% endif %}
       {{ section.settings.section_width }}
        {% if shop.customer_accounts_enabled %} header--has-account{% endif %}
-      {% if section.settings.separator_line %}has-separator{% endif %}
        {% if localization_forms %} header--has-localizations{% endif %}
     "
   >
