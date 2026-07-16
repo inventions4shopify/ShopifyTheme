@@ -1,13 +1,13 @@
 /* Base theme styles */
 
 :root {
-  --container-padding-inline: 1.6rem;
+  --container-padding-inline: 2rem;
   --section-gap: var(--section-spacing-top, 3.2rem);
 }
 
-@media (--sm) {
+@media (min-width: 992px) {
   :root {
-    --container-padding-inline: 2.4rem;
+    --container-padding-inline: 5rem;
   }
 }
 
@@ -142,7 +142,7 @@ a {
 }
 
 a:hover {
-  color: rgb(var(--color-body-text));
+  color: inherit;
 }
 
 ul,
@@ -350,10 +350,21 @@ input[type="submit"] {
   box-shadow: 2px 2px 0 0 rgb(var(--color-button-primary-outline));
 }
 
+.button:hover {
+  --button-background: rgb(var(--color-button-primary-text));
+  --button-text: rgb(var(--color-button-primary-background));
+}
+
 .button--secondary {
   --button-text: rgb(var(--color-button-secondary-text));
   --button-background: rgb(var(--color-button-secondary-background));
   --button-outline: rgb(var(--color-button-secondary-outline));
+  box-shadow: 2px 2px rgb(var(--color-button-secondary-outline));
+}
+
+.button--secondary:hover {
+  --button-text: rgb(var(--color-button-secondary-text));
+  --button-background: rgba(var(--color-button-secondary-background) / 0.8);
 }
 
 body .shopify-payment-button__button--unbranded {

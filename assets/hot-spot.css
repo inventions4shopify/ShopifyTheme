@@ -24,6 +24,10 @@
     z-index: 10;
 }
 
+.cms-hot-spot-items::before {
+    
+}
+
 .cms-hot-spot-cell {
     position: absolute;
     top: var(--button-position-vertical-mobile);
