@@ -12,10 +12,6 @@
     bottom: 0;
 }
 
-.cms-hot-spot__media >* {
-    height: auto;
-}
-
 .cms-hot-spot__content {
     position: relative;
     z-index: 4;

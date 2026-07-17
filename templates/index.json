@@ -16,8 +16,8 @@
           "type": "slide",
           "settings": {
             "media_type": "image",
-            "image_1": "shopify://shop_images/banner-1.png",
-            "image_2": "shopify://shop_images/banner-1_mobile.png",
+            "image_1": "shopify://shop_images/coming-soon.png",
+            "image_2": "shopify://shop_images/coming-soon-1.png",
             "toggle_overlay": true,
             "overlay_color": "#0000008a",
             "content_width": "medium",
@@ -68,7 +68,7 @@
       "settings": {
         "section_width": "full-width",
         "slide_width": "page-width",
-        "slide_height": "medium",
+        "slide_height": "large",
         "icons_style": "chevron",
         "icons_shape": "square",
         "slideshow_controls_style": "dots",
@@ -170,7 +170,7 @@
           "type": "button",
           "settings": {
             "link_label": "Shop now",
-            "link": "",
+            "link": "shopify://collections/printed-dress",
             "button_alignment": "center",
             "button_background_color": "",
             "button_text_color": "",
@@ -228,7 +228,7 @@
         "buttons_NRFV9L": {
           "type": "buttons",
           "settings": {
-            "link": "",
+            "link": "shopify://collections/summer-dresses",
             "link_label": "Shop Now",
             "button_background_color": "",
             "button_text_color": "",
@@ -324,7 +324,7 @@
         "border_radius": 0,
         "button_alignment": "center",
         "link_label": "Shop now",
-        "link": "",
+        "link": "shopify://collections",
         "button_background_color": "",
         "button_text_color": "",
         "button_outline_color": "",
@@ -365,7 +365,7 @@
           "type": "button",
           "settings": {
             "button_label": "Shop Now",
-            "button_link": "",
+            "button_link": "shopify://collections/co-ord-sets",
             "button_style_secondary": false,
             "button_background_color": "",
             "button_text_color": "",
@@ -499,7 +499,7 @@
           "type": "button",
           "settings": {
             "link_label": "Shop now",
-            "link": "",
+            "link": "shopify://collections/printed-dress",
             "button_alignment": "inherit",
             "button_background_color": "",
             "button_text_color": "",
@@ -538,90 +538,150 @@
         "list_AQrmh8": {
           "type": "list",
           "settings": {
-            "heading": "Premium Quality",
-            "compare_options-1": "compare-icons",
-            "cell-1": "First Compared Option",
+            "heading": "Fabric Quality",
+            "compare_options-1": "compare-text",
+            "cell-1": "Premium Cotton Blend",
             "icon-1": true,
-            "compare_options-2": "compare-icons",
-            "cell-2": "Second Compared Option",
+            "compare_options-2": "compare-text",
+            "cell-2": "Standard Cotton",
             "icon-2": true,
-            "compare_options-3": "compare-icons",
-            "cell-3": "Third Compared Option",
+            "compare_options-3": "compare-text",
+            "cell-3": "Mixed Fabric",
             "icon-3": true
           }
         },
         "list_fPKFUe": {
           "type": "list",
           "settings": {
-            "heading": "Everyday Wear",
-            "compare_options-1": "compare-icons",
-            "cell-1": "First Compared Option",
+            "heading": "Comfort",
+            "compare_options-1": "compare-text",
+            "cell-1": "All-Day Comfort",
             "icon-1": true,
-            "compare_options-2": "compare-icons",
-            "cell-2": "Second Compared Option",
+            "compare_options-2": "compare-text",
+            "cell-2": "Average",
             "icon-2": false,
-            "compare_options-3": "compare-icons",
-            "cell-3": "Third Compared Option",
+            "compare_options-3": "compare-text",
+            "cell-3": "Basic",
             "icon-3": false
           }
         },
         "list_ne6twX": {
           "type": "list",
           "settings": {
-            "heading": "Lightweight Fabric",
-            "compare_options-1": "compare-icons",
-            "cell-1": "First Compared Option",
+            "heading": "Style",
+            "compare_options-1": "compare-text",
+            "cell-1": "Trend-Driven Designs",
             "icon-1": true,
-            "compare_options-2": "compare-icons",
-            "cell-2": "Second Compared Option",
+            "compare_options-2": "compare-text",
+            "cell-2": "Limited Styles",
             "icon-2": true,
-            "compare_options-3": "compare-icons",
-            "cell-3": "Third Compared Option",
+            "compare_options-3": "compare-text",
+            "cell-3": "Outdated Designs",
             "icon-3": true
           }
         },
         "list_jKphdH": {
           "type": "list",
           "settings": {
-            "heading": "Comfortable Fit",
-            "compare_options-1": "compare-icons",
-            "cell-1": "First Compared Option",
+            "heading": "Fit",
+            "compare_options-1": "compare-text",
+            "cell-1": "Tailored Fit",
             "icon-1": true,
-            "compare_options-2": "compare-icons",
-            "cell-2": "Second Compared Option",
+            "compare_options-2": "compare-text",
+            "cell-2": "Regular Fit",
             "icon-2": true,
-            "compare_options-3": "compare-icons",
-            "cell-3": "Third Compared Option",
+            "compare_options-3": "compare-text",
+            "cell-3": "Inconsistent Fit",
             "icon-3": true
           }
         },
         "list_CxJRyN": {
           "type": "list",
           "settings": {
-            "heading": "New Arrivals",
-            "compare_options-1": "compare-icons",
-            "cell-1": "First Compared Option",
+            "heading": "Breathability",
+            "compare_options-1": "compare-text",
+            "cell-1": "Lightweight & Breathable",
             "icon-1": true,
-            "compare_options-2": "compare-icons",
-            "cell-2": "Second Compared Option",
+            "compare_options-2": "compare-text",
+            "cell-2": "Moderate",
             "icon-2": true,
-            "compare_options-3": "compare-icons",
-            "cell-3": "Third Compared Option",
+            "compare_options-3": "compare-text",
+            "cell-3": "Heavy Fabric",
             "icon-3": true
           }
         },
         "list_83dWPe": {
           "type": "list",
           "settings": {
-            "heading": "Machine Washable",
-            "compare_options-1": "compare-icons",
-            "cell-1": "First Compared Option",
+            "heading": "Durability",
+            "compare_options-1": "compare-text",
+            "cell-1": "Long-Lasting Stitching",
             "icon-1": true,
-            "compare_options-2": "compare-icons",
-            "cell-2": "Second Compared Option",
+            "compare_options-2": "compare-text",
+            "cell-2": "Standard Quality",
             "icon-2": true,
-            "compare_options-3": "compare-icons",
-            "cell-3": "Third Compared Option",
+            "compare_options-3": "compare-text",
+            "cell-3": "Low Durability",
+            "icon-3": false
+          }
+        },
+        "list_4qxVjw": {
+          "type": "list",
+          "settings": {
+            "heading": "Easy Care",
+            "compare_options-1": "compare-text",
+            "cell-1": "Machine Washable",
+            "icon-1": true,
+            "compare_options-2": "compare-text",
+            "cell-2": "Hand Wash Recommended",
+            "icon-2": true,
+            "compare_options-3": "compare-text",
+            "cell-3": "Dry Clean Only",
+            "icon-3": false
+          }
+        },
+        "list_y3tdNp": {
+          "type": "list",
+          "settings": {
+            "heading": "New Collections",
+            "compare_options-1": "compare-text",
+            "cell-1": "Weekly New Arrivals",
+            "icon-1": true,
+            "compare_options-2": "compare-text",
+            "cell-2": "Seasonal",
+            "icon-2": true,
+            "compare_options-3": "compare-text",
+            "cell-3": "Occasional",
+            "icon-3": false
+          }
+        },
+        "list_BptQ7W": {
+          "type": "list",
+          "settings": {
+            "heading": "Returns",
+            "compare_options-1": "compare-text",
+            "cell-1": "30-Day Easy Returns",
+            "icon-1": true,
+            "compare_options-2": "compare-text",
+            "cell-2": "7-Day Returns",
+            "icon-2": true,
+            "compare_options-3": "compare-text",
+            "cell-3": "No Returns",
+            "icon-3": false
+          }
+        },
+        "list_MD774k": {
+          "type": "list",
+          "settings": {
+            "heading": "Shipping",
+            "compare_options-1": "compare-text",
+            "cell-1": "Free Shipping Available",
+            "icon-1": true,
+            "compare_options-2": "compare-text",
+            "cell-2": "Paid Shipping",
+            "icon-2": true,
+            "compare_options-3": "compare-text",
+            "cell-3": "Paid Shipping",
             "icon-3": false
           }
         }
@@ -632,7 +692,11 @@
         "list_ne6twX",
         "list_jKphdH",
         "list_CxJRyN",
-        "list_83dWPe"
+        "list_83dWPe",
+        "list_4qxVjw",
+        "list_y3tdNp",
+        "list_BptQ7W",
+        "list_MD774k"
       ],
       "name": "Comparison Table",
       "settings": {
@@ -663,16 +727,16 @@
       "name": "Countdown",
       "settings": {
         "section_width": "page-width",
-        "width": "medium",
         "background_color": "",
         "background_gradient": "",
-        "image_position": "row",
         "image_show": true,
-        "mb_image": "shopify://shop_images/coming-soon-1.png",
-        "desktop_image": "shopify://shop_images/coming-soon.png",
+        "image_position": "row",
+        "width": "medium",
+        "mb_image": "shopify://shop_images/cc_mobile.png",
+        "desktop_image": "shopify://shop_images/cc_desktop.png",
         "text_alignment": "center",
         "content_alignment": "center",
-        "countdown_date": "12-31-2028 23:59:59",
+        "countdown_date": "8-31-2026 23:59:59",
         "date_color": "#ffffff",
         "subheading": "Limited Time Offer",
         "subheading_color": "#ffffff",
@@ -750,7 +814,7 @@
         "heading": "Frequently Asked Questions",
         "text_color": "",
         "description": "<p>Find quick answers to the most common questions about our services, pricing, and process.</p>",
-        "link": "",
+        "link": "shopify://pages/contact",
         "link_label": "Contact Us",
         "button_text_color": "",
         "button_background_color": "",
@@ -776,11 +840,11 @@
           "settings": {
             "horizontal_position": 71,
             "vertical_position": 24,
-            "mb_horizontal_position": 83,
-            "mb_vertical_position": 74,
+            "mb_horizontal_position": 35,
+            "mb_vertical_position": 31,
             "hot-spot-icon-width": 30,
-            "hot-spot-heading": "Card Title",
-            "hot-spot-description": "<p>Card Description</p>",
+            "hot-spot-heading": "Premium Fabric",
+            "hot-spot-description": "<p>Crafted from soft, breathable materials that provide all-day comfort with a luxurious feel.</p>",
             "box_color": "#ffffff",
             "hot_spot_head_color": ""
           }
@@ -788,13 +852,13 @@
         "hot_spot_Mty7pQ": {
           "type": "hot-spot",
           "settings": {
-            "horizontal_position": 50,
+            "horizontal_position": 54,
             "vertical_position": 38,
             "mb_horizontal_position": 52,
             "mb_vertical_position": 38,
             "hot-spot-icon-width": 40,
-            "hot-spot-heading": "Card Title",
-            "hot-spot-description": "<p>Card Description</p>",
+            "hot-spot-heading": "Elegant Craftsmanship",
+            "hot-spot-description": "<p>Thoughtfully designed with refined details and a flattering silhouette for every occasion.</p>",
             "box_color": "#ffffff",
             "hot_spot_head_color": ""
           }
@@ -803,12 +867,12 @@
           "type": "hot-spot",
           "settings": {
             "horizontal_position": 60,
-            "vertical_position": 83,
+            "vertical_position": 64,
             "mb_horizontal_position": 45,
             "mb_vertical_position": 70,
             "hot-spot-icon-width": 40,
-            "hot-spot-heading": "Card Title",
-            "hot-spot-description": "<p>Card Description</p>",
+            "hot-spot-heading": "Perfect Fit",
+            "hot-spot-description": "<p>Designed to move with you, offering exceptional comfort and confidence from day to night.</p>",
             "box_color": "#ffffff",
             "hot_spot_head_color": ""
           }
@@ -840,7 +904,7 @@
         "heading_gradient": "",
         "description": "<p>Shop our latest collection of elegant ethnic wear, embroidered suits, and graceful dresses. Enjoy exclusive festive discounts for a limited time and make every celebration unforgettable.<br/><br/></p>",
         "text_color": "#ffffff",
-        "link": "",
+        "link": "shopify://collections/short-dresses",
         "link_label": "Shop Now",
         "button_background_color": "",
         "button_text_color": "",
@@ -1122,7 +1186,7 @@
         "text_width": "",
         "text_color": "",
         "link_label": "Get Started",
-        "link": "",
+        "link": "shopify://collections/best-seller",
         "button_alignment": "inherit",
         "button_background_color": "",
         "button_text_color": "",
@@ -1170,8 +1234,8 @@
           "type": "testimonial",
           "settings": {
             "review": "<p>\"I absolutely love the quality of the fabrics and the attention to detail in every piece. The dress fit perfectly, and I received so many compliments. The entire shopping experience was smooth from ordering to delivery.\"</p>",
-            "name": "Bhadresh Sutaria",
-            "position": "CEO, ThePlanetsoft",
+            "name": "Rahino",
+            "position": "",
             "rating": 5
           }
         },
@@ -1179,8 +1243,8 @@
           "type": "testimonial",
           "settings": {
             "review": "<p>\"The designs are elegant, comfortable, and exactly as shown in the photos. Fast shipping, beautiful packaging, and excellent customer service made this one of my favorite online shopping experiences.\"</p>",
-            "name": "Ravi Usadadiya",
-            "position": "CTO, ThePlanetsoft",
+            "name": "Roman R.",
+            "position": "customer",
             "rating": 5
           }
         },
@@ -1188,8 +1252,8 @@
           "type": "testimonial",
           "settings": {
             "review": "<p>\"I've ordered multiple outfits, and every purchase has exceeded my expectations. The quality is exceptional, the sizing is accurate, and the styles are perfect for both everyday wear and special occasions.\"</p>",
-            "name": "Kartik Rangholiya",
-            "position": "Digital Marketing, ThePlanetsoft",
+            "name": "Chris",
+            "position": "",
             "rating": 5
           }
         }

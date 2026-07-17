@@ -128,22 +128,59 @@
     },
     {
         "type": "header",
-        "content": "Table Images"
+        "content": "Table Images Or text"
+    },
+    {
+      "type": "select",
+      "id": "table_head",
+      "label": "Type",
+      "default": "text",
+      "options": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "images",
+          "label": "Images"
+        }
+      ]
     },
     {
       "type": "image_picker",
       "id": "table_image_1",
-      "label": "First column image"
+      "label": "First column image",
+      "visible_if": "{{ section.settings.table_head == 'images' }}"
     },
     {
       "type": "image_picker",
       "id": "table_image_2",
-      "label": "Second column image"
+      "label": "Second column image",
+      "visible_if": "{{ section.settings.table_head == 'images' }}"
     },
     {
       "type": "image_picker",
       "id": "table_image_3",
-      "label": "Third column image"
+      "label": "Third column image",
+      "visible_if": "{{ section.settings.table_head == 'images' }}"
+    },
+    {
+      "type": "text",
+      "id": "table_text_1",
+      "label": "First column Text",
+      "visible_if": "{{ section.settings.table_head == 'text' }}"
+    },
+    {
+      "type": "text",
+      "id": "table_text_2",
+      "label": "Second column Text",
+      "visible_if": "{{ section.settings.table_head == 'text' }}"
+    },
+    {
+      "type": "text",
+      "id": "table_text_3",
+      "label": "Third column Text",
+      "visible_if": "{{ section.settings.table_head == 'text' }}"
     },
     {
         "type": "header",
