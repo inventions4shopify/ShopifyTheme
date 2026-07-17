@@ -87,9 +87,9 @@
             {% endif %}
         </div>
         <div class="page-width">
-            <div class="cms-hot-spot__content flex ps-rte media-overlay-content--{{ section.settings.content_alignment }} cms-cell--{{ section.settings.width }} flex-col">
+            <div class="cms-hot-spot__content flex gap-16 media-overlay-content--{{ section.settings.content_alignment }} cms-cell--{{ section.settings.width }} flex-col">
                 {%- assign sub_color = section.settings.subheading_color -%}
-                    <span class="subheading" 
+                    <span class="section-header__subheading subheading" 
                     {%- unless sub_color == blank or sub_color == 'rgba(0,0,0,0)' %}
                     style="color: rgb({{ sub_color.rgb }});"
                     {%- endunless %}
@@ -109,14 +109,14 @@
                     {%- endif -%}
                 {%- endcapture -%}
                 
-                    <h2 class="cms-hot-spot__heading {{ section.settings.heading_size }}"
+                    <h2 class="section-header__heading {{ section.settings.heading_size }}"
                     {%- unless heading_style == blank %}
                     style="{{ heading_style | strip }}"
                     {%- endunless %}
                     >{{ section.settings.heading }}</h2>
                 
                 {%- assign block_color = section.settings.text_color -%}
-                <div class="cms-hot-spot__description"
+                <div class="rich-text__text ps-rte"
                     {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
                     style="color: rgb({{ block_color.rgb }});"
                     {%- endunless %}

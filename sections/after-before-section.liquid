@@ -2,7 +2,7 @@
 
 <div {%- render 'section-variables', section: section, class: 'after-before__section' -%}>
   <div class="page-width">
-    <div class="cms-row flex-{{ section.settings.image_position }} items-{{ section.settings.desktop_content_position }}">
+    <div class="cms-row flex-{{ section.settings.image_position }} justify-between items-{{ section.settings.desktop_content_position }}">
       <div class="cms-cell--{{ section.settings.width }}">
         <div class="before-after-wrapper">
           <after-before-section class="before-after-container-inner aspect-square">
@@ -98,7 +98,7 @@
           </after-before-section>
         </div>
       </div>
-      <div class="cms-cell ps-rte">
+      <div class="ps-rte cms-cell--{{ section.settings.content_width }}">
         {% for block in section.blocks %}
 
           {% case block.type %}
@@ -220,6 +220,22 @@
       "label": "Desktop Content Position"
     },
     {
+      "type": "select",
+      "id": "content_width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Content Width"
+    },
+    {
       "type": "header",
       "content": "Image Settings"
     },
@@ -257,7 +273,7 @@
         }
       ],
       "default": "medium",
-      "label": "Width"
+      "label": "Image Width"
     },
     {
       "type": "image_picker",

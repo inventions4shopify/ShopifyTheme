@@ -63,8 +63,8 @@
 }
 .testimonial-footer img {
   border-radius: 50%;
-  width: 6rem;
-  height: 6rem;
+  width: 4rem;
+  height: 4rem;
 }
 span.testimonial-author-name {
   font-size: var(--tps-text-sm);
@@ -87,10 +87,6 @@ span.testimonial-author-position {
     width: 2.4rem;
     height: 2.4rem;
   }
-  .testimonial-footer img {
-    width: 7rem;
-    height: 7rem;
-  }
   .testimonial-wrapper.is-grid.testimonial-grid-4,
   .testimonial-wrapper.is-grid.testimonial-grid-3,
   .testimonial-wrapper.is-grid.testimonial-grid-2 {
@@ -104,10 +100,6 @@ span.testimonial-author-position {
 }
 
 @media (min-width: 992px) {
-  .testimonial-footer img {
-    width: 8rem;
-    height: 8rem;
-  }
   .testimonial-wrapper.is-grid.testimonial-grid-4,
   .testimonial-wrapper.is-grid.testimonial-grid-3 {
     grid-template-columns: repeat(3, 1fr);

@@ -56,7 +56,7 @@
 
             <div class="{% if section.settings.slide_width == 'full-width' %}full-width{% else %}page-width{% endif %}">
               <div
-                class="media-overlay-content section-spacing ps-rte media-overlay-content--{{ block.settings.content_alignment }} media-content-width-{{ block.settings.content_width }}"
+                class="media-overlay-content section-spacing gap-16 media-overlay-content--{{ block.settings.content_alignment }} media-content-width-{{ block.settings.content_width }}"
                 style="color: {{ block.settings.text_color }};"
               >
                 {% if block.settings.subheading %}
@@ -92,7 +92,7 @@
 
                 {% if block.settings.description %}
                   {%- assign block_color = block.settings.text_color -%}
-                  <div class="description"
+                  <div class="description ps-rte"
                     {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
                       style="color: rgb({{ block_color.rgb }});"
                     {%- endunless %}>
