@@ -7,7 +7,8 @@
     gallery_zoom_type: section.settings.gallery_zoom_type,
     hover_zoom_style: section.settings.hover_zoom_style,
     gallery_arrows_visibility: section.settings.gallery_arrows_visibility,
-    gallery_arrow_display: section.settings.gallery_arrow_display
+    gallery_arrow_display: section.settings.gallery_arrow_display,
+    enable_variant_image_switching: section.settings.enable_variant_image_switching
   %}
 {% endcomment %}
 
@@ -35,6 +36,7 @@
     "
     id="product-gallery-{{ product.id }}"
     data-enable-desktop-drag="{{ enable_desktop_drag | default: section.settings.enable_desktop_drag, allow_false: true }}"
+    data-enable-variant-image-switching="{{ enable_variant_image_switching | default: false, allow_false: true }}"
     data-zoom-type="{{ gallery_zoom_type }}"
     {% if gallery_zoom_type != 'none' %}
       data-hover-zoom-style="{{ hover_zoom_style }}"
@@ -105,6 +107,7 @@
               <div
                 class="product_gallery_main_slide"
                 data-index="{{ gallery_index }}"
+                data-media-id="{{ media.id }}"
                 data-media-type="image"
                 data-full="{{ media | image_url: width: 2200 }}"
               >

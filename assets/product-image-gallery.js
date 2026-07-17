@@ -132,6 +132,28 @@ function initProductGalleries(root = document) {
       currentIndex = index;
     }
 
+    if (gallery.dataset.enableVariantImageSwitching === "true") {
+      const productRoot = gallery
+        .closest(".main-product-section")
+        ?.querySelector("[data-product-root]");
+
+      productRoot?.addEventListener("product:variant-change", (event) => {
+        const variant = event.detail?.variant;
+        const mediaId =
+          variant?.featured_media?.id || variant?.featured_image?.id;
+
+        if (!mediaId) return;
+
+        const mediaIndex = slides.findIndex(
+          (slide) => slide.dataset.mediaId === String(mediaId),
+        );
+
+        if (mediaIndex !== -1) {
+          updateSlider(mediaIndex);
+        }
+      });
+    }
+
     /* ---------------------------------
       RESIZE
     --------------------------------- */

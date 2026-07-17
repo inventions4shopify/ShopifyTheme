@@ -9,7 +9,29 @@
   {{ block.shopify_attributes }}
 >
   <div class="prs_viewport">
-    <h2 class="prs_heading h5">Frequently Bought Together</h2>
+    <div class="prs_header">
+      <h2 class="prs_heading h5">Frequently Bought Together</h2>
+
+      {% if block.settings.products.count > 1 %}
+        <div class="prs_controls">
+          <button
+            type="button"
+            class="prs_prev button button--secondary"
+            aria-label="Previous products"
+          >
+            {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
+          </button>
+
+          <button
+            type="button"
+            class="prs_next button button--secondary"
+            aria-label="Next products"
+          >
+            {% render 'icon', icon: 'chevron-right', width: 22, height: 22 %}
+          </button>
+        </div>
+      {% endif %}
+    </div>
 
     <div class="prs_track">
       {% for recommendation_product in block.settings.products %}
@@ -49,22 +71,4 @@
       {% endfor %}
     </div>
   </div>
-
-  {% if block.settings.products.count > 1 %}
-    <button
-      type="button"
-      class="prs_prev button button--secondary"
-      aria-label="Previous products"
-    >
-      {% render 'icon', icon: 'chevron-left', width: 22, height: 22 %}
-    </button>
-
-    <button
-      type="button"
-      class="prs_next button button--secondary"
-      aria-label="Next products"
-    >
-      {% render 'icon', icon: 'chevron-right', width: 22, height: 22 %}
-    </button>
-  {% endif %}
 </product-recommendations-slider>
