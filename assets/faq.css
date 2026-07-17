@@ -21,7 +21,7 @@
     --tps-button-text: inherit;
     border: 0;
     border-radius: 0;
-    box-shadow: 0.1rem 0.1rem rgb(var(--color-button-primary-outline));
+    box-shadow: 0.1rem 0.1rem rgb(var(--tps-color-button-primary-outline));
 }
 
 .cms-faq-question >:first-child {
