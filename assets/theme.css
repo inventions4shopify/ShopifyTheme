@@ -141,10 +141,6 @@ a {
   text-underline-offset: 0.2rem;
 }
 
-a:hover {
-  color: inherit;
-}
-
 ul,
 ol {
   margin: 0 0 1.2rem;
@@ -363,8 +359,8 @@ input[type="submit"] {
 }
 
 .button--secondary:hover {
-  --tps-button-text: rgb(var(--tps-color-button-secondary-text));
-  --tps-button-background: rgba(var(--tps-color-button-secondary-background) / 0.8);
+  background: rgb(var(--tps-color-button-secondary-text));
+  color: rgba(var(--tps-color-button-secondary-background) / 0.8);
 }
 
 body .shopify-payment-button__button--unbranded {
@@ -1628,4 +1624,23 @@ canvas {
   flex-direction: column;
   flex: 1 1 auto;
   justify-content: center;
+}
+
+.shopify-policy__container {
+  padding-top: var(--section-spacing-top-mobile);
+  padding-bottom: var(--section-spacing-bottom-mobile);
+}
+
+@media (min-width: 768px) {
+  .shopify-policy__container {
+    padding-top: var(--section-spacing-top-tablet);
+    padding-bottom: var(--section-spacing-bottom-tablet);
+  }
+}
+
+@media (min-width: 1200px) {
+  .shopify-policy__container {
+    padding-top: var(--section-spacing-top-desktop);
+    padding-bottom: var(--section-spacing-bottom-desktop);
+  }
 }

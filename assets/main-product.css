@@ -554,6 +554,9 @@ product-price {
     display: flex;
     gap: var(--tps-spacing-10);
     align-items: flex-start;
+    padding: var(--tps-spacing-10);
+    border: 0.1rem solid rgb(var(--tps-color-header-hover-text));
+    border-radius: var(--tps-input-radius);
 }
 
 .prs_image {

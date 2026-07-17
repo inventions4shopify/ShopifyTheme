@@ -43,7 +43,10 @@
   margin-bottom: 0;
 }
 .testimonial-content {
-  margin-top: 1.6rem;
+  margin: 1.6rem 0;
+}
+.testimonial-card:last-child {
+  margin-bottom: 0;
 }
 .testimonial-content p {
   font-size: var(--tps-text-sm);

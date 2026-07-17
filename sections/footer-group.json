@@ -20,11 +20,10 @@
             "column_size": "large",
             "text_alignment": "start",
             "mobile_text_alignment": "start",
-            "title": "Heading",
-            "image": "shopify://shop_images/1.jpg",
+            "title": "LUMIÈRE",
             "logo_width_desktop": 150,
             "logo_width_mobile": 100,
-            "text": "<p><strong>Lorem Ipsum </strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets.</p>",
+            "text": "<p>Discover premium fashion designed for everyday confidence. Shop the latest clothing collections with timeless style, quality fabrics, and effortless comfort.</p>",
             "text_size": "medium",
             "button_label": "Explore",
             "button_link": "",
@@ -44,7 +43,7 @@
           "settings": {
             "column_size": "small",
             "title": "Resources",
-            "menu": "main-menu"
+            "menu": "footer"
           }
         },
         "newsletter_Da6i8d": {
@@ -71,9 +70,9 @@
         "enable_language_selector": false,
         "enable_currency_selector": false,
         "show_payment_icons": true,
-        "custom_spacing": false,
-        "section_spacing_top_desktop": 64,
-        "section_spacing_bottom_desktop": 64,
+        "custom_spacing": true,
+        "section_spacing_top_desktop": 80,
+        "section_spacing_bottom_desktop": 40,
         "section_spacing_top_mobile": 40,
         "section_spacing_bottom_mobile": 40
       }

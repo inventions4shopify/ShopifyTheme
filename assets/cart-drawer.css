@@ -300,11 +300,6 @@ cart-drawer.is-updating .cart-drawer__loading {
   text-align: center;
 }
 
-.cart-drawer__progress.is-complete .cart-drawer__progress-message {
-  font-weight: 700;
-  color: #2b1515;
-}
-
 .cart-drawer__progress-track {
   position: relative;
   height: 0.4rem;
@@ -393,7 +388,6 @@ cart-drawer.is-updating .cart-drawer__loading {
 }
 
 .cart-drawer__progress.is-complete .cart-drawer__progress-label {
-  color: rgba(0, 0, 0, 0.75);
   font-weight: 500;
 }
 
