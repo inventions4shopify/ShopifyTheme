@@ -312,7 +312,7 @@
     .cms-main-collection-view {
         display: flex;
         align-items: center;
-        gap: var(--tps-spacing-10);
+        gap: var(--tps-spacing-6);
     }
 }
  
