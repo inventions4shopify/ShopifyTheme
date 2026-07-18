@@ -252,6 +252,18 @@
             "label": "Border opacity"
           }
         },
+        "accountment": {
+          "content": "Accountment Bar",
+          "accountment_background_color": {
+            "label": "Background color"
+          },
+          "accountment_text_color": {
+            "label": "Text color"
+          },
+          "accountment_hover_text_color": {
+            "label": "Hover text color"
+          }
+        },
         "header": {
           "content": "Header",
           "header_background_color": {

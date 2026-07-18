@@ -1,9 +1,14 @@
 {{ 'announcement-bar.css' | asset_url | stylesheet_tag }}
 <style>
   .announcement-bar {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ settings.accountment_background_color }};
+    color: {{ settings.accountment_text_color }};
     padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px 0;
+    transition: all 0.25s ease;
+  }
+
+  .announcement-bar:hover {
+    color: {{ settings.accountment_hover_text_color }};
   }
 
   .announcement-marquee {
@@ -138,22 +143,6 @@
     },
     {
       "type": "header",
-      "content": "Style"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color",
-      "default": "#A65E2E"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#F7EED0"
-    },
-    {
-      "type": "header",
       "content": "Section padding"
     },
     {
@@ -212,3 +201,4 @@
   ]
 }
 {% endschema %}
+ 
