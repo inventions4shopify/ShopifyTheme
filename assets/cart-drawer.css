@@ -83,7 +83,7 @@ body.cart-drawer-open {
   gap: 1.2rem;
   flex-shrink: 0;
   padding: 1.2rem 2rem;
-  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.08);
+  border-bottom: 0.1rem solid rgba(var(--tps-color-header-text) / 0.45);
 }
 
 .cart-drawer__title {

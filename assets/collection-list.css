@@ -67,9 +67,7 @@ collection-list-section {
 .collection-card.has-overlay-text .collection-card__content {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .collection-card.has-overlay-text .collection-card__content::before {
