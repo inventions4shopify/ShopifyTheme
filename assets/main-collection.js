@@ -23,6 +23,7 @@ class MainCollectionSection extends HTMLElement {
     this.initLayoutToggle(signal);
     this.initPagination(signal);
     this.initActiveFilterPills(signal);
+    this.initStickyFilterBar();
     this.syncSearchSortFromUrl();
   }
 
@@ -109,6 +110,32 @@ class MainCollectionSection extends HTMLElement {
     this._initialized = false;
     this.abortController?.abort();
     document.body.classList.remove('open-filter-drawer');
+    this.footerObserver?.disconnect();
+    this.footerObserver = null;
+  }
+
+  initStickyFilterBar() {
+    if (this._stickyFilterBarBound) return;
+
+    const footer =
+      document.querySelector('.footer_section') || document.querySelector('footer');
+    if (!footer || !('IntersectionObserver' in window)) return;
+
+    this._stickyFilterBarBound = true;
+
+    this.footerObserver = new IntersectionObserver(
+      (entries) => {
+        const row = this.querySelector('.cms-main-collection-filter-row');
+        if (!row) return;
+
+        entries.forEach((entry) => {
+          row.classList.toggle('is-hidden-by-footer', entry.isIntersecting);
+        });
+      },
+      { rootMargin: '0px', threshold: 0 }
+    );
+
+    this.footerObserver.observe(footer);
   }
 
   handleDocumentClick(e) {
@@ -665,7 +692,26 @@ class MainCollectionSection extends HTMLElement {
 
     if (drawer?.open) {
       document.body.classList.add('open-filter-drawer');
+    } else if (!isLoading) {
+      // No open drawer: make sure the backdrop/scroll-lock never gets stuck on
+      document.body.classList.remove('open-filter-drawer');
     }
+  }
+
+  scrollBarIntoViewIfFooterVisible() {
+    const footer =
+      document.querySelector('.footer_section') || document.querySelector('footer');
+    if (!footer) return;
+
+    // Only intervene when the footer is currently in view (which is what hides the
+    // sticky bar), e.g. filtering to an empty/short result set while scrolled down.
+    const footerInView = footer.getBoundingClientRect().top < window.innerHeight;
+    if (!footerInView) return;
+
+    const top = this.getBoundingClientRect().top + window.scrollY;
+    if (window.scrollY <= top) return;
+
+    window.scrollTo({ top: Math.max(top - 16, 0), behavior: 'smooth' });
   }
 
   getFilterDrawerState() {
@@ -870,6 +916,7 @@ class MainCollectionSection extends HTMLElement {
 
       history.pushState({}, '', browseUrl.toString());
       this.restoreFilterDrawerState(drawerState);
+      requestAnimationFrame(() => this.scrollBarIntoViewIfFooterVisible());
 
       if (this.isSearchPage()) {
         const sortBy = browseUrl.searchParams.get('sort_by') || this.querySelector('#SortByInput')?.value;

@@ -210,7 +210,7 @@
 
           <div class="collection-products">
             {% if show_filter_empty %}
-              {% render 'collection-filter-empty' %}
+              {% render 'collection-filter-empty', clear_url: filter_clear_url %}
             {% else %}
               <div class="grid grid--2-col md:grid--{{ section.settings.card_per_row }}-col">
                 {% for product in collection.products %}
@@ -242,7 +242,7 @@
         <!-- DEFAULT GRID -->
         <div class="collection-products">
           {% if show_filter_empty %}
-            {% render 'collection-filter-empty' %}
+            {% render 'collection-filter-empty', clear_url: filter_clear_url %}
           {% else %}
             <div class="grid grid--2-col sm:grid--3-col lg:grid--4-col">
               {% for product in collection.products %}

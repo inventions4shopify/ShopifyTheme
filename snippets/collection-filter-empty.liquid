@@ -5,4 +5,14 @@
   >
     No products for this filter
   </p>
+
+  {%- if clear_url != blank -%}
+    <button
+      type="button"
+      class="collection-filter-empty__clear button button--secondary"
+      data-filter-clear-url="{{ clear_url }}"
+    >
+      Clear filters
+    </button>
+  {%- endif -%}
 </div>
