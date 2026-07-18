@@ -1406,6 +1406,7 @@ canvas {
 .cms-sort-dropdown {
   position: relative;
   min-width: 18rem;
+  font-size: var(--tps-text-xs);
 }
 
 .cms-sort-selected {
@@ -1455,13 +1456,14 @@ canvas {
 }
 
 .cms-sort-option {
-  padding: 12px 16px;
+  padding: var(--tps-spacing-6) var(--tps-spacing-10);
   cursor: pointer;
 }
 
 .cms-sort-option:hover,
 .cms-sort-option.active {
-  background: #f5f5f5;
+  background: rgb(var(--tps-color-header-background) / 45%);
+  color: rgb(var(--tps-color-header-text));
 }
 
 .cms-sort-label {
@@ -1470,11 +1472,14 @@ canvas {
 }
 
 .cms-sort-icon {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   transition: all 0.25s ease;
-  width: var(--tps-spacing-20);
-  height: var(--tps-spacing-20);
+  width: var(--tps-spacing-16);
+  height: var(--tps-spacing-16);
+
 }
 
 .cms-sort-dropdown.open .cms-sort-icon {

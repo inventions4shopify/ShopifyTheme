@@ -1,18 +1,21 @@
 <div class="collection-filter-empty">
   <p
-    class="collection-filter-empty__message"
-    style="color: rgb({{ settings.body_text_color.rgb }});"
+   class="collection-filter-empty__message"
+   style="color: rgb({{ settings.body_text_color.rgb }});"
   >
-    No products for this filter
+   No products for this filter
   </p>
 
+
+
   {%- if clear_url != blank -%}
-    <button
-      type="button"
-      class="collection-filter-empty__clear button button--secondary"
-      data-filter-clear-url="{{ clear_url }}"
-    >
-      Clear filters
-    </button>
+   <button
+     type="button"
+     class="collection-filter-empty__clear button button--secondary"
+     data-filter-clear-url="{{ clear_url }}"
+   >
+     Clear filters
+   </button>
   {%- endif -%}
 </div>
+ 
