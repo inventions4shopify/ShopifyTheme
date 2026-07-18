@@ -4,7 +4,7 @@
    ============================================================ */
 
 
-.main-header-wrapper {
+   .main-header-wrapper {
     display: block;
     background: rgb(var(--tps-color-header-background));
     color: rgb(var(--tps-color-header-text));
