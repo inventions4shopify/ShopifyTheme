@@ -26,6 +26,7 @@
 }
 
 .cms-hot-spot-cell {
+    position: absolute;
     pointer-events: all;
     top: var(--tps-button-position-vertical-mobile);
     left: var(--tps-button-position-horizontal-mobile);
@@ -71,7 +72,6 @@
 
 @media (min-width: 992px) {
     .cms-hot-spot-cell {
-        position: absolute;
         top: var(--tps-button-position-vertical-desktop);
         left: var(--tps-button-position-horizontal-desktop);
     }

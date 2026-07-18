@@ -164,7 +164,7 @@ body.cart-drawer-open {
   grid-template-columns: 8rem 1fr;
   gap: 1.2rem;
   padding: 1.2rem 0;
-  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.08);
+  border-bottom: 0.1rem solid rgba(var(--tps-color-header-text) / 0.45);
 }
 
 .cart-drawer__item-image {
