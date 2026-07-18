@@ -49,8 +49,12 @@
     <div class="cart-drawer__body">
       <div class="cart-drawer__items" data-cart-drawer-items>
         {% for item in cart.items %}
+          {%- assign is_free_gift = false -%}
+          {%- if item.properties._free_gift -%}
+            {%- assign is_free_gift = true -%}
+          {%- endif -%}
           <div
-            class="cart-drawer__item"
+            class="cart-drawer__item{% if is_free_gift %} cart-drawer__item--free-gift{% endif %}"
             data-cart-item
             data-line="{{ forloop.index }}"
           >
@@ -71,6 +75,13 @@
                 {{ item.product.title }}
               </a>
 
+              {% if is_free_gift %}
+                <span class="cart-drawer__item-gift-badge">
+                  {% render 'icon', icon: 'gift', width: 14, height: 14 %}
+                  {{ 'cart.progress.free_gift' | t }}
+                </span>
+              {% endif %}
+
               {% unless item.product.has_only_default_variant %}
                 <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>
               {% endunless %}
@@ -85,6 +96,7 @@
               </div>
 
               <div class="cart-drawer__item-actions">
+                {% unless is_free_gift %}
                 <quantity-input class="cart-drawer__quantity">
                   <button
                     type="button"
@@ -122,6 +134,7 @@
                 >
                   {% render 'icon', icon: 'trash', width: 18, height: 18 %}
                 </button>
+                {% endunless %}
               </div>
             </div>
           </div>

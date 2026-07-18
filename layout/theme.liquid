@@ -71,6 +71,24 @@
       window.theme.cartType = {{ settings.cart_type | json }};
       window.theme.cartDrawerConfetti = {{ settings.cart_drawer_enable_confetti | default: true }};
 
+      {%- if settings.cart_drawer_free_gift_product != blank -%}
+        {%- liquid
+          assign gift_ref = settings.cart_drawer_free_gift_product
+          assign gift_product = all_products[gift_ref]
+          if gift_product == blank
+            assign gift_product = gift_ref
+          endif
+          assign gift_variant = gift_product.selected_or_first_available_variant | default: gift_product.first_available_variant
+        -%}
+        {%- if gift_variant != blank -%}
+          window.theme.freeGift = {
+            variantId: {{ gift_variant.id | json }},
+            threshold: {{ settings.cart_drawer_free_gift_threshold | default: 250 | times: 100 | json }},
+            propertyKey: '_free_gift'
+          };
+        {%- endif -%}
+      {%- endif -%}
+
       {%- if settings.enable_wishlist -%}
         {%- liquid
           if settings.wishlist_page != blank

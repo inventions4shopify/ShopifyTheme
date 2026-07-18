@@ -1249,6 +1249,12 @@
         "default": 250
       },
       {
+        "type": "product",
+        "id": "cart_drawer_free_gift_product",
+        "label": "Free gift product",
+        "info": "This product is automatically added to the cart when the free gift threshold is reached, and removed if the cart drops below it. Create a Shopify automatic discount to make it $0."
+      },
+      {
         "type": "checkbox",
         "id": "cart_drawer_enable_confetti",
         "label": "Show confetti when all milestones are reached",

@@ -122,6 +122,7 @@ class CartDrawer extends HTMLElement {
       }
 
       await this.refresh();
+      await syncFreeGift();
     } catch (error) {
       console.error(error);
       window.alert(error.message || 'Unable to update cart.');
@@ -668,7 +669,70 @@ async function addToCart(payload) {
     updateCartCount();
   }
 
+  await syncFreeGift();
+
   return item;
+}
+
+async function syncFreeGift() {
+  const config = window.theme?.freeGift;
+
+  if (!config || !config.variantId || !config.threshold) return;
+  if (window.__freeGiftSyncing) return;
+
+  window.__freeGiftSyncing = true;
+
+  try {
+    const response = await fetch('/cart.js', { headers: { Accept: 'application/json' } });
+
+    if (!response.ok) return;
+
+    const cart = await response.json();
+    const giftKey = config.propertyKey || '_free_gift';
+    const giftLine = cart.items.find((item) => item.properties && item.properties[giftKey]);
+
+    // Total that qualifies for the gift, excluding the gift line itself so that
+    // adding or removing the gift can never flip the threshold and cause a loop.
+    const qualifyingTotal = cart.items.reduce((sum, item) => {
+      if (item.properties && item.properties[giftKey]) return sum;
+      return sum + item.final_line_price;
+    }, 0);
+
+    const reached = qualifyingTotal >= config.threshold;
+    const changeHeaders = { 'Content-Type': 'application/json', Accept: 'application/json' };
+
+    if (reached && !giftLine) {
+      await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: changeHeaders,
+        body: JSON.stringify({
+          id: config.variantId,
+          quantity: 1,
+          properties: { [giftKey]: 'true' },
+        }),
+      });
+      await refreshCart();
+    } else if (!reached && giftLine) {
+      await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: changeHeaders,
+        body: JSON.stringify({ id: giftLine.key, quantity: 0 }),
+      });
+      await refreshCart();
+    } else if (reached && giftLine && giftLine.quantity !== 1) {
+      // Keep the gift limited to a single unit.
+      await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: changeHeaders,
+        body: JSON.stringify({ id: giftLine.key, quantity: 1 }),
+      });
+      await refreshCart();
+    }
+  } catch (error) {
+    console.warn('Free gift sync failed:', error);
+  } finally {
+    window.__freeGiftSyncing = false;
+  }
 }
 
 async function openCartPopup(addedItem) {
@@ -715,6 +779,7 @@ window.theme.cart = {
   updateCount: updateCartCount,
   handleAfterAdd: handleCartAfterAdd,
   showPopup: openCartPopup,
+  syncFreeGift,
 };
 
 class CartPage extends HTMLElement {
@@ -795,6 +860,7 @@ class CartPage extends HTMLElement {
       }
 
       await this.refresh();
+      await syncFreeGift();
     } catch (error) {
       console.error(error);
       window.alert(error.message || 'Unable to update cart.');
@@ -1048,4 +1114,5 @@ document.addEventListener('click', async (event) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   updateCartCount();
+  syncFreeGift();
 });
