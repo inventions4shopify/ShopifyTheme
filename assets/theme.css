@@ -359,8 +359,8 @@ input[type="submit"] {
 }
 
 .button--secondary:hover {
-  background: rgb(var(--tps-color-button-secondary-text));
-  color: rgba(var(--tps-color-button-secondary-background) / 0.8);
+  --tps-button-background: rgb(var(--tps-color-button-secondary-text));
+  --tps-button-text: rgba(var(--tps-color-button-secondary-background) / 0.8);
 }
 
 body .shopify-payment-button__button--unbranded {
