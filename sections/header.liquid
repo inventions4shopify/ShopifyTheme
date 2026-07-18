@@ -316,7 +316,14 @@
             data-cart-drawer-trigger
           {% endif %}
         >
-          {% render 'icon', icon: 'cart', width: 20, height: 20 %}
+
+          {% if settings.cart_icon == 'shopping_basket' %}
+            {% render 'icon', icon: 'shopping_basket', width: 20, height: 20 %}
+          {% elsif settings.cart_icon == 'shopping_bag' %}
+            {% render 'icon', icon: 'shopping_bag', width: 20, height: 20 %}
+          {% elsif settings.cart_icon == 'shopping_cart' %}
+            {% render 'icon', icon: 'shopping_cart', width: 20, height: 20 %}
+          {% endif %}
           <span class="header__cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>
             {{ cart.item_count }}
           </span>

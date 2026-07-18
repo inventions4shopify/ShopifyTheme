@@ -83,7 +83,7 @@
   font-family: var(--tps-font-body-family);
 }
 .footer__nl-btn:hover { background: rgba(128,128,128,0.25); }
-.footer__nl-success { font-size: 0.8rem; color: rgb(var(--tps-color-success)); margin-top: var(--tps-spacing-8); }
+.footer__nl-success { font-size: var(--tps-text-sm); color: rgb(var(--tps-color-success)); margin-top: var(--tps-spacing-8); }
 
 /* ── Menu block ── */
 .footer__menu-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--tps-spacing-10); }

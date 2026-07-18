@@ -477,6 +477,28 @@
       },
       {
         "type": "header",
+        "content": "t:settings_schema.colors.settings.accountment.content"
+      },
+      {
+        "type": "color",
+        "id": "accountment_background_color",
+        "label": "t:settings_schema.colors.settings.accountment.accountment_background_color.label",
+        "default": "#A65E2E"
+      },
+      {
+        "type": "color",
+        "id": "accountment_text_color",
+        "label": "t:settings_schema.colors.settings.accountment.accountment_text_color.label",
+        "default": "#F7EED0"
+      },
+      {
+        "type": "color",
+        "id": "accountment_hover_text_color",
+        "label": "t:settings_schema.colors.settings.accountment.accountment_hover_text_color.label",
+        "default": "#F7EED0"
+      },
+      {
+        "type": "header",
         "content": "t:settings_schema.colors.settings.header.content"
       },
       {
