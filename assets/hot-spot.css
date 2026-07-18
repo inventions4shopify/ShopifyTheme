@@ -12,10 +12,6 @@
     bottom: 0;
 }
 
-.cms-hot-spot__media >* {
-    height: auto;
-}
-
 .cms-hot-spot__content {
     position: relative;
     z-index: 4;
@@ -33,6 +29,7 @@
     pointer-events: all;
     top: var(--tps-button-position-vertical-mobile);
     left: var(--tps-button-position-horizontal-mobile);
+    z-index: 2;
 }
 
 .cms-hot-spot-cell .button {

@@ -203,7 +203,7 @@
   ARROWS
   --------------------------------- */
 
-.product_gallery_arrow {
+.product_gallery_main_wrapper .button {
     position: absolute;
     top: 50%;
     z-index: 2;
@@ -232,18 +232,18 @@
   ARROW DEVICE VISIBILITY
   --------------------------------- */
 
-.product_gallery--arrows-none .product_gallery_arrow,
-.product_gallery--arrows-desktop .product_gallery_arrow {
+.product_gallery--arrows-none .button,
+.product_gallery--arrows-desktop .button {
     display: none;
 }
 
 
 @media screen and (min-width: 768px) {
-    .product_gallery--arrows-mobile .product_gallery_arrow {
+    .product_gallery--arrows-mobile .button {
         display: none;
     }
 
-    .product_gallery--arrows-desktop .product_gallery_arrow {
+    .product_gallery--arrows-desktop .button {
         display: flex;
     }
 }
@@ -252,19 +252,19 @@
   ARROW DISPLAY STYLE
   --------------------------------- */
 
-.product_gallery--arrow-display-hover .product_gallery_arrow {
+.product_gallery--arrow-display-hover .button {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
 }
 
-.product_gallery--arrow-display-hover .product_gallery_main_wrapper:hover .product_gallery_arrow {
+.product_gallery--arrow-display-hover .product_gallery_main_wrapper:hover .button {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
 }
 
-.product_gallery--arrow-display-always .product_gallery_arrow {
+.product_gallery--arrow-display-always .button {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -639,7 +639,7 @@ body.product-lightbox-open .main-header-wrapper {
         overflow-y: hidden;
     }
 
-    .product_gallery_arrow {
+    .product_gallery_main_wrapper .button {
         width: 4.4rem;
         height: 4.4rem;
     }

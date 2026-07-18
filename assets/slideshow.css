@@ -96,7 +96,7 @@ slideshow-section {
 
 .media-with-content-media img,
 .media-with-content-media video {
-    height: auto;
+    height: 100%;
     border-radius: 0;
 }
 

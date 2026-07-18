@@ -13,11 +13,36 @@
   "sections": {
     "announcement_bar": {
       "type": "announcement-bar",
+      "blocks": {
+        "bar_YLaN7D": {
+          "type": "bar",
+          "settings": {
+            "text": "<p>Grand Opening Sale — <strong>Up to 50% OFF</strong></p>"
+          }
+        },
+        "bar_g73Bqw": {
+          "type": "bar",
+          "settings": {
+            "text": "<p>Unlock premium benefits, personalized offers, and first access to limited-edition fashion.</p>"
+          }
+        },
+        "bar_aJGHC4": {
+          "type": "bar",
+          "settings": {
+            "text": "<p> Something Beautiful is Coming Soon</p>"
+          }
+        }
+      },
+      "block_order": [
+        "bar_YLaN7D",
+        "bar_g73Bqw",
+        "bar_aJGHC4"
+      ],
       "settings": {
         "type": "arrows",
         "auto_rotated": false,
         "timing": 5,
-        "scrolling_speed": 10,
+        "scrolling_speed": 20,
         "background_color": "#a65e2e",
         "text_color": "#f7eed0",
         "padding_top": 10,
@@ -29,28 +54,56 @@
     "header": {
       "type": "header",
       "blocks": {
-        "menu_column_yJeHkc": {
-          "type": "menu_column",
-          "settings": {
-            "parent_item": "contact",
-            "heading": "our list of menu",
-            "menu": "footer"
-          }
-        },
-        "image_banner_CqXAqm": {
+        "image_banner_aXVFMt": {
           "type": "image_banner",
           "settings": {
-            "parent_item": "Contact",
-            "heading": "contact us if you have any other issue",
-            "description": "contact us if you have any other issuecontact us if you have any other issuecontact us if you have any other issuecontact us if you have any other issuecontact us if you have any other issue",
-            "button_label": "about us",
-            "button_link": "shopify://policies/terms-of-service"
+            "parent_item": "Products",
+            "image": "shopify://shop_images/4_06ba0385-dbd6-488a-97e9-76a032aadb66.png",
+            "heading": "Olive Green Floral Layered Midi Dress",
+            "description": "Crafted from lightweight breathable fabric with an elegant floral print, it's perfect for brunches, vacations, garden parties, weddings, and evening outings.",
+            "button_label": "Shop Now",
+            "button_link": "shopify://products/olive-green-floral-layered-midi-dress"
+          }
+        },
+        "image_banner_Qk9FjL": {
+          "type": "image_banner",
+          "settings": {
+            "parent_item": "Products",
+            "image": "shopify://shop_images/4_ccad46a6-46e9-4300-8887-4afca263b52e.png",
+            "heading": "Blush Beige Floral Layered Midi Dress",
+            "description": "Whether you're attending a wedding, garden party, brunch, or vacation, this elegant dress delivers effortless style and all-day comfort.",
+            "button_label": "Shop Now",
+            "button_link": "shopify://products/blush-beige-floral-layered-midi-dress"
+          }
+        },
+        "image_banner_TBXhCc": {
+          "type": "image_banner",
+          "settings": {
+            "parent_item": "Products",
+            "image": "shopify://shop_images/4_55a365cc-3a5e-41f9-b2e6-8adaf2ed5009.png",
+            "heading": "Lavender Floral Tiered Midi Dress",
+            "description": "Perfect for brunches, weddings, baby showers, vacations, garden parties, and special occasions, this timeless floral dress combines comfort with effortless elegance.",
+            "button_label": "Shop Now",
+            "button_link": "shopify://products/lavender-floral-tiered-midi-dress-with-lace-v-neck"
+          }
+        },
+        "image_banner_c3xpNp": {
+          "type": "image_banner",
+          "settings": {
+            "parent_item": "Products",
+            "image": "shopify://shop_images/1_dfba5a91-047c-47b5-abf9-2bcc9baef8cb.png",
+            "heading": "Blush Pink Floral Tiered Midi Dress",
+            "description": "Whether you're heading to brunch, a vacation, baby shower, garden party, or a special occasion, this floral midi dress offers comfort, style, and timeless sophistication.",
+            "button_label": "Shop Now",
+            "button_link": "shopify://products/blush-pink-floral-tiered-midi-dress"
           }
         }
       },
       "block_order": [
-        "menu_column_yJeHkc",
-        "image_banner_CqXAqm"
+        "image_banner_aXVFMt",
+        "image_banner_Qk9FjL",
+        "image_banner_TBXhCc",
+        "image_banner_c3xpNp"
       ],
       "settings": {
         "logo_position": "left",

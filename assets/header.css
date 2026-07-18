@@ -118,11 +118,11 @@
   transition: all 0.25s ease;
 }
 
-.header__nav-link span {
+.header__nav-link span:first-child {
   position: relative;
 }
 
-.header__nav-link span::before {
+.header__nav-link span:first-child::before {
     width: 100%;
     display: block;
     content: "";
@@ -136,8 +136,8 @@
     transform: scaleX(0);
 }
 
-.header__nav-link:hover span::before,
-.header__nav-link:focus span::before {
+.header__nav-link:hover span:first-child::before,
+.header__nav-link:focus span:first-child::before {
     transform: scaleX(1);
 }
 
@@ -399,10 +399,6 @@ account-icon {line-height: 0;}
   padding: var(--tps-spacing-6) var(--tps-spacing-12);
   font-size: var(--tps-text-sm);
   transition: background .15s ease, color .15s ease;
-}
-.header__mega-banner:hover .header__mega-banner-btn {
-  background: rgb(var(--tps-color-header-text));
-  color: rgb(var(--tps-color-header-background));
 }
 
 @media (max-width: 992px) {
