@@ -174,8 +174,8 @@
 .header__cart-count,
 .header__wishlist-count {
   background: rgb(var(--tps-color-header-text));
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border-radius: 50%;
   color: rgb(var(--tps-color-header-background));
   display: flex;
@@ -407,6 +407,6 @@ account-icon {line-height: 0;}
 
   .drawer-nav__footer .header__icon--account {
     display: inline-flex;
-    color: rgb(var(--tps-color-header-background));
+    color: rgb(var(--tps-color-header-text));
   }
 }
