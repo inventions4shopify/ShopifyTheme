@@ -30,7 +30,7 @@
 }
 
 .contact .form-status.text-body.success-msg {
-  color: green;
+  color: var(--tps-color-success);
 }
 
 .contact .form__message {

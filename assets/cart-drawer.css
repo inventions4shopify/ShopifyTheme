@@ -225,7 +225,7 @@ body.cart-drawer-open {
   line-height: 1.6;
   color: rgb(var(--tps-color-header-text));
   background: rgba(var(--tps-color-header-text), 0.08);
-  border-radius: 999px;
+  border-radius: var(--tps-radius-full);
 }
 
 .cart-drawer__quantity {
@@ -244,7 +244,7 @@ body.cart-drawer-open {
   align-items: center;
   justify-content: center;
   background: rgba(var(--tps-color-background), 0.6);
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(0.1rem);
 }
 
 .cart-drawer__loading .loading-spinner {
@@ -323,7 +323,7 @@ cart-drawer.is-updating .cart-drawer__loading {
   height: 0.4rem;
   margin: 0 2rem 3.6rem;
   background: #d3d3d366;
-  border-radius: 999px;
+  border-radius: var(--tps-radius-full);
 }
 
 .cart-drawer__progress.is-complete .cart-drawer__progress-track {

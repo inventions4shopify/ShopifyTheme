@@ -174,7 +174,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: var(--tps-white);
     background: rgba(0, 0, 0, 0.35);
     pointer-events: none;
 }
@@ -377,7 +377,7 @@
 .product_gallery_zoom_preview {
     position: absolute;
     top: 0;
-    left: calc(100% + 20px);
+    left: calc(100% + 2rem);
     z-index: 5;
     width: 50rem;
     height: 50rem;

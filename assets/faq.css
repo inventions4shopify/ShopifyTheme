@@ -42,19 +42,11 @@
 }
 
 .cms-faq-item.active .cms-faq-answer {
-  max-height: 500px;
+  max-height: 50rem;
 }
 
 .cms-faq-answer-inner {
     padding: var(--tps-spacing-16) var(--tps-spacing-20);
-}
-
-.cms-faq-answer-inner >:first-child {
-    margin-top: 0;
-}
-
-.cms-faq-answer-inner >:last-child {
-    margin-bottom: 0;
 }
 
 .cms-faq-icon {

@@ -93,7 +93,7 @@
 }
 
 .product_form form {
-    margin-bottom: 10px;
+    margin-bottom: var(--tps-spacing-10);
 }
 
 /* selling plans */
@@ -333,7 +333,7 @@ read-more-description {
     padding: var(--tps-spacing-8) var(--tps-spacing-12);
     border-radius: 0.6rem;
     background-color: rgba(255, 145, 0, 0.1);
-    color: #b45309;
+    color: var(--tps-color-warning);
     font-size: var(--tps-text-base);
     font-weight: 500;
 }
@@ -391,7 +391,7 @@ product-price {
 .product_save_badge {
     font-size: 1.2rem;
     font-weight: 500;
-    color: #0a7a2f;
+    color: var(--tps-color-success);
     background: rgba(10, 122, 47, 0.08);
     padding: var(--tps-spacing-4) var(--tps-spacing-8);
     border-radius: var(--tps-radius-full);
@@ -505,7 +505,7 @@ product-price {
 
 @media screen and (min-width: 768px) {
     .prs_track {
-        gap: 20px;
+        gap: var(--tps-spacing-16);
         transition: transform 0.3s ease;
         will-change: transform;
     }
@@ -518,6 +518,7 @@ product-price {
         display: flex;
         flex-shrink: 0;
         gap: var(--tps-spacing-8);
+        padding-right: var(--tps-spacing-2);
     }
 
     .prs_prev,
@@ -540,7 +541,7 @@ product-price {
 
 @media screen and (min-width: 992px) {
     .prs_slide {
-        flex: 0 0 calc(65% - 15px);
+        flex: 0 0 calc(65% - 1.5rem);
     }
     .product_card_button {
         font-size: var(--tps-text-base);
@@ -991,8 +992,8 @@ product-price {
     align-items: center;
     background: rgb(var(--tps-color-button-secondary-background));
     color: rgb(var(--tps-color-button-secondary-text));
-    box-shadow: 2px 2px rgb(var(--tps-color-button-primary-outline));
-    border: .2rem solid rgb(var(--tps-color-button-primary-outline));
+    box-shadow: 0.2rem 0.2rem rgb(var(--tps-color-button-primary-outline));
+    border: 0.2rem solid rgb(var(--tps-color-button-primary-outline));
     border-radius: var(--tps-input-radius);
     overflow: hidden;
 }
@@ -1042,8 +1043,8 @@ product-price {
     outline: none;
 }
 .product_quantity_buy_wrapper svg{
-    width: 18px;
-    height: 18px;
+    width: var(--tps-spacing-18);
+    height: var(--tps-spacing-18);
 }
 
 /* Pickup availability */
@@ -1080,12 +1081,12 @@ product-price {
 }
 
 .pickup-availability-preview__icon--available {
-    color: #108043;
+    color: var(--tps-color-success);
     background: rgba(16, 128, 67, 0.12);
 }
 
 .pickup-availability-preview__icon--unavailable {
-    color: #d72c0d;
+    color: var(--tps-color-error);
     background: rgba(215, 44, 13, 0.12);
 }
 
@@ -1229,12 +1230,12 @@ product-price {
 }
 
 .pickup-availability-modal__status-icon--available {
-    color: #108043;
+    color: var(--tps-color-success);
     background: rgba(16, 128, 67, 0.12);
 }
 
 .pickup-availability-modal__status-icon--unavailable {
-    color: #d72c0d;
+    color: var(--tps-color-error);
     background: rgba(215, 44, 13, 0.12);
 }
 

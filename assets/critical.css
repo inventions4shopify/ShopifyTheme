@@ -83,7 +83,7 @@ body {
 .page-width {
   max-width: var(--tps-page-width);
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 1.5rem;
 }
 
 .rte {
@@ -91,15 +91,15 @@ body {
 }
 
 .text-large {
-  font-size: 18px;
+  font-size: 1.8rem;
 }
 
 .text-medium {
-  font-size: 16px;
+  font-size: 1.6rem;
 }
 
 .text-small {
-  font-size: 14px;
+  font-size: 1.4rem;
 }
 
 /** Section layout utilities */

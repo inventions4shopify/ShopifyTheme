@@ -31,7 +31,7 @@
 .testimonial-card {
   background: var(--tps-input-background);
   padding: 2rem;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0 0.2rem 0.8rem 0;
   border-radius: var(--tps-input-radius);
   border: var(--tps-input-border-width) var(--tps-input-border-style) var(--tps-input-border-color);
 }

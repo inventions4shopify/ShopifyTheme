@@ -109,11 +109,14 @@
     --tps-spacing-8: 0.8rem;
     --tps-spacing-10: 1rem;
     --tps-spacing-12: 1.2rem;
+    --tps-spacing-14: 1.4rem;
     --tps-spacing-16: 1.6rem;
+    --tps-spacing-18: 1.8rem;
     --tps-spacing-20: 2rem;
     --tps-spacing-24: 2.4rem;
     --tps-spacing-28: 2.8rem;
     --tps-spacing-32: 3.2rem;
+    --tps-spacing-36: 3.6rem;
     --tps-spacing-40: 4rem;
     --tps-spacing-48: 4.8rem;
     --tps-spacing-56: 5.6rem;
@@ -142,6 +145,7 @@
     --tps-heading-transform: {{ settings.heading_text_transform }};
 
     --tps-text-base: {{ settings.mobile_body_text | times: 0.1 }}rem;
+    --tps-body-text: {{ settings.body_text | times: 0.1 }}rem;
     --tps-text-xss: calc(var(--tps-text-base) * 0.75);
     --tps-text-xs: calc(var(--tps-text-base) * 0.875);
     --tps-text-sm: calc(var(--tps-text-base) * 0.9375);
@@ -158,7 +162,7 @@
     --tps-radius-md: 0.8rem;
     --tps-radius-lg: 1.2rem;
     --tps-radius-xl: 1.6rem;
-    --tps-radius-full: 999px;
+    --tps-radius-full: 100rem;
 
     --tps-transition-fast: 0.2s ease-in-out;
     --tps-transition-medium: 0.3s ease-in-out;
@@ -172,7 +176,7 @@
 
     --tps-input-radius: {{ settings.input_border_radius | times: 0.1 }}rem;
     --tps-input-border-style: {{ settings.input_border_style }};
-    --tps-input-border-width: 1px;
+    --tps-input-border-width: 0.1rem;
     --tps-input-border-color: rgba(var(--tps-color-border), var(--tps-color-border-opacity));
     --tps-input-background: rgb(var(--tps-color-background));
     --tps-input-text-color: rgb(var(--tps-color-body-text));

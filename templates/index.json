@@ -40,7 +40,7 @@
           "type": "slide",
           "settings": {
             "media_type": "image",
-            "image_1": "shopify://shop_images/banner-2.png",
+            "image_1": "shopify://shop_images/ChatGPT_Image_Jul_18_2026_03_41_40_PM.png",
             "image_2": "shopify://shop_images/banner-2_mobile.png",
             "toggle_overlay": true,
             "overlay_color": "#0000008a",
@@ -129,8 +129,8 @@
         "background_gradient": "",
         "text_color": "",
         "custom_spacing": true,
-        "section_spacing_top_desktop": 40,
-        "section_spacing_bottom_desktop": 40,
+        "section_spacing_top_desktop": 20,
+        "section_spacing_bottom_desktop": 20,
         "section_spacing_top_mobile": 20,
         "section_spacing_bottom_mobile": 20
       }
@@ -384,6 +384,7 @@
         "background_color": "#ffffff",
         "background_gradient": "",
         "desktop_content_position": "center",
+        "content_width": "medium",
         "image_position": "row-reverse",
         "width": "medium",
         "after_image": "shopify://shop_images/after.png",
@@ -421,7 +422,7 @@
         "enable_image_zoom": true,
         "card_bg_color": "",
         "card_heading_color": "",
-        "container_width": "page-width",
+        "container_width": "full-width",
         "background_color": "",
         "background_gradient": "",
         "button_background_color": "",
@@ -456,7 +457,7 @@
         "background_gradient": "",
         "enable_card_text": true,
         "card_bg_color": "",
-        "card_heading_color": "#f3f3ef",
+        "card_heading_color": "#f3efef",
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
         "section_spacing_bottom_desktop": 64,
@@ -489,7 +490,7 @@
         "text_4VmQmq": {
           "type": "text",
           "settings": {
-            "text": "<p><br/>From timeless classics to modern trends, our collections are thoughtfully curated to help you express your unique style. Every piece is crafted with quality fabrics, elegant details, and flattering silhouettes for every occasion.<br/><br/></p>",
+            "text": "<p>From timeless classics to modern trends, our collections are thoughtfully curated to help you express your unique style. Every piece is crafted with quality fabrics, elegant details, and flattering silhouettes for every occasion.</p>",
             "text_alignment": "inherit",
             "text_width": "",
             "text_color": "#ffffff"
@@ -702,6 +703,10 @@
       "settings": {
         "container_width": "small",
         "custom_container_width": 800,
+        "table_head": "images",
+        "table_text_1": "LUMIÈRE",
+        "table_text_2": "Brand A",
+        "table_text_3": "Brand B",
         "text_alignment": "center",
         "gap": "24",
         "subheading": "Compare Plans",
@@ -832,90 +837,6 @@
         "section_spacing_bottom_mobile": 40
       }
     },
-    "hot_spot_m39YUw": {
-      "type": "hot-spot",
-      "blocks": {
-        "hot_spot_gjaV96": {
-          "type": "hot-spot",
-          "settings": {
-            "horizontal_position": 71,
-            "vertical_position": 24,
-            "mb_horizontal_position": 35,
-            "mb_vertical_position": 31,
-            "hot-spot-icon-width": 30,
-            "hot-spot-heading": "Premium Fabric",
-            "hot-spot-description": "<p>Crafted from soft, breathable materials that provide all-day comfort with a luxurious feel.</p>",
-            "box_color": "#ffffff",
-            "hot_spot_head_color": ""
-          }
-        },
-        "hot_spot_Mty7pQ": {
-          "type": "hot-spot",
-          "settings": {
-            "horizontal_position": 54,
-            "vertical_position": 38,
-            "mb_horizontal_position": 52,
-            "mb_vertical_position": 38,
-            "hot-spot-icon-width": 40,
-            "hot-spot-heading": "Elegant Craftsmanship",
-            "hot-spot-description": "<p>Thoughtfully designed with refined details and a flattering silhouette for every occasion.</p>",
-            "box_color": "#ffffff",
-            "hot_spot_head_color": ""
-          }
-        },
-        "hot_spot_fhpaFY": {
-          "type": "hot-spot",
-          "settings": {
-            "horizontal_position": 60,
-            "vertical_position": 64,
-            "mb_horizontal_position": 45,
-            "mb_vertical_position": 70,
-            "hot-spot-icon-width": 40,
-            "hot-spot-heading": "Perfect Fit",
-            "hot-spot-description": "<p>Designed to move with you, offering exceptional comfort and confidence from day to night.</p>",
-            "box_color": "#ffffff",
-            "hot_spot_head_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "hot_spot_gjaV96",
-        "hot_spot_Mty7pQ",
-        "hot_spot_fhpaFY"
-      ],
-      "name": "Hot Spots",
-      "settings": {
-        "section_width": "full-width",
-        "background_color": "#ffffff",
-        "background_gradient": "",
-        "width": "medium",
-        "media_height": "large",
-        "media_type": "image",
-        "mb_image": "shopify://shop_images/banner-2_mobile.png",
-        "desktop_image": "shopify://shop_images/banner-2.png",
-        "toggle_overlay": true,
-        "overlay_color": "#00000080",
-        "content_alignment": "left-center",
-        "subheading": "Festive Special",
-        "subheading_color": "#ffffff",
-        "heading": "Celebrate Every Occasion in Style",
-        "heading_size": "h2",
-        "heading_color": "#ffffff",
-        "heading_gradient": "",
-        "description": "<p>Shop our latest collection of elegant ethnic wear, embroidered suits, and graceful dresses. Enjoy exclusive festive discounts for a limited time and make every celebration unforgettable.<br/><br/></p>",
-        "text_color": "#ffffff",
-        "link": "shopify://collections/short-dresses",
-        "link_label": "Shop Now",
-        "button_background_color": "",
-        "button_text_color": "",
-        "button_outline_color": "",
-        "custom_spacing": true,
-        "section_spacing_top_desktop": 0,
-        "section_spacing_bottom_desktop": 0,
-        "section_spacing_top_mobile": 0,
-        "section_spacing_bottom_mobile": 0
-      }
-    },
     "product_tab_fCH6RF": {
       "type": "product-tab",
       "blocks": {
@@ -923,7 +844,7 @@
           "type": "list_item",
           "settings": {
             "tab_title": "Best Seller",
-            "collection": "floral-dresses"
+            "collection": "best-seller"
           }
         },
         "list_item_zz9jVd": {
@@ -1099,6 +1020,7 @@
         "gallery_zoom_type": "none",
         "hover_zoom_style": "magnifier",
         "enable_desktop_drag": true,
+        "enable_variant_image_switching": true,
         "enable_sticky_image": true,
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,
@@ -1302,7 +1224,6 @@
     "table_comparison_LHCkw3",
     "countdown_gJjG4r",
     "faq_abpaMm",
-    "hot_spot_m39YUw",
     "product_tab_fCH6RF",
     "main_product_jgiK8R",
     "video_slider_4kfXfi",

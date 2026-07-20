@@ -45,8 +45,8 @@
           "type": "description",
           "settings": {
             "description_content": "{{ section.settings.product.description }}",
-            "enable_read_more": false,
-            "lines_to_show": 10,
+            "enable_read_more": true,
+            "lines_to_show": 5,
             "read_more_text": "Read more",
             "read_less_text": "Read less"
           }
@@ -61,7 +61,7 @@
           "type": "variant_picker",
           "settings": {
             "option_1_layout": "swatch",
-            "option_2_layout": "button",
+            "option_2_layout": "dropdown",
             "option_3_layout": "dropdown",
             "swatch_source": "color",
             "swatch_size": 40,
@@ -109,7 +109,7 @@
           "settings": {
             "open_by_default": false,
             "heading": "Shipping",
-            "content": ""
+            "content": "<p>We process orders within <strong>1–2 business days</strong> and offer reliable shipping with tracking. Delivery times may vary based on your location.</p>"
           }
         },
         "accordion_2": {
@@ -117,7 +117,7 @@
           "settings": {
             "open_by_default": false,
             "heading": "Returns",
-            "content": ""
+            "content": "<p>We want you to love your purchase. If you're not completely satisfied, you can return eligible items within <strong>30 days</strong> for a refund or exchange. Items must be unused and in their original condition.</p>"
           }
         },
         "recommendations": {
@@ -175,6 +175,7 @@
         "gallery_zoom_type": "hover",
         "hover_zoom_style": "magnifier",
         "enable_desktop_drag": true,
+        "enable_variant_image_switching": true,
         "enable_sticky_image": true,
         "custom_spacing": false,
         "section_spacing_top_desktop": 64,

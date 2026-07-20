@@ -26,7 +26,7 @@
   #shopify-section-{{ section.id }} .newsletter-input {
     border-radius: {{ s.input_radius }}px;
     {%- if s.input_border != blank and s.input_border != 'rgba(0,0,0,0)' -%}
-      border: 1px solid {{ s.input_border }};
+      border: 0.1rem solid {{ s.input_border }};
     {%- endif -%}
     {%- if s.input_bg != blank and s.input_bg != 'rgba(0,0,0,0)' -%}
       background: {{ s.input_bg }};
