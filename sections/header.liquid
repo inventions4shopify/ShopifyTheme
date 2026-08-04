@@ -191,42 +191,53 @@
                     <search-form>
                   {%- endif -%}
                     <form action="{{ routes.search_url }}" method="get" role="search" class="search">
-                      <div class="field with-icon-right">
-                        <label class="visually-hidden" for="HeaderSearch-Input">
-                          {{- 'search.placeholder' | t -}}
-                        </label>
-                        <input
-                          class="search__input field__input"
-                          id="HeaderSearch-Input"
-                          type="search"
-                          name="q"
-                          value="{{ search.terms | escape }}"
-                          placeholder="{{ 'search.placeholder' | t }}"
-                          {%- if settings.predictive_search_enabled %}
-                            role="combobox"
-                            aria-expanded="false"
-                            aria-owns="predictive-search-results"
-                            aria-controls="predictive-search-results"
-                            aria-haspopup="listbox"
-                            aria-autocomplete="list"
-                            autocorrect="off"
-                            autocomplete="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                          {%- endif %}
-                        >
-                        <input name="options[prefix]" type="hidden" value="last">
-                        <input name="type" type="hidden" value="product,collection,page">
+                      <div class="search_close_wrapper">
+                        <div class="field with-icon-right">
+                          <label class="visually-hidden" for="HeaderSearch-Input">
+                            {{- 'search.placeholder' | t -}}
+                          </label>
+                          <input
+                            class="search__input field__input"
+                            id="HeaderSearch-Input"
+                            type="search"
+                            name="q"
+                            value="{{ search.terms | escape }}"
+                            placeholder="{{ 'search.placeholder' | t }}"
+                            {%- if settings.predictive_search_enabled %}
+                              role="combobox"
+                              aria-expanded="false"
+                              aria-owns="predictive-search-results"
+                              aria-controls="predictive-search-results"
+                              aria-haspopup="listbox"
+                              aria-autocomplete="list"
+                              autocorrect="off"
+                              autocomplete="off"
+                              autocapitalize="off"
+                              spellcheck="false"
+                            {%- endif %}
+                          >
+                          <input name="options[prefix]" type="hidden" value="last">
+                          <input name="type" type="hidden" value="product,collection,page">
+
+                          <button
+                            type="reset"
+                            class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
+                            aria-label="{{ 'search.reset' | t }}"
+                          >
+                            {% render 'icon', icon: 'close', width: 18, height: 18 %}
+                          </button>
+                          <button type="submit" class="search__button field__button" aria-label="{{ 'search.title' | t }}">
+                            {% render 'icon', icon: 'search', width: 18, height: 18 %}
+                          </button>
+                        </div>
 
                         <button
-                          type="reset"
-                          class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
-                          aria-label="{{ 'search.reset' | t }}"
+                          type="button"
+                          class="search-modal__close"
+                          aria-label="{{ 'search.close' | t }}"
+                          data-search-close
                         >
-                          {% render 'icon', icon: 'close', width: 18, height: 18 %}
-                        </button>
-                        <button type="submit" class="search__button field__button" aria-label="{{ 'search.title' | t }}">
-                          {% render 'icon', icon: 'search', width: 18, height: 18 %}
+                          {% render 'icon', icon: 'close', width: 20, height: 20 %}
                         </button>
                       </div>
 
@@ -249,14 +260,7 @@
                     </search-form>
                   {%- endif -%}
                 </div>
-                <button
-                  type="button"
-                  class="search-modal__close"
-                  aria-label="{{ 'search.close' | t }}"
-                  data-search-close
-                >
-                  {% render 'icon', icon: 'close', width: 20, height: 20 %}
-                </button>
+                
               </div>
             </div>
           </div>

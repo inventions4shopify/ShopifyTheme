@@ -123,7 +123,9 @@
 
     {% sections 'footer-group' %}
 
-    {% render 'quick-view-modal' %}
+    {%- if settings.show_quick_buy -%}
+      {% render 'quick-view-modal' %}
+    {%- endif -%}
 
     {% if settings.cart_type == 'cart_popup' %}
       {% render 'cart-popup' %}

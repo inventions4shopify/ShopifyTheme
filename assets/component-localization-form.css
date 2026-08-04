@@ -47,19 +47,40 @@ localization-form h2{
 }
 
 .localization-form__currency {
-  opacity: 0;
-  transition: opacity 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 1;
   white-space: nowrap;
   padding-right: var(--tps-spacing-16);
+}
+
+.localization-form__selected {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tps-spacing-6);
+}
+
+.localization-form__selected .localization-form__currency {
+  padding-right: 0;
+  opacity: 0.75;
+}
+
+.country-flag {
+  width: 2rem;
+  height: 1.5rem;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 0.2rem;
+  vertical-align: middle;
+}
+
+.disclosure__link .country {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tps-spacing-6);
 }
 
 @media screen and (max-width: 749px) {
   .localization-form .button {
     word-break: break-all;
-  }
-
-  .localization-form__currency {
-    opacity: 1;
   }
 }
 
@@ -338,13 +359,6 @@ localization-form h2{
 .disclosure__link .icon-checkmark {
   width: 1rem;
   margin-right: 0.2rem;
-}
-
-.disclosure__link:hover .localization-form__currency,
-.disclosure__link:focus-visible .localization-form__currency,
-.disclosure__link:focus .localization-form__currency {
-  display: inline-block;
-  opacity: 1;
 }
 
 .disclosure__button[aria-expanded='true'] .icon {

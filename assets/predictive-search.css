@@ -87,6 +87,13 @@
   transform: scale(1.07);
 }
 
+.search_close_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--tps-spacing-8);
+}
+
 /* ================================================================== *
  *  Search field (shared by header modal + search template)
  * ================================================================== */
@@ -368,6 +375,10 @@ predictive-search[loading] .predictive-search__loading-state .loading-spinner {
     box-shadow: none;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .predictive-search__result-group {
+    padding: var(--tps-spacing-8) 0;
   }
 }
 

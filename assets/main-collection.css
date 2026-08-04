@@ -914,6 +914,7 @@
      */
     .collection-products {
         min-height: calc(100dvh - 22rem);
+        margin-top: var(--tps-spacing-40);
     }
 
     /* Sort dropdown must open upward inside the bottom bar */
