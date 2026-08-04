@@ -79,6 +79,12 @@
   align-items: center;
   line-height: 0;
   margin-top: var(--tps-spacing-4);
+  transition: all 0.25s ease;
+}
+
+.search-modal__close:hover {
+  color: inherit;
+  transform: scale(1.07);
 }
 
 /* ================================================================== *
