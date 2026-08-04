@@ -2,11 +2,11 @@
 
 <div class="product-card__price">
   {% if current_variant.compare_at_price > current_variant.price %}
-    <span class="product-card__price--sale text-xlg">
+    <span class="product-card__price--sale text-lg">
       {{ current_variant.price | money }}
     </span>
 
-    <span class="product-card__price--compare text-sm">
+    <span class="product-card__price--compare text-xs">
       {{ current_variant.compare_at_price | money }}
     </span>
   {% else %}

@@ -87,7 +87,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--tps-spacing-8);
+  gap: var(--tps-spacing-6);
 }
 
 .product-card__swatch {
@@ -152,7 +152,7 @@
 .product-card__price {
   display: flex;
   align-items: center;
-  gap: var(--tps-spacing-10);
+  gap: var(--tps-spacing-6);
   flex-wrap: wrap;
 }
 
@@ -255,6 +255,7 @@
 @media screen and (max-width: 749px) {
   .product-card__content {
     gap: var(--tps-spacing-6);
+    padding: var(--tps-spacing-10);
   }
 
   .product-card__quick-add {

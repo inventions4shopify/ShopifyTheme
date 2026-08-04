@@ -34,7 +34,7 @@
     <div class="page-width rte">
       {% if section.settings.type == 'arrows' %}
         <div class="announcement-slider">
-          <button class="announcement-arrow prev">
+          <button class="announcement-arrow prev" aria-label="Previous Slide">
             {% render 'icon', icon: 'chevron-left', width: '2rem', height: '2rem' %}
           </button>
 
@@ -52,7 +52,7 @@
             {% endfor %}
           </div>
 
-          <button class="announcement-arrow next">
+          <button class="announcement-arrow next" aria-label="Next Slide">
             {% render 'icon', icon: 'chevron-right', width: '2rem', height: '2rem' %}
           </button>
         </div>
