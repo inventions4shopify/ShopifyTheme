@@ -36,6 +36,31 @@
 .contact .form__message {
   display: flex;
   align-items: flex-start;
+  color: rgba(var(--tps-color-success));
+}
+
+.field--with-error input {
+  border-color: rgba(var(--tps-color-error));
+}
+
+.contact__field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+  margin-top: 0.2rem;
+  color: rgba(var(--tps-color-error));
+  font-size: 1.2rem;
+  line-height: 1;
+  position: absolute;
+  top: 100%;
+}
+
+.contact__field-error .icon,
+.contact__field-error svg {
+  flex-shrink: 0;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-top: 0.1rem;
 }
 
 .contact .icon-success {

@@ -99,8 +99,13 @@
   transition: transform 0.2s ease;
 }
 
-.product-card__swatch:hover {
+.product-card__swatch:hover,
+.product-card__swatch.is-active {
   transform: scale(1.15);
+}
+
+.product-card__swatch.is-active {
+  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.45);
 }
 
 .product-card__color-count {
@@ -233,8 +238,14 @@
   display: block;
 }
 
-.color-swatch-image:hover {
+.color-swatch-image:hover,
+.color-swatch-image.is-active {
   transform: scale(1.1);
+}
+
+.color-swatch-image.is-active {
+  outline: 0.15rem solid rgba(0, 0, 0, 0.45);
+  outline-offset: 0.1rem;
 }
 
 [data-card-variant-image] {

@@ -99,6 +99,45 @@ function initProductGalleries(root = document) {
       });
     }
 
+    function playSlideMedia(slide) {
+      if (!slide) return;
+
+      const mediaType = slide.dataset.mediaType;
+
+      if (mediaType !== "video" && mediaType !== "external_video") return;
+
+      slide.querySelectorAll("video").forEach((video) => {
+        video.playsInline = true;
+
+        const playPromise = video.play();
+
+        // Browsers may block unmuted autoplay; fall back to muted play.
+        if (playPromise?.catch) {
+          playPromise.catch(() => {
+            video.muted = true;
+            video.play().catch(() => {});
+          });
+        }
+      });
+
+      slide.querySelectorAll("iframe").forEach((iframe) => {
+        try {
+          iframe.contentWindow?.postMessage(
+            '{"event":"command","func":"mute","args":""}',
+            "*",
+          );
+          iframe.contentWindow?.postMessage(
+            '{"event":"command","func":"playVideo","args":""}',
+            "*",
+          );
+          iframe.contentWindow?.postMessage('{"method":"setVolume","value":0}', "*");
+          iframe.contentWindow?.postMessage('{"method":"play"}', "*");
+        } catch (error) {
+          // Cross-origin hosts may block postMessage; ignore safely.
+        }
+      });
+    }
+
     function pauseInactiveMedia(activeIndex) {
       slides.forEach((slide, index) => {
         if (index === activeIndex) return;
@@ -128,6 +167,7 @@ function initProductGalleries(root = document) {
       updateActiveThumbnail(index, shouldScrollThumb);
 
       pauseInactiveMedia(index);
+      playSlideMedia(slides[index]);
 
       currentIndex = index;
     }

@@ -291,26 +291,41 @@
                     if sort_by != blank
                       assign filter_clear_url = filter_clear_url | append: '&sort_by=' | append: sort_by
                     endif
-                  -%}
-                  {% render 'collection-filter-sort-row',
-                    show_filter: section.settings.show_filter,
-                    filter_position: section.settings.filter_position,
-                    filters: search.filters,
-                    clear_url: filter_clear_url,
-                    filters_markup: collection_filters_form,
-                    products_count: search.results_count,
-                    sort_options: search.sort_options,
-                    sort_by: sort_by,
-                    default_sort_by: search.default_sort_by,
-                    show_total_product: section.settings.show_total_product,
-                    show_sort: section.settings.show_sort,
-                    show_layout: section.settings.show_layout,
-                    sort_form_action: routes.search_url,
-                    search_terms: search.terms
-                  %}
 
-                  <div class="template-search__results collection{% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %} cms-main-collection-grid cms-main-collection-grid--sidebar{% endif %}" id="product-grid" data-id="{{ section.id }}" >
-                    {% if section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
+                    assign search_product_count = 0
+                    if use_search_fallback == false
+                      for item in search.results
+                        if item.object_type == 'product'
+                          assign search_product_count = search_product_count | plus: 1
+                        endif
+                      endfor
+                    endif
+                    assign show_search_filter_sort = false
+                    if search_product_count > 0
+                      assign show_search_filter_sort = true
+                    endif
+                  -%}
+                  {% if show_search_filter_sort %}
+                    {% render 'collection-filter-sort-row',
+                      show_filter: section.settings.show_filter,
+                      filter_position: section.settings.filter_position,
+                      filters: search.filters,
+                      clear_url: filter_clear_url,
+                      filters_markup: collection_filters_form,
+                      products_count: search.results_count,
+                      sort_options: search.sort_options,
+                      sort_by: sort_by,
+                      default_sort_by: search.default_sort_by,
+                      show_total_product: section.settings.show_total_product,
+                      show_sort: section.settings.show_sort,
+                      show_layout: section.settings.show_layout,
+                      sort_form_action: routes.search_url,
+                      search_terms: search.terms
+                    %}
+                  {% endif %}
+
+                  <div class="template-search__results collection{% if show_search_filter_sort and section.settings.show_filter and section.settings.filter_position == 'sidebar' %} cms-main-collection-grid cms-main-collection-grid--sidebar{% endif %}" id="product-grid" data-id="{{ section.id }}" >
+                    {% if show_search_filter_sort and section.settings.show_filter and section.settings.filter_position == 'sidebar' %}
                       {{ collection_filters }}
                     {% endif %}
                       <div class="collection-products">

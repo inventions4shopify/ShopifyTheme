@@ -116,21 +116,6 @@
               {{- 'icon-success.svg' | inline_asset_content -}}
               {{ 'contact_form.post_success' | t }}
             </h6>
-          {%- elsif form.errors -%}
-            <div class="form__message">
-              <h6 class="form-status text-body error-msg" role="alert" tabindex="-1" autofocus>
-                {{- 'icon-error.svg' | inline_asset_content -}}
-                {{ 'contact_form.error_heading' | t }}
-              </h6>
-            </div>
-            <ul class="form-status-list caption-large" role="list">
-              <li>
-                <a href="#ContactForm-email" class="link">
-                  {{ 'contact_form.email' | t }}
-                  {{ form.errors.messages.email }}
-                </a>
-              </li>
-            </ul>
           {%- endif -%}
 
           <div class="contact__fields {{ gap_class }}">
@@ -160,7 +145,7 @@
               <label class="field__label" for="ContactForm-last-name">{{ 'contact_form.last_name' | t }}</label>
             </div>
 
-            <div class="field field--with-error">
+            <div class="field{% if form.errors contains 'email' %} field--with-error{% endif %}">
               <input
                 autocomplete="email"
                 type="email"
@@ -184,8 +169,11 @@
               </label>
 
               {%- if form.errors contains 'email' -%}
-                <small class="contact__field-error" id="ContactForm-email-error">
+                <small class="contact__field-error" id="ContactForm-email-error" role="alert" tabindex="-1" autofocus>
                   <span class="visually-hidden">{{ 'contact_form.Error' | t }}</span>
+                  {{- 'icon-error.svg' | inline_asset_content -}}
+                  {{ form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email }}
                 </small>
               {%- endif -%}
             </div>
