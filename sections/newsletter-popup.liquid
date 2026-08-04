@@ -91,21 +91,21 @@
 
   .newsletter-close-{{ section.id }} {
     position: absolute;
-    top: 14px;
-    right: 16px;
-    width: 36px;
-    height: 36px;
+    top: var(--tps-spacing-14);
+    right: var(--tps-spacing-16);
+    width: var(--tps-spacing-36);
+    height: var(--tps-spacing-36);
     border: none;
     cursor: pointer;
     z-index: 2;
-    font-size: 28px;
+    font-size: var(--tps-spacing-28);
     line-height: 1;
     background: transparent;
   }
 
   .newsletter-input {
     border-radius: {{ section.settings.input_radius }}px;
-    border: 1px solid {{ section.settings.input_border }};
+    border: 0.1rem solid {{ section.settings.input_border }};
     background: {{ section.settings.input_bg }};
     color: {{ section.settings.input_text }};
   }

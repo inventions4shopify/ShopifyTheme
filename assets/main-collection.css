@@ -44,7 +44,7 @@
     /* padding: var(--tps-spacing-40) 0 0 0; */
     margin: 0;
     display: grid;
-    gap: 24px;
+    gap: var(--tps-spacing-24);
 }
 
 .cms-main-collection-grid ul {
@@ -143,7 +143,7 @@
     min-width: 1.8rem;
     height: 1.8rem;
     padding: 0 var(--tps-spacing-4);
-    border-radius: 999px;
+    border-radius: var(--tps-radius-full);
     background: rgb(var(--tps-color-button-primary-background));
     color: rgb(var(--tps-color-heading));
     font-family: var(--tps-font-body-family);
@@ -183,7 +183,7 @@
 .cms-main-collection-filter-left .collection-active-filters-wrapper {
     /* flex: 1 1 auto; */
     min-width: 0;
-    padding: 10px 0;
+    padding: var(--tps-spacing-10) 0;
 }
 
 .cms-main-collection-filter-left .collection-active-filters {
@@ -448,6 +448,18 @@
 .price-range__field .field__input {
     width: 100%;
     min-width: 0;
+    padding-left: 2.5rem;
+}
+
+.price-range__currency {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1rem;
+    display: block;
+    pointer-events: none;
+    font-size: 1.4rem;
+    font-weight: 600;
 }
 
 .price-range__separator {
@@ -771,7 +783,7 @@
     background: none;
     border: 0;
     padding: 0;
-    padding-left: 10px;
+    padding-left: var(--tps-spacing-10);
     cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 0.2rem;

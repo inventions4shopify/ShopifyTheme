@@ -223,14 +223,10 @@
                           class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
                           aria-label="{{ 'search.reset' | t }}"
                         >
-                          <span class="svg-wrapper">
-                            {% render 'icon', icon: 'close', width: 18, height: 18 %}
-                          </span>
+                          {% render 'icon', icon: 'close', width: 18, height: 18 %}
                         </button>
                         <button type="submit" class="search__button field__button" aria-label="{{ 'search.title' | t }}">
-                          <span class="svg-wrapper">
-                            {% render 'icon', icon: 'search', width: 20, height: 20 %}
-                          </span>
+                          {% render 'icon', icon: 'search', width: 18, height: 18 %}
                         </button>
                       </div>
 
@@ -289,13 +285,11 @@
                 {%- if customer and customer.has_avatar? -%}
                   {{ customer | avatar }}
                 {%- else -%}
-                  <span class="svg-wrapper">
-                    {% render 'icon', icon: 'account', width: 20, height: 20 %}
-                  </span>
+                  {% render 'icon', icon: 'account', width: 20, height: 20 %}
                 {%- endif -%}
               </account-icon>
             {%- else -%}
-              <span class="svg-wrapper"> {% render 'icon', icon: 'account', width: 20, height: 20 %}</span>
+              {% render 'icon', icon: 'account', width: 20, height: 20 %}
             {%- endif -%}
             <span class="visually-hidden">
               {%- liquid
@@ -316,7 +310,14 @@
             data-cart-drawer-trigger
           {% endif %}
         >
-          {% render 'icon', icon: 'cart', width: 20, height: 20 %}
+
+          {% if settings.cart_icon == 'shopping_basket' %}
+            {% render 'icon', icon: 'shopping_basket', width: 20, height: 20 %}
+          {% elsif settings.cart_icon == 'shopping_bag' %}
+            {% render 'icon', icon: 'shopping_bag', width: 20, height: 20 %}
+          {% elsif settings.cart_icon == 'shopping_cart' %}
+            {% render 'icon', icon: 'shopping_cart', width: 20, height: 20 %}
+          {% endif %}
           <span class="header__cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>
             {{ cart.item_count }}
           </span>
@@ -340,7 +341,7 @@
       "type": "select",
       "id": "logo_position",
       "label": "Position",
-      "default": "start",
+      "default": "center",
       "options": [
         { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },

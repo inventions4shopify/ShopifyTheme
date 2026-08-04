@@ -1,21 +1,17 @@
-/* ==========================================================================
-   Cart Page — compact spacing scale
-   ========================================================================== */
-
 cart-page {
   display: block;
   position: relative;
   max-width: 100%;
   overflow-x: clip;
 
-  --tps-cart-space-1: 4px;
-  --tps-cart-space-2: 8px;
-  --tps-cart-space-3: 12px;
-  --tps-cart-space-4: 16px;
-  --tps-cart-space-5: 20px;
-  --tps-cart-space-6: 24px;
-  --tps-cart-radius: 10px;
-  --tps-cart-image-size: 72px;
+  --tps-cart-space-1: 0.4rem;
+  --tps-cart-space-2: 0.8rem;
+  --tps-cart-space-3: 1.2rem;
+  --tps-cart-space-4: 1.6rem;
+  --tps-cart-space-5: 2rem;
+  --tps-cart-space-6: 2.4rem;
+  --tps-cart-radius: 1rem;
+  --tps-cart-image-size: 7.2rem;
 }
 
 .cart-page {
@@ -32,10 +28,6 @@ cart-page {
   max-width: 100%;
 }
 
-/* ==========================================================================
-   Loading
-   ========================================================================== */
-
 .cart-page__loading {
   position: absolute;
   inset: 0;
@@ -44,7 +36,7 @@ cart-page {
   align-items: center;
   justify-content: center;
   background: rgba(var(--tps-color-background), 0.65);
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(0.1rem);
   border-radius: var(--tps-cart-radius);
 }
 
@@ -66,10 +58,6 @@ cart-page.is-updating .cart-page__inner {
   transition: opacity 0.2s ease;
 }
 
-/* ==========================================================================
-   Celebration / Confetti
-   ========================================================================== */
-
 .cart-page__celebration {
   position: fixed;
   inset: 0;
@@ -82,10 +70,6 @@ cart-page.is-updating .cart-page__inner {
   display: none;
 }
 
-/* ==========================================================================
-   Header
-   ========================================================================== */
-
 .cart-header {
   display: flex;
   justify-content: space-between;
@@ -93,7 +77,7 @@ cart-page.is-updating .cart-page__inner {
   gap: var(--tps-cart-space-1);
   margin-bottom: var(--tps-cart-space-4);
   padding-bottom: var(--tps-cart-space-3);
-  border-bottom: 1px solid rgb(var(--tps-color-border));
+  border-bottom: 0.1rem solid rgb(var(--tps-color-border));
 }
 
 .cart-header h1 {
@@ -108,10 +92,6 @@ cart-page.is-updating .cart-page__inner {
   margin: 0;
 }
 
-/* ==========================================================================
-   Layout
-   ========================================================================== */
-
 .cart-layout {
   display: grid;
   grid-template-columns: 1fr;
@@ -124,10 +104,6 @@ cart-page.is-updating .cart-page__inner {
   gap: var(--tps-cart-space-3);
 }
 
-/* ==========================================================================
-   Progress Bar
-   ========================================================================== */
-
 .cart-page__progress {
   margin-bottom: var(--tps-cart-space-4);
 }
@@ -136,7 +112,7 @@ cart-page.is-updating .cart-page__inner {
   --tps-cart-progress-color: #701d21;
   position: relative;
   padding: var(--tps-cart-space-3) var(--tps-cart-space-3) var(--tps-cart-space-4);
-  border: 1px solid rgb(var(--tps-color-border));
+  border: 0.1rem solid rgb(var(--tps-color-border));
   border-radius: var(--tps-cart-radius);
   background: rgb(var(--tps-color-background));
   overflow: hidden;
@@ -145,7 +121,7 @@ cart-page.is-updating .cart-page__inner {
 
 .cart-page .cart-drawer__progress-message {
   margin: 0 0 var(--tps-cart-space-3);
-  padding-bottom: 10px;
+  padding-bottom: var(--tps-spacing-10);
   font-size: 1.2rem;
   line-height: 1.4;
   text-align: center;
@@ -158,14 +134,14 @@ cart-page.is-updating .cart-page__inner {
 
 .cart-page .cart-drawer__progress-track {
   position: relative;
-  height: 4px;
-  margin: 0 28px 36px;
+  height: var(--tps-spacing-4);
+  margin: 0 var(--tps-spacing-28) var(--tps-spacing-36);
   background: #0000001f;
-  border-radius: 999px;
+  border-radius: var(--tps-radius-full);
 }
 
 .cart-page .cart-drawer__progress.is-complete .cart-drawer__progress-track {
-  height: 4px;
+  height: var(--tps-spacing-4);
   background: var(--tps-cart-progress-color);
 }
 
@@ -209,8 +185,8 @@ cart-page.is-updating .cart-page__inner {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--tps-spacing-32);
+  height: var(--tps-spacing-32);
   border-radius: 50%;
   background: rgb(var(--tps-color-background));
   border: .2rem solid rgba(0, 0, 0, .15);
@@ -222,17 +198,17 @@ cart-page.is-updating .cart-page__inner {
 .cart-page .cart-drawer__progress.is-complete .cart-drawer__progress-milestone .cart-drawer__progress-icon {
   border-color: var(--tps-cart-progress-color);
   background: var(--tps-cart-progress-color);
-  color: #fff;
+  color: var(--tps-white);
 }
 
 .cart-page .cart-drawer__progress.is-complete .cart-drawer__progress-icon {
-  width: 34px;
-  height: 34px;
+  width: var(--tps-spacing-34);
+  height: var(--tps-spacing-34);
 }
 
 .cart-page .cart-drawer__progress-label {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 0.6rem);
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
@@ -251,16 +227,12 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   background: linear-gradient(180deg, rgba(var(--tps-color-button), 0.06) 0%, rgb(var(--tps-color-background)) 100%);
 }
 
-/* ==========================================================================
-   Cart Item
-   ========================================================================== */
-
 .cart-item {
   display: grid;
   grid-template-columns: var(--tps-cart-image-size) minmax(0, 1fr);
   gap: var(--tps-cart-space-3);
   padding: var(--tps-cart-space-3);
-  border: 1px solid rgb(var(--tps-color-border));
+  border: 0.1rem solid rgb(var(--tps-color-border));
   border-radius: var(--tps-cart-radius);
   background: rgb(var(--tps-color-background));
   overflow: hidden;
@@ -277,7 +249,7 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
 .cart-item__image img {
   width: 100%;
   display: block;
-  border-radius: 8px;
+  border-radius: var(--tps-radius-md);
   aspect-ratio: 1;
   object-fit: cover;
 }
@@ -323,10 +295,6 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   font-weight: 600;
 }
 
-/* ==========================================================================
-   Price
-   ========================================================================== */
-
 .cart-item__price {
   display: flex;
   align-items: center;
@@ -362,13 +330,9 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   justify-content: space-between;
   gap: var(--tps-cart-space-3);
   font-size: 1.2rem;
-  color: #1a8f3d;
+  color: var(--tps-color-success);
   padding: 0;
 }
-
-/* ==========================================================================
-   Actions
-   ========================================================================== */
 
 .cart-item__actions {
   display: flex;
@@ -387,7 +351,7 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.6;
-  border-radius: 999px;
+  border-radius: var(--tps-radius-full);
   background: rgba(0, 0, 0, 0.06);
 }
 
@@ -411,24 +375,20 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   color: #d52b2b;
 }
 
-/* ==========================================================================
-   Quantity Selector
-   ========================================================================== */
-
 .cart-qty {
   display: inline-flex;
   align-items: center;
-  border: 1px solid rgb(var(--tps-color-border));
+  border: 0.1rem solid rgb(var(--tps-color-border));
   border-radius: var(--tps-radius-md);
   overflow: hidden;
 }
 
 .cart-qty__input {
-  width: 40px;
-  height: 34px;
+  width: var(--tps-spacing-40);
+  height: var(--tps-spacing-34);
   border: none;
-  border-left: 1px solid rgb(var(--tps-color-border));
-  border-right: 1px solid rgb(var(--tps-color-border));
+  border-left: 0.1rem solid rgb(var(--tps-color-border));
+  border-right: 0.1rem solid rgb(var(--tps-color-border));
   text-align: center;
   font: inherit;
   font-size: 1.3rem;
@@ -450,8 +410,8 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
 }
 
 .cart-qty__button {
-  width: 34px;
-  height: 34px;
+  width: var(--tps-spacing-34);
+  height: var(--tps-spacing-34);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -470,16 +430,12 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   cursor: not-allowed;
 }
 
-/* ==========================================================================
-   Line Total
-   ========================================================================== */
-
 .cart-item__total {
   grid-column: 2;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
+  gap: var(--tps-spacing-2);
   margin-top: var(--tps-cart-space-1);
   font-size: 1.5rem;
   font-weight: 700;
@@ -492,10 +448,6 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   color: rgba(var(--tps-color-foreground), .5);
 }
 
-/* ==========================================================================
-   Summary
-   ========================================================================== */
-
 .cart-summary {
   position: relative;
   display: flex;
@@ -504,7 +456,7 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
 }
 
 .cart-summary__box {
-  border: 1px solid rgb(var(--tps-color-border));
+  border: 0.1rem solid rgb(var(--tps-color-border));
   border-radius: var(--tps-cart-radius);
   padding: var(--tps-cart-space-4);
   background: rgb(var(--tps-color-background));
@@ -523,7 +475,7 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   flex-wrap: wrap;
   gap: var(--tps-cart-space-2) var(--tps-cart-space-3);
   padding: var(--tps-cart-space-2) 0;
-  border-bottom: 1px solid rgb(var(--tps-color-border));
+  border-bottom: 0.1rem solid rgb(var(--tps-color-border));
   font-size: 1.3rem;
 }
 
@@ -572,13 +524,9 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   font-size: 1.7rem;
 }
 
-/* ==========================================================================
-   Discount List
-   ========================================================================== */
-
 .cart-discounts {
   padding: var(--tps-cart-space-1) 0;
-  border-bottom: 1px solid rgb(var(--tps-color-border));
+  border-bottom: 0.1rem solid rgb(var(--tps-color-border));
 }
 
 .cart-discounts ul {
@@ -597,10 +545,6 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   font-size: 1.3rem;
 }
 
-/* ==========================================================================
-   Recommendations
-   ========================================================================== */
-
 .cart-page__recommendations {
   min-width: 0;
   max-width: 100%;
@@ -611,7 +555,7 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   display: block;
   margin: 0;
   padding: var(--tps-cart-space-3);
-  border: 1px solid rgb(var(--tps-color-border));
+  border: 0.1rem solid rgb(var(--tps-color-border));
   border-radius: var(--tps-cart-radius);
   background: rgb(var(--tps-color-background));
   max-width: 100%;
@@ -681,7 +625,7 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   display: block;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: var(--tps-radius-md);
 }
 
 .cart-page .cart-drawer__rec-image img {
@@ -725,10 +669,6 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   background: rgba(var(--tps-color-foreground), .05);
 }
 
-/* ==========================================================================
-   Cart Note
-   ========================================================================== */
-
 .cart-note {
   margin-top: var(--tps-cart-space-3);
 }
@@ -743,10 +683,10 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
 .cart-note textarea {
   width: 100%;
   max-width: 100%;
-  min-height: 72px;
+  min-height: 7.2rem;
   padding: var(--tps-cart-space-2) var(--tps-cart-space-3);
-  border: 1px solid rgb(var(--tps-color-border));
-  border-radius: 8px;
+  border: 0.1rem solid rgb(var(--tps-color-border));
+  border-radius: var(--tps-radius-md);
   resize: vertical;
   font: inherit;
   font-size: 1.3rem;
@@ -758,10 +698,6 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   outline: none;
   border-color: rgb(var(--tps-color-button));
 }
-
-/* ==========================================================================
-   Buttons
-   ========================================================================== */
 
 .cart-checkout {
   width: 100%;
@@ -780,10 +716,6 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   margin-top: var(--tps-cart-space-2);
 }
 
-/* ==========================================================================
-   Tax Note
-   ========================================================================== */
-
 .cart-tax-note {
   margin: var(--tps-cart-space-3) 0 0;
   text-align: center;
@@ -792,17 +724,13 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   line-height: 1.5;
 }
 
-/* ==========================================================================
-   Empty Cart
-   ========================================================================== */
-
 .cart-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: var(--tps-cart-space-6) var(--tps-cart-space-4);
-  border: 1px solid rgb(var(--tps-color-border));
+  border: 0.1rem solid rgb(var(--tps-color-border));
   border-radius: var(--tps-cart-radius);
   background: rgb(var(--tps-color-background));
 }
@@ -811,8 +739,8 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: var(--tps-spacing-64);
+  height: var(--tps-spacing-64);
   margin-bottom: var(--tps-cart-space-3);
   border-radius: 50%;
   background: rgba(var(--tps-color-foreground), .05);
@@ -843,17 +771,13 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
 
 .cart-empty .button {
   width: 100%;
-  max-width: 280px;
+  max-width: 28rem;
 }
-
-/* ==========================================================================
-   Mobile
-   ========================================================================== */
 
 @media screen and (max-width: 749px) {
 
   cart-page {
-    --tps-cart-image-size: 65px;
+    --tps-cart-image-size: var(--tps-spacing-64);
   }
 
   .cart-items {
@@ -862,16 +786,16 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
 
   .cart-item {
     gap: var(--tps-cart-space-2);
-    padding: 10px;
-    border-radius: 8px;
+    padding: var(--tps-spacing-10);
+    border-radius: var(--tps-radius-md);
   }
 
   .cart-item__image img {
-    border-radius: 6px;
+    border-radius: 0.6rem;
   }
 
   .cart-item__content {
-    gap: 2px;
+    gap: var(--tps-spacing-2);
   }
 
   .cart-item__title {
@@ -887,7 +811,7 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   }
 
   .cart-item__price {
-    gap: 6px;
+    gap: var(--tps-spacing-6);
     margin: 0;
   }
 
@@ -904,38 +828,38 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   }
 
   .cart-item__actions {
-    margin-top: 6px;
+    margin-top: var(--tps-spacing-6);
     justify-content: space-between;
     width: 100%;
     gap: var(--tps-cart-space-2);
   }
 
   .cart-qty__input {
-    width: 32px;
-    height: 28px;
+    width: var(--tps-spacing-32);
+    height: var(--tps-spacing-28);
     font-size: 1.2rem;
   }
 
   .cart-qty__button {
-    width: 28px;
-    height: 28px;
+    width: var(--tps-spacing-28);
+    height: var(--tps-spacing-28);
   }
 
   .cart-qty__button svg {
-    width: 14px;
-    height: 14px;
+    width: var(--tps-spacing-14);
+    height: var(--tps-spacing-14);
   }
 
   .cart-remove {
     font-size: 1.1rem;
-    min-width: 28px;
-    min-height: 28px;
+    min-width: var(--tps-spacing-28);
+    min-height: var(--tps-spacing-28);
     justify-content: center;
   }
 
   .cart-remove svg {
-    width: 16px;
-    height: 16px;
+    width: var(--tps-spacing-16);
+    height: var(--tps-spacing-16);
   }
 
   .cart-item__total {
@@ -944,10 +868,10 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-top: 6px;
-    padding-top: 6px;
+    margin-top: var(--tps-spacing-6);
+    padding-top: var(--tps-spacing-6);
     font-size: 1.35rem;
-    border-top: 1px solid rgb(var(--tps-color-border));
+    border-top: 0.1rem solid rgb(var(--tps-color-border));
   }
 
   .cart-item__total::before {
@@ -966,21 +890,21 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   }
 
   .cart-page .cart-drawer__progress-icon {
-    width: 28px;
-    height: 28px;
+    width: var(--tps-spacing-28);
+    height: var(--tps-spacing-28);
   }
 
   .cart-page .cart-drawer__progress.is-complete .cart-drawer__progress-icon {
-    width: 30px;
-    height: 30px;
+    width: var(--tps-spacing-30);
+    height: var(--tps-spacing-30);
   }
 
   .cart-page .cart-drawer__progress-track {
-    margin: 0 22px 34px;
+    margin: 0 2.2rem 3.4rem;
   }
 
   .cart-page .cart-drawer__recommendations-slide {
-    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-columns: 5.6rem minmax(0, 1fr);
   }
 
 }
@@ -1014,14 +938,10 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
   }
 }
 
-/* ==========================================================================
-   Tablet
-   ========================================================================== */
-
 @media screen and (min-width: 750px) {
 
   cart-page {
-    --tps-cart-image-size: 88px;
+    --tps-cart-image-size: 8.8rem;
   }
 
   .cart-page {
@@ -1058,25 +978,21 @@ cart-page.is-rewards-complete .cart-page .cart-drawer__progress {
 
 }
 
-/* ==========================================================================
-   Desktop
-   ========================================================================== */
-
 @media screen and (min-width: 990px) {
 
   cart-page {
-    --tps-cart-image-size: 96px;
+    --tps-cart-image-size: 9.6rem;
   }
 
   .cart-layout {
-    grid-template-columns: minmax(0, 1fr) 340px;
+    grid-template-columns: minmax(0, 1fr) 34rem;
     gap: var(--tps-cart-space-5);
     align-items: start;
   }
 
   .cart-summary {
     position: sticky;
-    top: 24px;
+    top: var(--tps-spacing-24);
   }
 
 }

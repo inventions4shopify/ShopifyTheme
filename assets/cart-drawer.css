@@ -83,7 +83,7 @@ body.cart-drawer-open {
   gap: 1.2rem;
   flex-shrink: 0;
   padding: 1.2rem 2rem;
-  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.08);
+  border-bottom: 0.1rem solid rgba(var(--tps-color-header-text) / 0.45);
 }
 
 .cart-drawer__title {
@@ -129,10 +129,14 @@ body.cart-drawer-open {
   margin-bottom: 0;
 }
 
-.cart-login-textt {
+.cart-login-text {
   text-align: center;
   font-size: 1.6rem;
   margin: 0;
+}
+
+.cart-login-text a {
+  color: inherit;
 }
 
 .cart-drawer__continue {
@@ -160,7 +164,7 @@ body.cart-drawer-open {
   grid-template-columns: 8rem 1fr;
   gap: 1.2rem;
   padding: 1.2rem 0;
-  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.08);
+  border-bottom: 0.1rem solid rgba(var(--tps-color-header-text) / 0.45);
 }
 
 .cart-drawer__item-image {
@@ -221,7 +225,7 @@ body.cart-drawer-open {
   line-height: 1.6;
   color: rgb(var(--tps-color-header-text));
   background: rgba(var(--tps-color-header-text), 0.08);
-  border-radius: 999px;
+  border-radius: var(--tps-radius-full);
 }
 
 .cart-drawer__quantity {
@@ -240,7 +244,7 @@ body.cart-drawer-open {
   align-items: center;
   justify-content: center;
   background: rgba(var(--tps-color-background), 0.6);
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(0.1rem);
 }
 
 .cart-drawer__loading .loading-spinner {
@@ -268,8 +272,8 @@ cart-drawer.is-updating .cart-drawer__loading {
   max-width: calc(7rem + (var(--tps-input-border-width) * 2));
   height: 3.2rem;
   border: 0;
-  border-left: 0.1rem solid rgba(0, 0, 0, 0.1);
-  border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
+  border-left: 0.1rem solid rgb(var(--tps-color-header-text));
+  border-right: 0.1rem solid rgb(var(--tps-color-header-text));
   text-align: center;
   background: transparent;
   appearance: textfield;
@@ -319,7 +323,7 @@ cart-drawer.is-updating .cart-drawer__loading {
   height: 0.4rem;
   margin: 0 2rem 3.6rem;
   background: #d3d3d366;
-  border-radius: 999px;
+  border-radius: var(--tps-radius-full);
 }
 
 .cart-drawer__progress.is-complete .cart-drawer__progress-track {
@@ -384,12 +388,6 @@ cart-drawer.is-updating .cart-drawer__loading {
   border-color: var(--tps-cart-progress-color);
   background: var(--tps-cart-progress-color);
   color: var(--tps-white);
-}
-
-.cart-drawer__progress.is-complete .cart-drawer__progress-icon {
-  width: 4.4rem;
-  height: 4.4rem;
-  border-width: 0.25rem;
 }
 
 .cart-drawer__progress-label {
@@ -620,6 +618,10 @@ cart-drawer.is-rewards-complete .cart-drawer__progress {
   width: 100%;
   font-weight: 700;
   letter-spacing: 0.04em;
+}
+
+.cart-drawer__checkout:hover {
+  --tps-button-outline: rgb(var(--tps-color-button-secondary-background));
 }
 
 .cart-drawer__continue-link {

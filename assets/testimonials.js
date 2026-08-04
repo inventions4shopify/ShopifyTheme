@@ -11,7 +11,8 @@ class TestimonialsSection extends HTMLElement {
     this.prevBtn = this.querySelector('.testimonial-prev');
 
     this.autoplayEnabled = this.dataset.autoplay === 'true';
-    this.autoplaySpeed = (parseInt(this.dataset.autoplaySpeed, 10) || 5) * 1000;
+    this.autoplaySpeed =
+      (parseInt(this.dataset.autoplaySpeed, 10) || 5) * 1000;
 
     this.slides = [...this.slider.querySelectorAll('.testimonial-card')];
     if (!this.slides.length) return;
@@ -28,6 +29,7 @@ class TestimonialsSection extends HTMLElement {
     this.abortController = new AbortController();
     const { signal } = this.abortController;
 
+    /* Buttons */
     this.onNextClick = () => {
       this.currentIndex++;
       this.goToSlide(this.currentIndex);
@@ -40,10 +42,12 @@ class TestimonialsSection extends HTMLElement {
       }
     };
 
+    /* Infinite scroll */
     this.onScroll = () => {
       if (
         this.currentIndex >= this.originalCount &&
-        this.slider.scrollLeft >= this.originalCount * this.getScrollAmount() - 5
+        this.slider.scrollLeft >=
+          this.originalCount * this.getScrollAmount() - 5
       ) {
         setTimeout(() => {
           this.currentIndex = 0;
@@ -52,21 +56,111 @@ class TestimonialsSection extends HTMLElement {
       }
     };
 
+    /* Autoplay */
     this.onMouseEnter = () => this.stopAutoplay();
     this.onMouseLeave = () => this.startAutoplay();
     this.onTouchStart = () => this.stopAutoplay();
     this.onTouchEnd = () => this.startAutoplay();
 
+    /* Mobile swipe */
+    this.isDragging = false;
+    this.startX = 0;
+    this.currentX = 0;
+
+    this.onPointerDown = (event) => {
+      // Only handle touch / pen
+      if (event.pointerType === 'mouse') return;
+
+      this.isDragging = true;
+      this.startX = event.clientX;
+      this.currentX = event.clientX;
+
+      this.stopAutoplay();
+    };
+
+    this.onPointerMove = (event) => {
+      if (!this.isDragging) return;
+
+      this.currentX = event.clientX;
+    };
+
+    this.onPointerUp = (event) => {
+      if (!this.isDragging) return;
+
+      this.isDragging = false;
+
+      const endX = event.clientX;
+      const diff = this.startX - endX;
+
+      // Minimum swipe distance
+      const swipeThreshold = 50;
+
+      if (Math.abs(diff) < swipeThreshold) {
+        this.startAutoplay();
+        return;
+      }
+
+      if (diff > 0) {
+        // Swipe left → next
+        this.currentIndex++;
+      } else {
+        // Swipe right → previous
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+        }
+      }
+
+      this.goToSlide(this.currentIndex);
+
+      this.startAutoplay();
+    };
+
     this.nextBtn?.addEventListener('click', this.onNextClick, { signal });
     this.prevBtn?.addEventListener('click', this.onPrevClick, { signal });
+
     this.slider.addEventListener('scroll', this.onScroll, { signal });
+
+    /* Pointer events for mobile */
+    this.slider.addEventListener('pointerdown', this.onPointerDown, {
+      passive: true,
+      signal,
+    });
+
+    this.slider.addEventListener('pointermove', this.onPointerMove, {
+      passive: true,
+      signal,
+    });
+
+    this.slider.addEventListener('pointerup', this.onPointerUp, {
+      passive: true,
+      signal,
+    });
+
+    this.slider.addEventListener('pointercancel', this.onPointerUp, {
+      passive: true,
+      signal,
+    });
 
     if (this.autoplayEnabled) {
       this.startAutoplay();
-      this.slider.addEventListener('mouseenter', this.onMouseEnter, { signal });
-      this.slider.addEventListener('mouseleave', this.onMouseLeave, { signal });
-      this.slider.addEventListener('touchstart', this.onTouchStart, { passive: true, signal });
-      this.slider.addEventListener('touchend', this.onTouchEnd, { passive: true, signal });
+
+      this.slider.addEventListener('mouseenter', this.onMouseEnter, {
+        signal,
+      });
+
+      this.slider.addEventListener('mouseleave', this.onMouseLeave, {
+        signal,
+      });
+
+      this.slider.addEventListener('touchstart', this.onTouchStart, {
+        passive: true,
+        signal,
+      });
+
+      this.slider.addEventListener('touchend', this.onTouchEnd, {
+        passive: true,
+        signal,
+      });
     }
   }
 
@@ -78,7 +172,15 @@ class TestimonialsSection extends HTMLElement {
 
   getScrollAmount() {
     const card = this.slider.querySelector('.testimonial-card');
-    return card ? card.offsetWidth + 20 : 300;
+
+    if (!card) return 300;
+
+    const gap =
+      parseFloat(getComputedStyle(this.slider).columnGap) ||
+      parseFloat(getComputedStyle(this.slider).gap) ||
+      20;
+
+    return card.offsetWidth + gap;
   }
 
   goToSlide(index, smooth = true) {
@@ -101,9 +203,13 @@ class TestimonialsSection extends HTMLElement {
 
   stopAutoplay() {
     clearInterval(this.autoSlide);
+    this.autoSlide = null;
   }
 }
 
 if (!customElements.get('testimonials-section')) {
-  customElements.define('testimonials-section', TestimonialsSection);
+  customElements.define(
+    'testimonials-section',
+    TestimonialsSection
+  );
 }

@@ -104,12 +104,14 @@
   opacity: 1;
 }
 
-.search .field__button {
-  right: 1rem;
-}
-
 .search .reset__button {
   right: 4.6rem;
+}
+
+.search .search__button:hover,
+.search .reset__button:hover {
+  color: inherit;
+  transform: translateY(-50%) scale(1.07);
 }
 
 .search .reset__button.hidden {
@@ -177,6 +179,8 @@ predictive-search[loading] .predictive-search__loading-state .loading-spinner {
 .predictive-search__column {
   flex: 1 1 100%;
   min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .predictive-search__result-group {
@@ -184,7 +188,7 @@ predictive-search[loading] .predictive-search__loading-state .loading-spinner {
 }
 
 .predictive-search__result-group:not(:last-child) {
-  border-bottom: 1px solid var(--tps-input-border-color);
+  border-bottom: 0.1rem solid var(--tps-input-border-color);
 }
 
 .predictive-search__heading {
@@ -286,7 +290,7 @@ predictive-search[loading] .predictive-search__loading-state .loading-spinner {
 
 .predictive-search__footer {
   padding: var(--tps-spacing-12) var(--tps-spacing-16);
-  border-top: 1px solid var(--tps-input-border-color);
+  border-top: 0.1rem solid var(--tps-input-border-color);
   display: flex;
   justify-content: center;
 }
@@ -309,7 +313,7 @@ predictive-search[loading] .predictive-search__loading-state .loading-spinner {
 
 @media (max-width: 767px) {
   .predictive-search__column + .predictive-search__column {
-    border-top: 1px solid var(--tps-input-border-color);
+    border-top: 0.1rem solid var(--tps-input-border-color);
   }
 }
 
@@ -353,7 +357,7 @@ predictive-search[loading] .predictive-search__loading-state .loading-spinner {
     min-height: 0;
     margin-top: var(--tps-spacing-12);
     border: 0;
-    border-top: 1px solid var(--tps-input-border-color);
+    border-top: 0.1rem solid var(--tps-input-border-color);
     border-radius: 0;
     box-shadow: none;
     overflow-y: auto;
@@ -370,7 +374,7 @@ predictive-search[loading] .predictive-search__loading-state .loading-spinner {
   }
 
   .predictive-search__results-groups-wrapper--split .predictive-search__column--suggestions {
-    border-right: 1px solid var(--tps-input-border-color);
+    border-right: 0.1rem solid var(--tps-input-border-color);
   }
 
   .predictive-search__results-groups-wrapper--split .predictive-search__column--catalog {

@@ -1,7 +1,7 @@
 /* Base theme styles */
 
 :root {
-  --tps-container-padding-inline: 2rem;
+  --tps-container-padding-inline: 1.5rem;
   --tps-section-gap: var(--tps-section-spacing-top, 3.2rem);
 }
 
@@ -32,9 +32,9 @@ body {
   font-optical-sizing: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   body {
-    font-size: 1.6rem;
+    font-size: var(--tps-body-text);
   }
 }
 
@@ -316,6 +316,7 @@ ol {
   
 .media-content-width-medium {
   max-width: 60rem;
+  padding: var(--tps-spacing-56) 0;
 }
 
 .media-content-width-large {
@@ -343,7 +344,7 @@ input[type="submit"] {
   text-decoration: none;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   text-transform: var(--tps-button-text-transform);
-  box-shadow: 2px 2px 0 0 rgb(var(--tps-color-button-primary-outline));
+  box-shadow: 0.2rem 0.2rem 0 0 rgb(var(--tps-color-button-primary-outline));
 }
 
 .button:hover {
@@ -355,7 +356,7 @@ input[type="submit"] {
   --tps-button-text: rgb(var(--tps-color-button-secondary-text));
   --tps-button-background: rgb(var(--tps-color-button-secondary-background));
   --tps-button-outline: rgb(var(--tps-color-button-secondary-outline));
-  box-shadow: 2px 2px rgb(var(--tps-color-button-secondary-outline));
+  box-shadow: 0.2rem 0.2rem rgb(var(--tps-color-button-secondary-outline));
 }
 
 .button--secondary:hover {
@@ -366,8 +367,8 @@ input[type="submit"] {
 body .shopify-payment-button__button--unbranded {
   background: rgb(var(--tps-color-button-secondary-background));
   color: rgb(var(--tps-color-button-secondary-text));
-  box-shadow: 2px 2px rgb(var(--tps-color-button-primary-outline));
-  padding: 1rem 1.8rem;
+  box-shadow: 0.2rem 0.2rem rgb(var(--tps-color-button-primary-outline));
+  padding: var(--tps-spacing-10) var(--tps-spacing-18);
   border: 0.2rem solid rgb(var(--tps-color-button-primary-outline));
   text-decoration: none;
   border-radius: var(--tps-button-radius);
@@ -457,10 +458,10 @@ canvas {
 
 .visually-hidden {
   position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
+  width: 0.1rem !important;
+  height: 0.1rem !important;
   padding: 0 !important;
-  margin: -1px !important;
+  margin: -0.1rem !important;
   overflow: hidden !important;
   clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
@@ -1391,6 +1392,7 @@ canvas {
   top: 50%;
   width: 3.6rem;
   transform: translateY(-50%);
+  transition: all 0.25s ease;
 }
 
 @keyframes ping {
@@ -1533,7 +1535,7 @@ canvas {
   width: 1.6rem;
   height: 1.6rem;
   margin: -0.8rem 0 0 -0.8rem;
-  border: 2px solid rgba(0, 0, 0, 0.3);
+  border: 0.2rem solid rgba(0, 0, 0, 0.3);
   border-right-color: transparent;
   border-radius: 50%;
   animation: theme-spin 0.6s linear infinite;
@@ -1545,7 +1547,7 @@ canvas {
 }
 
 .button--secondary.is-loading::after {
-  border-color: rgb(var(--tps-color-button-secondary-text));
+  border-color: rgba(var(--tps-color-button-secondary-background) / 0.8);
   border-right-color: transparent;
 }
 

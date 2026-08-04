@@ -10,8 +10,8 @@
 {
   "current": {
     "page_width_max": 1600,
-    "section_spacing_top_desktop": 80,
-    "section_spacing_bottom_desktop": 80,
+    "section_spacing_top_desktop": 60,
+    "section_spacing_bottom_desktop": 60,
     "section_spacing_top_mobile": 40,
     "section_spacing_bottom_mobile": 40,
     "button_border_radius": 0,
@@ -19,11 +19,12 @@
     "input_border_radius": 0,
     "media_border_radius": 0,
     "type_heading_font": "caprasimo_n4",
+    "heading_size": "medium",
     "heading_letter_spacing": 0,
     "type_subheading_font": "caveat_n5",
     "sub_heading_size": "large",
     "type_body_font": "arimo_n4",
-    "body_text": 18,
+    "body_text": 16,
     "background_color": "#F8F5F0",
     "img_placeholder_color": "#ECE6DD",
     "heading_color": "#1F2937",
@@ -70,6 +71,7 @@
     "social_wechat_link": "",
     "social_spotify_link": "",
     "cart_type": "cart_popup",
+    "cart_drawer_free_gift_product": "black-gold-embroidered-tiered-midi-dress",
     "content_for_index": []
   }
 }

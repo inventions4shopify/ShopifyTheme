@@ -4,11 +4,11 @@
 }
 
 .custom-marquee-section.border-top {
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: 0.1rem solid rgba(0,0,0,0.1);
 }
 
 .custom-marquee-section.border-bottom {
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 0.1rem solid rgba(0,0,0,0.1);
 }
 
 .marquee-wrapper {

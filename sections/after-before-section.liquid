@@ -140,7 +140,7 @@
 
             {% when 'text' %}
               {%- assign block_color = block.settings.text_color -%}
-              <div class="text-desc"
+              <div class="text-desc ps-rte"
                 {%- unless block_color == blank or block_color == 'rgba(0,0,0,0)' %}
                   style="color: rgb({{ block_color.rgb }});"
                 {%- endunless %}

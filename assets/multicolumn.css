@@ -1,6 +1,6 @@
 .multicolumn__content .grid__item {
   padding: var(--tps-spacing-20);
-  border: 1px solid var(--tps-card-border-color);
+  border: 0.1rem solid var(--tps-card-border-color);
   border-radius: var(--tps-card-border-radius);
   background-color: var(--tps-card-bg-color);
 }
@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--tps-radius-full);
-   border: 1px solid color-mix(in srgb, var(--tps-card-border-color) 60%, transparent);
+   border: 0.1rem solid color-mix(in srgb, var(--tps-card-border-color) 60%, transparent);
 }
 
 .multicolumn__content .icon-image {

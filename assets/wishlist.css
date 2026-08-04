@@ -20,7 +20,7 @@
 }
 
 .wishlist-button.is-active {
-  color: #d72c0d;
+  color: var(--tps-color-error);
 }
 
 .wishlist-button.is-active .wishlist-button__icon--outline {

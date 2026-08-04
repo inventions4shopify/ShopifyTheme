@@ -143,7 +143,7 @@ cart-popup.is-closing .cart-popup__card {
   justify-content: center;
   min-height: 4.4rem;
   padding: 0.8rem 1.6rem;
-  border-radius: 999px;
+  border-radius: var(--tps-radius-full);
   font-size: var(--tps-text-sm);
   font-weight: 600;
   text-align: center;

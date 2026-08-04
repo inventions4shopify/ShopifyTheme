@@ -8,19 +8,32 @@ class FaqSection extends HTMLElement {
 
     this.querySelectorAll('.cms-faq-item').forEach((item) => {
       const question = item.querySelector('.cms-faq-question');
-      if (!question) return;
+      const answer = item.querySelector('.cms-faq-answer');
 
-      question.addEventListener('click', () => {
-        const isActive = item.classList.contains('active');
+      if (!question || !answer) return;
 
-        this.querySelectorAll('.cms-faq-item').forEach((faq) => {
-          faq.classList.remove('active');
-        });
+      answer.style.maxHeight = '0px';
 
-        if (!isActive) {
-          item.classList.add('active');
-        }
-      }, { signal });
+      question.addEventListener(
+        'click',
+        () => {
+          const isActive = item.classList.contains('active');
+
+          this.querySelectorAll('.cms-faq-item').forEach((faq) => {
+            faq.classList.remove('active');
+            const content = faq.querySelector('.cms-faq-answer');
+            if (content) {
+              content.style.maxHeight = '0px';
+            }
+          });
+
+          if (!isActive) {
+            item.classList.add('active');
+            answer.style.maxHeight = `${answer.scrollHeight}px`;
+          }
+        },
+        { signal }
+      );
     });
   }
 

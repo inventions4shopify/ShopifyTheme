@@ -17,6 +17,7 @@
       {% else %}
         rgb(var(--tps-color-product-card-text))
       {% endif %};
+      z-index: 1;
   }
 </style>
 
@@ -72,7 +73,7 @@
                 {% endif %}
               </div>
 
-              <div class="collection-card__content{%if section.settings.enable_card_text == false %} text-{{ section.settings.collection_heading_alignment }} justify-{{ section.settings.collection_heading_alignment }}{% endif %}">
+              <div class="collection-card__content text-{{ section.settings.collection_heading_alignment }} justify-{{ section.settings.collection_heading_alignment }}">
                 <h3 class="collection__heading h5">
                   {{ collection.title | escape }}
                 </h3>
