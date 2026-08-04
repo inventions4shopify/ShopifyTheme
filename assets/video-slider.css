@@ -12,9 +12,9 @@
 }
 
 .video-slider__slide {
-    width: 100%;
-    max-width: 100%;
-    flex: 0 0 100%;
+    width: 60%;
+    max-width: 60%;
+    flex: 0 0 60%;
     transform: scale(0.9);
     opacity: 0.7;
     transition: all 0.3s ease;

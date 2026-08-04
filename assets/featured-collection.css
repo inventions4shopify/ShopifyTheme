@@ -54,7 +54,7 @@ featured-collection-slider {
 .fc__arrows_btn{
   width: 100%;
   justify-content: center;
-  margin-top: var(--tps-spacing-32);
+  margin-top: var(--tps-spacing-20);
   gap: var(--tps-spacing-16);
 }
 .fc__arrows_btn button {
@@ -98,6 +98,9 @@ featured-collection-slider {
   /* "always" slider (Type = Carousel) keeps scrolling on desktop too */
   .featured-collection .fc__slider--always .fc__track {
     grid-auto-columns: calc((100% - (var(--tps-fc-columns) - 1) * var(--tps-fc-gap)) / var(--tps-fc-columns));
+  }
+  .fc__arrows_btn{
+    margin-top: var(--tps-spacing-32);
   }
 }
 

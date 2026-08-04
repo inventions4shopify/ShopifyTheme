@@ -1,7 +1,7 @@
 /* Base theme styles */
 
 :root {
-  --tps-container-padding-inline: 2rem;
+  --tps-container-padding-inline: 1.5rem;
   --tps-section-gap: var(--tps-section-spacing-top, 3.2rem);
 }
 
@@ -1392,6 +1392,7 @@ canvas {
   top: 50%;
   width: 3.6rem;
   transform: translateY(-50%);
+  transition: all 0.25s ease;
 }
 
 @keyframes ping {
@@ -1546,7 +1547,7 @@ canvas {
 }
 
 .button--secondary.is-loading::after {
-  border-color: rgb(var(--tps-color-button-secondary-text));
+  border-color: rgba(var(--tps-color-button-secondary-background) / 0.8);
   border-right-color: transparent;
 }
 

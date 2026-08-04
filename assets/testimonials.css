@@ -11,6 +11,8 @@
   gap: var(--tps-spacing-20);
   transition: transform 0.5s ease;
   scroll-behavior: auto;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 .testimonial-slider-arrow-btn {
   width: 100%;

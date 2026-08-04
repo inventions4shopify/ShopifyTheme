@@ -175,6 +175,7 @@ slideshow-section {
     border: none;
     padding: 0;
     transition: all 0.25s ease;
+    cursor: pointer;
 }
 
 .cms-slideshow-dot .active {

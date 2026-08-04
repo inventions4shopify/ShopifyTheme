@@ -104,12 +104,14 @@
   opacity: 1;
 }
 
-.search .field__button {
-  right: 1rem;
-}
-
 .search .reset__button {
   right: 4.6rem;
+}
+
+.search .search__button:hover,
+.search .reset__button:hover {
+  color: inherit;
+  transform: translateY(-50%) scale(1.07);
 }
 
 .search .reset__button.hidden {
@@ -177,6 +179,8 @@ predictive-search[loading] .predictive-search__loading-state .loading-spinner {
 .predictive-search__column {
   flex: 1 1 100%;
   min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .predictive-search__result-group {

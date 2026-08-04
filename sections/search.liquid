@@ -118,6 +118,7 @@
 
                           <div class="price-range">
                             <div class="field price-range__field">
+                              <span class="price-range__currency">{{ cart.currency.symbol }}</span>
                               <input
                                 type="number"
                                 class="field__input text-sm"
@@ -136,6 +137,7 @@
                             <span class="price-range__separator" aria-hidden="true">–</span>
 
                             <div class="field price-range__field">
+                              <span class="price-range__currency">{{ cart.currency.symbol }}</span>
                               <input
                                 type="number"
                                 class="field__input text-sm"
@@ -232,14 +234,10 @@
                     class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
                     aria-label="{{ 'search.reset' | t }}"
                   >
-                    <span class="svg-wrapper">
-                      {% render 'icon', icon: 'close', width: 18, height: 18 %}
-                    </span>
+                    {% render 'icon', icon: 'close', width: 18, height: 18 %}
                   </button>
                   <button type="submit" class="search__button field__button" aria-label="{{ 'search.title' | t }}">
-                    <span class="svg-wrapper">
-                      {% render 'icon', icon: 'search', width: 20, height: 20 %}
-                    </span>
+                    {% render 'icon', icon: 'search', width: 18, height: 18 %}
                   </button>
                 </div>
 

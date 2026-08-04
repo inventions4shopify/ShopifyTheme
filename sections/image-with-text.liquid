@@ -24,11 +24,12 @@
       {% if section.settings.image_show != true %}
           margin: 0 -15px;
       {% endif %}
+      gap: 4rem;
   }
 
   {% if section.settings.image_show != true %}
     .cms-image-with-text-row >* {
-      padding: 1.5rem;
+      padding: 0 1.5rem;
     }
   {% endif %}
 
@@ -39,6 +40,10 @@
             {% when 'medium' %} 50%
             {% when 'large' %} 66.6666%
         {% endcase %};
+    }
+
+    .cms-image-with-text-row {
+      gap: 0;
     }
 
     .cms-image-with-text__content {

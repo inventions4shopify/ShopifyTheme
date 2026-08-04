@@ -6,10 +6,12 @@
 
 .countdown-number {
     font-weight: 600;
+    line-height: normal;
 }
 
 .countdown-timer .sub-heading {
     font-style: italic;
+    margin: 0;
 }
 
 .countdown-timer >* {

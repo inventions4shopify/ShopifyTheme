@@ -65,7 +65,7 @@
 
 .product_quantity_buy_wrapper {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: var(--tps-spacing-12);
     margin-bottom: var(--tps-spacing-16);
 }

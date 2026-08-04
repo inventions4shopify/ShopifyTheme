@@ -223,14 +223,10 @@
                           class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
                           aria-label="{{ 'search.reset' | t }}"
                         >
-                          <span class="svg-wrapper">
-                            {% render 'icon', icon: 'close', width: 18, height: 18 %}
-                          </span>
+                          {% render 'icon', icon: 'close', width: 18, height: 18 %}
                         </button>
                         <button type="submit" class="search__button field__button" aria-label="{{ 'search.title' | t }}">
-                          <span class="svg-wrapper">
-                            {% render 'icon', icon: 'search', width: 20, height: 20 %}
-                          </span>
+                          {% render 'icon', icon: 'search', width: 18, height: 18 %}
                         </button>
                       </div>
 
@@ -289,13 +285,11 @@
                 {%- if customer and customer.has_avatar? -%}
                   {{ customer | avatar }}
                 {%- else -%}
-                  <span class="svg-wrapper">
-                    {% render 'icon', icon: 'account', width: 20, height: 20 %}
-                  </span>
+                  {% render 'icon', icon: 'account', width: 20, height: 20 %}
                 {%- endif -%}
               </account-icon>
             {%- else -%}
-              <span class="svg-wrapper"> {% render 'icon', icon: 'account', width: 20, height: 20 %}</span>
+              {% render 'icon', icon: 'account', width: 20, height: 20 %}
             {%- endif -%}
             <span class="visually-hidden">
               {%- liquid
@@ -347,7 +341,7 @@
       "type": "select",
       "id": "logo_position",
       "label": "Position",
-      "default": "start",
+      "default": "center",
       "options": [
         { "value": "start", "label": "Left" },
         { "value": "center", "label": "Center" },
